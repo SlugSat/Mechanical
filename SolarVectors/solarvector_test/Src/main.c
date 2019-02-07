@@ -44,6 +44,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <math.h>
+#include <stdio.h>
+#include <string.h>
 
 /* USER CODE END Includes */
 
@@ -60,9 +62,18 @@
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 
+#define ADC_CHANNEL_XP ADC_CHANNEL_0
+#define ADC_CHANNEL_XN ADC_CHANNEL_1
+#define ADC_CHANNEL_YP ADC_CHANNEL_4
+#define ADC_CHANNEL_YN ADC_CHANNEL_5
+#define ADC_CHANNEL_ZP ADC_CHANNEL_6
+#define ADC_CHANNEL_ZN ADC_CHANNEL_7
+
+#define R (double)1000.0 // In ohms
+
 #define ADC_MAX_VOLTS 3.3
 #define ADC_RESOLUTION 12
-#define ADC_TO_VOLTS(adc_raw) ((float)(((adc_raw)*3.3)/(1<<ADC_RESOLUTION)))
+#define ADC_TO_VOLTS(adc_raw) ((double)(((adc_raw)*3.3)/(1<<ADC_RESOLUTION)))
 	
 /* USER CODE END PM */
 
@@ -73,6 +84,8 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 
+ADC_ChannelConfTypeDef sConfig = {0};
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -81,6 +94,22 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_ADC1_Init(void);
 /* USER CODE BEGIN PFP */
+
+// Blocking function that reads from a channel in ADC1 and returns the result
+uint16_t readADC1(uint32_t channel) {
+	// Change ADC channel
+	sConfig.Channel = channel;
+	HAL_ADC_ConfigChannel(&hadc1, &sConfig);
+	
+	// Start convert and wait for covert to complete
+	HAL_ADC_Start(&hadc1);
+	if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
+		return HAL_ADC_GetValue(&hadc1);
+	}
+	else {
+		return 0;
+	}
+}
 
 /* USER CODE END PFP */
 
@@ -122,9 +151,13 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
 	// See the Attitude Control System document for info on the body reference frame and axes
-	uint16_t power_xp, power_xn, power_yp, power_yn, power_zp, power_zn; // Positive and negative raw power values for each axis
+	double volts_xp, volts_xn, volts_yp, volts_yn, volts_zp, volts_zn; // Positive and negative raw power values for each axis
 	
-	float vector_x, vector_y, vector_z; // 
+	double vector_mag, vector_x, vector_y, vector_z; // Components of the solar vector in the body frame
+
+	char transmit[50];
+	sprintf(transmit, "Finished initialization...\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 10);
 
   /* USER CODE END 2 */
 
@@ -133,11 +166,20 @@ int main(void)
   while (1)
   {
 		// Wait for button press
+		while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) != GPIO_PIN_SET);
 		
-		// Read raw values
+		// Read raw values and convert to volts
+		volts_xp = readADC1(ADC_CHANNEL_XP);
+		
+		char transmit[50];
+		sprintf(transmit, "%f\r\n", volts_xp);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 10);
+		
+		// Calculate magnitude of solar vector
+		// vector_mag = sqrt((raw_xp
 		
 		// Wait for button release
-    
+    while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) != GPIO_PIN_RESET);
 		
     /* USER CODE END WHILE */
 
@@ -223,7 +265,7 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_28CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -232,6 +274,7 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_1;
   sConfig.Rank = ADC_REGULAR_RANK_2;
+  sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
