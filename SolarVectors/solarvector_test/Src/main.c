@@ -61,6 +61,7 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
+#define YAWPITCH_TEST // Uncomment to unit test yaw and pitch function
 
 #define ADC_CHANNEL_XP ADC_CHANNEL_0
 #define ADC_CHANNEL_XN ADC_CHANNEL_1
@@ -74,11 +75,14 @@
 #define ADC_MAX_VOLTS 3.3
 #define ADC_RESOLUTION 12
 #define ADC_TO_VOLTS(adc_raw) ((double)(((adc_raw)*3.3)/(1<<ADC_RESOLUTION)))
-	
+
+#define PI 3.1416
+
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
+DMA_HandleTypeDef hdma_adc1;
 
 UART_HandleTypeDef huart2;
 
@@ -91,12 +95,17 @@ ADC_ChannelConfTypeDef sConfig = {0};
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_ADC1_Init(void);
 /* USER CODE BEGIN PFP */
 
-// Blocking function that reads from a channel in ADC1 and returns the result
-uint16_t readADC1(uint32_t channel) {
+/** 
+ * @brief  Blocking function to read from ADC1
+ * @param  A predefined ADC channel
+ * @return 12-bit conversion result
+*/
+uint16_t ReadADC1(uint32_t channel) {
 	// Change ADC channel
 	sConfig.Channel = channel;
 	HAL_ADC_ConfigChannel(&hadc1, &sConfig);
@@ -109,6 +118,29 @@ uint16_t readADC1(uint32_t channel) {
 	else {
 		return 0;
 	}
+}
+
+/** 
+ * @brief  Prints yaw and pitch of a 3-vector over UART
+ * @param  Vector components
+ * @return None
+*/
+void PrintYawPitch(double vector_x, double vector_y, double vector_z) {
+	// Convert vector into yaw/pitch angles referenced to the +X unit vector (1, 0, 0)
+	double yaw_degrees = 180*acos(vector_x/sqrt(pow(vector_x, 2) + pow(vector_y, 2)))/PI;
+	if(vector_y < 0) {
+		yaw_degrees *= -1;
+	}
+	
+	double pitch_degees = 180*acos(sqrt(pow(vector_x, 2) + pow(vector_y, 2)))/PI;
+	if(vector_z < 0) {
+		pitch_degees *= -1;
+	}
+	
+	// Print results over UART
+	char transmit[50];
+	sprintf(transmit, "yaw: %3.1f pitch: %3.1f\r\n", yaw_degrees, pitch_degees);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 }
 
 /* USER CODE END PFP */
@@ -134,7 +166,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+	
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -146,9 +178,28 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART2_UART_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
+
+	#ifdef YAWPITCH_TEST // Unit testing
+	int num_tests = 7;
+	double x_components[] = {1, 0.7071, -0.7071, 0.7071, -0.7071, 0.7071, 0};
+	double y_components[] = {0, 0.7071, 0.7071, -0.7071, -0.7071, 0, -0.7071};
+	double z_components[] = {0, 0, 0, 0, 0, 0.7071, -0.7071};
+	double desired_yaw[] = {0, 45, 135, -45, -135, 0, -90};
+	double desired_pitch[] = {0, 0, 0, 0, 0, 45, -45};
+	
+	for(int i = 0;i < num_tests;i++) {
+		PrintYawPitch(x_components[i], y_components[i], z_components[i]);
+		char transmit[50];
+		sprintf(transmit, "Desired:\r\nyaw: %3.1f pitch: %3.1f\r\n\r\n", desired_yaw[i], desired_pitch[i]);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 50);
+	}
+	
+	while(1);
+	#endif
 
 	// See the Attitude Control System document for info on the body reference frame and axes
 	double volts_xp, volts_xn, volts_yp, volts_yn, volts_zp, volts_zn; // Positive and negative raw power values for each axis
@@ -156,8 +207,8 @@ int main(void)
 	double vector_mag, vector_x, vector_y, vector_z; // Components of the solar vector in the body frame
 
 	char transmit[50];
-	sprintf(transmit, "Finished initialization...\r\n");
-	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 10);
+	sprintf(transmit, "Finished init\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
 
   /* USER CODE END 2 */
 
@@ -169,14 +220,22 @@ int main(void)
 		while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) != GPIO_PIN_SET);
 		
 		// Read raw values and convert to volts
-		volts_xp = readADC1(ADC_CHANNEL_XP);
+		volts_xp = ReadADC1(ADC_CHANNEL_XP);
+		volts_xn = ReadADC1(ADC_CHANNEL_XN);
 		
 		char transmit[50];
-		sprintf(transmit, "%f\r\n", volts_xp);
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 10);
+		sprintf(transmit, "xp: %.2f xn: %.2f\r\n", volts_xp, volts_xn);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 		
 		// Calculate magnitude of solar vector
-		// vector_mag = sqrt((raw_xp
+		vector_mag = sqrt(pow(volts_xp - volts_xn, 2) + pow(volts_yp - volts_yn, 2) + pow(volts_zp - volts_zn, 2));
+		
+		// Find normalized solar vector components
+		vector_x = (volts_xp - volts_xn)/vector_mag;
+		vector_y = (volts_yp - volts_yn)/vector_mag;
+		vector_z = (volts_zp - volts_zn)/vector_mag;
+		
+		PrintYawPitch(vector_x, vector_y, vector_z);
 		
 		// Wait for button release
     while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) != GPIO_PIN_RESET);
@@ -215,7 +274,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV8;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
@@ -224,7 +283,7 @@ void SystemClock_Config(void)
     Error_Handler();
   }
   PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC;
-  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV2;
+  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV8;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();
@@ -251,12 +310,12 @@ static void MX_ADC1_Init(void)
   /**Common config 
   */
   hadc1.Instance = ADC1;
-  hadc1.Init.ScanConvMode = ADC_SCAN_ENABLE;
+  hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
   hadc1.Init.ContinuousConvMode = DISABLE;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 6;
+  hadc1.Init.NbrOfConversion = 1;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
   {
     Error_Handler();
@@ -265,48 +324,7 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_28CYCLES_5;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /**Configure Regular Channel 
-  */
-  sConfig.Channel = ADC_CHANNEL_1;
-  sConfig.Rank = ADC_REGULAR_RANK_2;
   sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /**Configure Regular Channel 
-  */
-  sConfig.Channel = ADC_CHANNEL_4;
-  sConfig.Rank = ADC_REGULAR_RANK_3;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /**Configure Regular Channel 
-  */
-  sConfig.Channel = ADC_CHANNEL_5;
-  sConfig.Rank = ADC_REGULAR_RANK_4;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /**Configure Regular Channel 
-  */
-  sConfig.Channel = ADC_CHANNEL_6;
-  sConfig.Rank = ADC_REGULAR_RANK_5;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /**Configure Regular Channel 
-  */
-  sConfig.Channel = ADC_CHANNEL_7;
-  sConfig.Rank = ADC_REGULAR_RANK_6;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -333,7 +351,7 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 115200;
+  huart2.Init.BaudRate = 9600;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;
@@ -347,6 +365,21 @@ static void MX_USART2_UART_Init(void)
   /* USER CODE BEGIN USART2_Init 2 */
 
   /* USER CODE END USART2_Init 2 */
+
+}
+
+/** 
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void) 
+{
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Channel1_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
 
 }
 
