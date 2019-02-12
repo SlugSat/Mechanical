@@ -62,14 +62,15 @@
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 // #define YAWPITCH_TEST // Uncomment to unit test yaw and pitch function
+// #define USE_ADC_THRESHOLDS // Uncomment to ignore readings on the "dark side" of the satellite
 
-#define ADC_CHANNEL_XP ADC_CHANNEL_0
-#define ADC_CHANNEL_XN ADC_CHANNEL_1
-#define ADC_CHANNEL_YP ADC_CHANNEL_4
-#define ADC_CHANNEL_YN ADC_CHANNEL_5
-#define ADC_CHANNEL_ZP ADC_CHANNEL_6
-#define ADC_CHANNEL_ZN ADC_CHANNEL_7
-#define NUM_ADC_CHANNELS 2
+#define ADC_CHANNEL_XP 0
+#define ADC_CHANNEL_XN 1
+#define ADC_CHANNEL_YP 2
+#define ADC_CHANNEL_YN 3
+#define ADC_CHANNEL_ZP 4
+#define ADC_CHANNEL_ZN 5
+#define NUM_ADC_CHANNELS 6
 
 #define R (double)1000.0 // In ohms
 
@@ -78,6 +79,9 @@
 #define ADC_TO_VOLTS(adc_raw) ((double)(((adc_raw)*3.3)/(1<<ADC_RESOLUTION)))
 
 #define PI 3.1416
+
+#define ADC_READING_LOW_THRESHOLD 128 // Minimum value to treat the reading as nonzero
+#define ADC_READING_HIGH_THRESHOLD 2048 // Minimum value to treat the reading as full exposure (close to 90deg incident angle)
 
 /* USER CODE END PM */
 
@@ -222,12 +226,19 @@ int main(void)
 		while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) != GPIO_PIN_SET);
 
 		// Read data and convert to volts
-		volts_xp = ADC_TO_VOLTS(adc_data[0]);
-		volts_xn = ADC_TO_VOLTS(adc_data[1]);
+		volts_xp = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_XP]);
+		volts_xn = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_XN]);
+		volts_yp = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_YP]);
+		volts_yn = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_YN]);
+		volts_zp = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_ZP]);
+		volts_zn = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_ZN]);
 		
-		char transmit[50];
-		sprintf(transmit, "xp: %.2f xn: %.2f\r\n", volts_xp, volts_xn);
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
+		do {
+			char transmit[50];
+			sprintf(transmit, "zp: %.2f zn: %.2f\r\n", volts_zp, volts_zn);
+			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
+		}
+		while(0);
 		
 		// Calculate magnitude of solar vector
 		vector_mag = sqrt(pow(volts_xp - volts_xn, 2) + pow(volts_yp - volts_yn, 2) + pow(volts_zp - volts_zn, 2));
@@ -237,7 +248,7 @@ int main(void)
 		vector_y = (volts_yp - volts_yn)/vector_mag;
 		vector_z = (volts_zp - volts_zn)/vector_mag;
 		
-		// PrintYawPitch(vector_x, vector_y, vector_z);
+		PrintYawPitch(vector_x, vector_y, vector_z);
 		
 		// Wait for button release
     while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) != GPIO_PIN_RESET);
@@ -315,7 +326,7 @@ static void MX_ADC1_Init(void)
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 2;
+  hadc1.Init.NbrOfConversion = 6;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
   {
     Error_Handler();
@@ -333,6 +344,38 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_1;
   sConfig.Rank = ADC_REGULAR_RANK_2;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /**Configure Regular Channel 
+  */
+  sConfig.Channel = ADC_CHANNEL_4;
+  sConfig.Rank = ADC_REGULAR_RANK_3;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /**Configure Regular Channel 
+  */
+  sConfig.Channel = ADC_CHANNEL_5;
+  sConfig.Rank = ADC_REGULAR_RANK_4;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /**Configure Regular Channel 
+  */
+  sConfig.Channel = ADC_CHANNEL_6;
+  sConfig.Rank = ADC_REGULAR_RANK_5;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /**Configure Regular Channel 
+  */
+  sConfig.Channel = ADC_CHANNEL_7;
+  sConfig.Rank = ADC_REGULAR_RANK_6;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
