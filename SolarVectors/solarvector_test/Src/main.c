@@ -195,13 +195,6 @@ int main(void)
 	while(1);
 	#endif
 	
-	do {
-		char transmit[50];
-		sprintf(transmit, "Before ADC Start\r\n");
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
-	}
-	while(0);
-	
 	HAL_ADC_Start_DMA(&hadc1, adc_data, NUM_ADC_CHANNELS); // Start ADC in DMA mode
 	
 	do {
@@ -235,7 +228,7 @@ int main(void)
 		
 		do {
 			char transmit[50];
-			sprintf(transmit, "zp: %.2f zn: %.2f\r\n", volts_zp, volts_zn);
+			sprintf(transmit, "yp: %.2f yn: %.2f\r\n", volts_yp, volts_yn);
 			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 		}
 		while(0);
