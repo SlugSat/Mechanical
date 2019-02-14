@@ -216,7 +216,7 @@ int main(void)
   while (1)
   {
 		// Wait for button press
-		while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) != GPIO_PIN_SET);
+		//while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) != GPIO_PIN_SET);
 
 		// Read data and convert to volts
 		volts_xp = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_XP]);
@@ -228,7 +228,17 @@ int main(void)
 		
 		do {
 			char transmit[50];
+			
+			// Print x values
+			sprintf(transmit, "xp: %.2f xn: %.2f\r\n", volts_xp, volts_xn);
+			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
+			
+			// Print y values
 			sprintf(transmit, "yp: %.2f yn: %.2f\r\n", volts_yp, volts_yn);
+			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
+			
+			// Print z values
+			sprintf(transmit, "zp: %.2f zn: %.2f\r\n", volts_zp, volts_zn);
 			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 		}
 		while(0);
@@ -244,7 +254,10 @@ int main(void)
 		PrintYawPitch(vector_x, vector_y, vector_z);
 		
 		// Wait for button release
-    while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) != GPIO_PIN_RESET);
+    //while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) != GPIO_PIN_RESET);
+		
+		// Wait 2 seconds
+		HAL_Delay(2000);
 		
     /* USER CODE END WHILE */
 
