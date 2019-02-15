@@ -3,6 +3,7 @@
 "solarvector_test\main.o"
 "solarvector_test\stm32f1xx_it.o"
 "solarvector_test\stm32f1xx_hal_msp.o"
+"solarvector_test\matrix.o"
 "solarvector_test\stm32f1xx_hal_gpio_ex.o"
 "solarvector_test\stm32f1xx_hal_adc.o"
 "solarvector_test\stm32f1xx_hal_adc_ex.o"

@@ -107,12 +107,6 @@ static void MX_ADC1_Init(void);
 /* USER CODE BEGIN PFP */
 
 /** 
- * @brief  Blocking function to read from ADC1
- * @param  A predefined ADC channel
- * @return 12-bit conversion result
-*/
-
-/** 
  * @brief  Prints yaw and pitch of a 3-vector over UART
  * @param  Vector components
  * @return None
