@@ -6,7 +6,7 @@
   ** This module contains matrix and vector math functions. Matrices contain r
 	* by c arrays of doubles.
 	*
-	* Created by Galen Savidge. Edited 2/15/2019.
+	* Created by Galen Savidge. Edited 2/16/2019.
   ******************************************************************************
   */
 
@@ -109,5 +109,4 @@ void printMatrix(Matrix m, char* string);
  */
 void freeMatrix(Matrix *mp);
 
-#endif
-
+#endif /* MATRIX_H */

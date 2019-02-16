@@ -6,9 +6,12 @@
   ** This module contains functions for finding and printing solar vectors from
 	* solar panel current measurements.
 	*
-	* Created by Galen Savidge 2/15/2019.
+	* Created by Galen Savidge. Edited 2/16/2019.
   ******************************************************************************
   */
+ 
+ #ifndef SOLARVECTOR_H
+ #define SOLARVECTOR_H
  
 /* Includes ------------------------------------------------------------------*/
 #include <Matrix.h>
@@ -28,3 +31,5 @@ Matrix findSolarVector(double xp, double xm, double yp, double ym, double zp, do
  * @return None
 */
 void printSolarVector(Matrix v, char* string);
+
+#endif /* SOLARVECTOR_H */

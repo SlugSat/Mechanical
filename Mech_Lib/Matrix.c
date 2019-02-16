@@ -1,3 +1,15 @@
+/**
+  ******************************************************************************
+  * @file           : Matrix.c
+  * @brief          : Source file for the Matrix module.
+  ******************************************************************************
+  ** This module contains matrix and vector math functions. Matrices contain r
+	* by c arrays of doubles.
+	*
+	* Created by Galen Savidge. Edited 2/16/2019.
+  ******************************************************************************
+  */
+
 #include<Matrix.h>
 #include<stdlib.h>
 #include<stdio.h>

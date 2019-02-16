@@ -46,6 +46,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
+#include <SolarVectors.h>
 
 /* USER CODE END Includes */
 
@@ -200,8 +201,6 @@ int main(void)
 	
 	// See the Attitude Control System document for info on the body reference frame and axes
 	double volts_xp, volts_xn, volts_yp, volts_yn, volts_zp, volts_zn; // Positive and negative raw current values for each axis
-	
-	double vector_mag, vector_x, vector_y, vector_z; // Components of the solar vector in the body frame
 
   /* USER CODE END 2 */
 
@@ -209,9 +208,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		// Wait for button press
-		//while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) != GPIO_PIN_SET);
-
 		// Read data and convert to volts
 		volts_xp = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_XP]);
 		volts_xn = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_XN]);
@@ -234,21 +230,16 @@ int main(void)
 			// Print z values
 			sprintf(transmit, "zp: %.2f zn: %.2f\r\n", volts_zp, volts_zn);
 			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
-		}
-		while(0);
+		} while(0);
 		
-		// Calculate magnitude of solar vector
-		vector_mag = sqrt(pow(volts_xp - volts_xn, 2) + pow(volts_yp - volts_yn, 2) + pow(volts_zp - volts_zn, 2));
+		Matrix solar_vector = findSolarVector(volts_xp, volts_xn, volts_yp, volts_yn, volts_zp, volts_zn);
 		
-		// Find normalized solar vector components
-		vector_x = (volts_xp - volts_xn)/vector_mag;
-		vector_y = (volts_yp - volts_yn)/vector_mag;
-		vector_z = (volts_zp - volts_zn)/vector_mag;
-		
-		PrintYawPitch(vector_x, vector_y, vector_z);
-		
-		// Wait for button release
-    //while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) != GPIO_PIN_RESET);
+		// Print solar vector over serial using the library command
+		do {
+			char transmit[20];
+			printSolarVector(solar_vector, transmit);
+			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
+		} while(0);
 		
 		// Wait 2 seconds
 		HAL_Delay(2000);

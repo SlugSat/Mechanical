@@ -491,6 +491,11 @@
               <FileType>5</FileType>
               <FilePath>..\..\..\Mech_Lib\SolarVectors.h</FilePath>
             </File>
+            <File>
+              <FileName>SolarVectors.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\Mech_Lib\SolarVectors.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -1,6 +1,6 @@
 Dependencies for Project 'solarvector_test', Target 'solarvector_test': (DO NOT MODIFY !)
 F (startup_stm32f103xb.s)(0x5C650A8A)(--cpu Cortex-M3 --pd "__EVAL SETA 1" -g --apcs=interwork --pd "__MICROLIB SETA 1" -I ..\..\..\Mech_Lib\Src -I ..\..\..\Mech_Lib\Inc-I.\RTE\_solarvector_test-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include--pd "__UVISION_VERSION SETA 527" --pd "_RTE_ SETA 1" --pd "STM32F10X_MD SETA 1"--list startup_stm32f103xb.lst --xref -o solarvector_test\startup_stm32f103xb.o --depend solarvector_test\startup_stm32f103xb.d)
-F (../Src/main.c)(0x5C674100)(--c99 -c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ..\..\..\Mech_Lib -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_solarvector_test-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="527" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o solarvector_test\main.o --omf_browse solarvector_test\main.crf --depend solarvector_test\main.d)
+F (../Src/main.c)(0x5C689C43)(--c99 -c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ..\..\..\Mech_Lib -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_solarvector_test-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="527" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o solarvector_test\main.o --omf_browse solarvector_test\main.crf --depend solarvector_test\main.d)
 I (../Inc/main.h)(0x5C650A88)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5C650A5C)
 I (../Inc/stm32f1xx_hal_conf.h)(0x5C650A88)
@@ -29,6 +29,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5C650A5C)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5C650A5C)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x599FAE2E)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599FAE2C)
+I (..\..\..\Mech_Lib\SolarVectors.h)(0x5C689734)
+I (..\..\..\Mech_Lib\Matrix.h)(0x5C6896F9)
 F (../Src/stm32f1xx_it.c)(0x5C650A87)(--c99 -c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ..\..\..\Mech_Lib -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_solarvector_test-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="527" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o solarvector_test\stm32f1xx_it.o --omf_browse solarvector_test\stm32f1xx_it.crf --depend solarvector_test\stm32f1xx_it.d)
 I (../Inc/main.h)(0x5C650A88)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5C650A5C)
@@ -84,12 +86,17 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h)(0x5C650A5C)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5C650A5C)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5C650A5C)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5C650A5C)
-F (..\..\..\Mech_Lib\Matrix.c)(0x5C6749E8)(--c99 -c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ..\..\..\Mech_Lib -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_solarvector_test-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="527" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o solarvector_test\matrix.o --omf_browse solarvector_test\matrix.crf --depend solarvector_test\matrix.d)
-I (..\..\..\Mech_Lib\Matrix.h)(0x5C674927)
+F (..\..\..\Mech_Lib\Matrix.c)(0x5C68971F)(--c99 -c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ..\..\..\Mech_Lib -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_solarvector_test-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="527" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o solarvector_test\matrix.o --omf_browse solarvector_test\matrix.crf --depend solarvector_test\matrix.d)
+I (..\..\..\Mech_Lib\Matrix.h)(0x5C6896F9)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599FAE2C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599FAE2C)
-F (..\..\..\Mech_Lib\Matrix.h)(0x5C674927)()
-F (..\..\..\Mech_Lib\SolarVectors.h)(0x5C674DCD)()
+F (..\..\..\Mech_Lib\Matrix.h)(0x5C6896F9)()
+F (..\..\..\Mech_Lib\SolarVectors.h)(0x5C689734)()
+F (..\..\..\Mech_Lib\SolarVectors.c)(0x5C689BEE)(--c99 -c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ..\..\..\Mech_Lib -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_solarvector_test-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="527" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o solarvector_test\solarvectors.o --omf_browse solarvector_test\solarvectors.crf --depend solarvector_test\solarvectors.d)
+I (..\..\..\Mech_Lib\SolarVectors.h)(0x5C689734)
+I (..\..\..\Mech_Lib\Matrix.h)(0x5C6896F9)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599FAE2C)
+I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x599FAE2E)
 F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c)(0x5C650A5C)(--c99 -c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_solarvector_test-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="527" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o solarvector_test\stm32f1xx_hal_gpio_ex.o --omf_browse solarvector_test\stm32f1xx_hal_gpio_ex.crf --depend solarvector_test\stm32f1xx_hal_gpio_ex.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5C650A5C)
 I (../Inc/stm32f1xx_hal_conf.h)(0x5C650A88)
