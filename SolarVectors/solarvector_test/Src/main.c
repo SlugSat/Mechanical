@@ -202,6 +202,8 @@ int main(void)
 	// See the Attitude Control System document for info on the body reference frame and axes
 	double volts_xp, volts_xn, volts_yp, volts_yn, volts_zp, volts_zn; // Positive and negative raw current values for each axis
 
+	Matrix solar_vector = newMatrix(3, 1); // Make a new column vector Matrix for the solar vector
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -232,7 +234,7 @@ int main(void)
 			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 		} while(0);
 		
-		Matrix solar_vector = findSolarVector(volts_xp, volts_xn, volts_yp, volts_yn, volts_zp, volts_zn);
+		findSolarVector(volts_xp, volts_xn, volts_yp, volts_yn, volts_zp, volts_zn, solar_vector);
 		
 		// Print solar vector over serial using the Matrix library command
 		do {
@@ -247,8 +249,6 @@ int main(void)
 			printSolarVector(solar_vector, transmit);
 			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 		} while(0);
-		
-		freeMatrix(&solar_vector);
 		
 		// Wait 2 seconds
 		HAL_Delay(2000);

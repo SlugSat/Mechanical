@@ -19,25 +19,21 @@
 /** 
  * @brief  Calculates a solar vector from solar panel current measurements
  * @param  Six current measurements, one for each solar panel
+ * @param  v: an allocated 3x1 column vector Matrix to hold the solar vector
  * @return A normalized 3x1 column vector Matrix
 */
-Matrix findSolarVector(double xp, double xm, double yp, double ym, double zp, double zm) {
-	// Make a new Matrix to hold the solar vector
-	Matrix m = newMatrix(3, 1);
-	
+void findSolarVector(double xp, double xm, double yp, double ym, double zp, double zm, Matrix v) {
 	// Calculate magnitude of solar vector
 	double vector_mag = sqrt(pow(xp - xm, 2) + pow(yp - ym, 2) + pow(zp - zm, 2));
 	
 	// Set x component
-	matrixSet(m, 1, 1, (xp - xm)/vector_mag);
+	matrixSet(v, 1, 1, (xp - xm)/vector_mag);
 	
 	// Set y component
-	matrixSet(m, 2, 1, (yp - ym)/vector_mag);
+	matrixSet(v, 2, 1, (yp - ym)/vector_mag);
 	
 	// Set z component
-	matrixSet(m, 3, 1, (zp - zm)/vector_mag);
-	
-	return m;
+	matrixSet(v, 3, 1, (zp - zm)/vector_mag);
 }
 	
 /** 

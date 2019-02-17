@@ -21,9 +21,10 @@
 /** 
  * @brief  Calculates a solar vector from solar panel current measurements
  * @param  Six current measurements, one for each solar panel
+ * @param  v: an allocated 3x1 column vector Matrix to hold the solar vector
  * @return A normalized 3x1 column vector Matrix
 */
-Matrix findSolarVector(double xp, double xm, double yp, double ym, double zp, double zm);
+void findSolarVector(double xp, double xm, double yp, double ym, double zp, double zm, Matrix v);
 
 /** 
  * @brief  Prints yaw and pitch of a solar vector relative to the +X unit vector
