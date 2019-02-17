@@ -76,24 +76,24 @@ void matrixAddScalar(Matrix m, double x);
 
 /** 
  * @brief  Adds two Matrix objects
- * @param  Two Matrix objects to be added
- * @return A newly allocated Matrix which is the sum M1+M2
+ * @param  Two Matrix objects to be added, a third allocated Matrix in which to store the result
+ * @return None
 */
-Matrix matrixAdd(Matrix m1, Matrix m2);
+void matrixAdd(Matrix m1, Matrix m2, Matrix sum);
 
 /** 
  * @brief  Multiplies two Matrix objects
- * @param  Two Matrix objects to be multiplied
- * @return A newly allocated Matrix which is the matrix product M1M2
+ * @param  Two Matrix objects to be multiplied, a third allocated Matrix in which to store the result
+ * @return None
 */
-Matrix matrixMult(Matrix m1, Matrix m2);
+void matrixMult(Matrix m1, Matrix m2, Matrix prod);
 
 /** 
  * @brief  Copies and transposes a Matrix
- * @param  A Matrix
- * @return A newly allocated Matrix which is M transposed
+ * @param  A Matrix, an allocated Matrix in which to store the transpose
+ * @return None
 */
-Matrix matrixTranspose(Matrix m);
+void matrixTranspose(Matrix m, Matrix mt);
 
 /** 
  * @brief  Prints a Matrix to a string in a format suitable for printing over serial

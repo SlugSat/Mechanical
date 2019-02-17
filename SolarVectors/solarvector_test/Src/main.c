@@ -234,12 +234,21 @@ int main(void)
 		
 		Matrix solar_vector = findSolarVector(volts_xp, volts_xn, volts_yp, volts_yn, volts_zp, volts_zn);
 		
-		// Print solar vector over serial using the library command
+		// Print solar vector over serial using the Matrix library command
+		do {
+			char transmit[100];
+			printMatrix(solar_vector, transmit);
+			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
+		} while(0);
+		
+		// Print solar vector over serial using the SolarVector library command
 		do {
 			char transmit[20];
 			printSolarVector(solar_vector, transmit);
 			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 		} while(0);
+		
+		freeMatrix(&solar_vector);
 		
 		// Wait 2 seconds
 		HAL_Delay(2000);

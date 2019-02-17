@@ -13,6 +13,7 @@
 #include<Matrix.h>
 #include<stdlib.h>
 #include<stdio.h>
+#include<string.h>
 
 // Matrix struct
 struct _Matrix {
@@ -86,29 +87,26 @@ void matrixAddScalar(Matrix m, double x) {
     }
 }
 
-Matrix matrixAdd(Matrix m1, Matrix m2) {
+void matrixAdd(Matrix m1, Matrix m2, Matrix sum) {
     if(m1->r == m2->r && m1->c == m2->c) {
-        Matrix sum = newMatrix(m1->r, m1->c);
         for(int i = 0;i < m1->r;i++) {
             for(int j = 0;j < m1->c;j++) {
                 float v = matrixGetElement(m1, i, j) + matrixGetElement(m2, i, j);
                 matrixSet(sum, i, j, v);
             }
         }
-        return sum;
     }
-    
-    printf("MATRIX MATH ERROR: ADD SIZE MISMATCH");
-    while(1);
+    else {
+			printf("MATRIX MATH ERROR: ADD SIZE MISMATCH");
+			while(1);
+		}
 }
 
-Matrix matrixMult(Matrix m1, Matrix m2) {
-    if(m1->c != m2->r) {
+void matrixMult(Matrix m1, Matrix m2, Matrix prod) {
+    if(m1->c != m2->r || m1->r != prod->r || m2->c != prod->c) {
         printf("MATRIX MATH ERROR: MULT SIZE MISMATCH");
         while(1);
     }
-    
-    Matrix prod = newMatrix(m1->r, m2->c);
     
     for(int i = 1;i <= m1->r;i++) {
         for(int j = 1;j <= m2->c;j++) {
@@ -120,29 +118,28 @@ Matrix matrixMult(Matrix m1, Matrix m2) {
             matrixSet(prod, i, j, sum);
         }
     }
-    
-    return prod;
 }
 
-Matrix matrixTranspose(Matrix m) {
-    Matrix mt = newMatrix(m->c, m->r);
+void matrixTranspose(Matrix m, Matrix mt) {
     for(int i = 1;i <= m->r;i++) {
         for(int j = 1;j <= m->c;j++) {
             matrixSet(mt, j, i, matrixGetElement(m, i, j));
         }
     }
-    
-    return mt;
 }
 
 void printMatrix(Matrix m, char* string) {
     int r = matrixGetRows(m);
     int c = matrixGetCol(m);
+    string[0] = '\0'; // Make string an empty string
     for(int i = 1;i <= r;i++) {
+        char temp[14];
         for(int j = 1;j <= c;j++) {
-            sprintf(string, "%8.4f\t", matrixGetElement(m, i, j));
+            sprintf(temp, "%8.4f\t", matrixGetElement(m, i, j));
+				    strcat(string, temp); // Add temp to the end of string
         }
-        sprintf(string, "\r\n");
+        sprintf(temp, "\r\n");
+				strcat(string, temp);
     }
 }
 
