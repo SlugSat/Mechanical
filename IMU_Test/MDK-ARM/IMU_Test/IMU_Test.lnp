@@ -3,6 +3,7 @@
 "imu_test\main.o"
 "imu_test\stm32f1xx_it.o"
 "imu_test\stm32f1xx_hal_msp.o"
+"imu_test\bno055_imu.o"
 "imu_test\stm32f1xx_hal_gpio_ex.o"
 "imu_test\stm32f1xx_hal_i2c.o"
 "imu_test\stm32f1xx_hal_tim.o"
@@ -18,7 +19,6 @@
 "imu_test\stm32f1xx_hal_flash.o"
 "imu_test\stm32f1xx_hal_flash_ex.o"
 "imu_test\system_stm32f1xx.o"
-"imu_test\bno055_imu.o"
 --library_type=microlib --strict --scatter "IMU_Test\IMU_Test.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

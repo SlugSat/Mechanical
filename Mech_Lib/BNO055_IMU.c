@@ -53,13 +53,13 @@ void IMU_init(I2C_HandleTypeDef *hi2c, IMU_Op_Mode_t sensor_mode)
 	HAL_Delay(100);
 	
 	// set mode and wait until fully calibrated
-	set_mode(hi2c, OPERATION_MODE_NDOF); // set temporary fusion mode
-	while(!is_calibrated(hi2c)); // wait until calibrated
+	//set_mode(hi2c, OPERATION_MODE_NDOF); // set temporary fusion mode
+	//while(!is_calibrated(hi2c)); // wait until calibrated
 	
-	set_mode(hi2c, OPERATION_MODE_CONFIG); // set CONFIG mode
-	get_MG_offsets(hi2c, gyro_offset, magnet_offset);
+	//set_mode(hi2c, OPERATION_MODE_CONFIG); // set CONFIG mode
+	//get_MG_offsets(hi2c, gyro_offset, magnet_offset);
 	
-	HAL_Delay(50);
+	//HAL_Delay(50);
 	
 	set_mode(hi2c, sensor_mode); // set sensor mode
 

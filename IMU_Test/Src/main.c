@@ -126,30 +126,9 @@ int main(void)
 	float mag_vector[3] = {0};
 	float gyr_vector[3] = {0};
 	float acc_vector[3] = {0};
+	float mag_magnitude;
 	int16_t calib_data = {0};
 	
-	do {
-		char transmit[50];
-		sprintf(transmit, "Calibrating... ");
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
-	}
-	while(0);
-	
-	uint8_t mag_calib, gyr_calib, acc_calib;
-	while(!is_calibrated(&hi2c1)) {
-		get_calib_status(&hi2c1, &mag_calib, &gyr_calib, &acc_calib);
-		char transmit[50];
-		sprintf(transmit, "mag_calib: %d  gyr_calib %d  acc_calib %d\r\n", mag_calib, gyr_calib, acc_calib);
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
-		
-	}		// Block until calibration status is 3 for all sensors
-	
-	do {
-		char transmit[50];
-		sprintf(transmit, "Calibration complete\r\n");
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
-	}
-	while(0);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -161,17 +140,17 @@ int main(void)
 		get_gyr_data(&hi2c1, gyr_vector);
 		get_acc_data(&hi2c1, acc_vector);
 		
-		float mag_magnitude = (float)sqrt(pow(mag_vector[0], 2) + pow(mag_vector[1], 2) + pow(mag_vector[2], 2));
+		mag_magnitude = (float)sqrt(pow(mag_vector[0], 2) + pow(mag_vector[1], 2) + pow(mag_vector[2], 2));
 		
-		do {
-			char transmit[200];
-			sprintf(transmit, "\tx    y    z\r\nGyro:\t%3.2f %3.2f %3.2f\r\nMag:\t%3.2f %3.2f %3.2f\r\nGyro magnitude: %3.2f\r\n\r\n",
-							gyr_vector[0], gyr_vector[1], gyr_vector[2], mag_vector[0], mag_vector[1], mag_vector[2], mag_magnitude);
-			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-		} while(0);
+//		do {
+//			char transmit[200];
+//			sprintf(transmit, "\tx    y    z\r\nGyro:\t%3.2f %3.2f %3.2f\r\nMag:\t%3.2f %3.2f %3.2f\r\nGyro magnitude: %3.2f\r\n\r\n",
+//							gyr_vector[0], gyr_vector[1], gyr_vector[2], mag_vector[0], mag_vector[1], mag_vector[2], mag_magnitude);
+//			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+//		} while(0);
 		
 		
-		HAL_Delay(500);
+		//HAL_Delay(500);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

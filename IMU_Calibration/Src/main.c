@@ -55,6 +55,13 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+//#define SKIP_GYRO // Uncomment to skip gyro calibration
+
+#define GYRO_POINTS 1000
+#define GYRO_WAIT_TIME_MS 10
+
+#define MAG_POINTS 1000
+#define MAG_WAIT_TIME_MS 10
 
 /* USER CODE END PD */
 
@@ -127,26 +134,135 @@ int main(void)
 	
 	IMU_init(&hi2c1, OPERATION_MODE_MAGGYRO);
 	
+	// GYRO CALIBRATION
+	
+	#ifndef SKIP_GYRO
 	do {
-		char transmit[50];
-		sprintf(transmit, "Calibrating... ");
+		char transmit[10];
+		sprintf(transmit, "GYRO\r\n");
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
 	}
 	while(0);
 	
-	uint8_t mag_calib, gyr_calib, acc_calib;
-	while(!is_calibrated(&hi2c1)) {
-		get_calib_status(&hi2c1, &gyr_calib, &mag_calib);
-		char transmit[50];
-		sprintf(transmit, "mag_calib: %d  gyr_calib %d\r\n", mag_calib, gyr_calib);
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
-		
-	}		// Block until calibration status is 3 for all sensors
+	HAL_Delay(500);
 	
 	do {
-		char transmit[50];
-		sprintf(transmit, "Calibration complete\r\n");
+		char transmit[200];
+		sprintf(transmit, "Leave the IMU flat on the table and press the button\r\n...\r\n");
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
+	}
+	while(0);
+	
+	while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_RESET);
+	while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_SET); // Block until button is pressed
+	
+	do {
+		char transmit[200];
+		sprintf(transmit, "Gyro calibrating... ");
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
+	}
+	while(0);
+	
+	float gyro_data[3];
+	
+	double gyro_x_offset = 0;
+	double gyro_y_offset = 0;
+	double gyro_z_offset = 0;
+	
+	for(int i = 0;i < GYRO_POINTS;i++) {
+		get_gyr_data(&hi2c1, gyro_data);
+		gyro_x_offset += gyro_data[0]/GYRO_POINTS;
+		gyro_y_offset += gyro_data[1]/GYRO_POINTS;
+		gyro_z_offset += gyro_data[2]/GYRO_POINTS;
+		
+		HAL_Delay(GYRO_WAIT_TIME_MS);
+	}
+	
+	do {
+		char transmit[200];
+		sprintf(transmit, "DONE\r\n\r\n\tGyro offsets\r\nx: %5.6f\ty: %5.6f\tz: %5.6f\r\n\r\n", gyro_x_offset, gyro_y_offset, gyro_z_offset);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
+	}
+	while(0);
+	#endif
+	
+	// MAG CALIBRATION
+	
+	do {
+		char transmit[10];
+		sprintf(transmit, "MAGNETOMETER\r\n");
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
+	}
+	while(0);
+	
+	HAL_Delay(500);
+	
+	do {
+		char transmit[200];
+		sprintf(transmit, "Leave the IMU in the Helmholtz coil and press the button\r\n...\r\n");
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
+	}
+	while(0);
+	
+	while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_RESET);
+	while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_SET); // Block until button is pressed
+	
+	do {
+		char transmit[200];
+		sprintf(transmit, "Mag calibrating (+)... ");
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
+	}
+	while(0);
+	
+	float mag_data[3];
+	
+	double mag_x_p = 0;
+	double mag_y_p = 0;
+	double mag_z_p = 0;
+	
+	for(int i = 0;i < MAG_POINTS;i++) {
+		get_gyr_data(&hi2c1, mag_data);
+		mag_x_p += mag_data[0]/MAG_POINTS;
+		mag_y_p += mag_data[1]/MAG_POINTS;
+		mag_z_p += mag_data[2]/MAG_POINTS;
+		
+		HAL_Delay(MAG_WAIT_TIME_MS);
+	}
+	
+	do {
+		char transmit[200];
+		sprintf(transmit, "DONE\r\n\r\nFlip the IMU such that each axis is flipped 180 degrees, then press the button\r\n...\r\n");
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
+	}
+	while(0);
+	
+	while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_RESET);
+	while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_SET); // Block until button is pressed
+	
+	do {
+		char transmit[200];
+		sprintf(transmit, "Mag calibrating (-)... ");
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
+	}
+	while(0);
+	
+	double mag_x_m = 0;
+	double mag_y_m = 0;
+	double mag_z_m = 0;
+	
+	for(int i = 0;i < MAG_POINTS;i++) {
+		get_gyr_data(&hi2c1, mag_data);
+		mag_x_m += mag_data[0]/MAG_POINTS;
+		mag_y_m += mag_data[1]/MAG_POINTS;
+		mag_z_m += mag_data[2]/MAG_POINTS;
+		
+		HAL_Delay(MAG_WAIT_TIME_MS);
+	}
+	
+	do {
+		char transmit[200];
+		sprintf(transmit, "DONE\r\n\r\n\tMag offsets\r\nx: %5.6f\ty: %5.6f\tz: %5.6f\r\n\r\n", mag_x_p + mag_x_m, mag_y_p + mag_y_m, mag_z_p + mag_z_m);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 	}
 	while(0);
 	
@@ -274,11 +390,18 @@ static void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : PC13 */
+  GPIO_InitStruct.Pin = GPIO_PIN_13;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PA5 */
   GPIO_InitStruct.Pin = GPIO_PIN_5;
