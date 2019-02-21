@@ -45,6 +45,7 @@
 /* USER CODE BEGIN Includes */
 #include <BNO055_IMU.h>
 #include <string.h>
+#include <float.h>
 
 /* USER CODE END Includes */
 
@@ -55,13 +56,15 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-//#define SKIP_GYRO // Uncomment to skip gyro calibration
+#define SKIP_GYRO
 
 #define GYRO_POINTS 1000
 #define GYRO_WAIT_TIME_MS 10
 
-#define MAG_POINTS 1000
-#define MAG_WAIT_TIME_MS 10
+#define MAG_POINTS 500
+#define MAG_WAIT_TIME_MS 50
+
+#define GYRO_SPHERE_R 1.0
 
 /* USER CODE END PD */
 
@@ -85,6 +88,20 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
+
+double max(double x, double y) {
+	if(x > y) {
+		return x;
+	}
+	return y;
+}
+
+double min(double x, double y) {
+	if(x < y) {
+		return x;
+	}
+	return y;
+}
 
 /* USER CODE END PFP */
 
@@ -134,17 +151,17 @@ int main(void)
 	
 	IMU_init(&hi2c1, OPERATION_MODE_MAGGYRO);
 	
-	// GYRO CALIBRATION
 	
+	// GYRO CALIBRATION
 	#ifndef SKIP_GYRO
 	do {
 		char transmit[10];
-		sprintf(transmit, "GYRO\r\n");
+		sprintf(transmit, "GYRO\r\nWaiting for gyro to warm up...\r\n\r\n");
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
 	}
 	while(0);
 	
-	HAL_Delay(500);
+	HAL_Delay(10000);
 	
 	do {
 		char transmit[200];
@@ -186,8 +203,8 @@ int main(void)
 	while(0);
 	#endif
 	
-	// MAG CALIBRATION
 	
+	// MAG CALIBRATION
 	do {
 		char transmit[10];
 		sprintf(transmit, "MAGNETOMETER\r\n");
@@ -199,7 +216,7 @@ int main(void)
 	
 	do {
 		char transmit[200];
-		sprintf(transmit, "Leave the IMU in the Helmholtz coil and press the button\r\n...\r\n");
+		sprintf(transmit, "Instructions :O\r\n");
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
 	}
 	while(0);
@@ -209,59 +226,58 @@ int main(void)
 	
 	do {
 		char transmit[200];
-		sprintf(transmit, "Mag calibrating (+)... ");
+		sprintf(transmit, "Reading magnetometer... ");
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
 	}
 	while(0);
+	
+	double mag_x_max = -DBL_MAX;
+	double mag_y_max = -DBL_MAX;
+	double mag_z_max = -DBL_MAX;
+	double mag_x_min = DBL_MAX;
+	double mag_y_min = DBL_MAX;
+	double mag_z_min = DBL_MAX;
 	
 	float mag_data[3];
 	
-	double mag_x_p = 0;
-	double mag_y_p = 0;
-	double mag_z_p = 0;
-	
-	for(int i = 0;i < MAG_POINTS;i++) {
-		get_gyr_data(&hi2c1, mag_data);
-		mag_x_p += mag_data[0]/MAG_POINTS;
-		mag_y_p += mag_data[1]/MAG_POINTS;
-		mag_z_p += mag_data[2]/MAG_POINTS;
-		
-		HAL_Delay(MAG_WAIT_TIME_MS);
-	}
-	
-	do {
-		char transmit[200];
-		sprintf(transmit, "DONE\r\n\r\nFlip the IMU such that each axis is flipped 180 degrees, then press the button\r\n...\r\n");
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
-	}
-	while(0);
-	
+	// Find maximum/minimum mag values
+	//for(int i = 0;i < MAG_POINTS;i++) {
 	while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_RESET);
-	while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_SET); // Block until button is pressed
-	
-	do {
-		char transmit[200];
-		sprintf(transmit, "Mag calibrating (-)... ");
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
-	}
-	while(0);
-	
-	double mag_x_m = 0;
-	double mag_y_m = 0;
-	double mag_z_m = 0;
-	
-	for(int i = 0;i < MAG_POINTS;i++) {
-		get_gyr_data(&hi2c1, mag_data);
-		mag_x_m += mag_data[0]/MAG_POINTS;
-		mag_y_m += mag_data[1]/MAG_POINTS;
-		mag_z_m += mag_data[2]/MAG_POINTS;
+	while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_SET) { // Block until button is pressed
+		get_mag_data(&hi2c1, mag_data);
+		mag_x_max = max(mag_data[0], mag_x_max);
+		mag_y_max = max(mag_data[1], mag_y_max);
+		mag_z_max = max(mag_data[2], mag_z_max);
+		
+		mag_x_min = min(mag_data[0], mag_x_min);
+		mag_y_min = min(mag_data[1], mag_y_min);
+		mag_z_min = min(mag_data[2], mag_z_min);
 		
 		HAL_Delay(MAG_WAIT_TIME_MS);
 	}
 	
+	// Send max/min values
 	do {
 		char transmit[200];
-		sprintf(transmit, "DONE\r\n\r\n\tMag offsets\r\nx: %5.6f\ty: %5.6f\tz: %5.6f\r\n\r\n", mag_x_p + mag_x_m, mag_y_p + mag_y_m, mag_z_p + mag_z_m);
+		sprintf(transmit, "x: \ty: \tz: \r\nmax: %5.6f\t %5.6f\t %5.6f\r\nmin: %5.6f\t %5.6f\t %5.6f\r\n",
+			mag_x_max, mag_y_max, mag_z_max, mag_x_min, mag_y_min, mag_z_min);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
+	}
+	while(0);
+	
+	// Calculate scaling factor and offsets
+	double mag_x_scalar = 2*GYRO_SPHERE_R/(mag_x_max - mag_x_min);
+	double mag_y_scalar = 2*GYRO_SPHERE_R/(mag_y_max - mag_y_min);
+	double mag_z_scalar = 2*GYRO_SPHERE_R/(mag_z_max - mag_z_min);
+	
+	double mag_x_offset = mag_x_scalar*(mag_x_max + mag_x_min)/2;
+	double mag_y_offset = mag_y_scalar*(mag_y_max + mag_y_min)/2;
+	double mag_z_offset = mag_z_scalar*(mag_z_max + mag_z_min)/2;
+	
+	do {
+		char transmit[200];
+		sprintf(transmit, "\tMag offsets\r\nx: %5.6f\ty: %5.6f\tz: %5.6f\r\n\r\n\tMag scaling factors\r\nx: %5.6f\ty: %5.6f\tz: %5.6f\r\n",
+			mag_x_offset, mag_y_offset, mag_z_offset, mag_x_scalar, mag_y_scalar, mag_z_scalar);
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 	}
 	while(0);

@@ -46,6 +46,7 @@
 #include <string.h>
 #include <math.h>
 #include <BNO055_IMU.h>
+#include <BNO055_Calib.h>
 
 /* USER CODE END Includes */
 
@@ -57,6 +58,9 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define PRINT_MAG_CSV
+
+#define MAG_DELAY_MS 100
 
 /* USER CODE END PD */
 
@@ -142,15 +146,17 @@ int main(void)
 		
 		mag_magnitude = (float)sqrt(pow(mag_vector[0], 2) + pow(mag_vector[1], 2) + pow(mag_vector[2], 2));
 		
-//		do {
-//			char transmit[200];
-//			sprintf(transmit, "\tx    y    z\r\nGyro:\t%3.2f %3.2f %3.2f\r\nMag:\t%3.2f %3.2f %3.2f\r\nGyro magnitude: %3.2f\r\n\r\n",
-//							gyr_vector[0], gyr_vector[1], gyr_vector[2], mag_vector[0], mag_vector[1], mag_vector[2], mag_magnitude);
-//			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-//		} while(0);
+		#ifdef PRINT_MAG_CSV
+		// Print magnetometer readings as csv
+		do {
+			char transmit[200];
+			sprintf(transmit, "%5.4f, %5.4f, %5.4f,\r\n", mag_vector[0], mag_vector[1], mag_vector[2]);
+			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+		} while(0);
 		
+		HAL_Delay(MAG_DELAY_MS);
+		#endif
 		
-		//HAL_Delay(500);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
