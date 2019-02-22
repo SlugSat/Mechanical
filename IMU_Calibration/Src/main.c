@@ -5,6 +5,7 @@
   * @brief          : Main program body
   ******************************************************************************
   ** 
+	* CORRECTION EQUATION: x = (scaling factor)*(x_meas + offset)
   */
 /* USER CODE END Header */
 
@@ -186,7 +187,7 @@ int main(void)
 	
 	do {
 		char transmit[200];
-		sprintf(transmit, "Instructions :O\r\n");
+		sprintf(transmit, "Press the button then move the IMU slowly in a spherical motion. Once you are done taking readings press the button again.\r\n");
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
 	}
 	while(0);
