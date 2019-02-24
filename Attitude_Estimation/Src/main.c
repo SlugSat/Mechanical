@@ -15,10 +15,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <Matrix.h>
-#include <SolarVectors.h>
-#include <BNO055_Calib.h>
-#include <BNO055_IMU.h>
+#include <AttitudeEstimation.h>
+#include <string.h>
 
 /* USER CODE END Includes */
 
@@ -99,6 +97,15 @@ int main(void)
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
 
+	Matrix R = initializeDCM(0, 0, 0);
+	
+	do {
+		char transmit[200];
+		printMatrix(R, transmit);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	} while(0);
+	
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */

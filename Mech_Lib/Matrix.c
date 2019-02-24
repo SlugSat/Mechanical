@@ -14,6 +14,7 @@
 #include<stdlib.h>
 #include<stdio.h>
 #include<string.h>
+#include<math.h>
 
 // Matrix struct
 struct _Matrix {
@@ -125,6 +126,35 @@ void matrixTranspose(Matrix m, Matrix mt) {
         for(int j = 1;j <= m->c;j++) {
             matrixSet(mt, j, i, matrixGetElement(m, i, j));
         }
+    }
+}
+
+void matrixRcross(Matrix v, Matrix vcross) {
+    // Row 1
+    vcross->data[0][0] = 0;
+    vcross->data[0][1] = -v->data[2][0]; // -z
+    vcross->data[0][2] = v->data[1][0]; // y
+    
+    // Row 2
+    vcross->data[1][0] = v->data[2][0]; // z
+    vcross->data[1][1] = 0;
+    vcross->data[1][2] = -v->data[0][0]; // -x
+    
+    // Row 3
+    vcross->data[2][0] = -v->data[1][0]; // -y
+    vcross->data[2][1] = v->data[0][0]; // x
+    vcross->data[2][2] = 0;
+}
+
+// Helper function to find the sinc of a float
+double sinc(double x) {
+    // Taylor portion
+    if(fabs(x) <= 0.5) {
+        return pow(x,6)/120.0 - pow(x,2)/6.0 + 1.0;
+    }
+    
+    else {
+        return sin(x)/x;
     }
 }
 

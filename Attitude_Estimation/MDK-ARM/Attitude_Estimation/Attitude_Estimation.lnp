@@ -3,6 +3,7 @@
 "attitude_estimation\bno055_imu.o"
 "attitude_estimation\matrix.o"
 "attitude_estimation\solarvectors.o"
+"attitude_estimation\attitudeestimation.o"
 "attitude_estimation\main.o"
 "attitude_estimation\stm32f1xx_it.o"
 "attitude_estimation\stm32f1xx_hal_msp.o"

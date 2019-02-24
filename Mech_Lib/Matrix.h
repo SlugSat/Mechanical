@@ -96,6 +96,20 @@ void matrixMult(Matrix m1, Matrix m2, Matrix prod);
 void matrixTranspose(Matrix m, Matrix mt);
 
 /** 
+ * @brief  Creates the skew symmetric (cross product) matrix from a vector
+ * @param  A 3x1 column vector Matrix, an allocated 3x3 Matrix in which to store the result
+ * @return None
+*/
+void matrixRcross(Matrix v, Matrix vcross);
+
+/** 
+ * @brief  Finds the exponential Rodrigues parameter form of a DCM
+ * @param  A DCM, an allocated Matrix in which to store the result
+ * @return None
+*/
+void matrixRexp(Matrix R, Matrix Rexp);
+
+/** 
  * @brief  Prints a Matrix to a string in a format suitable for printing over serial
  * @param  A Matrix and a char pointer with enough room to hold the printed Matrix
  * @return None

@@ -10,6 +10,7 @@
       <TargetName>Attitude_Estimation</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
+      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -426,10 +427,17 @@
               <FileType>1</FileType>
               <FilePath>..\..\Mech_Lib\SolarVectors.c</FilePath>
             </File>
+            <File>
+              <FileName>AttitudeEstimation.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\AttitudeEstimation.c</FilePath>
+            </File>
+            <File>
+              <FileName>AttitudeEstimation.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\AttitudeEstimation.h</FilePath>
+            </File>
           </Files>
-        </Group>
-        <Group>
-          <GroupName>::CMSIS</GroupName>
         </Group>
         <Group>
           <GroupName>Application/User</GroupName>
@@ -545,6 +553,9 @@
               <FilePath>../Src/system_stm32f1xx.c</FilePath>
             </File>
           </Files>
+        </Group>
+        <Group>
+          <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
     </Target>
