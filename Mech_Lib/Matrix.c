@@ -6,15 +6,15 @@
   ** This module contains matrix and vector math functions. Matrices contain r
 	* by c arrays of doubles.
 	*
-	* Created by Galen Savidge. Edited 2/16/2019.
+	* Created by Galen Savidge. Edited 2/23/2019.
   ******************************************************************************
   */
 
-#include<Matrix.h>
-#include<stdlib.h>
-#include<stdio.h>
-#include<string.h>
-#include<math.h>
+#include <Matrix.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
 
 // Matrix struct
 struct _Matrix {
@@ -129,7 +129,7 @@ void matrixTranspose(Matrix m, Matrix mt) {
     }
 }
 
-void matrixRcross(Matrix v, Matrix vcross) {
+void vectorRcross(Matrix v, Matrix vcross) {
     // Row 1
     vcross->data[0][0] = 0;
     vcross->data[0][1] = -v->data[2][0]; // -z
@@ -146,16 +146,13 @@ void matrixRcross(Matrix v, Matrix vcross) {
     vcross->data[2][2] = 0;
 }
 
-// Helper function to find the sinc of a float
-double sinc(double x) {
-    // Taylor portion
-    if(fabs(x) <= 0.5) {
-        return pow(x,6)/120.0 - pow(x,2)/6.0 + 1.0;
+float vectorNorm(Matrix v) {
+    float sum = 0;
+    for(int i = 0;i < v->r;i++) {
+        sum += pow(matrixGetElement(v, i, 0), 2);
     }
     
-    else {
-        return sin(x)/x;
-    }
+    return sqrt(sum);
 }
 
 void printMatrix(Matrix m, char* string) {

@@ -6,7 +6,7 @@
   ** This module contains matrix and vector math functions. Matrices contain r
 	* by c arrays of doubles.
 	*
-	* Created by Galen Savidge. Edited 2/16/2019.
+	* Created by Galen Savidge. Edited 2/23/2019.
   ******************************************************************************
   */
 
@@ -100,14 +100,14 @@ void matrixTranspose(Matrix m, Matrix mt);
  * @param  A 3x1 column vector Matrix, an allocated 3x3 Matrix in which to store the result
  * @return None
 */
-void matrixRcross(Matrix v, Matrix vcross);
+void vectorRcross(Matrix v, Matrix vcross);
 
 /** 
- * @brief  Finds the exponential Rodrigues parameter form of a DCM
- * @param  A DCM, an allocated Matrix in which to store the result
- * @return None
+ * @brief  Calculates the norm of a vector
+ * @param  A column vector Matrix
+ * @return The norm of v
 */
-void matrixRexp(Matrix R, Matrix Rexp);
+float vectorNorm(Matrix v);
 
 /** 
  * @brief  Prints a Matrix to a string in a format suitable for printing over serial
