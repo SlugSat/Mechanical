@@ -33,9 +33,12 @@ Matrix initializeDCM(double yaw, double pitch, double roll);
  * @param  gyro: 
  * @param  mag: 
  * @param  sv: the solar vector from findSolarVector() in the SolarVectors module
- * @param  newR: 
+ * @param  mag_inertial:
+ * @param  sv_inertial:
  * @return None
 */
-void integrateDCM(Matrix R, Matrix gyro, Matrix mag, Matrix sv, double dt, Matrix newR);
+void integrateDCM(Matrix R, Matrix bias, Matrix gyro, Matrix mag, Matrix sv, 
+		Matrix mag_inertial, Matrix sv_inertial, double Kp_mag, double Ki_mag,
+		double Kp_sv, double Ki_sv, double dt);
 
 #endif /* ATTITUDEESTIMATION_H */

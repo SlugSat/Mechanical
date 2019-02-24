@@ -45,15 +45,12 @@ Matrix newMatrix(int r, int c) {
     return m;
 }
 
-Matrix matrixCopy(Matrix m) {
-    Matrix n = newMatrix(m->r, m->c);
+Matrix matrixCopy(Matrix m, Matrix copy) {
     for(int i = 0;i < m->r;i++) {
         for(int j = 0;j< m->c;j++) {
-            matrixSet(n, i, j, matrixGetElement(m, i, j));
+            copy->data[i][j] = m->data[i][j];
         }
     }
-    
-    return n;
 }
 
 int matrixGetRows(Matrix m) {
@@ -102,6 +99,22 @@ void matrixAdd(Matrix m1, Matrix m2, Matrix sum) {
 			while(1);
 		}
 }
+
+void matrixSubtract(Matrix m1, Matrix m2, Matrix diff) {
+    if(m1->r == m2->r && m1->c == m2->c) {
+        for(int i = 0;i < m1->r;i++) {
+            for(int j = 0;j < m1->c;j++) {
+                float v = matrixGetElement(m1, i, j) - matrixGetElement(m2, i, j);
+                matrixSet(diff, i, j, v);
+            }
+        }
+    }
+    else {
+			printf("MATRIX MATH ERROR: ADD SIZE MISMATCH");
+			while(1);
+		}
+}
+
 
 void matrixMult(Matrix m1, Matrix m2, Matrix prod) {
     if(m1->c != m2->r || m1->r != prod->r || m2->c != prod->c) {

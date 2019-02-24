@@ -26,11 +26,11 @@ typedef struct _Matrix* Matrix;
 Matrix newMatrix(int r, int c);
 
 /** 
- * @brief  Copies a Matrix to a newly allocated Matrix
- * @param  Matrix to be copied
- * @return Copy Matrix
+ * @brief  Copies a Matrix to another allocated Matrix
+ * @param  Matrix to be copied, Matrix to hold the copy
+ * @return None
 */
-Matrix matrixCopy(Matrix m);
+Matrix matrixCopy(Matrix m, Matrix copy);
 
 /** 
  * @brief  Returns the number of rows in a Matrix
@@ -80,6 +80,13 @@ void matrixAddScalar(Matrix m, double x);
  * @return None
 */
 void matrixAdd(Matrix m1, Matrix m2, Matrix sum);
+
+/** 
+ * @brief  Subtracts two Matrix objects
+ * @param  Two Matrix objects to be subtracted, a third allocated Matrix in which to store the result
+ * @return None
+*/
+void matrixSubtract(Matrix m1, Matrix m2, Matrix diff);
 
 /** 
  * @brief  Multiplies two Matrix objects

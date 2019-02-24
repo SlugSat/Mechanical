@@ -45,8 +45,91 @@ Matrix initializeDCM(double yaw, double pitch, double roll) {
  * @param  sv: the solar vector from findSolarVector() in the SolarVectors module
  * @return None
 */
-void integrateDCM(Matrix R, Matrix gyro, Matrix mag, Matrix sv, double dt, Matrix newR) {
+void integrateDCM(Matrix R, Matrix bias, Matrix gyro, Matrix mag, Matrix sv, 
+		Matrix mag_inertial, Matrix sv_inertial, double Kp_mag, double Ki_mag,
+		double Kp_sv, double Ki_sv, double dt) {
 	
+	static int init_run = 0;
+	static Matrix Rt; // Transpose of the DCM
+	static Matrix mag_i_body, sv_i_body; // Inertial sensor vectors translated to body
+	static Matrix mag_rx, sv_rx; // rcross matrices of sensor vectors
+	static Matrix mag_err, sv_err; // Error vectors (result of cross product between measured and inertial)
+	static Matrix merr_x_Kp, sverr_x_Kp; // Error multiplied by Kp
+	static Matrix gyro_with_bias; // (Gyro vector) - (bias) + (Kp terms)
+	static Matrix bdot; // (-Ki terms)
+	static Matrix Rexp;
+	static Matrix new_R;
+	
+	if(!init_run) { // Initialize local Matrix objects on first run
+		Rt = newMatrix(3, 3);
+		mag_i_body = newMatrix(3, 1);
+		sv_i_body = newMatrix(3, 1);
+		mag_rx = newMatrix(3, 3);
+		sv_rx = newMatrix(3, 3);
+		mag_err = newMatrix(3, 1);
+		sv_err = newMatrix(3, 1);
+		merr_x_Kp = newMatrix(3, 1);
+		sverr_x_Kp = newMatrix(3, 1);
+		gyro_with_bias = newMatrix(3, 1);
+		bdot = newMatrix(3, 1);
+		Rexp = newMatrix(3, 3);
+		new_R = newMatrix(3, 3);
+		
+		init_run = 1;
+	}
+	
+	// ***** NORMALIZE MAG, SOLAR VECTOR, AND INERTIAL VECTORS ******
+	float norm_mag = vectorNorm(mag);
+	float norm_sv = vectorNorm(sv);
+	float norm_mi = vectorNorm(mag_inertial);
+	float norm_svi = vectorNorm(sv_inertial);
+
+	if(norm_mag == 0 || norm_sv == 0 || norm_mi == 0 || norm_svi == 0) {
+		// Need better error handling
+		printf("EULER ERROR: DIVIDE BY 0");
+		while(1);
+	}
+
+	matrixScale(mag, 1.0/norm_mag);
+	matrixScale(sv, 1.0/norm_sv);
+	matrixScale(mag_inertial, 1.0/norm_mi);
+	matrixScale(sv_inertial, 1.0/norm_svi);
+	
+	// ***** TRANSPOSE DCM *****
+	matrixTranspose(R, Rt);
+	
+	// ***** FIND ERROR FROM MAG *****
+	vectorRcross(mag, mag_rx);
+	matrixMult(Rt, mag_inertial, mag_i_body); // Translate mag to body
+	matrixMult(mag_rx, mag_i_body, mag_err); // Cross product
+	matrixCopy(mag_err, merr_x_Kp);
+	matrixScale(merr_x_Kp, Kp_mag); // Kp_mag * mag_err
+	
+	// ***** FIND ERROR FROM SOLAR VECTOR *****
+	vectorRcross(sv, sv_rx);
+	matrixMult(Rt, sv_inertial, sv_i_body); // Translate mag to body
+	matrixMult(sv_rx, sv_i_body, mag_err); // Cross product
+	matrixCopy(sv_err, sverr_x_Kp);
+	matrixScale(sverr_x_Kp, Kp_sv); // Kp_sv * mag_err
+	
+	// ***** ADD FEEDBACK TO GYRO *****
+	matrixSubtract(gyro, bias, gyro_with_bias);
+	matrixAdd(gyro_with_bias, merr_x_Kp, gyro_with_bias); // Add mag err*Kp
+	matrixAdd(gyro_with_bias, sverr_x_Kp, gyro_with_bias); // Add sv err*Kp
+	
+	// ***** CALCULATE NEW BIAS ESTIMATE *****
+	matrixScale(mag_err, -Ki_mag);
+	matrixScale(sv_err, -Ki_sv);
+	matrixCopy(mag_err, bdot);
+	matrixAdd(bdot, sv_err, bdot); // bdot now equals -Ki_mag*mag_err - Ki_sv*sv_err
+	matrixScale(bdot, dt); // Multiply bdot*dt
+	matrixAdd(bias, bdot, bias); // bias = bias + dt*bdot
+	
+	// ***** INTEGRATE DCM *****
+	matrixScale(gyro_with_bias, dt);
+	findRexp(gyro_with_bias, Rexp); // Rexp = findRexp(gyro_with_bias*dt)
+	matrixMult(R, Rexp, new_R); // new_R = R*Rexp(gyro_with_bias*dt)
+	matrixCopy(new_R, R); // R = R*Rexp(gyro_with_bias*dt)
 }
 
 // Helper function to find the sinc of a float
