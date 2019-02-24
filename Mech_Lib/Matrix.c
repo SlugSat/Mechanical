@@ -45,7 +45,7 @@ Matrix newMatrix(int r, int c) {
     return m;
 }
 
-Matrix matrixCopy(Matrix m, Matrix copy) {
+void matrixCopy(Matrix m, Matrix copy) {
     for(int i = 0;i < m->r;i++) {
         for(int j = 0;j< m->c;j++) {
             copy->data[i][j] = m->data[i][j];

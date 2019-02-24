@@ -30,7 +30,7 @@ Matrix newMatrix(int r, int c);
  * @param  Matrix to be copied, Matrix to hold the copy
  * @return None
 */
-Matrix matrixCopy(Matrix m, Matrix copy);
+void matrixCopy(Matrix m, Matrix copy);
 
 /** 
  * @brief  Returns the number of rows in a Matrix
