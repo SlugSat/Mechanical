@@ -1,9 +1,5 @@
 #include "BNO055_IMU.h"
 
-// static variables to store the offsets
-static uint8_t gyro_offset[RCV_DATA_LEN] = {0};
-static uint8_t magnet_offset[RCV_DATA_LEN] = {0};
-
 // broken at the moment but not super important for prototyping
 uint8_t built_in_self_test(I2C_HandleTypeDef *hi2c)
 {
@@ -32,69 +28,88 @@ uint8_t built_in_self_test(I2C_HandleTypeDef *hi2c)
 // IMU initialization
 void IMU_init(I2C_HandleTypeDef *hi2c, IMU_Op_Mode_t sensor_mode)
 {
-	// check if device is ready and wait until it is
-	// (may need to add a time out and reset the device)
+	// first check if device is ready and exists
 	while (HAL_I2C_IsDeviceReady(hi2c, IMU_ADDRESS_ALT, 2, 10) != HAL_OK);
-	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+	
+	// set to config mode in case the device is not in default config mode
+	set_mode(hi2c, OPERATION_MODE_CONFIG);
+	
+	// reset IMU
+	write_byte(hi2c, SYS_TRIGGER_ADDR, 0x20);
+
+	// poll device and wait until it is ready again
+	while (HAL_I2C_IsDeviceReady(hi2c, IMU_ADDRESS_ALT, 2, 10) != HAL_OK);
+	// toggle on board LED to indicate successful reset
+	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5); // turn on
 	
 	HAL_Delay(100);
 	
-	uint8_t txData[2] = {SYS_TRIGGER_ADDR, SELFTEST_RESULT_ADDR}; 
-	uint8_t rxData = 0;
-		
-	rxData = read_byte(hi2c, (IMU_Reg_t *) &txData[1]);
-		
-	rxData &= 0x0F;
-	if (rxData == 0x0F)
+	// get power on self test results
+	IMU_Reg_t self_test_reg = SELFTEST_RESULT_ADDR; 
+	uint8_t self_test_result = read_byte(hi2c, &self_test_reg);
+	
+	self_test_result &= 0x0F;
+	if (self_test_result == 0x0F)
 	{
-		HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5); // Turn on
+		HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5); // Turn off
 	}
 	
+	// set to normal power mode
+	write_byte(hi2c, PWR_MODE_ADDR, POWER_MODE_NORMAL);
+	HAL_Delay(10);
+	
+	// re-init sys_trigger reg to 0
+	write_byte(hi2c, SYS_TRIGGER_ADDR, 0);
+	
 	HAL_Delay(100);
 	
-	// set mode and wait until fully calibrated
-	//set_mode(hi2c, OPERATION_MODE_NDOF); // set temporary fusion mode
-	//while(!is_calibrated(hi2c)); // wait until calibrated
+	// set fusion mode and wait until fully calibrated
+	set_mode(hi2c, OPERATION_MODE_NDOF_FMC_OFF); // set temporary fusion mode
+	while(!is_calibrated(hi2c)); // wait until calibrated
 	
-	//set_mode(hi2c, OPERATION_MODE_CONFIG); // set CONFIG mode
-	//get_MG_offsets(hi2c, gyro_offset, magnet_offset);
-	
-	//HAL_Delay(50);
+	set_mode(hi2c, OPERATION_MODE_CONFIG); // set CONFIG mode
+		
+	HAL_Delay(50);
 	
 	set_mode(hi2c, sensor_mode); // set sensor mode
 
-	HAL_Delay(50);
 }
 
-void get_calib_status(I2C_HandleTypeDef *hi2c, uint8_t *gyro, uint8_t *mag)
+void get_calib_status(I2C_HandleTypeDef *hi2c, uint8_t *sys, uint8_t *gyro, uint8_t *acc, uint8_t *mag)
 {
 	// set register to read from as the calibration status address
-	IMU_Reg_t reg = CALIB_STAT_ADDR;
+	IMU_Reg_t calibration_status_reg = CALIB_STAT_ADDR;
 	
 	// read from the address and save value
-	uint8_t calib_stat = read_byte(hi2c, &reg);
+	uint8_t calib_stat = read_byte(hi2c, &calibration_status_reg);
 	
-	// assign calibration values appropriately
-	if (gyro != NULL)
-	{
-		*gyro = (calib_stat >> 4) & 0x03;
-	}
-	if (mag != NULL)
-	{
-		*mag = calib_stat & 0x03;
+	// set the appropriate nibbles as the calibration
+	// status of the given sensor and the system overall
+	if (sys != NULL) {
+    *sys = (calib_stat >> 6) & 0x03;
+  }
+  if (gyro != NULL) {
+    *gyro = (calib_stat >> 4) & 0x03;
+  }
+  if (acc != NULL) {
+    *acc = (calib_stat >> 2) & 0x03;
+  }
+  if (mag != NULL) {
+    *mag = calib_stat & 0x03;
 	}
 }
 
 uint8_t is_calibrated(I2C_HandleTypeDef *hi2c)
 {
 	// initialize calibration status nibbles
-	uint8_t gyr, mag;
-	gyr = mag = 0;
+	uint8_t sys, gyr, acc, mag;
+	sys = acc = gyr = mag = 0;
 	
 	// get calibration status nibbles
-	get_calib_status(hi2c, &gyr, &mag);
+	get_calib_status(hi2c, &sys, &acc, &gyr, &mag);
 	
-	if (gyr < 3 || mag < 3)
+	// check if the system is calibrated
+	if (sys < 3 || gyr < 3 || acc < 3 || mag < 3)
 	{
 		return FALSE;
 	}

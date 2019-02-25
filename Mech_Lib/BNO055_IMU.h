@@ -257,7 +257,7 @@ void set_mag_offsets(I2C_HandleTypeDef *hi2c, uint8_t *data);
 
 // Accessor for calibration status
 uint8_t is_calibrated(I2C_HandleTypeDef *hi2c);
-void get_calib_status(I2C_HandleTypeDef *hi2c, uint8_t *gyro, uint8_t *mag);
+void get_calib_status(I2C_HandleTypeDef *hi2c, uint8_t *sys, uint8_t *gyro, uint8_t *acc, uint8_t *mag);
 
 // =================================================================
 
