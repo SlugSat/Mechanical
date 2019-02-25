@@ -63,16 +63,18 @@ void IMU_init(I2C_HandleTypeDef *hi2c, IMU_Op_Mode_t sensor_mode)
 	
 	HAL_Delay(100);
 	
-	// set fusion mode and wait until fully calibrated
-	set_mode(hi2c, OPERATION_MODE_NDOF_FMC_OFF); // set temporary fusion mode
-	while(!is_calibrated(hi2c)); // wait until calibrated
-	
 	set_mode(hi2c, OPERATION_MODE_CONFIG); // set CONFIG mode
 		
 	HAL_Delay(50);
 	
 	set_mode(hi2c, sensor_mode); // set sensor mode
 
+}
+
+void IMU_calibrate(I2C_HandleTypeDef *hi2c) {
+	// set fusion mode and wait until fully calibrated
+	set_mode(hi2c, OPERATION_MODE_NDOF_FMC_OFF); // set temporary fusion mode
+	while(!is_calibrated(hi2c)); // wait until calibrated
 }
 
 void get_calib_status(I2C_HandleTypeDef *hi2c, uint8_t *sys, uint8_t *gyro, uint8_t *acc, uint8_t *mag)

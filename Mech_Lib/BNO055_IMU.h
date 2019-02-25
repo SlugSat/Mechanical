@@ -213,6 +213,8 @@ uint8_t built_in_self_test(I2C_HandleTypeDef *hi2c);
 // changing to a sensor mode provided by user
 void IMU_init(I2C_HandleTypeDef *hi2c, IMU_Op_Mode_t sensor_mode);
 
+void IMU_calibrate(I2C_HandleTypeDef *hi2c);
+
 // Change IMU mode
 // NOTE: must be first in config mode before changing to sensor
 //			 output mode
