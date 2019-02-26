@@ -4,7 +4,7 @@
   * @brief          : Source file for the Matrix module.
   ******************************************************************************
   ** This module contains matrix and vector math functions. Matrices contain r
-	* by c arrays of doubles.
+	* by c arrays of floats.
 	*
 	* Created by Galen Savidge. Edited 2/23/2019.
   ******************************************************************************
@@ -19,7 +19,7 @@
 // Matrix struct
 struct _Matrix {
     int r, c;
-    double** data;
+    float** data;
 };
 
 Matrix newMatrix(int r, int c) {
@@ -34,9 +34,9 @@ Matrix newMatrix(int r, int c) {
     // Initialize the internal variables and allocate the data array
     m->r = r;
     m->c = c;
-    m->data = calloc(r, sizeof(double*));
+    m->data = calloc(r, sizeof(float*));
     for(int i = 0;i < r;i++) {
-        m->data[i] = calloc(c, sizeof(double));
+        m->data[i] = calloc(c, sizeof(float));
         for(int j = 0;j < c;j++) {
             m->data[i][j] = 0;
         }
@@ -47,10 +47,32 @@ Matrix newMatrix(int r, int c) {
 
 void matrixCopy(Matrix m, Matrix copy) {
     for(int i = 0;i < m->r;i++) {
-        for(int j = 0;j< m->c;j++) {
+        for(int j = 0;j < m->c;j++) {
             copy->data[i][j] = m->data[i][j];
         }
     }
+}
+
+void matrixCopyArray(Matrix m, float** array) {
+    for(int i = 0;i < m->r;i++) {
+        for(int j = 0;j < m->c;j++) {
+            m->data[i][j] = array[i][j];
+        }
+    }
+}
+
+char matrixEquals(Matrix m1, Matrix m2) {
+    if(m1->r != m2->r || m1->c != m2->c) {
+        return 0;
+    }
+    for(int i = 0;i < m1->r;i++) {
+        for(int j = 0;j < m1->c;j++) {
+            if(m1->data[i][j] != m2->data[i][j]) {
+                return 0;
+            }
+        }
+    }
+    return 1;
 }
 
 int matrixGetRows(Matrix m) {
@@ -61,15 +83,15 @@ int matrixGetCol(Matrix m) {
     return m->c;
 }
 
-double matrixGetElement(Matrix m, int r, int c) {
+float matrixGetElement(Matrix m, int r, int c) {
     return m->data[r-1][c-1];
 }
 
-void matrixSet(Matrix m, int r, int c, double val) {
+void matrixSet(Matrix m, int r, int c, float val) {
     m->data[r-1][c-1] = val;
 }
 
-void matrixScale(Matrix m, double x) {
+void matrixScale(Matrix m, float x) {
     for(int i = 1;i <= m->r;i++) {
         for(int j = 1;j <= m->c;j++) {
             matrixSet(m, i, j, matrixGetElement(m, i, j)*x);
@@ -77,7 +99,7 @@ void matrixScale(Matrix m, double x) {
     }
 }
 
-void matrixAddScalar(Matrix m, double x) {
+void matrixAddScalar(Matrix m, float x) {
     for(int i = 1;i <= m->r;i++) {
         for(int j = 1;j <= m->c;j++) {
             matrixSet(m, i, j, matrixGetElement(m, i, j) + x);
@@ -89,8 +111,8 @@ void matrixAdd(Matrix m1, Matrix m2, Matrix sum) {
     if(m1->r == m2->r && m1->c == m2->c) {
         for(int i = 0;i < m1->r;i++) {
             for(int j = 0;j < m1->c;j++) {
-                float v = matrixGetElement(m1, i, j) + matrixGetElement(m2, i, j);
-                matrixSet(sum, i, j, v);
+                float v = m1->data[i][j] + m2->data[i][j];
+                sum->data[i][j] = v;
             }
         }
     }
@@ -104,8 +126,8 @@ void matrixSubtract(Matrix m1, Matrix m2, Matrix diff) {
     if(m1->r == m2->r && m1->c == m2->c) {
         for(int i = 0;i < m1->r;i++) {
             for(int j = 0;j < m1->c;j++) {
-                float v = matrixGetElement(m1, i, j) - matrixGetElement(m2, i, j);
-                matrixSet(diff, i, j, v);
+                float v = m1->data[i][j] - m2->data[i][j];
+                diff->data[i][j] = v;
             }
         }
     }
@@ -122,14 +144,14 @@ void matrixMult(Matrix m1, Matrix m2, Matrix prod) {
         while(1);
     }
     
-    for(int i = 1;i <= m1->r;i++) {
-        for(int j = 1;j <= m2->c;j++) {
+    for(int i = 0;i < m1->r;i++) {
+        for(int j = 0;j < m2->c;j++) {
             float sum = 0;
-            for(int k = 1;k <= m1->c;k++) {
-                sum += matrixGetElement(m1, i, k)*matrixGetElement(m2, k, j);
+            for(int k = 0;k < m1->c;k++) {
+                sum += m1->data[i][k]*m2->data[k][j];
             }
             
-            matrixSet(prod, i, j, sum);
+            prod->data[i][j] = sum;
         }
     }
 }
@@ -162,7 +184,7 @@ void vectorRcross(Matrix v, Matrix vcross) {
 float vectorNorm(Matrix v) {
     float sum = 0;
     for(int i = 0;i < v->r;i++) {
-        sum += pow(matrixGetElement(v, i, 0), 2);
+        sum += pow(v->data[i][0], 2);
     }
     
     return sqrt(sum);

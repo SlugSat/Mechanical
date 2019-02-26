@@ -59,6 +59,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define PRINT_MAG_CSV
+#define CALIBRATE_IMU
 
 #define MAG_DELAY_MS 100
 
@@ -126,6 +127,55 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
 	IMU_init(&hi2c1, OPERATION_MODE_MAGGYRO);
+	
+	#ifdef CALIBRATE_IMU
+	do {
+			char transmit[50];
+			sprintf(transmit, "Calibrating... ");
+			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+		} while(0);
+	
+  // IMU_calibrate(&hi2c1);
+	
+	set_mode(&hi2c1, OPERATION_MODE_CONFIG);
+	HAL_Delay(10);
+	
+	// set fusion mode and wait until fully calibrated
+	set_mode(&hi2c1, OPERATION_MODE_NDOF_FMC_OFF); // set temporary fusion mode
+	while(!is_calibrated(&hi2c1)) {
+		// initialize calibration status nibbles
+		uint8_t sys, gyr, acc, mag;
+		sys = acc = gyr = mag = 0;
+		
+		// get calibration status nibbles
+		get_calib_status(&hi2c1, &sys, &acc, &gyr, &mag);
+		
+		char transmit[200];
+		sprintf(transmit, "Sys: %2d\t Acc: %2d\t Gyr: %2d\t Mag: %2d\t\r\n", sys, acc, gyr, mag);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+		
+		HAL_Delay(500);
+	}
+	
+	HAL_Delay(10);
+	set_mode(&hi2c1, OPERATION_MODE_CONFIG);
+	
+	uint8_t gyro_calib[6];
+	uint8_t mag_calib[6];
+	get_MG_offsets(&hi2c1, gyro_calib, mag_calib);
+	
+	do {
+			char transmit[200];
+			sprintf(transmit, "Gyro offsets: %2x\t%2x\t%2x\t%2x\t%2x\t%2x\r\n", gyro_calib[0], gyro_calib[1], gyro_calib[2], gyro_calib[3], gyro_calib[4], gyro_calib[5]);
+			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+			sprintf(transmit, "Mag offsets:  %2x\t%2x\t%2x\t%2x\t%2x\t%2x\r\n\r\n", mag_calib[0], mag_calib[1], mag_calib[2], mag_calib[3], mag_calib[4], mag_calib[5]);
+			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+		} while(0);
+	
+	
+	set_mode(&hi2c1, OPERATION_MODE_MAGGYRO);
+	HAL_Delay(10);
+	#endif
 	
 	float mag_vector[3] = {0};
 	float gyr_vector[3] = {0};

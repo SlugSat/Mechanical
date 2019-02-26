@@ -4,7 +4,7 @@
   * @brief          : Header for the Matrix module.
   ******************************************************************************
   ** This module contains matrix and vector math functions. Matrices contain r
-	* by c arrays of doubles.
+	* by c arrays of floats.
 	*
 	* Created by Galen Savidge. Edited 2/23/2019.
   ******************************************************************************
@@ -33,6 +33,20 @@ Matrix newMatrix(int r, int c);
 void matrixCopy(Matrix m, Matrix copy);
 
 /** 
+ * @brief  Copies the elements in a 2D array to a Matrix of the same dimensions
+ * @param  A Matrix, a 2D float array
+ * @return None
+*/
+void matrixCopyArray(Matrix m, float** array);
+
+/** 
+ * @brief  Checks if two Matrix objects are exactly equal
+ * @param  Two Matrix objects to be compared
+ * @return Zero if not equal, nonzero if equal
+*/
+char matrixEquals(Matrix m1, Matrix m2);
+
+/** 
  * @brief  Returns the number of rows in a Matrix
  * @param  A Matrix
  * @return Integer number of rows
@@ -51,28 +65,28 @@ int matrixGetCol(Matrix m);
  * @param  A Matrix, row of the element, column of the element (indexed starting at 1)
  * @return Element (r, c) of the Matrix
 */
-double matrixGetElement(Matrix m, int r, int c);
+float matrixGetElement(Matrix m, int r, int c);
 
 /** 
  * @brief  Sets an element in a Matrix
- * @param  A Matrix, row of the element, column of the element (indexed starting at 1), double value for the element
+ * @param  A Matrix, row of the element, column of the element (indexed starting at 1), float value for the element
  * @return None
 */
-void matrixSet(Matrix m, int r, int c, double val);
+void matrixSet(Matrix m, int r, int c, float val);
 
 /** 
  * @brief  Multiplies every element of a Matrix by x
- * @param  A Matrix and a double x
+ * @param  A Matrix and a float x
  * @return None
 */
-void matrixScale(Matrix m, double x);
+void matrixScale(Matrix m, float x);
 
 /** 
  * @brief  Adds x to every element in a Matrix
- * @param  A Matrix and a double x
+ * @param  A Matrix and a float x
  * @return None
 */
-void matrixAddScalar(Matrix m, double x);
+void matrixAddScalar(Matrix m, float x);
 
 /** 
  * @brief  Adds two Matrix objects

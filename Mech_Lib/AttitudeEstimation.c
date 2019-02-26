@@ -12,6 +12,7 @@
 
 #include <AttitudeEstimation.h>
 #include <math.h>
+#include <main.h>
 
 // Helper functions
 /** 
@@ -22,7 +23,7 @@
 */
 void findRexp(Matrix w, Matrix Rexp);
 
-double sinc(double x);
+float	 sinc(float x);
 
 /** 
  * @brief  Allocates and initializes a 3x3 DCM Matrix
@@ -48,7 +49,7 @@ Matrix initializeDCM(double yaw, double pitch, double roll) {
 void integrateDCM(Matrix R, Matrix bias, Matrix gyro, Matrix mag, Matrix sv, 
 		Matrix mag_inertial, Matrix sv_inertial, double Kp_mag, double Ki_mag,
 		double Kp_sv, double Ki_sv, double dt) {
-	
+			
 	static int init_run = 0;
 	static Matrix Rt; // Transpose of the DCM
 	static Matrix mag_i_body, sv_i_body; // Inertial sensor vectors translated to body
@@ -59,8 +60,8 @@ void integrateDCM(Matrix R, Matrix bias, Matrix gyro, Matrix mag, Matrix sv,
 	static Matrix bdot; // (-Ki terms)
 	static Matrix Rexp;
 	static Matrix new_R;
-	
-	if(!init_run) { // Initialize local Matrix objects on first run
+			
+	if(init_run == 0) { // Initialize local Matrix objects on first run
 		Rt = newMatrix(3, 3);
 		mag_i_body = newMatrix(3, 1);
 		sv_i_body = newMatrix(3, 1);
@@ -87,9 +88,9 @@ void integrateDCM(Matrix R, Matrix bias, Matrix gyro, Matrix mag, Matrix sv,
 	if(norm_mag == 0 || norm_sv == 0 || norm_mi == 0 || norm_svi == 0) {
 		// Need better error handling
 		printf("EULER ERROR: DIVIDE BY 0");
-		while(1);
+		//while(1);
 	}
-
+	
 	matrixScale(mag, 1.0/norm_mag);
 	matrixScale(sv, 1.0/norm_sv);
 	matrixScale(mag_inertial, 1.0/norm_mi);
@@ -108,7 +109,7 @@ void integrateDCM(Matrix R, Matrix bias, Matrix gyro, Matrix mag, Matrix sv,
 	// ***** FIND ERROR FROM SOLAR VECTOR *****
 	vectorRcross(sv, sv_rx);
 	matrixMult(Rt, sv_inertial, sv_i_body); // Translate mag to body
-	matrixMult(sv_rx, sv_i_body, mag_err); // Cross product
+	matrixMult(sv_rx, sv_i_body, sv_err); // Cross product
 	matrixCopy(sv_err, sverr_x_Kp);
 	matrixScale(sverr_x_Kp, Kp_sv); // Kp_sv * mag_err
 	
@@ -120,7 +121,7 @@ void integrateDCM(Matrix R, Matrix bias, Matrix gyro, Matrix mag, Matrix sv,
 	// ***** CALCULATE NEW BIAS ESTIMATE *****
 	matrixScale(mag_err, -Ki_mag);
 	matrixScale(sv_err, -Ki_sv);
-	matrixCopy(mag_err, bdot);
+	matrixCopy(mag_err, bdot); // bdot equals -Ki_mag*mag_err
 	matrixAdd(bdot, sv_err, bdot); // bdot now equals -Ki_mag*mag_err - Ki_sv*sv_err
 	matrixScale(bdot, dt); // Multiply bdot*dt
 	matrixAdd(bias, bdot, bias); // bias = bias + dt*bdot
@@ -133,9 +134,9 @@ void integrateDCM(Matrix R, Matrix bias, Matrix gyro, Matrix mag, Matrix sv,
 }
 
 // Helper function to find the sinc of a float
-double sinc(double x) {
+float sinc(float x) {
 	// Taylor portion
-	if(fabs(x) <= 0.5) {
+	if(fabsf(x) <= 0.5) {
 		return pow(x,6)/120.0 - pow(x,2)/6.0 + 1.0;
 	}  
 	else {
@@ -163,7 +164,7 @@ void findRexp(Matrix w, Matrix Rexp) {
 	matrixAdd(rx, rx_2, Rexp); // Rexp = rx + rx_2
 
 	// Add I(3) to Rexp
-	matrixSet(Rexp, 0, 0, matrixGetElement(Rexp, 0, 0) + 1);
 	matrixSet(Rexp, 1, 1, matrixGetElement(Rexp, 1, 1) + 1);
 	matrixSet(Rexp, 2, 2, matrixGetElement(Rexp, 2, 2) + 1);
+	matrixSet(Rexp, 3, 3, matrixGetElement(Rexp, 3, 3) + 1);
 }

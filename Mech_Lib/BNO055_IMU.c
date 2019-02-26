@@ -72,6 +72,9 @@ void IMU_init(I2C_HandleTypeDef *hi2c, IMU_Op_Mode_t sensor_mode)
 }
 
 void IMU_calibrate(I2C_HandleTypeDef *hi2c) {
+	set_mode(hi2c, OPERATION_MODE_CONFIG);
+	HAL_Delay(10);
+	
 	// set fusion mode and wait until fully calibrated
 	set_mode(hi2c, OPERATION_MODE_NDOF_FMC_OFF); // set temporary fusion mode
 	while(!is_calibrated(hi2c)); // wait until calibrated
