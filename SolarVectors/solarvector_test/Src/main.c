@@ -57,6 +57,12 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define XP_SCALE 1.02 // Should always be 1
+#define XN_SCALE 0.7679
+#define YP_SCALE 0.6143
+#define YN_SCALE 0.8431
+#define ZP_SCALE 0.6418
+#define ZN_SCALE 0.9348
 
 /* USER CODE END PD */
 
@@ -106,30 +112,6 @@ static void MX_DMA_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_ADC1_Init(void);
 /* USER CODE BEGIN PFP */
-
-/** 
- * @brief  Prints yaw and pitch of a 3-vector over UART
- * @param  Vector components
- * @return None
-*/
-void PrintYawPitch(double vector_x, double vector_y, double vector_z) {
-	// Convert vector into yaw/pitch angles referenced to the +X unit vector (1, 0, 0)
-	double yaw_degrees = 180*acos(vector_x/sqrt(pow(vector_x, 2) + pow(vector_y, 2)))/PI;
-	if(vector_y < 0) {
-		yaw_degrees *= -1;
-	}
-	
-	double pitch_degees = 180*acos(sqrt(pow(vector_x, 2) + pow(vector_y, 2)))/PI;
-	if(vector_z < 0) {
-		pitch_degees *= -1;
-	}
-	
-	// Print results over UART
-	char transmit[50];
-	sprintf(transmit, "yaw: %3.1f pitch: %3.1f\r\n", yaw_degrees, pitch_degees);
-	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
-}
-
 
 
 /* USER CODE END PFP */
@@ -211,26 +193,26 @@ int main(void)
   while (1)
   {
 		// Read data and convert to volts
-		volts_xp = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_XP]);
-		volts_xn = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_XN]);
-		volts_yp = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_YP]);
-		volts_yn = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_YN]);
-		volts_zp = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_ZP]);
-		volts_zn = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_ZN]);
+		volts_xp = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_XP])*XP_SCALE;
+		volts_xn = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_XN])*XN_SCALE;
+		volts_yp = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_YP])*YP_SCALE;
+		volts_yn = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_YN])*YN_SCALE;
+		volts_zp = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_ZP])*ZP_SCALE;
+		volts_zn = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_ZN])*ZN_SCALE;
 		
 		do {
 			char transmit[50];
 			
 			// Print x values
-			sprintf(transmit, "xp: %.2f xn: %.2f\r\n", volts_xp, volts_xn);
+			sprintf(transmit, "xp: %2.4f xn: %2.4f\r\n", volts_xp, volts_xn);
 			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 			
 			// Print y values
-			sprintf(transmit, "yp: %.2f yn: %.2f\r\n", volts_yp, volts_yn);
+			sprintf(transmit, "yp: %2.4f yn: %2.4f\r\n", volts_yp, volts_yn);
 			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 			
 			// Print z values
-			sprintf(transmit, "zp: %.2f zn: %.2f\r\n", volts_zp, volts_zn);
+			sprintf(transmit, "zp: %2.4f zn: %2.4f\r\n", volts_zp, volts_zn);
 			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 		} while(0);
 		
