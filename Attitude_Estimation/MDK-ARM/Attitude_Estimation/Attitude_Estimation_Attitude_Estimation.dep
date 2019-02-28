@@ -1,9 +1,8 @@
 Dependencies for Project 'Attitude_Estimation', Target 'Attitude_Estimation': (DO NOT MODIFY !)
 F (startup_stm32f103xb.s)(0x5C74B406)(--cpu Cortex-M3 --pd "__EVAL SETA 1" -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\_Attitude_Estimation-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include--pd "__UVISION_VERSION SETA 527" --pd "_RTE_ SETA 1" --pd "STM32F10X_MD SETA 1"--list startup_stm32f103xb.lst --xref -o attitude_estimation\startup_stm32f103xb.o --depend attitude_estimation\startup_stm32f103xb.d)
-F (..\..\Mech_Lib\BNO055_Calib.h)(0x5C6E1C19)()
 F (..\..\Mech_Lib\BNO055_IMU.h)(0x5C747059)()
-F (..\..\Mech_Lib\Matrix.h)(0x5C749BC6)()
-F (..\..\Mech_Lib\SolarVectors.h)(0x5C6C7524)()
+F (..\..\Mech_Lib\Matrix.h)(0x5C772F6D)()
+F (..\..\Mech_Lib\SolarVectors.h)(0x5C7734CF)()
 F (..\..\Mech_Lib\BNO055_IMU.c)(0x5C748ABD)(--c99 -c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ..\..\Mech_Lib-I.\RTE\_Attitude_Estimation-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="527" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o attitude_estimation\bno055_imu.o --omf_browse attitude_estimation\bno055_imu.crf --depend attitude_estimation\bno055_imu.d)
 I (..\..\Mech_Lib\BNO055_IMU.h)(0x5C747059)
 I (../Inc/main.h)(0x5C74B405)
@@ -33,22 +32,22 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5C6CA186)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h)(0x5C6CA186)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5C6CA186)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5C6CA186)
-F (..\..\Mech_Lib\Matrix.c)(0x5C74A805)(--c99 -c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ..\..\Mech_Lib-I.\RTE\_Attitude_Estimation-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="527" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o attitude_estimation\matrix.o --omf_browse attitude_estimation\matrix.crf --depend attitude_estimation\matrix.d)
-I (..\..\Mech_Lib\Matrix.h)(0x5C749BC6)
+F (..\..\Mech_Lib\Matrix.c)(0x5C772FAC)(--c99 -c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ..\..\Mech_Lib-I.\RTE\_Attitude_Estimation-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="527" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o attitude_estimation\matrix.o --omf_browse attitude_estimation\matrix.crf --depend attitude_estimation\matrix.d)
+I (..\..\Mech_Lib\Matrix.h)(0x5C772F6D)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599FAE2C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599FAE2C)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599FAE2C)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x599FAE2E)
-F (..\..\Mech_Lib\SolarVectors.c)(0x5C6C7524)(--c99 -c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ..\..\Mech_Lib-I.\RTE\_Attitude_Estimation-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="527" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o attitude_estimation\solarvectors.o --omf_browse attitude_estimation\solarvectors.crf --depend attitude_estimation\solarvectors.d)
-I (..\..\Mech_Lib\SolarVectors.h)(0x5C6C7524)
-I (..\..\Mech_Lib\Matrix.h)(0x5C749BC6)
+F (..\..\Mech_Lib\SolarVectors.c)(0x5C7736B4)(--c99 -c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ..\..\Mech_Lib-I.\RTE\_Attitude_Estimation-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="527" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o attitude_estimation\solarvectors.o --omf_browse attitude_estimation\solarvectors.crf --depend attitude_estimation\solarvectors.d)
+I (..\..\Mech_Lib\SolarVectors.h)(0x5C7734CF)
+I (..\..\Mech_Lib\Matrix.h)(0x5C772F6D)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599FAE2E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599FAE2C)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x599FAE2E)
-F (..\..\Mech_Lib\AttitudeEstimation.c)(0x5C74B7DA)(--c99 -c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ..\..\Mech_Lib-I.\RTE\_Attitude_Estimation-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="527" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o attitude_estimation\attitudeestimation.o --omf_browse attitude_estimation\attitudeestimation.crf --depend attitude_estimation\attitudeestimation.d)
-I (..\..\Mech_Lib\AttitudeEstimation.h)(0x5C723072)
-I (..\..\Mech_Lib\Matrix.h)(0x5C749BC6)
-I (..\..\Mech_Lib\SolarVectors.h)(0x5C6C7524)
-I (..\..\Mech_Lib\BNO055_IMU.h)(0x5C747059)
+F (..\..\Mech_Lib\AttitudeEstimation.c)(0x5C771B1E)(--c99 -c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ..\..\Mech_Lib-I.\RTE\_Attitude_Estimation-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="527" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o attitude_estimation\attitudeestimation.o --omf_browse attitude_estimation\attitudeestimation.crf --depend attitude_estimation\attitudeestimation.d)
+I (..\..\Mech_Lib\AttitudeEstimation.h)(0x5C7715D5)
+I (..\..\Mech_Lib\Matrix.h)(0x5C772F6D)
+I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x599FAE2E)
 I (../Inc/main.h)(0x5C74B405)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5C6CA185)
 I (../Inc/stm32f1xx_hal_conf.h)(0x5C74B404)
@@ -76,9 +75,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5C6CA186)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h)(0x5C6CA186)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5C6CA186)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5C6CA186)
-I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x599FAE2E)
-F (..\..\Mech_Lib\AttitudeEstimation.h)(0x5C723072)()
-F (../Src/main.c)(0x5C74B659)(--c99 -c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ..\..\Mech_Lib-I.\RTE\_Attitude_Estimation-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="527" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o attitude_estimation\main.o --omf_browse attitude_estimation\main.crf --depend attitude_estimation\main.d)
+F (..\..\Mech_Lib\AttitudeEstimation.h)(0x5C7715D5)()
+F (../Src/main.c)(0x5C773C1B)(--c99 -c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ..\..\Mech_Lib-I.\RTE\_Attitude_Estimation-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="527" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o attitude_estimation\main.o --omf_browse attitude_estimation\main.crf --depend attitude_estimation\main.d)
 I (../Inc/main.h)(0x5C74B405)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x5C6CA185)
 I (../Inc/stm32f1xx_hal_conf.h)(0x5C74B404)
@@ -106,9 +104,9 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h)(0x5C6CA186)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h)(0x5C6CA186)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x5C6CA186)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x5C6CA186)
-I (..\..\Mech_Lib\AttitudeEstimation.h)(0x5C723072)
-I (..\..\Mech_Lib\Matrix.h)(0x5C749BC6)
-I (..\..\Mech_Lib\SolarVectors.h)(0x5C6C7524)
+I (..\..\Mech_Lib\AttitudeEstimation.h)(0x5C7715D5)
+I (..\..\Mech_Lib\Matrix.h)(0x5C772F6D)
+I (..\..\Mech_Lib\SolarVectors.h)(0x5C7734CF)
 I (..\..\Mech_Lib\BNO055_IMU.h)(0x5C747059)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599FAE2C)
 F (../Src/stm32f1xx_it.c)(0x5C74B404)(--c99 -c --cpu Cortex-M3 -D__EVAL -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ..\..\Mech_Lib-I.\RTE\_Attitude_Estimation-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="527" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o attitude_estimation\stm32f1xx_it.o --omf_browse attitude_estimation\stm32f1xx_it.crf --depend attitude_estimation\stm32f1xx_it.d)

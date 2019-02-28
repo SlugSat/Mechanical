@@ -32,8 +32,16 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define VERBOSE_PRINTING
+
+#define NUM_SOLAR_PANELS 6
 #define MAG_HIST_LENGTH 20
 #define SV_HIST_LENGTH 20
+
+#define KP_MAG_BASE 0.2
+#define KI_MAG_BASE 0.02
+#define KP_SV_BASE 0.2
+#define KI_SV_BASE 0.02
 
 /* USER CODE END PD */
 
@@ -51,6 +59,7 @@ I2C_HandleTypeDef hi2c1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
+uint32_t sv_raw[NUM_SOLAR_PANELS];
 
 /* USER CODE END PV */
 
@@ -115,6 +124,8 @@ int main(void)
 	float mag_raw[3] = {0};
 	float mag_filtered[3] = {0};
 	
+	HAL_ADC_Start_DMA(&hadc1, sv_raw, NUM_SOLAR_PANELS); // Start ADC in DMA mode
+	
 	// ***** INITIALIZE MOVING AVERAGE FILTERS *****
 	float mag_hist[3][MAG_HIST_LENGTH] = {0};
 	char mag_index[3] = {0};
@@ -126,17 +137,19 @@ int main(void)
 	Matrix sv_inertial = make3x1Vector(1, 0, 0);
 	Matrix mag_inertial = make3x1Vector(0, 0, -1);
 	
-	float Kp_sv = 0.2;
-	float Ki_sv = 0.02;
 	
-	float Kp_mag = 0.2;
-	float Ki_mag = 0.02;
+	float Kp_mag = KP_MAG_BASE;
+	float Ki_mag = KI_MAG_BASE;
+	float Kp_sv = KP_SV_BASE;
+	float Ki_sv = KI_SV_BASE;
 	
 	Matrix bias_estimate = make3x1Vector(0, 0, 0);
 	
-	float dt = 1;
+	float dt = 0.01; // 10 ms
 	
 	Matrix R = initializeDCM(0, 0, 0);
+	
+	float y_p_r[3]; // Yaw/pitch/roll
 	
   /* USER CODE END 2 */
 
@@ -156,24 +169,53 @@ int main(void)
 		vectorCopyArray(mag_vector, mag_filtered, 3);
 		
 		// Read solar vector
+		SV_Status sv_return = findSolarVector(sv_raw, NUM_SOLAR_PANELS, solar_vector);
+		
+		if(sv_return == SV_FOUND) {
+			Kp_sv = KP_SV_BASE;
+			Ki_sv = KI_SV_BASE;
+		}
+		else {
+			Kp_sv = 0;
+			Ki_sv = 0;
+		}
 		
 		// DCM integration
 		integrateDCM(R, bias_estimate, gyro_vector, mag_vector, solar_vector, mag_inertial, sv_inertial,
 								Kp_mag, Ki_mag, Kp_sv, Ki_sv, dt);
 		
-		// Print DCM every step
+		#ifdef VERBOSE_PRINTING
+		// Print gyro vector
+		sprintf(transmit, "Gyro vector:\r\n");
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
+		printMatrix(gyro_vector, transmit);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+		
+		// Filtered mag vector
+		sprintf(transmit, "Mag vector:\r\n");
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
+		printMatrix(mag_vector, transmit);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+		
+		// Print solar vector
+		sprintf(transmit, "Solar vector:\r\n");
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
+		printMatrix(solar_vector, transmit);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+		
+		// Print new DCM
+		sprintf(transmit, "New DCM:\r\n");
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
 		printMatrix(R, transmit);
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-		
 		sprintf(transmit, "\r\n");
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 10);
+		#endif
 		
-		printMatrix(bias_estimate, transmit);
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-		
-		sprintf(transmit, "\r\n");
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-		
+		// Print Euler angles
+		findEulerAngles(R, y_p_r);
+		sprintf(transmit, "Yaw:   %6.2f\r\nPitch: %6.2f\r\nRoll:  %6.2f\r\n\r\n", 180.0*y_p_r[0]/3.1416, 180.0*y_p_r[1]/3.1416, 180.0*y_p_r[2]/3.1416);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 		HAL_Delay(10);
     /* USER CODE END WHILE */
 
