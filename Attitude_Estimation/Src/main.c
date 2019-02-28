@@ -4,9 +4,8 @@
   * @file           : main.c
   * @brief          : Main program body
   ******************************************************************************
-  ** Attitude estimation test program. Includes unit tests on the Matrix and
-	* AttitudeEstimation functions as well as a main loop which runs attitude
-	* estimation on our test hardware.
+  ** This program runs attitude estimation on our test hardware using solar
+	* vectors and IMU readings.
 	*
 	* See the Attitude Estimation SOP.
   *
@@ -20,6 +19,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <AttitudeEstimation.h>
+#include <SolarVectors.h>
+#include <BNO055_IMU.h>
 #include <string.h>
 
 /* USER CODE END Includes */
@@ -31,7 +32,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-// #define ATTITUDE_ESTIMATION_UNIT_TEST
+#define MAG_HIST_LENGTH 20
+#define SV_HIST_LENGTH 20
 
 /* USER CODE END PD */
 
@@ -60,16 +62,9 @@ static void MX_I2C1_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_ADC1_Init(void);
 /* USER CODE BEGIN PFP */
-
-Matrix make3x1Vector(float x, float y, float z) {
-	Matrix v = newMatrix(3, 1);
-	float row1[] = {x};
-	float row2[] = {y};
-	float row3[] = {z};
-	float* array[] = {row1, row2, row3};
-	matrixCopyArray(v, array);
-	return v;
-}
+// Helper function to do a moving average filter on a single float. Index is 
+// updated automatically but needs to be passed every time.
+float movingAverageFilter(float* readings, float new_reading, char num_readings, char* index, float last_avg);
 
 /* USER CODE END PFP */
 
@@ -113,191 +108,21 @@ int main(void)
   /* USER CODE BEGIN 2 */
 	char transmit[200];
 	
-	#ifdef ATTITUDE_ESTIMATION_UNIT_TEST // Begin unit testing code
+	// ***** INITIALIZE SENSORS *****
+	IMU_init(&hi2c1, OPERATION_MODE_MAGGYRO);
 	
-	// ***** MATRIX UNIT TESTS *****
-	sprintf(transmit, "--------------------\r\n");	
-	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	float gyro_raw[3] = {0};
+	float mag_raw[3] = {0};
+	float mag_filtered[3] = {0};
 	
-	// Test matrixEquals()
-	Matrix m = initializeDCM(0, 0, 0);
+	// ***** INITIALIZE MOVING AVERAGE FILTERS *****
+	float mag_hist[3][MAG_HIST_LENGTH] = {0};
+	char mag_index[3] = {0};
 	
-	if(matrixEquals(m, m)) {
-		sprintf(transmit, "matrixEquals() PASSED\r\n");
-	}
-	else {
-		sprintf(transmit, "matrixEquals() FAILED\r\n");	
-	}
-	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	
-	sprintf(transmit, "--------------------\r\n");	
-	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	
-	// Test matrixCopyArray()
-	sprintf(transmit, "Testing matrixCopyArray()\r\n");	
-	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	Matrix m1 = newMatrix(3, 3);
-	Matrix m2 = newMatrix(3, 3);
-	{
-		float row1[] = {1, 2, 3};
-		float row2[] = {4, 5, 6};
-		float row3[] = {7, 8, 9};
-		float* array[] = {row1, row2, row3};
-		matrixCopyArray(m1, array);
-		printMatrix(m1, transmit);
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	}
-	
-	sprintf(transmit, "--------------------\r\n");	
-	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	
-	// Test matrixAdd() in place
-	{
-		matrixAdd(m1, m1, m1);
-		float row1[] = {2, 4, 6};
-		float row2[] = {8, 10, 12};
-		float row3[] = {14, 16, 18};
-		float* array[] = {row1, row2, row3};
-		matrixCopyArray(m2, array);
-		printMatrix(m1, transmit);
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-		if(matrixEquals(m1, m2)) {
-			sprintf(transmit, "matrixAdd() in place PASSED\r\n");
-		}
-		else {
-			sprintf(transmit, "matrixAdd() in place FAILED\r\n");
-		}
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	}
-	
-	sprintf(transmit, "--------------------\r\n");	
-	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	
-	// Test matrixMult()
-	{
-		matrixMult(m2, m2, m1);
-		printMatrix(m1, transmit);
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-		float row1[] = {120, 144, 168};
-		float row2[] = {264, 324, 384};
-		float row3[] = {408, 504, 600};
-		float* array[] = {row1, row2, row3};
-		matrixCopyArray(m2, array);
-		if(matrixEquals(m1, m2)) {
-			sprintf(transmit, "matrixMult() PASSED\r\n");
-		}
-		else {
-			sprintf(transmit, "matrixMult() FAILED\r\n");
-		}
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	}
-	
-	sprintf(transmit, "--------------------\r\n");	
-	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	
-	// Test matrixTranspose()
-	{
-		float row1[] = {1, 2, 3};
-		float row2[] = {4, 5, 6};
-		float row3[] = {7, 8, 9};
-		float* array[] = {row1, row2, row3};
-		matrixCopyArray(m1, array);
-		matrixTranspose(m1, m2);
-		printMatrix(m2, transmit);
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	}
-	{
-		float row1[] = {1, 4, 7};
-		float row2[] = {2, 5, 8};
-		float row3[] = {3, 6, 9};
-		float* array[] = {row1, row2, row3};
-		matrixCopyArray(m1, array);
-		if(matrixEquals(m1, m2)) {
-			sprintf(transmit, "matrixTranspose() PASSED\r\n");
-		}
-		else {
-			sprintf(transmit, "matrixTranspose() FAILED\r\n");
-		}
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	}
-	
-	sprintf(transmit, "--------------------\r\n");	
-	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	
-	// Test matrixScale()
-	matrixScale(m1, 2);
-	printMatrix(m1, transmit);
-	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	{
-		float row1[] = {2, 8, 14};
-		float row2[] = {4, 10, 16};
-		float row3[] = {6, 12, 18};
-		float* array[] = {row1, row2, row3};
-		matrixCopyArray(m2, array);
-		if(matrixEquals(m1, m2)) {
-			sprintf(transmit, "matrixScale() PASSED\r\n");
-		}
-		else {
-			sprintf(transmit, "matrixScale() FAILED\r\n");
-		}
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	}
-	
-	sprintf(transmit, "--------------------\r\n");	
-	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	
-	// Test vectorRcross()
-	Matrix v = newMatrix(3, 1);
-	{
-		float row1[] = {1};
-		float row2[] = {3};
-		float row3[] = {5};
-		float* array[] = {row1, row2, row3};
-		matrixCopyArray(v, array);
-		vectorRcross(v, m1);
-		printMatrix(m1, transmit);
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	}
-	{
-		float row1[] = {0, -5, 3};
-		float row2[] = {5, 0, -1};
-		float row3[] = {-3, 1, 0};
-		float* array[] = {row1, row2, row3};
-		matrixCopyArray(m2, array);
-		if(matrixEquals(m1, m2)) {
-			sprintf(transmit, "vectorRcross() PASSED\r\n");
-		}
-		else {
-			sprintf(transmit, "vectorRcross() FAILED\r\n");
-		}
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	}
-	
-	sprintf(transmit, "--------------------\r\n");	
-	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	
-	// Test vectorNorm()
-	float vnorm = vectorNorm(v);
-	sprintf(transmit, "%f\r\n", vnorm);
-	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	if(vnorm != 5.9160797831f) {
-		sprintf(transmit, "vectorNorm() FAILED\r\n");
-	}
-	else {
-		sprintf(transmit, "vectorNorm() PASSED\r\n");
-	}
-	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	
-	#endif // End unit testing code
-	
-	
-	
-	
-	
-	
-	// ***** INITIALIZE ATTITUDE CONTROL TEST *****
-	
-	Matrix gyro_input = make3x1Vector(0.1, 0.1, 0.1);
+	// ***** INITIALIZE MATRICES *****
+	Matrix gyro_vector = newMatrix(3, 1);
+	Matrix mag_vector = newMatrix(3, 1);
+	Matrix solar_vector = newMatrix(3, 1);
 	Matrix sv_inertial = make3x1Vector(1, 0, 0);
 	Matrix mag_inertial = make3x1Vector(0, 0, -1);
 	
@@ -313,19 +138,27 @@ int main(void)
 	
 	Matrix R = initializeDCM(0, 0, 0);
 	
-	sprintf(transmit, "Printing output of initializeDCM()\r\n");	
-	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	
-	printMatrix(R, transmit);
-	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		integrateDCM(R, bias_estimate, gyro_input, mag_inertial, sv_inertial, mag_inertial, sv_inertial,
+		// Read gyro, transform into a vector Matrix
+		get_gyr_data(&hi2c1, gyro_raw);
+		vectorCopyArray(gyro_vector, gyro_raw, 3);
+		
+		// Read magnetometer, iterate moving average filter, transform into a vector Matrix
+		get_mag_data(&hi2c1, mag_raw);
+		for(int i = 0;i < 3;i++) {
+			mag_filtered[i] = movingAverageFilter(mag_hist[i], mag_raw[i], MAG_HIST_LENGTH, &mag_index[i], mag_filtered[i]);
+		}
+		vectorCopyArray(mag_vector, mag_filtered, 3);
+		
+		// Read solar vector
+		
+		// DCM integration
+		integrateDCM(R, bias_estimate, gyro_vector, mag_vector, solar_vector, mag_inertial, sv_inertial,
 								Kp_mag, Ki_mag, Kp_sv, Ki_sv, dt);
 		
 		// Print DCM every step
@@ -341,7 +174,7 @@ int main(void)
 		sprintf(transmit, "\r\n");
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
 		
-		HAL_Delay(500);
+		HAL_Delay(10);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -574,6 +407,15 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+float movingAverageFilter(float* readings, float new_reading, char num_readings, char* index, float last_avg) {
+	last_avg -= readings[*index];
+	readings[*index] = new_reading/num_readings;
+	last_avg += readings[*index];
+	(*index)++;
+	*index = *index % num_readings;
+	return last_avg;
+}
 
 /* USER CODE END 4 */
 
