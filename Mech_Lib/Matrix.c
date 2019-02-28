@@ -164,6 +164,22 @@ void matrixTranspose(Matrix m, Matrix mt) {
     }
 }
 
+Matrix make3x1Vector(float x, float y, float z) {
+	Matrix v = newMatrix(3, 1);
+	float row1[] = {x};
+	float row2[] = {y};
+	float row3[] = {z};
+	float* array[] = {row1, row2, row3};
+	matrixCopyArray(v, array);
+	return v;
+}
+
+void vectorCopyArray(Matrix v, float* array, char n) {
+	for(int i = 0;i < n;i++) {
+		v->data[i][0] = array[i];
+	}
+}
+
 void vectorRcross(Matrix v, Matrix vcross) {
     // Row 1
     vcross->data[0][0] = 0;

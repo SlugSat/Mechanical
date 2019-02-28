@@ -23,7 +23,8 @@
 */
 void findRexp(Matrix w, Matrix Rexp);
 
-float	 sinc(float x);
+// Sinc function that handles the case where x ~= 0
+float	sinc(float x);
 
 /** 
  * @brief  Allocates and initializes a 3x3 DCM Matrix
@@ -133,12 +134,31 @@ void integrateDCM(Matrix R, Matrix bias, Matrix gyro, Matrix mag, Matrix sv,
 	matrixCopy(new_R, R); // R = R*Rexp(gyro_with_bias*dt)
 }
 
+/** 
+ * @brief  Performs closed loop integration on the given DCM using the Rexp form
+ * @param  R: the DCM (initialize to I3 before first use)
+ * @param  yaw_pitch_roll: pointer to float[3] which hold yaw (0) pitch (1) and roll (2) after the function returns
+ * @return None
+*/
+void findEulerAngles(Matrix R, float* yaw_pitch_roll) {
+	// Yaw
+	yaw_pitch_roll[0] = atan2(matrixGetElement(R, 1, 2), matrixGetElement(R, 1, 1));
+
+	// Pitch
+	yaw_pitch_roll[1] = asin(-matrixGetElement(R, 1, 3));
+
+	// Roll
+	yaw_pitch_roll[2] = atan2(matrixGetElement(R, 2, 3),
+	matrixGetElement(R, 3, 3));
+}
+
 // Helper function to find the sinc of a float
 float sinc(float x) {
-	// Taylor portion
+	// Taylor portion for small x
 	if(fabsf(x) <= 0.5) {
 		return pow(x,6)/120.0 - pow(x,2)/6.0 + 1.0;
 	}  
+	// sinx/x works for larger x
 	else {
 		return sin(x)/x;
 	}

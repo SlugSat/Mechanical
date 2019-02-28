@@ -117,6 +117,22 @@ void matrixMult(Matrix m1, Matrix m2, Matrix prod);
 void matrixTranspose(Matrix m, Matrix mt);
 
 /** 
+ * @brief  Allocates a 3x1 column vector Matrix and populates it with x, y, and z
+ * @param  Vector components
+ * @return A newly allocated column vector Matrix
+*/
+Matrix make3x1Vector(float x, float y, float z);
+
+/** 
+ * @brief  Copies elements from a 1xn array to an allocated nx1 column vector Matrix
+ * @param  v: an allocated nx1 Matrix
+ * @param  array: 1xn array containing vector elements
+ * @param  n: vector order (number of elements)
+ * @return A newly allocated column vector Matrix
+*/
+void vectorCopyArray(Matrix v, float* array, char n);
+
+/** 
  * @brief  Creates the skew symmetric (cross product) matrix from a vector
  * @param  A 3x1 column vector Matrix, an allocated 3x3 Matrix in which to store the result
  * @return None

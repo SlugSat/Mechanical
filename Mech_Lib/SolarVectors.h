@@ -15,16 +15,24 @@
  
 /* Includes ------------------------------------------------------------------*/
 #include <Matrix.h>
+#include <stdint.h>
+
+/* Public typedefs ---------------------------------------------*/
+typedef enum {
+	SV_FOUND,
+	SV_NOTFOUND
+}SV_Status;
 
 /* Public functions prototypes ---------------------------------------------*/
 
 /** 
  * @brief  Calculates a solar vector from solar panel current measurements
- * @param  Six current measurements, one for each solar panel
+ * @param  adc_readings: filtered readings from the ADC
+ * @param  num_panels: the number of solar panels to use (6 or 5)
  * @param  v: an allocated 3x1 column vector Matrix to hold the solar vector
- * @return A normalized 3x1 column vector Matrix
+ * @return SV_FOUND if a valid solar vector was found, SV_NOTFOUND otherwise
 */
-void findSolarVector(double xp, double xm, double yp, double ym, double zp, double zm, Matrix v);
+SV_Status findSolarVector(uint32_t* adc_readings, char num_panels, Matrix v);
 
 /** 
  * @brief  Prints yaw and pitch of a solar vector relative to the +X unit vector
