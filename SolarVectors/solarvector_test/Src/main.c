@@ -216,7 +216,7 @@ int main(void)
 			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 		} while(0);
 		
-		findSolarVector(volts_xp, volts_xn, volts_yp, volts_yn, volts_zp, volts_zn, solar_vector);
+		findSolarVector(adc_data, 6, solar_vector);
 		
 		// Print solar vector over serial using the Matrix library command
 		do {
