@@ -154,6 +154,8 @@ int main(void)
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
 
+	char transmit[200];
+
 	#ifdef YAWPITCH_TEST // Unit testing
 	int num_tests = 7;
 	double x_components[] = {1, 0.7071, -0.7071, 0.7071, -0.7071, 0.7071, 0};
@@ -174,12 +176,8 @@ int main(void)
 	
 	HAL_ADC_Start_DMA(&hadc1, adc_data, NUM_ADC_CHANNELS); // Start ADC in DMA mode
 	
-	do {
-		char transmit[50];
-		sprintf(transmit, "Finished init\r\n");
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
-	}
-	while(0);
+	sprintf(transmit, "Finished init\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
 	
 	// See the Attitude Control System document for info on the body reference frame and axes
 	double volts_xp, volts_xn, volts_yp, volts_yn, volts_zp, volts_zn; // Positive and negative raw current values for each axis
@@ -200,40 +198,37 @@ int main(void)
 		volts_zp = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_ZP])*ZP_SCALE;
 		volts_zn = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_ZN])*ZN_SCALE;
 		
-		do {
-			char transmit[50];
-			
-			// Print x values
-			sprintf(transmit, "xp: %2.4f xn: %2.4f\r\n", volts_xp, volts_xn);
-			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
-			
-			// Print y values
-			sprintf(transmit, "yp: %2.4f yn: %2.4f\r\n", volts_yp, volts_yn);
-			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
-			
-			// Print z values
-			sprintf(transmit, "zp: %2.4f zn: %2.4f\r\n", volts_zp, volts_zn);
-			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
-		} while(0);
+		// Print x values
+		sprintf(transmit, "xp: %2.4f xn: %2.4f\r\n", volts_xp, volts_xn);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 		
-		findSolarVector(adc_data, 6, solar_vector);
+		// Print y values
+		sprintf(transmit, "yp: %2.4f yn: %2.4f\r\n", volts_yp, volts_yn);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 		
-		// Print solar vector over serial using the Matrix library command
-		do {
-			char transmit[100];
+		// Print z values
+		sprintf(transmit, "zp: %2.4f zn: %2.4f\r\n", volts_zp, volts_zn);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
+		
+		// Calculate solar vector
+		SV_Status sv_return = findSolarVector(adc_data, 6, solar_vector);
+		
+		if(sv_return == SV_FOUND) { // Check if a valid solar vector was found
+			// Print solar vector over serial using the Matrix library command;
 			printMatrix(solar_vector, transmit);
 			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
-		} while(0);
-		
-		// Print solar vector over serial using the SolarVector library command
-		do {
-			char transmit[20];
+			
+			// Print solar vector over serial using the SolarVector library command
 			printSolarVector(solar_vector, transmit);
 			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
-		} while(0);
+		}
+		else {
+			sprintf(transmit, "Solar vector not found!\r\n\r\n");
+			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
+		}
 		
 		// Wait 2 seconds
-		HAL_Delay(2000);
+		HAL_Delay(1000);
 		
     /* USER CODE END WHILE */
 
