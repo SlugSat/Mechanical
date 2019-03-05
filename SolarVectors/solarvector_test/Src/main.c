@@ -215,7 +215,7 @@ int main(void)
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 		
 		// Calculate solar vector
-		SV_Status sv_return = findSolarVector(adc_data, 6, solar_vector);
+		SV_Status sv_return = findSolarVector(sv_raw, 5, solar_vector);
 		
 		if(sv_return == SV_FOUND) { // Check if a valid solar vector was found
 			// Print solar vector over serial using the Matrix library command;
@@ -223,8 +223,8 @@ int main(void)
 			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 			
 			// Print solar vector over serial using the SolarVector library command
-			printSolarVector(solar_vector, transmit);
-			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
+			// printSolarVector(solar_vector, transmit);
+			// HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 		}
 		else {
 			sprintf(transmit, "Solar vector not found!\r\n\r\n");

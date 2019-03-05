@@ -61,16 +61,6 @@ static void MX_USART2_UART_Init(void);
 static void MX_ADC1_Init(void);
 /* USER CODE BEGIN PFP */
 
-Matrix make3x1Vector(float x, float y, float z) {
-	Matrix v = newMatrix(3, 1);
-	float row1[] = {x};
-	float row2[] = {y};
-	float row3[] = {z};
-	float* array[] = {row1, row2, row3};
-	matrixCopyArray(v, array);
-	return v;
-}
-
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -247,13 +237,8 @@ int main(void)
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
 	
 	// Test vectorRcross()
-	Matrix v = newMatrix(3, 1);
+	Matrix v = make3x1Vector(1, 3, 5);
 	{
-		float row1[] = {1};
-		float row2[] = {3};
-		float row3[] = {5};
-		float* array[] = {row1, row2, row3};
-		matrixCopyArray(v, array);
 		vectorRcross(v, m1);
 		printMatrix(m1, transmit);
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
@@ -287,6 +272,23 @@ int main(void)
 		sprintf(transmit, "vectorNorm() PASSED\r\n");
 	}
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	
+	sprintf(transmit, "--------------------\r\n");	
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	
+	// Test vectorDotProduct()
+	float vdotv = vectorDotProduct(v, v);
+	sprintf(transmit, "%f\r\n", vdotv);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	if(vdotv != 35) {
+		sprintf(transmit, "vectorDotProduct() FAILED\r\n");
+	}
+	else {
+		sprintf(transmit, "vectorDotProduct() PASSED\r\n");
+	}
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	
+	while(1);
 	
 	#endif // End unit testing code
 	

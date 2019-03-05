@@ -16,7 +16,7 @@
 
 #define PI 3.1416
 
-#define SUN_MIN_THRESH 128 // 12-bit ADC value; NEEDS CHANGING POST CALIBRATION
+#define SUN_MIN_THRESH 0.1 // In volts; NEEDS CHANGING POST CALIBRATION
 
 /** 
  * @brief  Calculates a solar vector from solar panel current measurements
@@ -25,7 +25,7 @@
  * @param  v: an allocated 3x1 column vector Matrix to hold the solar vector
  * @return SV_FOUND if a valid solar vector was found, SV_NOTFOUND otherwise
 */
-SV_Status findSolarVector(uint32_t* adc_readings, char num_panels, Matrix v) {
+SV_Status findSolarVector(float* adc_readings, char num_panels, Matrix v) {
 	float xp, xm, yp, ym, zp, zm;
 	if(num_panels == 6) {
 		xp = adc_readings[0]*XP_SCALE;
@@ -55,6 +55,10 @@ SV_Status findSolarVector(uint32_t* adc_readings, char num_panels, Matrix v) {
 	
 	// Set z component
 	matrixSet(v, 3, 1, (zp - zm)/vector_mag);
+	
+	if(num_panels == 5 && zp <= SUN_MIN_THRESH) {
+		return SV_NOTFOUND;
+	}
 	
 	if(xp > SUN_MIN_THRESH || xm > SUN_MIN_THRESH || yp > SUN_MIN_THRESH || ym > SUN_MIN_THRESH || zp > SUN_MIN_THRESH || zm > SUN_MIN_THRESH) {
 		return SV_FOUND;

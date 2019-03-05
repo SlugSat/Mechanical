@@ -42,7 +42,7 @@ typedef enum {
  * @param  v: an allocated 3x1 column vector Matrix to hold the solar vector
  * @return SV_FOUND if a valid solar vector was found, SV_NOTFOUND otherwise
 */
-SV_Status findSolarVector(uint32_t* adc_readings, char num_panels, Matrix v);
+SV_Status findSolarVector(float* adc_readings, char num_panels, Matrix v);
 
 /** 
  * @brief  Prints yaw and pitch of a solar vector relative to the +X unit vector
