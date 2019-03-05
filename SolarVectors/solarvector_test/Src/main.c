@@ -47,6 +47,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <SolarVectors.h>
+#include <DigitalFilters.h>
 
 /* USER CODE END Includes */
 
@@ -57,12 +58,6 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define XP_SCALE 1.02 // Should always be 1
-#define XN_SCALE 0.7679
-#define YP_SCALE 0.6143
-#define YN_SCALE 0.8431
-#define ZP_SCALE 0.6418
-#define ZN_SCALE 0.9348
 
 /* USER CODE END PD */
 
@@ -78,17 +73,13 @@
 #define ADC_CHANNEL_ZP 4
 #define ADC_CHANNEL_ZN 5
 #define NUM_ADC_CHANNELS 6
-
-#define R (double)1000.0 // In ohms
+#define MOVING_AVG_LENGTH 4
 
 #define ADC_MAX_VOLTS 3.3
 #define ADC_RESOLUTION 12
-#define ADC_TO_VOLTS(adc_raw) ((double)(((adc_raw)*3.3)/(1<<ADC_RESOLUTION)))
+#define ADC_TO_VOLTS(adc_raw) ((double)(((adc_raw)*ADC_MAX_VOLTS)/(1<<ADC_RESOLUTION)))
 
 #define PI 3.1416
-
-#define ADC_READING_LOW_THRESHOLD 128 // Minimum value to treat the reading as nonzero
-#define ADC_READING_HIGH_THRESHOLD 2048 // Minimum value to treat the reading as full exposure (close to 90deg incident angle)
 
 /* USER CODE END PM */
 
@@ -102,6 +93,7 @@ UART_HandleTypeDef huart2;
 
 ADC_ChannelConfTypeDef sConfig = {0};
 uint32_t adc_data[NUM_ADC_CHANNELS];
+float sv_raw[NUM_ADC_CHANNELS];
 
 /* USER CODE END PV */
 
@@ -158,15 +150,19 @@ int main(void)
 
 	#ifdef YAWPITCH_TEST // Unit testing
 	int num_tests = 7;
-	double x_components[] = {1, 0.7071, -0.7071, 0.7071, -0.7071, 0.7071, 0};
-	double y_components[] = {0, 0.7071, 0.7071, -0.7071, -0.7071, 0, -0.7071};
-	double z_components[] = {0, 0, 0, 0, 0, 0.7071, -0.7071};
-	double desired_yaw[] = {0, 45, 135, -45, -135, 0, -90};
-	double desired_pitch[] = {0, 0, 0, 0, 0, 45, -45};
+	double x_components[] = {1,		0.7071,	 -0.7071,   0.7071,  -0.7071,  0.7071,        0};
+	double y_components[] = {0, 	0.7071,		0.7071,  -0.7071,  -0.7071,       0,  -0.7071};
+	double z_components[] = {0, 			 0, 			 0, 			 0, 			 0,  0.7071,  -0.7071};
+	
+	double desired_yaw[] =  {0, 			45, 		 135,			 -45,			-135,				0,			-90};
+	double desired_pitch[] = {0,			 0,				 0,				 0,				 0, 		 45,			-45};
 	
 	for(int i = 0;i < num_tests;i++) {
-		PrintYawPitch(x_components[i], y_components[i], z_components[i]);
+		Matrix v = make3x1Vector(x_components[i], y_components[i], z_components[i]);
+		matrixScale(v, 1.0/vectorNorm(v));
 		char transmit[50];
+		printSolarVector(v, transmit);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 50);
 		sprintf(transmit, "Desired:\r\nyaw: %3.1f pitch: %3.1f\r\n\r\n", desired_yaw[i], desired_pitch[i]);
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 50);
 	}
@@ -181,7 +177,9 @@ int main(void)
 	
 	// See the Attitude Control System document for info on the body reference frame and axes
 	double volts_xp, volts_xn, volts_yp, volts_yn, volts_zp, volts_zn; // Positive and negative raw current values for each axis
-
+	
+	MovingAvgFilter filter = newMovingAvgFilter(NUM_ADC_CHANNELS, MOVING_AVG_LENGTH);
+	
 	Matrix solar_vector = newMatrix(3, 1); // Make a new column vector Matrix for the solar vector
 	
   /* USER CODE END 2 */
@@ -190,13 +188,19 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+		// Read ADC
+		for(int i = 0;i < NUM_ADC_CHANNELS;i++) {
+			sv_raw[i] = ADC_TO_VOLTS(adc_data[i]);
+		}
+		runMovingAvgFilter(filter, sv_raw); // Moving average solar vector readings
+		
 		// Read data and convert to volts
-		volts_xp = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_XP])*XP_SCALE;
-		volts_xn = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_XN])*XN_SCALE;
-		volts_yp = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_YP])*YP_SCALE;
-		volts_yn = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_YN])*YN_SCALE;
-		volts_zp = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_ZP])*ZP_SCALE;
-		volts_zn = ADC_TO_VOLTS(adc_data[ADC_CHANNEL_ZN])*ZN_SCALE;
+		volts_xp = sv_raw[ADC_CHANNEL_XP]*XP_SCALE;
+		volts_xn = sv_raw[ADC_CHANNEL_XN]*XN_SCALE;
+		volts_yp = sv_raw[ADC_CHANNEL_YP]*YP_SCALE;
+		volts_yn = sv_raw[ADC_CHANNEL_YN]*YN_SCALE;
+		volts_zp = sv_raw[ADC_CHANNEL_ZP]*ZP_SCALE;
+		volts_zn = sv_raw[ADC_CHANNEL_ZN]*ZN_SCALE;
 		
 		// Print x values
 		sprintf(transmit, "xp: %2.4f xn: %2.4f\r\n", volts_xp, volts_xn);
@@ -224,11 +228,10 @@ int main(void)
 		}
 		else {
 			sprintf(transmit, "Solar vector not found!\r\n\r\n");
-			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
+			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 30);
 		}
 		
-		// Wait 2 seconds
-		HAL_Delay(1000);
+		HAL_Delay(10);
 		
     /* USER CODE END WHILE */
 

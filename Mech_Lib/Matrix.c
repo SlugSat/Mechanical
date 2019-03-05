@@ -166,11 +166,9 @@ void matrixTranspose(Matrix m, Matrix mt) {
 
 Matrix make3x1Vector(float x, float y, float z) {
 	Matrix v = newMatrix(3, 1);
-	float row1[] = {x};
-	float row2[] = {y};
-	float row3[] = {z};
-	float* array[] = {row1, row2, row3};
-	matrixCopyArray(v, array);
+	v->data[0][0] = x;
+	v->data[1][0] = y;
+	v->data[2][0] = z;
 	return v;
 }
 

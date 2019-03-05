@@ -13,17 +13,27 @@
  #ifndef SOLARVECTOR_H
  #define SOLARVECTOR_H
  
-/* Includes ------------------------------------------------------------------*/
+/* Includes -----------------------------------------------------------------*/
 #include <Matrix.h>
 #include <stdint.h>
 
-/* Public typedefs ---------------------------------------------*/
+/* Public defines -----------------------------------------------------------*/
+
+#define XP_SCALE 1.0 // Should always be 1
+#define XN_SCALE 0.7679
+#define YP_SCALE 0.6143
+#define YN_SCALE 0.8431
+#define ZP_SCALE 0.6418
+#define ZN_SCALE 0.9348
+
+/* Public typedefs ----------------------------------------------------------*/
+
 typedef enum {
 	SV_FOUND,
 	SV_NOTFOUND
 }SV_Status;
 
-/* Public functions prototypes ---------------------------------------------*/
+/* Public functions prototypes ----------------------------------------------*/
 
 /** 
  * @brief  Calculates a solar vector from solar panel current measurements

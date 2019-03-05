@@ -16,13 +16,6 @@
 
 #define PI 3.1416
 
-#define XP_SCALE 1.0 // Should always be 1
-#define XN_SCALE 0.7679
-#define YP_SCALE 0.6143
-#define YN_SCALE 0.8431
-#define ZP_SCALE 0.6418
-#define ZN_SCALE 0.9348
-
 #define SUN_MIN_THRESH 128 // 12-bit ADC value; NEEDS CHANGING POST CALIBRATION
 
 /** 
@@ -70,33 +63,63 @@ SV_Status findSolarVector(uint32_t* adc_readings, char num_panels, Matrix v) {
 }
 	
 /** 
- * @brief  Prints yaw and pitch (in degrees) of a solar vector relative to the +X unit vector
+ * @brief  Prints yaw and pitch (in degrees, from inertial frame) of a solar vector relative to the +X unit vector
  * @param  Normalized 3x1 column vector Matrix, string to hold the result
  * @return None
 */
 void printSolarVector(Matrix v, char* string) {
 	static uint8_t init_run = 0;
+	static Matrix v_rcross;
+	static Matrix xB;
+	static Matrix yB;
+	static Matrix n;
 	static Matrix xhat_proj;
 	
 	if(init_run == 0) {
+		v_rcross = newMatrix(3, 3);
+		xB = make3x1Vector(1, 0, 0);
+		yB = make3x1Vector(0, 1, 0);
+		n = newMatrix(3, 1);
 		xhat_proj = newMatrix(3, 1);
+		
 		init_run = 1;
 	}
+	
+	// Find normal vector to inertial xy plane
+	vectorRcross(v, v_rcross);
+	matrixMult(v_rcross, yB, n);
+	
+	float n_norm = vectorNorm(n);
+	if(n_norm != 0) {
+		matrixScale(n, 1.0/n_norm); // Normalize n
+	}
+	
+	// Find normalized projection of xB onto inertial xy plane
+	matrixScale(n, matrixGetElement(n, 1, 1));
+	matrixSubtract(xB, n, xhat_proj);
+	float xhat_proj_norm = vectorNorm(xhat_proj);
+	if(xhat_proj_norm != 0) {
+		matrixScale(xhat_proj, 1.0/xhat_proj_norm);
+	}
+	
+	// Pitch = acos(xhat_proj_x)
+	float pitch_degrees = 180*acos(matrixGetElement(xhat_proj, 1, 1))/PI;
+	
+	// Yaw = acos(xhat_proj*v)
+	float yaw_degrees = 180*acos(vectorDotProduct(xhat_proj, v))/PI;
 	
 	float vector_x = matrixGetElement(v, 1, 1);
 	float vector_y = matrixGetElement(v, 2, 1);
 	float vector_z = matrixGetElement(v, 3, 1);
 	
 	// Convert vector into yaw/pitch angles referenced to the +X unit vector (1, 0, 0)
-	float yaw_degrees = 180*acos(vector_x/sqrt(pow(vector_x, 2) + pow(vector_y, 2)))/PI;
 	if(vector_y < 0) {
 		yaw_degrees *= -1;
 	}
 	
-	float pitch_degees = 180*acos(sqrt(pow(vector_x, 2) + pow(vector_y, 2)))/PI;
 	if(vector_z < 0) {
-		pitch_degees *= -1;
+		pitch_degrees *= -1;
 	}
 	
-	sprintf(string, "yaw: %3.1f pitch: %3.1f\r\n", yaw_degrees, pitch_degees);
+	sprintf(string, "yaw: %3.1f pitch: %3.1f\r\n", yaw_degrees, pitch_degrees);
 }
