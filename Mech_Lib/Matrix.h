@@ -147,6 +147,13 @@ void vectorRcross(Matrix v, Matrix vcross);
 float vectorNorm(Matrix v);
 
 /** 
+ * @brief  Calculates the dot product of two column vectors
+ * @param  Two column vector Matrices with the same dimensions
+ * @return The dot product v1*v2
+*/
+float vectorDotProduct(Matrix v1, Matrix v2);
+
+/** 
  * @brief  Prints a Matrix to a string in a format suitable for printing over serial
  * @param  A Matrix and a char pointer with enough room to hold the printed Matrix
  * @return None

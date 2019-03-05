@@ -206,6 +206,14 @@ float vectorNorm(Matrix v) {
     return sqrt(sum);
 }
 
+float vectorDotProduct(Matrix v1, Matrix v2) {
+	float sum = 0;
+	for(int i = 0;i < v1->r;i++) {
+		sum += v1->data[i][0]*v2->data[i][0];
+	}
+	return sum;
+}
+
 void printMatrix(Matrix m, char* string) {
     int r = matrixGetRows(m);
     int c = matrixGetCol(m);

@@ -75,6 +75,14 @@ SV_Status findSolarVector(uint32_t* adc_readings, char num_panels, Matrix v) {
  * @return None
 */
 void printSolarVector(Matrix v, char* string) {
+	static uint8_t init_run = 0;
+	static Matrix xhat_proj;
+	
+	if(init_run == 0) {
+		xhat_proj = newMatrix(3, 1);
+		init_run = 1;
+	}
+	
 	float vector_x = matrixGetElement(v, 1, 1);
 	float vector_y = matrixGetElement(v, 2, 1);
 	float vector_z = matrixGetElement(v, 3, 1);
