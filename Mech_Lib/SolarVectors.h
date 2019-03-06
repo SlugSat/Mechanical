@@ -20,11 +20,11 @@
 /* Public defines -----------------------------------------------------------*/
 
 #define XP_SCALE 1.0 // Should always be 1
-#define XN_SCALE 0.7679
-#define YP_SCALE 0.6143
-#define YN_SCALE 0.8431
-#define ZP_SCALE 0.6418
-#define ZN_SCALE 0.9348
+#define XN_SCALE 0.81669394435
+#define YP_SCALE 0.51860928166
+#define YN_SCALE 0.7354584972
+#define ZP_SCALE 0.74533233756
+#define ZN_SCALE 0.94866920152
 
 /* Public typedefs ----------------------------------------------------------*/
 

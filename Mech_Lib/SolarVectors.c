@@ -16,7 +16,9 @@
 
 #define PI 3.1416
 
-#define SUN_MIN_THRESH 0.1 // In volts; NEEDS CHANGING POST CALIBRATION
+// THESE NEED CHANGING POST-CALIBRATION
+#define SUN_MIN_THRESH 0.05 // Threshold (volts) for a panel to be considered in the sun at all
+#define VECTOR_MAG_THRESH 0.3 // Threshold (volts) for the vector mag to tell if the satellite is in the sun
 
 /** 
  * @brief  Calculates a solar vector from solar panel current measurements
@@ -27,20 +29,17 @@
 */
 SV_Status findSolarVector(float* adc_readings, char num_panels, Matrix v) {
 	float xp, xm, yp, ym, zp, zm;
+	
+	xp = adc_readings[0]*XP_SCALE;
+	xm = adc_readings[1]*XN_SCALE;
+	yp = adc_readings[2]*YP_SCALE;
+	ym = adc_readings[3]*YN_SCALE;
+	zp = adc_readings[4]*ZP_SCALE;
+	
 	if(num_panels == 6) {
-		xp = adc_readings[0]*XP_SCALE;
-		xm = adc_readings[1]*XN_SCALE;
-		yp = adc_readings[2]*YP_SCALE;
-		ym = adc_readings[3]*YN_SCALE;
-		zp = adc_readings[4]*ZP_SCALE;
 		zm = adc_readings[5]*ZN_SCALE;
 	}
 	else if(num_panels == 5) {
-		xp = adc_readings[0]*XP_SCALE;
-		xm = adc_readings[1]*XN_SCALE;
-		yp = adc_readings[2]*YP_SCALE;
-		ym = adc_readings[3]*YN_SCALE;
-		zp = adc_readings[4]*ZP_SCALE;
 		zm = 0;
 	}
 	
@@ -60,10 +59,10 @@ SV_Status findSolarVector(float* adc_readings, char num_panels, Matrix v) {
 		return SV_NOTFOUND;
 	}
 	
-	if(xp > SUN_MIN_THRESH || xm > SUN_MIN_THRESH || yp > SUN_MIN_THRESH || ym > SUN_MIN_THRESH || zp > SUN_MIN_THRESH || zm > SUN_MIN_THRESH) {
-		return SV_FOUND;
+	if(vector_mag <= VECTOR_MAG_THRESH) {
+		return SV_NOTFOUND;
 	}
-	return SV_NOTFOUND;
+	return SV_FOUND;
 }
 	
 /** 

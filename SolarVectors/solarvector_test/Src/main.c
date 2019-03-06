@@ -64,7 +64,9 @@
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 // #define YAWPITCH_TEST // Uncomment to unit test yaw and pitch function
-// #define USE_ADC_THRESHOLDS // Uncomment to ignore readings on the "dark side" of the satellite
+#define PRINT_RAW_VALS
+// #define PRINT_SOLAR_VECTOR
+// #define PRINT_YAWPITCH
 
 #define ADC_CHANNEL_XP 0
 #define ADC_CHANNEL_XN 1
@@ -73,7 +75,7 @@
 #define ADC_CHANNEL_ZP 4
 #define ADC_CHANNEL_ZN 5
 #define NUM_ADC_CHANNELS 6
-#define MOVING_AVG_LENGTH 4
+#define MOVING_AVG_LENGTH 10
 
 #define ADC_MAX_VOLTS 3.3
 #define ADC_RESOLUTION 12
@@ -194,6 +196,7 @@ int main(void)
 		}
 		runMovingAvgFilter(filter, sv_raw); // Moving average solar vector readings
 		
+		#ifdef PRINT_RAW_VALS
 		// Read data and convert to volts
 		volts_xp = sv_raw[ADC_CHANNEL_XP]*XP_SCALE;
 		volts_xn = sv_raw[ADC_CHANNEL_XN]*XN_SCALE;
@@ -213,25 +216,33 @@ int main(void)
 		// Print z values
 		sprintf(transmit, "zp: %2.4f zn: %2.4f\r\n", volts_zp, volts_zn);
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
+		#endif
 		
 		// Calculate solar vector
-		SV_Status sv_return = findSolarVector(sv_raw, 5, solar_vector);
+		SV_Status sv_return = findSolarVector(sv_raw, 6, solar_vector);
+		
 		
 		if(sv_return == SV_FOUND) { // Check if a valid solar vector was found
+			#ifdef PRINT_SOLAR_VECTOR
 			// Print solar vector over serial using the Matrix library command;
 			printMatrix(solar_vector, transmit);
 			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
-			
+			#endif
+			#ifdef PRINT_YAWPITCH
 			// Print solar vector over serial using the SolarVector library command
-			// printSolarVector(solar_vector, transmit);
-			// HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
+			printSolarVector(solar_vector, transmit);
+			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
+			#endif
 		}
 		else {
-			sprintf(transmit, "Solar vector not found!\r\n\r\n");
+			sprintf(transmit, "Solar vector not found!\r\n");
 			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 30);
 		}
 		
-		HAL_Delay(10);
+		sprintf(transmit, "\r\n");
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 30);
+		
+		HAL_Delay(100);
 		
     /* USER CODE END WHILE */
 
