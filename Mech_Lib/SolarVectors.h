@@ -26,6 +26,10 @@
 #define ZP_SCALE 0.74533233756
 #define ZN_SCALE 0.94866920152
 
+#define ADC_MAX_VOLTS 3.3
+#define ADC_RESOLUTION 12
+#define ADC_TO_VOLTS(adc_raw) ((double)(((adc_raw)*ADC_MAX_VOLTS)/(1<<ADC_RESOLUTION)))
+
 /* Public typedefs ----------------------------------------------------------*/
 
 typedef enum {

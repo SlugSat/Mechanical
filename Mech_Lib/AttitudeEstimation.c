@@ -51,7 +51,7 @@ void integrateDCM(Matrix R, Matrix bias, Matrix gyro, Matrix mag, Matrix sv,
 		Matrix mag_inertial, Matrix sv_inertial, double Kp_mag, double Ki_mag,
 		double Kp_sv, double Ki_sv, double dt) {
 			
-	static int init_run = 0;
+	static char init_run = 0;
 	static Matrix Rt; // Transpose of the DCM
 	static Matrix mag_i_body, sv_i_body; // Inertial sensor vectors translated to body
 	static Matrix mag_rx, sv_rx; // rcross matrices of sensor vectors
@@ -88,8 +88,8 @@ void integrateDCM(Matrix R, Matrix bias, Matrix gyro, Matrix mag, Matrix sv,
 
 	if(norm_mag == 0 || norm_sv == 0 || norm_mi == 0 || norm_svi == 0) {
 		// Need better error handling
-		printf("EULER ERROR: DIVIDE BY 0");
-		//while(1);
+		// printf("EULER ERROR: DIVIDE BY 0");
+		while(1);
 	}
 	
 	matrixScale(mag, 1.0/norm_mag);
@@ -135,21 +135,31 @@ void integrateDCM(Matrix R, Matrix bias, Matrix gyro, Matrix mag, Matrix sv,
 }
 
 /** 
- * @brief  Performs closed loop integration on the given DCM using the Rexp form
- * @param  R: the DCM (initialize to I3 before first use)
+ * @brief  Finds Euler angles in inertial frame from a DCM
+ * @param  R: the DCM (body->inertial)
  * @param  yaw_pitch_roll: pointer to float[3] which hold yaw (0) pitch (1) and roll (2) after the function returns
  * @return None
 */
 void findEulerAngles(Matrix R, float* yaw_pitch_roll) {
+	static char init_run = 0;
+	static Matrix Rt;
+	
+	if(init_run == 0) {
+		Rt = newMatrix(3, 3);
+		init_run = 1;
+	}
+	
+	// Find transpose of R
+	matrixTranspose(R, Rt);
+	
 	// Yaw
-	yaw_pitch_roll[0] = atan2(matrixGetElement(R, 1, 2), matrixGetElement(R, 1, 1));
+	yaw_pitch_roll[0] = atan2(matrixGetElement(Rt, 1, 2), matrixGetElement(Rt, 1, 1));
 
 	// Pitch
-	yaw_pitch_roll[1] = asin(-matrixGetElement(R, 1, 3));
+	yaw_pitch_roll[1] = asin(-matrixGetElement(Rt, 1, 3));
 
 	// Roll
-	yaw_pitch_roll[2] = atan2(matrixGetElement(R, 2, 3),
-	matrixGetElement(R, 3, 3));
+	yaw_pitch_roll[2] = atan2(matrixGetElement(Rt, 2, 3), matrixGetElement(Rt, 3, 3));
 }
 
 // Helper function to find the sinc of a float

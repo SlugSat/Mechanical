@@ -172,7 +172,7 @@ void get_gyr_data(I2C_HandleTypeDef *hi2c, float *data)
 	
 	for (int i = 0; i < RAW_DATA_LEN; i++)
 	{
-		data[i] = (float)raw_data[i]/16.0;
+		data[i] = (float)raw_data[i]/900.0;
 	}
 
 	return;

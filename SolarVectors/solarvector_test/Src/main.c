@@ -77,10 +77,6 @@
 #define NUM_ADC_CHANNELS 6
 #define MOVING_AVG_LENGTH 10
 
-#define ADC_MAX_VOLTS 3.3
-#define ADC_RESOLUTION 12
-#define ADC_TO_VOLTS(adc_raw) ((double)(((adc_raw)*ADC_MAX_VOLTS)/(1<<ADC_RESOLUTION)))
-
 #define PI 3.1416
 
 /* USER CODE END PM */

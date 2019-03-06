@@ -22,6 +22,7 @@
 #include <SolarVectors.h>
 #include <BNO055_IMU.h>
 #include <string.h>
+#include <DigitalFilters.h>
 
 /* USER CODE END Includes */
 
@@ -32,16 +33,18 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define VERBOSE_PRINTING
+// #define VERBOSE_PRINTING
 
 #define NUM_SOLAR_PANELS 6
-#define MAG_HIST_LENGTH 20
-#define SV_HIST_LENGTH 20
+#define MAG_HIST_LENGTH 10
+#define SV_HIST_LENGTH 10
 
-#define KP_MAG_BASE 0.2
-#define KI_MAG_BASE 0.02
-#define KP_SV_BASE 0.2
-#define KI_SV_BASE 0.02
+#define KP_MAG_BASE 0 //0.2
+#define KI_MAG_BASE 0 //0.02
+#define KP_SV_BASE 0 //0.2
+#define KI_SV_BASE 0 //0.02
+
+#define SET_DT 50 // In ms
 
 /* USER CODE END PD */
 
@@ -55,6 +58,8 @@ ADC_HandleTypeDef hadc1;
 DMA_HandleTypeDef hdma_adc1;
 
 I2C_HandleTypeDef hi2c1;
+
+TIM_HandleTypeDef htim1;
 
 UART_HandleTypeDef huart2;
 
@@ -70,10 +75,8 @@ static void MX_DMA_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_ADC1_Init(void);
+static void MX_TIM1_Init(void);
 /* USER CODE BEGIN PFP */
-// Helper function to do a moving average filter on a single float. Index is 
-// updated automatically but needs to be passed every time.
-float movingAverageFilter(float* readings, float new_reading, char num_readings, char* index, float last_avg);
 
 /* USER CODE END PFP */
 
@@ -114,28 +117,43 @@ int main(void)
   MX_I2C1_Init();
   MX_USART2_UART_Init();
   MX_ADC1_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
 	char transmit[200];
 	
 	// ***** INITIALIZE SENSORS *****
 	IMU_init(&hi2c1, OPERATION_MODE_MAGGYRO);
-	
-	float gyro_raw[3] = {0};
-	float mag_raw[3] = {0};
-	float mag_filtered[3] = {0};
+	float gyro_data[3] = {0};
+	float mag_data[3] = {0};
 	
 	HAL_ADC_Start_DMA(&hadc1, sv_raw, NUM_SOLAR_PANELS); // Start ADC in DMA mode
+	float sv_data[NUM_SOLAR_PANELS] = {0};
 	
 	// ***** INITIALIZE MOVING AVERAGE FILTERS *****
-	float mag_hist[3][MAG_HIST_LENGTH] = {0};
-	char mag_index[3] = {0};
+	MovingAvgFilter mag_filter = newMovingAvgFilter(3, MAG_HIST_LENGTH);
+	MovingAvgFilter sv_filter = newMovingAvgFilter(NUM_SOLAR_PANELS, SV_HIST_LENGTH);
+	
+	// Run filters to fill them with initial data
+	for(int i = 0;i < MAG_HIST_LENGTH && i < SV_HIST_LENGTH;i++) {
+		// Read magnetometer
+		get_mag_data(&hi2c1, mag_data);
+		runMovingAvgFilter(mag_filter, mag_data);
+		
+		// Read solar vector
+		for(int i = 0;i < NUM_SOLAR_PANELS;i++) {
+			sv_data[i] = ADC_TO_VOLTS(sv_raw[i]);
+		}
+		runMovingAvgFilter(sv_filter, sv_data);
+		
+		HAL_Delay(SET_DT);
+	}
 	
 	// ***** INITIALIZE MATRICES *****
 	Matrix gyro_vector = newMatrix(3, 1);
 	Matrix mag_vector = newMatrix(3, 1);
 	Matrix solar_vector = newMatrix(3, 1);
 	Matrix sv_inertial = make3x1Vector(1, 0, 0);
-	Matrix mag_inertial = make3x1Vector(0, 0, -1);
+	Matrix mag_inertial = make3x1Vector(0, -1, 0);
 	
 	
 	float Kp_mag = KP_MAG_BASE;
@@ -145,31 +163,35 @@ int main(void)
 	
 	Matrix bias_estimate = make3x1Vector(0, 0, 0);
 	
-	float dt = 0.01; // 10 ms
+	float dt = SET_DT/1000.0; // In seconds
 	
 	Matrix R = initializeDCM(0, 0, 0);
 	
 	float y_p_r[3]; // Yaw/pitch/roll
 	
+	sprintf(transmit, "Finished init\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		// Read gyro, transform into a vector Matrix
-		get_gyr_data(&hi2c1, gyro_raw);
-		vectorCopyArray(gyro_vector, gyro_raw, 3);
+		// Read gyro and transform into a column vector Matrix
+		get_gyr_data(&hi2c1, gyro_data);
+		vectorCopyArray(gyro_vector, gyro_data, 3);
 		
 		// Read magnetometer, iterate moving average filter, transform into a vector Matrix
-		get_mag_data(&hi2c1, mag_raw);
-		for(int i = 0;i < 3;i++) {
-			mag_filtered[i] = movingAverageFilter(mag_hist[i], mag_raw[i], MAG_HIST_LENGTH, &mag_index[i], mag_filtered[i]);
-		}
-		vectorCopyArray(mag_vector, mag_filtered, 3);
+		get_mag_data(&hi2c1, mag_data);
+		runMovingAvgFilter(mag_filter, mag_data);
+		vectorCopyArray(mag_vector, mag_data, 3);
 		
 		// Read solar vector
-		SV_Status sv_return = findSolarVector(sv_raw, NUM_SOLAR_PANELS, solar_vector);
+		for(int i = 0;i < NUM_SOLAR_PANELS;i++) {
+			sv_data[i] = ADC_TO_VOLTS(sv_raw[i]);
+		}
+		runMovingAvgFilter(sv_filter, sv_data);
+		SV_Status sv_return = findSolarVector(sv_data, NUM_SOLAR_PANELS, solar_vector);
 		
 		if(sv_return == SV_FOUND) {
 			Kp_sv = KP_SV_BASE;
@@ -216,7 +238,8 @@ int main(void)
 		findEulerAngles(R, y_p_r);
 		sprintf(transmit, "Yaw:   %6.2f\r\nPitch: %6.2f\r\nRoll:  %6.2f\r\n\r\n", 180.0*y_p_r[0]/3.1416, 180.0*y_p_r[1]/3.1416, 180.0*y_p_r[2]/3.1416);
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
-		HAL_Delay(10);
+		
+		HAL_Delay(SET_DT);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -241,7 +264,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI_DIV2;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL7;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL2;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -252,10 +275,10 @@ void SystemClock_Config(void)
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
   {
     Error_Handler();
   }
@@ -387,6 +410,52 @@ static void MX_I2C1_Init(void)
 }
 
 /**
+  * @brief TIM1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM1_Init(void)
+{
+
+  /* USER CODE BEGIN TIM1_Init 0 */
+
+  /* USER CODE END TIM1_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM1_Init 1 */
+
+  /* USER CODE END TIM1_Init 1 */
+  htim1.Instance = TIM1;
+  htim1.Init.Prescaler = 0;
+  htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim1.Init.Period = 0;
+  htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV2;
+  htim1.Init.RepetitionCounter = 0;
+  htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim1, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim1, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM1_Init 2 */
+
+  /* USER CODE END TIM1_Init 2 */
+
+}
+
+/**
   * @brief USART2 Initialization Function
   * @param None
   * @retval None
@@ -449,15 +518,6 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
-float movingAverageFilter(float* readings, float new_reading, char num_readings, char* index, float last_avg) {
-	last_avg -= readings[*index];
-	readings[*index] = new_reading/num_readings;
-	last_avg += readings[*index];
-	(*index)++;
-	*index = *index % num_readings;
-	return last_avg;
-}
 
 /* USER CODE END 4 */
 

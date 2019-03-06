@@ -232,7 +232,7 @@ void set_mode(I2C_HandleTypeDef *hi2c, IMU_Op_Mode_t op_mode);
 void get_mag_data(I2C_HandleTypeDef *hi2c, float *data);
 
 // gets gyroscope data where data is a float array of size 3
-// that represents the rotation vector []
+// that represents the rotation vector [rad/s]
 void get_gyr_data(I2C_HandleTypeDef *hi2c, float *data);
 
 // gets accelerometer data where data is a float array of size 3
