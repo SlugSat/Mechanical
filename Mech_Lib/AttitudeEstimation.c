@@ -6,13 +6,15 @@
   ** This module contains the code to run closed loop integration of the gyro
 	* using feedback from the magnetometer and solar vector.
 	* 
-	* Created by Galen Savidge. Edited 2/23/2019.
+	* Created by Galen Savidge. Edited 3/6/2019.
   ******************************************************************************
   */
 
 #include <AttitudeEstimation.h>
 #include <math.h>
 #include <main.h>
+
+#define PI 3.141592654
 
 // Helper functions
 /** 
@@ -28,14 +30,34 @@ float	sinc(float x);
 
 /** 
  * @brief  Allocates and initializes a 3x3 DCM Matrix
- * @param  Euler angles for the initial DCM
+ * @param  Euler angles for the initial DCM (in degrees)
  * @return The new DCM Matrix
 */
-Matrix initializeDCM(double yaw, double pitch, double roll) {
+Matrix initializeDCM(float yaw, float pitch, float roll) {
 	Matrix r = newMatrix(3, 3);
-	matrixSet(r, 1, 1, 1.0);
-	matrixSet(r, 2, 2, 1.0);
-	matrixSet(r, 3, 3, 1.0);
+	
+	// Angles in radians
+	float y_r = PI*yaw/180;
+	float p_r = PI*pitch/180;
+	float r_r = PI*roll/180;
+	
+	// From: https://en.wikipedia.org/wiki/Rotation_formalisms_in_three_dimensions#Euler_angles_(z-y%E2%80%B2-x%E2%80%B3_intrinsic)_%E2%86%92_rotation_matrix
+	
+	// Row 1
+	matrixSet(r, 1, 1, cos(p_r)*cos(y_r));
+	matrixSet(r, 1, 2, -cos(r_r)*sin(y_r)+sin(r_r)*sin(p_r)*cos(y_r));
+	matrixSet(r, 1, 3, sin(r_r)*sin(y_r)+cos(r_r)*sin(p_r)*cos(y_r));
+	
+	// Row 2
+	matrixSet(r, 2, 1, cos(p_r)*sin(y_r));
+	matrixSet(r, 2, 2, cos(r_r)*cos(y_r)+sin(r_r)*sin(p_r)*sin(y_r));
+	matrixSet(r, 2, 3, -sin(r_r)*cos(y_r)+cos(r_r)*sin(p_r)*sin(y_r));
+	
+	// Row 3
+	matrixSet(r, 3, 1, -sin(p_r));
+	matrixSet(r, 3, 2, sin(r_r)*cos(p_r));
+	matrixSet(r, 3, 3, cos(r_r)*cos(p_r));
+	
 	return r;
 }
 
@@ -48,8 +70,8 @@ Matrix initializeDCM(double yaw, double pitch, double roll) {
  * @return None
 */
 void integrateDCM(Matrix R, Matrix bias, Matrix gyro, Matrix mag, Matrix sv, 
-		Matrix mag_inertial, Matrix sv_inertial, double Kp_mag, double Ki_mag,
-		double Kp_sv, double Ki_sv, double dt) {
+		Matrix mag_inertial, Matrix sv_inertial, float Kp_mag, float Ki_mag,
+		float Kp_sv, float Ki_sv, float dt) {
 			
 	static char init_run = 0;
 	static Matrix Rt; // Transpose of the DCM

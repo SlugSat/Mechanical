@@ -6,7 +6,7 @@
   ** This module contains the code to run closed loop integration of the gyro
 	* using feedback from the magnetometer and solar vector.
 	* 
-	* Created by Galen Savidge. Edited 2/23/2019.
+	* Created by Galen Savidge. Edited 3/6/2019.
   ******************************************************************************
   */
 
@@ -23,7 +23,7 @@
  * @param  Euler angles for the initial DCM
  * @return The new DCM Matrix
 */
-Matrix initializeDCM(double yaw, double pitch, double roll);
+Matrix initializeDCM(float yaw, float pitch, float roll);
 
 /** 
  * @brief  Performs closed loop integration on the given DCM using the Rexp form
@@ -39,8 +39,8 @@ Matrix initializeDCM(double yaw, double pitch, double roll);
  * @return None
 */
 void integrateDCM(Matrix R, Matrix bias, Matrix gyro, Matrix mag, Matrix sv, 
-		Matrix mag_inertial, Matrix sv_inertial, double Kp_mag, double Ki_mag,
-		double Kp_sv, double Ki_sv, double dt);
+		Matrix mag_inertial, Matrix sv_inertial, float Kp_mag, float Ki_mag,
+		float Kp_sv, float Ki_sv, float dt);
 
 /** 
  * @brief  Performs closed loop integration on the given DCM using the Rexp form

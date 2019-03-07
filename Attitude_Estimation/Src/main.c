@@ -39,10 +39,10 @@
 #define MAG_HIST_LENGTH 10
 #define SV_HIST_LENGTH 10
 
-#define KP_MAG_BASE 0 //0.2
-#define KI_MAG_BASE 0 //0.02
-#define KP_SV_BASE 0 //0.2
-#define KI_SV_BASE 0 //0.02
+#define KP_MAG_BASE 0 //1.0
+#define KI_MAG_BASE 0 //0.3
+#define KP_SV_BASE 0 //1.0
+#define KI_SV_BASE 0 //0.3
 
 #define SET_DT 50 // In ms
 
@@ -155,7 +155,7 @@ int main(void)
 	Matrix sv_inertial = make3x1Vector(1, 0, 0);
 	Matrix mag_inertial = make3x1Vector(0, -1, 0);
 	
-	
+	// ***** GYRO FEEDBACK *****
 	float Kp_mag = KP_MAG_BASE;
 	float Ki_mag = KI_MAG_BASE;
 	float Kp_sv = KP_SV_BASE;
@@ -164,9 +164,7 @@ int main(void)
 	Matrix bias_estimate = make3x1Vector(0, 0, 0);
 	
 	float dt = SET_DT/1000.0; // In seconds
-	
 	Matrix R = initializeDCM(0, 0, 0);
-	
 	float y_p_r[3]; // Yaw/pitch/roll
 	
 	sprintf(transmit, "Finished init\r\n");
