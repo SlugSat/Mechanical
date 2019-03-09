@@ -34,15 +34,19 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 // #define VERBOSE_PRINTING
+#define PRINT_COMPUTATION_TIME
+#define PRINT_EULER_ANGLES
+
+#define PI 3.14159265358979323846
 
 #define NUM_SOLAR_PANELS 6
 #define MAG_HIST_LENGTH 10
 #define SV_HIST_LENGTH 10
 
-#define KP_MAG_BASE 0 //1.0
-#define KI_MAG_BASE 0 //0.3
-#define KP_SV_BASE 0 //1.0
-#define KI_SV_BASE 0 //0.3
+#define KP_MAG_BASE 1.0
+#define KI_MAG_BASE 0.3
+#define KP_SV_BASE 1.0
+#define KI_SV_BASE 0.3
 
 #define TIME_DELAY_MS 50 // In ms
 
@@ -121,6 +125,7 @@ int main(void)
   MX_ADC1_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+	
 	char transmit[200];
 	
 	// ***** INITIALIZE SENSORS *****
@@ -157,6 +162,9 @@ int main(void)
 	Matrix sv_inertial = make3x1Vector(1, 0, 0);
 	Matrix mag_inertial = make3x1Vector(0, -1, 0);
 	
+	vectorCopyArray(mag_inertial, mag_data, 3);
+	findSolarVector(sv_data, NUM_SOLAR_PANELS, sv_inertial); // NEEDS FIXING FOR CASE WHEN SOLAR VECTORS IS NOT FOUND ON STARTUP
+	
 	// ***** GYRO FEEDBACK *****
 	float Kp_mag = KP_MAG_BASE;
 	float Ki_mag = KI_MAG_BASE;
@@ -165,7 +173,7 @@ int main(void)
 	
 	Matrix bias_estimate = make3x1Vector(0, 0, 0);
 	
-	float dt = TIME_DELAY_MS/1000.0; // In seconds
+	float dt; // In seconds
 	Matrix R = initializeDCM(0, 0, 0);
 	float y_p_r[3]; // Yaw/pitch/roll
 	
@@ -173,14 +181,17 @@ int main(void)
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
 	
 	// ***** START TIMER *****
-	uint16_t last_time = 0, new_time = 0;
+	uint16_t last_time = 0, new_time = 0, computation_start_time;
 	HAL_TIM_Base_Start(&htim2);
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+		computation_start_time = TIM2->CNT;
+		
 		// Read gyro and transform into a column vector Matrix
 		get_gyr_data(&hi2c1, gyro_data);
 		vectorCopyArray(gyro_vector, gyro_data, 3);
@@ -210,12 +221,15 @@ int main(void)
 		last_time = new_time;
 		new_time = TIM2->CNT;
 		dt = TIM2_TICKS_TO_SECONDS((uint16_t)(new_time - last_time));
-		sprintf(transmit, "%f\r\n", dt);
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 10);
 		
 		// DCM integration
 		integrateDCM(R, bias_estimate, gyro_vector, mag_vector, solar_vector, mag_inertial, sv_inertial,
 								Kp_mag, Ki_mag, Kp_sv, Ki_sv, dt);
+		
+		#ifdef PRINT_COMPUTATION_TIME
+		sprintf(transmit, "Comp. time: %1.6f[s]\r\n", TIM2_TICKS_TO_SECONDS(TIM2->CNT - computation_start_time));
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 10);
+		#endif
 		
 		#ifdef VERBOSE_PRINTING
 		// Print gyro vector
@@ -245,10 +259,11 @@ int main(void)
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 10);
 		#endif
 		
-		// Print Euler angles
+		#ifdef PRINT_EULER_ANGLES
 		findEulerAngles(R, y_p_r);
-		sprintf(transmit, "Yaw:   %6.2f\r\nPitch: %6.2f\r\nRoll:  %6.2f\r\n\r\n", 180.0*y_p_r[0]/3.1416, 180.0*y_p_r[1]/3.1416, 180.0*y_p_r[2]/3.1416);
+		sprintf(transmit, "Yaw:   %3.2f\r\nPitch: %3.2f\r\nRoll:  %3.2f\r\n\r\n", 180.0*y_p_r[0]/PI, 180.0*y_p_r[1]/PI, 180.0*y_p_r[2]/PI);
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
+		#endif
 		
 		HAL_Delay(TIME_DELAY_MS);
     /* USER CODE END WHILE */

@@ -135,7 +135,7 @@ int main(void)
 		last_time = TIM2->CNT;
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 10);
 		
-		HAL_Delay(100); // Wait 1 second
+		HAL_Delay(100);
   }
   /* USER CODE END 3 */
 }
