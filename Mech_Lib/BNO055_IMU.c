@@ -1,5 +1,12 @@
 #include "BNO055_IMU.h"
 
+#define MAG_X_OFFSET -2.2813
+#define MAG_Y_OFFSET 6.6563
+#define MAG_Z_OFFSET 14.7500
+#define MAG_X_SCALE 0.0224
+#define MAG_Y_SCALE 0.0236
+#define MAG_Z_SCALE 0.0248
+
 // broken at the moment but not super important for prototyping
 uint8_t built_in_self_test(I2C_HandleTypeDef *hi2c)
 {
@@ -148,9 +155,12 @@ void get_mag_data(I2C_HandleTypeDef *hi2c, float *data)
 	raw_data[1] = ((int16_t)rx_data[3] << 8) | (int16_t)rx_data[2];
 	raw_data[2] = ((int16_t)rx_data[5] << 8) | (int16_t)rx_data[4];
 	
+	static float mag_offsets[] = {MAG_X_OFFSET, MAG_Y_OFFSET, MAG_Z_OFFSET};
+	static float mag_scaling_factors[] = {MAG_X_SCALE, MAG_Y_SCALE, MAG_Z_SCALE};
+	
 	for (int i = 0; i < RAW_DATA_LEN; i++)
 	{
-		data[i] = (float)raw_data[i]/16.0;
+		data[i] = ((float)raw_data[i]/16.0 - mag_offsets[i])*mag_scaling_factors[i];
 	}
 
 	return;

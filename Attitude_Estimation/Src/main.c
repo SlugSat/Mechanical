@@ -227,7 +227,7 @@ int main(void)
 								Kp_mag, Ki_mag, Kp_sv, Ki_sv, dt);
 		
 		#ifdef PRINT_COMPUTATION_TIME
-		sprintf(transmit, "Comp. time: %1.6f[s]\r\n", TIM2_TICKS_TO_SECONDS(TIM2->CNT - computation_start_time));
+		sprintf(transmit, "Comp. time: %1.6f[s]\r\n", TIM2_TICKS_TO_SECONDS((uint16_t)(TIM2->CNT - new_time)));
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 10);
 		#endif
 		

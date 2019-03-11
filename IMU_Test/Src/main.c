@@ -46,7 +46,7 @@
 #include <string.h>
 #include <math.h>
 #include <BNO055_IMU.h>
-#include <BNO055_Calib.h>
+#include <DigitalFilters.h>
 
 /* USER CODE END Includes */
 
@@ -59,7 +59,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define PRINT_MAG_CSV
-#define CALIBRATE_IMU
+// #define CALIBRATE_IMU
 
 #define MAG_DELAY_MS 100
 
