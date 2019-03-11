@@ -160,6 +160,30 @@ void get_mag_data(I2C_HandleTypeDef *hi2c, float *data)
 	
 	for (int i = 0; i < RAW_DATA_LEN; i++)
 	{
+		data[i] = (float)raw_data[i]/16.0;
+	}
+
+	return;
+}
+
+void get_mag_data_corrected(I2C_HandleTypeDef *hi2c, float *data)
+{
+	IMU_Reg_t reg = MAG_DATA_X_LSB_ADDR;
+	
+	uint8_t rx_data[RCV_DATA_LEN] = {0};
+	int16_t raw_data[RAW_DATA_LEN] = {0};
+	
+	read_bytes(hi2c, reg, rx_data, RCV_DATA_LEN);
+	
+	raw_data[0] = ((int16_t)rx_data[1] << 8) | (int16_t)rx_data[0];
+	raw_data[1] = ((int16_t)rx_data[3] << 8) | (int16_t)rx_data[2];
+	raw_data[2] = ((int16_t)rx_data[5] << 8) | (int16_t)rx_data[4];
+	
+	static float mag_offsets[] = {MAG_X_OFFSET, MAG_Y_OFFSET, MAG_Z_OFFSET};
+	static float mag_scaling_factors[] = {MAG_X_SCALE, MAG_Y_SCALE, MAG_Z_SCALE};
+	
+	for (int i = 0; i < RAW_DATA_LEN; i++)
+	{
 		data[i] = ((float)raw_data[i]/16.0 - mag_offsets[i])*mag_scaling_factors[i];
 	}
 

@@ -143,7 +143,7 @@ int main(void)
 	// Run filters to fill them with initial data
 	for(int i = 0;i < MAG_HIST_LENGTH && i < SV_HIST_LENGTH;i++) {
 		// Read magnetometer
-		get_mag_data(&hi2c1, mag_data);
+		get_mag_data_corrected(&hi2c1, mag_data);
 		runMovingAvgFilter(mag_filter, mag_data);
 		
 		// Read solar vector
@@ -197,7 +197,7 @@ int main(void)
 		vectorCopyArray(gyro_vector, gyro_data, 3);
 		
 		// Read magnetometer, iterate moving average filter, transform into a vector Matrix
-		get_mag_data(&hi2c1, mag_data);
+		get_mag_data_corrected(&hi2c1, mag_data);
 		runMovingAvgFilter(mag_filter, mag_data);
 		vectorCopyArray(mag_vector, mag_data, 3);
 		

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [Attitude_Estimation\Attitude_Estimation.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image Attitude_Estimation\Attitude_Estimation.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sun Mar 10 19:01:20 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sun Mar 10 20:01:39 2019
 <BR><P>
 <H3>Maximum Stack Usage =        696 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -375,7 +375,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sinc
 <LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initializeDCM
-<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_mag_data
+<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_mag_data_corrected
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pow
 <LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;atan2
 <LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;asin
@@ -407,7 +407,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initializeDCM
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;findSolarVector
-<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_mag_data
+<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_mag_data_corrected
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pow
 <LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;asin
 <LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
@@ -439,7 +439,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __ARM_scalbn
 </UL>
 <BR>[Called By]<UL><LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_mag_data
+<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_mag_data_corrected
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pow
 <LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;asin
 <LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
@@ -475,7 +475,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_epilogue
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_mag_data
+<BR>[Called By]<UL><LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_mag_data_corrected
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pow
 <LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 </UL>
@@ -497,7 +497,7 @@ Global Symbols
 <LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;findEulerAngles
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;findSolarVector
 <LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vectorNorm
-<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_mag_data
+<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_mag_data_corrected
 </UL>
 
 <P><STRONG><a name="[57]"></a>__aeabi_d2f</STRONG> (Thumb, 56 bytes, Stack size 8 bytes, d2f.o(.text))
@@ -512,7 +512,7 @@ Global Symbols
 <LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;findEulerAngles
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;findSolarVector
 <LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vectorNorm
-<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_mag_data
+<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_mag_data_corrected
 </UL>
 
 <P><STRONG><a name="[e9]"></a>__aeabi_uidiv</STRONG> (Thumb, 0 bytes, Stack size 12 bytes, uidiv.o(.text), UNUSED)
@@ -712,9 +712,9 @@ Global Symbols
 <P><STRONG><a name="[66]"></a>HAL_ADC_MspInit</STRONG> (Thumb, 122 bytes, Stack size 40 bytes, stm32f1xx_hal_msp.o(i.HAL_ADC_MspInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = HAL_ADC_MspInit &rArr; HAL_GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_Init
+<BR>[Calls]<UL><LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
+<LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_Init
 <LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Init
-<LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
 </UL>
 <BR>[Called By]<UL><LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_Init
 </UL>
@@ -1322,8 +1322,7 @@ Global Symbols
 <P><STRONG><a name="[c0]"></a>findRexp</STRONG> (Thumb, 240 bytes, Stack size 24 bytes, attitudeestimation.o(i.findRexp))
 <BR><BR>[Stack]<UL><LI>Max Depth = 296<LI>Call Chain = findRexp &rArr; sinc &rArr; sin &rArr; __ieee754_rem_pio2 &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; _double_round
 </UL>
-<BR>[Calls]<UL><LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_scalbnf
-<LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sinc
+<BR>[Calls]<UL><LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sinc
 <LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 <LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vectorRcross
@@ -1336,6 +1335,7 @@ Global Symbols
 <LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;matrixAdd
 <LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
+<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_scalbnf
 <LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cos
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;integrateDCM
@@ -1372,8 +1372,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[ce]"></a>get_mag_data</STRONG> (Thumb, 138 bytes, Stack size 56 bytes, bno055_imu.o(i.get_mag_data))
-<BR><BR>[Stack]<UL><LI>Max Depth = 208<LI>Call Chain = get_mag_data &rArr; read_bytes &rArr; HAL_I2C_Master_Receive &rArr; I2C_MasterRequestRead &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
+<P><STRONG><a name="[ce]"></a>get_mag_data_corrected</STRONG> (Thumb, 138 bytes, Stack size 56 bytes, bno055_imu.o(i.get_mag_data_corrected))
+<BR><BR>[Stack]<UL><LI>Max Depth = 208<LI>Call Chain = get_mag_data_corrected &rArr; read_bytes &rArr; HAL_I2C_Master_Receive &rArr; I2C_MasterRequestRead &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
 <LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
@@ -1453,7 +1453,7 @@ Global Symbols
 <LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 <LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_scalbn
 <LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_mag_data
+<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_mag_data_corrected
 <LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_gyr_data
 <LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMU_init
 <LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
@@ -1618,7 +1618,7 @@ Global Symbols
 <LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_I2C_Master_Receive
 <LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_mag_data
+<BR>[Called By]<UL><LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_mag_data_corrected
 <LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_gyr_data
 </UL>
 
