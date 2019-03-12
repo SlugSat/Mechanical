@@ -183,6 +183,8 @@ int main(void)
 	float mag_magnitude;
 	int16_t calib_data = {0};
 	
+	// MovingAvgFilter mag_filter = newMovingAvgFilter(3, 6);
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -193,6 +195,8 @@ int main(void)
 		get_mag_data(&hi2c1, mag_vector);
 		get_gyr_data(&hi2c1, gyr_vector);
 		get_acc_data(&hi2c1, acc_vector);
+		
+		// runMovingAvgFilter(mag_filter, mag_vector);
 		
 		mag_magnitude = (float)sqrt(pow(mag_vector[0], 2) + pow(mag_vector[1], 2) + pow(mag_vector[2], 2));
 		

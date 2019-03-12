@@ -1,11 +1,11 @@
 #include "BNO055_IMU.h"
 
-#define MAG_X_OFFSET -2.2813
-#define MAG_Y_OFFSET 6.6563
-#define MAG_Z_OFFSET 14.7500
-#define MAG_X_SCALE 0.0224
-#define MAG_Y_SCALE 0.0236
-#define MAG_Z_SCALE 0.0248
+#define MAG_X_OFFSET -2.0644
+#define MAG_Y_OFFSET 4.6552
+#define MAG_Z_OFFSET 14.4268
+#define MAG_X_SCALE 0.0245
+#define MAG_Y_SCALE 0.0243
+#define MAG_Z_SCALE 0.0256
 
 // broken at the moment but not super important for prototyping
 uint8_t built_in_self_test(I2C_HandleTypeDef *hi2c)
