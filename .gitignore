@@ -4,7 +4,7 @@
 # User-specific uVision files
 *.opt
 *.uvopt
-*.uvoptx
+# *.uvoptx
 *.uvgui
 *.uvgui.*
 *.uvguix.*
