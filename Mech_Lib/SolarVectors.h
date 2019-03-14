@@ -34,7 +34,8 @@
 
 typedef enum {
 	SV_FOUND,
-	SV_NOTFOUND
+	SV_NOTFOUND,
+	SV_DARK
 }SV_Status;
 
 /* Public functions prototypes ----------------------------------------------*/

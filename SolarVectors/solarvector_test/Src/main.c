@@ -64,9 +64,9 @@
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 // #define YAWPITCH_TEST // Uncomment to unit test yaw and pitch function
-#define PRINT_RAW_VALS
+// #define PRINT_RAW_VALS
 // #define PRINT_SOLAR_VECTOR
-// #define PRINT_YAWPITCH
+#define PRINT_YAWPITCH
 
 #define ADC_CHANNEL_XP 0
 #define ADC_CHANNEL_XN 1
@@ -215,7 +215,7 @@ int main(void)
 		#endif
 		
 		// Calculate solar vector
-		SV_Status sv_return = findSolarVector(sv_raw, 6, solar_vector);
+		SV_Status sv_return = findSolarVector(sv_raw, 5, solar_vector);
 		
 		
 		if(sv_return == SV_FOUND) { // Check if a valid solar vector was found
@@ -230,9 +230,13 @@ int main(void)
 			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 			#endif
 		}
-		else {
-			sprintf(transmit, "Solar vector not found!\r\n");
+		else if(sv_return == SV_NOTFOUND){
+			sprintf(transmit, "Solar vector indeterminate!\r\n");
 			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 30);
+		}
+		else {
+			sprintf(transmit, "Dark detected!\r\n");
+			HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
 		}
 		
 		sprintf(transmit, "\r\n");
@@ -272,7 +276,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV8;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
@@ -389,7 +393,7 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 9600;
+  huart2.Init.BaudRate = 115200;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;

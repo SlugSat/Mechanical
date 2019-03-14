@@ -14,11 +14,12 @@
 #include <stdio.h>
 #include <math.h>
 
-#define PI 3.1416
+#define PI 3.141592654
 
 // THESE NEED CHANGING POST-CALIBRATION
-#define SUN_MIN_THRESH 0.05 // Threshold (volts) for a panel to be considered in the sun at all
-#define VECTOR_MAG_THRESH 0.3 // Threshold (volts) for the vector mag to tell if the satellite is in the sun
+#define SUN_MIN_THRESH 0.1 // Threshold (volts) for a panel to be considered in the sun at all
+#define VECTOR_MAG_THRESH_LOW 0.1 // Hysteresis thresholds (volts) for the vector magnitude to determine if the satellite is in the sun
+#define VECTOR_MAG_THRESH_HIGH 0.2
 
 /** 
  * @brief  Calculates a solar vector from solar panel current measurements
@@ -28,6 +29,10 @@
  * @return SV_FOUND if a valid solar vector was found, SV_NOTFOUND otherwise
 */
 SV_Status findSolarVector(float* adc_readings, char num_panels, Matrix v) {
+	static SV_Status last_dark = SV_DARK;
+	static SV_Status last_valid = SV_NOTFOUND;
+	SV_Status new_status;
+	
 	float xp, xm, yp, ym, zp, zm;
 	
 	xp = adc_readings[0]*XP_SCALE;
@@ -55,14 +60,30 @@ SV_Status findSolarVector(float* adc_readings, char num_panels, Matrix v) {
 	// Set z component
 	matrixSet(v, 3, 1, (zp - zm)/vector_mag);
 	
-	if(num_panels == 5 && zp <= SUN_MIN_THRESH) {
-		return SV_NOTFOUND;
+	// Detect indeterminate solar vectors
+	if(num_panels == 5 && zp < SUN_MIN_THRESH) {
+			last_valid = SV_NOTFOUND;
+	}
+	else {
+			last_valid = SV_FOUND;
+		}
+	
+	// Dark detection
+	if(vector_mag < VECTOR_MAG_THRESH_LOW && last_dark == SV_FOUND) {
+		last_dark = SV_DARK;
+	}
+	else if(vector_mag > VECTOR_MAG_THRESH_HIGH && last_dark == SV_DARK) {
+		last_dark = SV_FOUND;
 	}
 	
-	if(vector_mag <= VECTOR_MAG_THRESH) {
-		return SV_NOTFOUND;
+	if(last_dark == SV_FOUND) {
+		new_status = last_valid;
 	}
-	return SV_FOUND;
+	else {
+		new_status = last_dark;
+	}
+	
+	return new_status;
 }
 	
 /** 
