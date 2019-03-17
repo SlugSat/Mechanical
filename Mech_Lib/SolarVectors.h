@@ -19,12 +19,18 @@
 
 /* Public defines -----------------------------------------------------------*/
 
-#define XP_SCALE 1.0 // Should always be 1
-#define XN_SCALE 0.81669394435
-#define YP_SCALE 0.51860928166
-#define YN_SCALE 0.7354584972
-#define ZP_SCALE 0.74533233756
-#define ZN_SCALE 0.94866920152
+#define XP_SCALE 1.0 // Generally 1.0
+#define XN_SCALE 0.65295018946
+#define YP_SCALE 0.3730609648
+#define YN_SCALE 0.51453104621
+#define ZP_SCALE 0.49058996685
+#define ZN_SCALE 0.99001688847
+
+//#define XN_SCALE 0.81669394435
+//#define YP_SCALE 0.51860928166
+//#define YN_SCALE 0.73545849720
+//#define ZP_SCALE 0.74533233756
+//#define ZN_SCALE 0.94866920152
 
 #define ADC_MAX_VOLTS 3.3
 #define ADC_RESOLUTION 12

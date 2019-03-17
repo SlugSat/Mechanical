@@ -19,7 +19,7 @@
 // THESE NEED CHANGING POST-CALIBRATION
 #define SUN_MIN_THRESH 0.1 // Threshold (volts) for a panel to be considered in the sun at all
 #define VECTOR_MAG_THRESH_LOW 0.1 // Hysteresis thresholds (volts) for the vector magnitude to determine if the satellite is in the sun
-#define VECTOR_MAG_THRESH_HIGH 0.2
+#define VECTOR_MAG_THRESH_HIGH 0.15
 
 /** 
  * @brief  Calculates a solar vector from solar panel current measurements

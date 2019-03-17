@@ -38,7 +38,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 // #define YAWPITCH_TEST // Uncomment to unit test yaw and pitch function
-// #define PRINT_RAW_VALS
+#define PRINT_RAW_VALS
 // #define PRINT_SOLAR_VECTOR
 #define PRINT_YAWPITCH
 
@@ -49,7 +49,7 @@
 #define ADC_CHANNEL_ZP 4
 #define ADC_CHANNEL_ZN 5
 #define NUM_ADC_CHANNELS 6
-#define MOVING_AVG_LENGTH 10
+#define MOVING_AVG_LENGTH 20
 
 #define PI 3.1416
 
@@ -176,20 +176,20 @@ int main(void)
 		volts_zn = sv_raw[ADC_CHANNEL_ZN]*ZN_SCALE;
 		
 		// Print x values
-		sprintf(transmit, "xp: %2.4f xn: %2.4f\r\n", volts_xp, volts_xn);
+		sprintf(transmit, "xp: %2.6f xn: %2.6f\r\n", volts_xp, volts_xn);
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 		
 		// Print y values
-		sprintf(transmit, "yp: %2.4f yn: %2.4f\r\n", volts_yp, volts_yn);
+		sprintf(transmit, "yp: %2.6f yn: %2.6f\r\n", volts_yp, volts_yn);
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 		
 		// Print z values
-		sprintf(transmit, "zp: %2.4f zn: %2.4f\r\n", volts_zp, volts_zn);
+		sprintf(transmit, "zp: %2.6f zn: %2.6f\r\n", volts_zp, volts_zn);
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 		#endif
 		
 		// Calculate solar vector
-		SV_Status sv_return = findSolarVector(sv_raw, 5, solar_vector);
+		SV_Status sv_return = findSolarVector(sv_raw, 6, solar_vector);
 		
 		
 		if(sv_return == SV_FOUND) { // Check if a valid solar vector was found
