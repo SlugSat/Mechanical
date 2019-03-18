@@ -33,9 +33,10 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-// #define VERBOSE_PRINTING
-#define PRINT_COMPUTATION_TIME
-#define PRINT_EULER_ANGLES
+// #define PRINT_COMPUTATION_TIME
+// #define PRINT_EULER_ANGLES
+// #define PRINT_SENSOR_VECTORS
+#define PRINT_DCM
 
 #define PI 3.14159265358979323846
 
@@ -231,7 +232,7 @@ int main(void)
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 10);
 		#endif
 		
-		#ifdef VERBOSE_PRINTING
+		#ifdef PRINT_SENSOR_VECTORS
 		// Print gyro vector
 		sprintf(transmit, "Gyro vector:\r\n");
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
@@ -249,10 +250,9 @@ int main(void)
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
 		printMatrix(solar_vector, transmit);
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+		#endif
 		
-		// Print new DCM
-		sprintf(transmit, "New DCM:\r\n");
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
+		#ifdef PRINT_DCM
 		printMatrix(R, transmit);
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
 		sprintf(transmit, "\r\n");
