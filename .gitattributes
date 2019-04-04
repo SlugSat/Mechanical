@@ -1,0 +1,2 @@
+42-Simulation/World/** filter=lfs diff=lfs merge=lfs -text
+42-Simulation/Object/** filter=lfs diff=lfs merge=lfs -text
