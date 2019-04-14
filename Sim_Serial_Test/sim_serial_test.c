@@ -1,10 +1,47 @@
 #include <stdio.h>
 #include <libserialport.h>
+#include <PacketProtocol.h>
 
 #define BAUD 115200
 
 int main(int argc, char *argv[]) {
-	struct sp_port** ports;
+	// Packet unit tests
+	int num_floats = 4;
+	float send[] = {(float)3.1415926535, 0.0, -0.0, 0.0001};
+	uint8_t packet[num_floats*4];
+	float receive[num_floats];
+	
+	floatsToPacket(send, packet, num_floats);
+	packetToFloats(receive, packet, num_floats);
+
+	printf("Sent floats:\r\n");
+	for(int i = 0;i < num_floats;i++) {
+		if(i != 0) {
+			printf("|");
+		}
+		printf("%4.6f", send[i]);
+	}
+	printf("\r\n\r\n");
+
+	printf("Packet:\r\n");
+	for(int i = 0;i < 4*num_floats;i++) {
+		if(i != 0) {
+			printf("|");
+		}
+		printf("0x%02x", packet[i]);
+	}
+	printf("\r\n\r\n");
+
+	printf("Received floats:\r\n");
+	for(int i = 0;i < num_floats;i++) {
+		if(i != 0) {
+			printf("|");
+		}
+		printf("%4.6f", receive[i]);
+	}
+	printf("\r\n\r\n");
+	
+	/* struct sp_port** ports;
 	enum sp_return err;
 	err = sp_list_ports(&ports);
 
@@ -48,5 +85,5 @@ int main(int argc, char *argv[]) {
 		sp_blocking_read(port, buffer, bytes_received, 50);
 		buffer[bytes_received] = '\0';
 		printf("%s", buffer);
-	}
+	}*/
 }
