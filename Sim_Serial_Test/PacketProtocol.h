@@ -12,6 +12,8 @@
 
 #include <stdint.h>
 
+#define BYTES_PER_FLOAT 4
+
 /* Public functions prototypes ---------------------------------------------*/
 
 /** 
@@ -31,3 +33,17 @@ void floatsToPacket(float* f, uint8_t* p, unsigned int n);
  * @return None
 */
 void packetToFloats(float* f, uint8_t* p, unsigned int n);
+
+/** 
+ * @brief  Makes an acknowledgement packet in packet array p
+ * @param  p: byte array of size 4 to contain the packet
+ * @return None
+*/
+void makeAckPacket(uint8_t* p);
+
+/** 
+ * @brief  Checks if p contains an acknowledgement packet
+ * @param  p: received packet of size 4
+ * @return Nonzero if p is an ack packet, zero otherwise
+*/
+int isAckPacket(uint8_t* p);
