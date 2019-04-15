@@ -13,6 +13,14 @@
 #include <stdint.h>
 
 #define BYTES_PER_FLOAT 4
+#define CONTROL_PACKET_SIZE BYTES_PER_FLOAT
+
+typedef enum {
+	SERIAL_ENABLE,
+	START,
+	ACK,
+	NONE
+}ControlPacketType;
 
 /* Public functions prototypes ---------------------------------------------*/
 
@@ -35,15 +43,16 @@ void floatsToPacket(float* f, uint8_t* p, unsigned int n);
 void packetToFloats(float* f, uint8_t* p, unsigned int n);
 
 /** 
- * @brief  Makes an acknowledgement packet in packet array p
+ * @brief  Makes a control packet in packet array p
  * @param  p: byte array of size 4 to contain the packet
+ * @param  type: type of control packet to make
  * @return None
 */
-void makeAckPacket(uint8_t* p);
+void makeControlPacket(uint8_t* p, ControlPacketType type);
 
 /** 
- * @brief  Checks if p contains an acknowledgement packet
+ * @brief  Checks if p contains a control packet
  * @param  p: received packet of size 4
- * @return Nonzero if p is an ack packet, zero otherwise
+ * @return NONE if p is not a control packet, otherwise the packet type
 */
-int isAckPacket(uint8_t* p);
+ControlPacketType isControlPacket(uint8_t* p);

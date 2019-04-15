@@ -46,6 +46,9 @@ int STM32SerialReceiveFloats(UART_HandleTypeDef* huart, float* f, unsigned int n
 	// Wait for start packet
 	uint8_t start_packet[CONTROL_PACKET_SIZE];
 	do {
+		for(int i = CONTROL_PACKET_SIZE-1;i > 0;i--) {
+			start_packet[i] = start_packet[i-1];
+		}
 		receivePacket(huart, start_packet, CONTROL_PACKET_SIZE);
 	} while(isControlPacket(start_packet) != START);
 	

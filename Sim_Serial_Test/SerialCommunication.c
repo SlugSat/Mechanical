@@ -22,6 +22,16 @@
 
 #define STM_DESCRIPTION "STM32 STLink"
 
+// Private functions
+void receivePacket(port_t port, uint8_t* packet, unsigned int bytes) {
+	int bytes_received;
+	do{
+		bytes_received = sp_input_waiting(port);
+	} while(bytes_received < bytes);
+	sp_blocking_read(port, packet, bytes_received, UART_TIMEOUT);
+}
+
+// Public functions
 port_t serialInit(void) {
 	// Get list of serial devices
 	port_t* ports;
@@ -55,28 +65,38 @@ port_t serialInit(void) {
 }
 
 int serialSendFloats(port_t port, float* f, unsigned int n) {
-	// Create packet
-	uint8_t packet[BYTES_PER_FLOAT*n];
-	floatsToPacket(f, packet, n);
+	// Send start packet
+	uint8_t start_packet[CONTROL_PACKET_SIZE];
+	makeControlPacket(start_packet, START);
+	sp_blocking_write(port, start_packet, BYTES_PER_FLOAT*n, UART_TIMEOUT);	
+
+	// Create data packet
+	uint8_t data_packet[BYTES_PER_FLOAT*n];
+	floatsToPacket(f, data_packet, n);
 
 	// Send packet
-	enum sp_return err = sp_blocking_write(port, packet, BYTES_PER_FLOAT*n, UART_TIMEOUT);
+	enum sp_return err = sp_blocking_write(port, data_packet, BYTES_PER_FLOAT*n, UART_TIMEOUT);
 	return err;
 
 	// Add wait for ack here
 }
 
 int serialReceiveFloats(port_t port, float* f, unsigned int n) {
-	// Receive packet
-	int bytes_received;
-	do{
-		bytes_received = sp_input_waiting(port);
-	} while(bytes_received < n*BYTES_PER_FLOAT);
-	uint8_t packet[BYTES_PER_FLOAT*n];
-	sp_blocking_read(port, packet, bytes_received, UART_TIMEOUT);
-	
+	// Wait for start packet
+	uint8_t start_packet[CONTROL_PACKET_SIZE] = {0};
+	do {
+		for(int i = CONTROL_PACKET_SIZE-1;i > 0;i--) {
+			start_packet[i] = start_packet[i-1];
+		}
+		receivePacket(port, start_packet, 1);
+	} while(isControlPacket(start_packet) != START);	
+
+	// Receive data packet
+	uint8_t data_packet[BYTES_PER_FLOAT*n];
+	receivePacket(port, data_packet, BYTES_PER_FLOAT*n);
+
 	// Read packet
-	packetToFloats(f, packet, n);
+	packetToFloats(f, data_packet, n);
 	
 	// Add send ack here
 	return 0;
