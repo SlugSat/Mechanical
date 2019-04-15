@@ -66,9 +66,9 @@ port_t serialInit(void) {
 
 int serialSendFloats(port_t port, float* f, unsigned int n) {
 	// Send start packet
-	uint8_t start_packet[CONTROL_PACKET_SIZE];
-	makeControlPacket(start_packet, START);
-	sp_blocking_write(port, start_packet, BYTES_PER_FLOAT*n, UART_TIMEOUT);	
+	//uint8_t start_packet[CONTROL_PACKET_SIZE];
+	//makeControlPacket(start_packet, START);
+	//sp_blocking_write(port, start_packet, BYTES_PER_FLOAT*n, UART_TIMEOUT);	
 
 	// Create data packet
 	uint8_t data_packet[BYTES_PER_FLOAT*n];
@@ -83,13 +83,10 @@ int serialSendFloats(port_t port, float* f, unsigned int n) {
 
 int serialReceiveFloats(port_t port, float* f, unsigned int n) {
 	// Wait for start packet
-	uint8_t start_packet[CONTROL_PACKET_SIZE] = {0};
-	do {
-		for(int i = CONTROL_PACKET_SIZE-1;i > 0;i--) {
-			start_packet[i] = start_packet[i-1];
-		}
-		receivePacket(port, start_packet, 1);
-	} while(isControlPacket(start_packet) != START);	
+	//uint8_t start_packet[CONTROL_PACKET_SIZE] = {0};
+	//do {
+	//	receivePacket(port, start_packet, CONTROL_PACKET_SIZE);
+	//} while(isControlPacket(start_packet) != START);	
 
 	// Receive data packet
 	uint8_t data_packet[BYTES_PER_FLOAT*n];

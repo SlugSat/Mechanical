@@ -17,24 +17,26 @@ int main(int argc, char *argv[]) {
 	float receive[num_floats];
 	
 	port_t port = serialInit();
-	serialSendFloats(port, send, num_floats);
-	serialReceiveFloats(port, receive, num_floats);
+	while(1) {
+		serialSendFloats(port, send, num_floats);
+		serialReceiveFloats(port, receive, num_floats);
 
-	printf("Sent floats:\r\n");
-	for(int i = 0;i < num_floats;i++) {
-		if(i != 0) {
-			printf("|");
+		printf("Sent floats:\r\n");
+		for(int i = 0;i < num_floats;i++) {
+			if(i != 0) {
+				printf("|");
+			}
+			printf("%4.6f", send[i]);
 		}
-		printf("%4.6f", send[i]);
-	}
-	printf("\r\n\r\n");
+		printf("\r\n\r\n");
 
-	printf("Received floats:\r\n");
-	for(int i = 0;i < num_floats;i++) {
-		if(i != 0) {
-			printf("|");
+		printf("Received floats:\r\n");
+		for(int i = 0;i < num_floats;i++) {
+			if(i != 0) {
+				printf("|");
+			}
+			printf("%4.6f", receive[i]);
 		}
-		printf("%4.6f", receive[i]);
+		printf("\r\n\r\n");
 	}
-	printf("\r\n\r\n");
 }
