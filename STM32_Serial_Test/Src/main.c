@@ -122,6 +122,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+		// HAL_UART_Transmit(&huart2, (uint8_t*)"Hello!", 6, 20);
+		
 		float float_array[20];
 		while(STM32SerialReceiveFloats(&huart2, float_array, 4) != 0);
 		

@@ -15,7 +15,7 @@
 #include <PacketProtocol.h>
 
 #define BAUD 115200
-#define UART_TIMEOUT 500
+#define UART_TIMEOUT 100
 
 // Private functions
 void receivePacket(UART_HandleTypeDef* huart, uint8_t* packet, unsigned int bytes) {
@@ -27,9 +27,9 @@ void receivePacket(UART_HandleTypeDef* huart, uint8_t* packet, unsigned int byte
 
 int STM32SerialSendFloats(UART_HandleTypeDef* huart, float* f, unsigned int n) {
 	// Send start packet
-	uint8_t start_packet[CONTROL_PACKET_SIZE];
-	makeControlPacket(start_packet, START);
-	HAL_UART_Transmit(huart, start_packet, CONTROL_PACKET_SIZE, UART_TIMEOUT);
+//	uint8_t start_packet[CONTROL_PACKET_SIZE];
+//	makeControlPacket(start_packet, START);
+//	HAL_UART_Transmit(huart, start_packet, CONTROL_PACKET_SIZE, UART_TIMEOUT);
 	
 	// Create data packet
 	uint8_t data_packet[BYTES_PER_FLOAT*n];
@@ -44,13 +44,10 @@ int STM32SerialSendFloats(UART_HandleTypeDef* huart, float* f, unsigned int n) {
 
 int STM32SerialReceiveFloats(UART_HandleTypeDef* huart, float* f, unsigned int n) {
 	// Wait for start packet
-	uint8_t start_packet[CONTROL_PACKET_SIZE];
-	do {
-		for(int i = CONTROL_PACKET_SIZE-1;i > 0;i--) {
-			start_packet[i] = start_packet[i-1];
-		}
-		receivePacket(huart, start_packet, CONTROL_PACKET_SIZE);
-	} while(isControlPacket(start_packet) != START);
+//	uint8_t start_packet[CONTROL_PACKET_SIZE] = {0};
+//	do {
+//		receivePacket(huart, start_packet, CONTROL_PACKET_SIZE);
+//	} while(isControlPacket(start_packet) != START);
 	
 	// Receive packet
 	uint8_t data_packet[BYTES_PER_FLOAT*n];
@@ -62,4 +59,3 @@ int STM32SerialReceiveFloats(UART_HandleTypeDef* huart, float* f, unsigned int n
 	// Add send ack here
 	return 0;
 }
-
