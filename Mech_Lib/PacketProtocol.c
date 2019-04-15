@@ -39,19 +39,20 @@ void packetToFloats(float* f, uint8_t* p, unsigned int n) {
 	}
 }
 
-// Makes a 4-byte ack packet
-void makeAckPacket(uint8_t* p) {
-	for(int i = 0;i < 4;i++) {
+// Makes a 4-byte control packet
+void makeControlPacket(uint8_t* p, ControlPacketType type) {
+	p[0] = (uint8_t)type;
+	for(int i = 1;i < 4;i++) {
 		p[i] = 0xFF;
 	}
 }
 
-// Checks if 4-byte packet p is an ack packet
-int isAckPacket(uint8_t* p) {
-	for(int i = 0;i < 4;i++) {
+// Checks if 4-byte packet p is a control packet
+ControlPacketType isControlPacket(uint8_t* p) {
+	for(int i = 1;i < 4;i++) {
 		if(p[i] != 0xFF) {
-			return 0;
+			return NONE;
 		}
 	}
-	return 1;
+	return (ControlPacketType)p[0];
 }
