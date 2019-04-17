@@ -15,7 +15,7 @@
 #include <PacketProtocol.h>
 
 #define BAUD 115200
-#define UART_TIMEOUT 100
+#define UART_TIMEOUT 500
 
 // Private functions
 void receivePacket(UART_HandleTypeDef* huart, uint8_t* packet, unsigned int bytes) {
