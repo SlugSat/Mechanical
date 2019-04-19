@@ -50,5 +50,13 @@ void runOrientationController(ACSType* acs, float dt);
  * @return None
  */
 void runStabilizationController(ACSType* acs, float dt);
+
+/**
+ * @brief  Description
+ * @param  acs: a pointer to an existing Attitude Control System object
+ * @param  julianDate: current julian date
+ * @return None
+ */
+ void findSunInertial(ACSType* acs, double julianDate);
  
 #endif
