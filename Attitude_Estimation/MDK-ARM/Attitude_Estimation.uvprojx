@@ -447,6 +447,11 @@
               <FileType>5</FileType>
               <FilePath>..\..\Mech_Lib\ACS.h</FilePath>
             </File>
+            <File>
+              <FileName>ACS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\ACS.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -50,18 +50,6 @@ float	sinc(float x);
 
 // PUBLIC FUNCTIONS
 
-void initializeACS(ACSType* acs) {
-	// Allocate Matrix structs
-	acs->R = initializeDCM(0, 0, 0);
-	acs->gyro_vector = newMatrix(3, 1);
-	acs->gyro_bias = newMatrix(3, 1);
-	acs->mag_vector = newMatrix(3, 1);
-	acs->solar_vector = newMatrix(3, 1);
-	acs->sv_inertial = newMatrix(3, 1);
-	acs->mag_inertial = newMatrix(3, 1);
-}
-
-
 void initializeSensors(ACSType* acs, I2C_HandleTypeDef* hi2c, ADC_HandleTypeDef* hadc) {
 	// Sensor hardware
 	IMU_init(hi2c, OPERATION_MODE_MAGGYRO);
@@ -108,7 +96,6 @@ Matrix initializeDCM(float yaw, float pitch, float roll) {
 	
 	return r;
 }
-
 
 void readSensors(ACSType* acs) {
 	static float gyro_data[3], mag_data[3], sv_data[NUM_SOLAR_PANELS];

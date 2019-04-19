@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include</IncludePath>
+              <IncludePath>../Inc;  ../Drivers/STM32F1xx_HAL_Driver/Inc;  ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;  ../Drivers/CMSIS/Device/ST/STM32F1xx/Include;  ../Drivers/CMSIS/Include;  ..\..\Mech_Lib</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -398,21 +398,6 @@
               <FilePath>../Src/main.c</FilePath>
             </File>
             <File>
-              <FileName>gpio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Src/gpio.c</FilePath>
-            </File>
-            <File>
-              <FileName>tim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Src/tim.c</FilePath>
-            </File>
-            <File>
-              <FileName>usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Src/usart.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32f1xx_it.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/stm32f1xx_it.c</FilePath>
@@ -431,6 +416,21 @@
               <FileName>stm32f1xx_hal_gpio_ex.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_adc_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc_ex.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.c</FilePath>
             </File>
             <File>
               <FileName>stm32f1xx_hal_tim.c</FileName>
@@ -501,6 +501,101 @@
               <FileName>system_stm32f1xx.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/system_stm32f1xx.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Mech Lib</GroupName>
+          <Files>
+            <File>
+              <FileName>ACS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\ACS.c</FilePath>
+            </File>
+            <File>
+              <FileName>ACS.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\ACS.h</FilePath>
+            </File>
+            <File>
+              <FileName>AttitudeEstimation.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\AttitudeEstimation.c</FilePath>
+            </File>
+            <File>
+              <FileName>AttitudeEstimation.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\AttitudeEstimation.h</FilePath>
+            </File>
+            <File>
+              <FileName>BNO055_IMU.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\BNO055_IMU.c</FilePath>
+            </File>
+            <File>
+              <FileName>BNO055_IMU.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\BNO055_IMU.h</FilePath>
+            </File>
+            <File>
+              <FileName>DigitalFilters.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\DigitalFilters.c</FilePath>
+            </File>
+            <File>
+              <FileName>DigitalFilters.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\DigitalFilters.h</FilePath>
+            </File>
+            <File>
+              <FileName>FeedbackControl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\FeedbackControl.c</FilePath>
+            </File>
+            <File>
+              <FileName>FeedbackControl.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\FeedbackControl.h</FilePath>
+            </File>
+            <File>
+              <FileName>Matrix.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\Matrix.c</FilePath>
+            </File>
+            <File>
+              <FileName>Matrix.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\Matrix.h</FilePath>
+            </File>
+            <File>
+              <FileName>PacketProtocol.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\PacketProtocol.c</FilePath>
+            </File>
+            <File>
+              <FileName>PacketProtocol.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\PacketProtocol.h</FilePath>
+            </File>
+            <File>
+              <FileName>SolarVectors.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\SolarVectors.c</FilePath>
+            </File>
+            <File>
+              <FileName>SolarVectors.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\SolarVectors.h</FilePath>
+            </File>
+            <File>
+              <FileName>STM32SerialCommunication.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\STM32SerialCommunication.c</FilePath>
+            </File>
+            <File>
+              <FileName>STM32SerialCommunication.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\STM32SerialCommunication.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -17,14 +17,7 @@
 #include <ACS.h>
 
 
-/* Initialization Functions ---------------------------------------------*/
-
-/** 
- * @brief  Initializes all the fields in the given ACS struct
- * @param  acs: a pointer to an existing Attitude Control System object
- * @return None
-*/
-void initializeACS(ACSType* acs);
+/* Initialization Functions --------------------------------------------------*/
 
 /** 
  * @brief  Initializes all the fields in the given ACS struct
