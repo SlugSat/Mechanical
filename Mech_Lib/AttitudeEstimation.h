@@ -63,15 +63,6 @@ void updateAttitudeEstimate(ACSType* acs, float dt);
 
 /** 
  * @brief  Performs closed loop integration on the given DCM using the Rexp form
- * @param  acs: an initialized ACS struct which has up-to-date sensor data
- * @param  K*: feedback constants for the mag and solar vectors
- * @param  dt: time in seconds since last call of this function
- * @return None
-*/
-void integrateDCM(ACSType* acs, float Kp_mag, float Ki_mag, float Kp_sv, float Ki_sv, float dt);
-
-/** 
- * @brief  Performs closed loop integration on the given DCM using the Rexp form
  * @param  R: the DCM (initialize to I3 before first use)
  * @param  yaw_pitch_roll: pointer to float[3] which hold yaw (0) pitch (1) and roll (2) after the function returns
  * @return None

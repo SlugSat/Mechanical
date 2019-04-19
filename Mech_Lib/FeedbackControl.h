@@ -20,27 +20,35 @@
 
 /* Public Functions ----------------------------------------------------------*/
 
+/**
+ * @brief  Description
+ * @param  acs: a pointer to an existing Attitude Control System object
+ * @return None
+ */
 void findErrorVectors(ACSType* acs);
 
 /**
  * @brief  Description
  * @param  acs: a pointer to an existing Attitude Control System object
+ * @param  dt: time in seconds since last call of this function
  * @return None
  */
-void runBdotController(ACSType* acs);
+void runBdotController(ACSType* acs, float dt);
 
  /**
  * @brief  Description
  * @param  acs: a pointer to an existing Attitude Control System object
+ * @param  dt: time in seconds since last call of this function
  * @return None
  */
-void runOrientationController(ACSType* acs);
+void runOrientationController(ACSType* acs, float dt);
 
 /**
  * @brief  Description
  * @param  acs: a pointer to an existing Attitude Control System object
+ * @param  dt: time in seconds since last call of this function
  * @return None
  */
-void runStabilizationController(ACSType* acs);
+void runStabilizationController(ACSType* acs, float dt);
  
 #endif

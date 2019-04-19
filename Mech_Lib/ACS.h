@@ -34,22 +34,25 @@ typedef struct {
 	// Craft DCM
 	Matrix R;
 	
-	// Sensor vectors
+	// Sensor vectors (body frame)
 	Matrix gyro_vector;
 	Matrix mag_vector;
 	Matrix solar_vector;
 	
 	// Attitude estimation vectors
 	Matrix gyro_bias;
-	Matrix sv_inertial;
-	Matrix mag_inertial;
 	
-	// Feedback control vectors
+	// Inertial vectors (ecliptic frame)
+	Matrix sv_inertial; // Found using the Julian date
+	Matrix mag_inertial; // From IGRF
+	Matrix craft_inertial; // From SGP4
+	
+	// Feedback control error vectors (body frame)
 	Matrix z_err;
 	Matrix n_err;
 	Matrix err; // err = z_err + n_err
 	
-	// Sensors hardware
+	// Sensor hardware
 	I2C_HandleTypeDef* hi2c;
 	MovingAvgFilter mag_filter;
 	MovingAvgFilter sv_filter;
@@ -59,7 +62,10 @@ typedef struct {
 	SV_Status sun_status;
 	
 	// Satellite dynamic system
-	Matrix w_rw; // Reaction wheel speed vector
+	Matrix w_rw; // Reaction wheel speed vector (body frame)
+	Matrix J_rw; // Reaction wheel inertia matrix
+	Matrix A_rw; // Reaction wheel projection onto body axes
+	Matrix J_body; // Craft inertia matrix
 }ACSType;
 
 

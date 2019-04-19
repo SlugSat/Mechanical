@@ -11,7 +11,6 @@
 
 // LIBRARIES
 #include <ACS.h>
-#include <BNO055_IMU.h>
 #include <AttitudeEstimation.h>
 #include <math.h>
 

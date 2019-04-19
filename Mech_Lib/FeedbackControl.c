@@ -11,19 +11,39 @@
   ******************************************************************************
   */
 
+// HEADER FILE
 #include <FeedbackControl.h>
 
 
-void runBdotController(ACSType* acs) {
+// PRIVATE FUNCTION
+void wdot2rw_pwm(ACSType* acs, float* rw_pwm, float dt);
+
+
+// PUBLIC FUNCTIONS
+void findErrorVectors(ACSType* acs) {
+	static float init_run = 0;
+	static Matrix zhat_B, xhat_B; // Body frame unit vectors
+	
+	if(init_run == 0) {
+		zhat_B = make3x1Vector(0, 0, 1);
+		xhat_B = make3x1Vector(1, 0, 0);
+		init_run = 1;
+	}
+	
+	
+}
+
+
+void runBdotController(ACSType* acs, float dt) {
 	return;
 }
 
 
-void runOrientationController(ACSType* acs) {
+void runOrientationController(ACSType* acs, float dt) {
 	return;
 }
 
 
-void runStabilizationController(ACSType* acs) {
+void runStabilizationController(ACSType* acs, float dt) {
 	return;
 }

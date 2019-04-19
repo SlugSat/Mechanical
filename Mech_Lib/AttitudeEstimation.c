@@ -47,6 +47,15 @@ void findRexp(Matrix w, Matrix Rexp);
 */
 float	sinc(float x);
 
+/** 
+ * @brief  Performs closed loop integration on the given DCM using the Rexp form
+ * @param  acs: an initialized ACS struct which has up-to-date sensor data
+ * @param  K*: feedback constants for the mag and solar vectors
+ * @param  dt: time in seconds since last call of this function
+ * @return None
+*/
+void integrateDCM(ACSType* acs, float Kp_mag, float Ki_mag, float Kp_sv, float Ki_sv, float dt);
+
 
 // PUBLIC FUNCTIONS
 
