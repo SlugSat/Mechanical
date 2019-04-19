@@ -20,6 +20,8 @@
 void initializeACS(ACSType* acs) {
 	// Allocate Matrix structs
 	acs->R = initializeDCM(0, 0, 0);
+	acs->Rt = newMatrix(3, 3);
+	matrixTranspose(acs->R, acs->Rt);
 	acs->gyro_vector = newMatrix(3, 1);
 	acs->gyro_bias = newMatrix(3, 1);
 	acs->mag_vector = newMatrix(3, 1);
