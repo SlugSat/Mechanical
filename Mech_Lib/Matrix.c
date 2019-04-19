@@ -195,13 +195,10 @@ void vectorRcross(Matrix v, Matrix vcross) {
     vcross->data[2][2] = 0;
 }
 
-float vectorNorm(Matrix v) {
-    float sum = 0;
-    for(int i = 0;i < v->r;i++) {
-        sum += pow(v->data[i][0], 2);
-    }
-    
-    return sqrt(sum);
+void vectorCrossProduct(Matrix v1, Matrix v2, Matrix v1xv2) {
+	v1xv2->data[0][0] = v1->data[1][0]*v2->data[2][0] - v1->data[2][0]*v2->data[1][0];
+	v1xv2->data[1][0] = v1->data[2][0]*v2->data[0][0] - v1->data[0][0]*v2->data[2][0];
+	v1xv2->data[2][0] = v1->data[0][0]*v2->data[1][0] - v1->data[1][0]*v2->data[0][0];
 }
 
 float vectorDotProduct(Matrix v1, Matrix v2) {
@@ -210,6 +207,15 @@ float vectorDotProduct(Matrix v1, Matrix v2) {
 		sum += v1->data[i][0]*v2->data[i][0];
 	}
 	return sum;
+}
+
+float vectorNorm(Matrix v) {
+    float sum = 0;
+    for(int i = 0;i < v->r;i++) {
+        sum += pow(v->data[i][0], 2);
+    }
+    
+    return sqrt(sum);
 }
 
 void printMatrix(Matrix m, char* string) {

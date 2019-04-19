@@ -1,18 +1,23 @@
 /**
   ******************************************************************************
-  * @file           : AttitudeEstimation.h
+  * @file           : AttitudeEstimation.c
   * @brief          : Source file for the AttitudEstimation module.
   ******************************************************************************
   ** This module contains the code to run closed loop integration of the gyro
 	* using feedback from the magnetometer and solar vector.
 	* 
+	* See the header file for function descriptions.
+	* 
 	* Created by Galen Savidge. Edited 3/6/2019.
   ******************************************************************************
   */
 
+// LIBRARIES
 #include <AttitudeEstimation.h>
 #include <BNO055_IMU.h>
+#include <STM32SerialCommunication.h>
 #include <math.h>
+
 
 // CONSTANTS
 #define PI 3.141592654
@@ -25,6 +30,7 @@
 #define MAG_HIST_LENGTH 10
 #define SV_HIST_LENGTH 10
 
+
 // HELPER FUNCTIONS
 /** 
  * @brief  Finds the exponential Rodrigues parameter form of an angular velocity vector
@@ -34,14 +40,16 @@
 */
 void findRexp(Matrix w, Matrix Rexp);
 
-// Sinc function that handles the case where x ~= 0
+/**
+ * @brief	Sinc function that handles the case where x ~= 0
+*/
 float	sinc(float x);
 
 
 // PUBLIC FUNCTIONS
 
 void initializeACS(ACSType* acs) {
-	// Matrices
+	// Allocate Matrix structs
 	acs->R = initializeDCM(0, 0, 0);
 	acs->gyro_vector = newMatrix(3, 1);
 	acs->gyro_bias = newMatrix(3, 1);
@@ -71,11 +79,6 @@ void initializeSensors(ACSType* acs, I2C_HandleTypeDef* hi2c, ADC_HandleTypeDef*
 }
 
 
-/** 
- * @brief  Allocates and initializes a 3x3 DCM Matrix
- * @param  Euler angles for the initial DCM (in degrees)
- * @return The new DCM Matrix
-*/
 Matrix initializeDCM(float yaw, float pitch, float roll) {
 	Matrix r = newMatrix(3, 3);
 	
@@ -126,20 +129,30 @@ void readSensors(ACSType* acs) {
 }
 
 
-/** 
- * @brief  Performs closed loop integration on the given DCM using the Rexp form
- * @param  R: the DCM (initially returned from an initializeDCM() call)
- * @param  gyro: 
- * @param  mag: 
- * @param  sv: the solar vector from findSolarVector() in the SolarVectors module
- * @return None
-*/
+void updateAttitudeEstimate(ACSType* acs, float dt) {
+	float Kp_mag, Ki_mag, Kp_sv, Ki_sv;
+	
+	Kp_mag = KP_MAG_BASE;
+	Ki_mag = KI_MAG_BASE;
+	
+	if(acs->sun_status == SV_FOUND) {
+		Kp_sv = KP_SV_BASE;
+		Ki_sv = KI_SV_BASE;
+	}
+	else {
+		Kp_sv = 0;
+		Ki_sv = 0;
+	}
+	
+	integrateDCM(acs, Kp_mag, Ki_mag, Kp_sv, Ki_sv, dt);
+}
+
+
 void integrateDCM(ACSType* acs, float Kp_mag, float Ki_mag, float Kp_sv, float Ki_sv, float dt) {
 			
 	static char init_run = 0;
 	static Matrix Rt; // Transpose of the DCM
 	static Matrix mag_i_body, sv_i_body; // Inertial sensor vectors translated to body
-	static Matrix mag_rx, sv_rx; // rcross matrices of sensor vectors
 	static Matrix mag_err, sv_err; // Error vectors (result of cross product between measured and inertial)
 	static Matrix merr_x_Kp, sverr_x_Kp; // Error multiplied by Kp
 	static Matrix gyro_with_bias; // (Gyro vector) - (bias) + (Kp terms)
@@ -151,8 +164,6 @@ void integrateDCM(ACSType* acs, float Kp_mag, float Ki_mag, float Kp_sv, float K
 		Rt = newMatrix(3, 3);
 		mag_i_body = newMatrix(3, 1);
 		sv_i_body = newMatrix(3, 1);
-		mag_rx = newMatrix(3, 3);
-		sv_rx = newMatrix(3, 3);
 		mag_err = newMatrix(3, 1);
 		sv_err = newMatrix(3, 1);
 		merr_x_Kp = newMatrix(3, 1);
@@ -186,16 +197,14 @@ void integrateDCM(ACSType* acs, float Kp_mag, float Ki_mag, float Kp_sv, float K
 	matrixTranspose(acs->R, Rt);
 	
 	// ***** FIND ERROR FROM MAG *****
-	vectorRcross(acs->mag_vector, mag_rx);
 	matrixMult(Rt, acs->mag_inertial, mag_i_body); // Translate mag to body
-	matrixMult(mag_rx, mag_i_body, mag_err); // Cross product
+	vectorCrossProduct(acs->mag_vector, mag_i_body, mag_err);
 	matrixCopy(mag_err, merr_x_Kp);
 	matrixScale(merr_x_Kp, Kp_mag); // Kp_mag * mag_err
 	
 	// ***** FIND ERROR FROM SOLAR VECTOR *****
-	vectorRcross(acs->solar_vector, sv_rx);
 	matrixMult(Rt, acs->sv_inertial, sv_i_body); // Translate mag to body
-	matrixMult(sv_rx, sv_i_body, sv_err); // Cross product
+	vectorCrossProduct(acs->solar_vector, sv_i_body, sv_err); // Cross product
 	matrixCopy(sv_err, sverr_x_Kp);
 	matrixScale(sverr_x_Kp, Kp_sv); // Kp_sv * mag_err
 	
@@ -220,12 +229,6 @@ void integrateDCM(ACSType* acs, float Kp_mag, float Ki_mag, float Kp_sv, float K
 }
 
 
-/** 
- * @brief  Finds Euler angles in inertial frame from a DCM
- * @param  R: the DCM (body->inertial)
- * @param  yaw_pitch_roll: pointer to float[3] which hold yaw (0) pitch (1) and roll (2) after the function returns
- * @return None
-*/
 void findEulerAngles(Matrix R, float* yaw_pitch_roll) {
 	static char init_run = 0;
 	static Matrix Rt;
@@ -260,6 +263,8 @@ float sinc(float x) {
 	}
 }
 
+
+// HELPER FUNCTIONS
 
 void findRexp(Matrix w, Matrix Rexp) {
 	static int init_run = 0;

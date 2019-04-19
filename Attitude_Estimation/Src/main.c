@@ -34,7 +34,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-// #define PRINT_COMPUTATION_TIME
+#define PRINT_COMPUTATION_TIME
 // #define PRINT_EULER_ANGLES
 // #define PRINT_SENSOR_VECTORS
 #define PRINT_DCM
@@ -140,12 +140,6 @@ int main(void)
 	matrixCopy(acs.mag_vector, acs.mag_inertial);
 	matrixCopy(acs.solar_vector, acs.sv_inertial); // NEEDS FIXING FOR CASE WHEN SOLAR VECTORS IS NOT FOUND ON STARTUP
 	
-	// ***** GYRO FEEDBACK *****
-	float Kp_mag = KP_MAG_BASE;
-	float Ki_mag = KI_MAG_BASE;
-	float Kp_sv = KP_SV_BASE;
-	float Ki_sv = KI_SV_BASE;
-	
 	float dt; // In seconds
 	
 	sprintf(transmit, "Finished init\r\n");
@@ -161,9 +155,17 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		//computation_start_time = TIM2->CNT;
-		
 		readSensors(&acs);
+		
+		// Find time since last iteration
+		last_time = new_time;
+		new_time = TIM2->CNT;
+		dt = TIM2_TICKS_TO_SECONDS((uint16_t)(new_time - last_time));
+		
+		computation_start_time = TIM2->CNT;
+		
+		// DCM integration
+		updateAttitudeEstimate(&acs, dt);
 		
 		#ifdef PRINT_SENSOR_VECTORS
 		// Print gyro vector
@@ -184,23 +186,6 @@ int main(void)
 		printMatrix(acs.solar_vector, transmit);
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
 		#endif
-		
-		if(acs.sun_status == SV_FOUND) {
-			Kp_sv = KP_SV_BASE;
-			Ki_sv = KI_SV_BASE;
-		}
-		else {
-			Kp_sv = 0;
-			Ki_sv = 0;
-		}
-		
-		// Find time since last iteration
-		last_time = new_time;
-		new_time = TIM2->CNT;
-		dt = TIM2_TICKS_TO_SECONDS((uint16_t)(new_time - last_time));
-		
-		// DCM integration
-		integrateDCM(&acs, Kp_mag, Ki_mag, Kp_sv, Ki_sv, dt);
 		
 		#ifdef PRINT_COMPUTATION_TIME
 		sprintf(transmit, "Comp. time: %1.6f[s]\r\n", TIM2_TICKS_TO_SECONDS((uint16_t)(TIM2->CNT - new_time)));

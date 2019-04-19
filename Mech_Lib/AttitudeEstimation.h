@@ -18,7 +18,6 @@
 #include <DigitalFilters.h>
 #include <SolarVectors.h>
 #include <main.h>
-#include <STM32SerialCommunication.h>
 
 /* Constants -----------------------------------------------------------------*/
 #define NUM_SOLAR_PANELS 6
@@ -92,16 +91,18 @@ void readSensorsFromSerial(ACSType* acs, UART_HandleTypeDef* huart); // To-do
 /* Sensor Fusion Functions -------------------------------------------*/
 
 /** 
+ * @brief  Updates the craft attitude estimate using sensor data in acs
+ * @param  acs: an initialized ACS struct which has up-to-date sensor data
+ * @param  dt: time in seconds since last call of this function
+ * @return None
+*/
+void updateAttitudeEstimate(ACSType* acs, float dt);
+
+/** 
  * @brief  Performs closed loop integration on the given DCM using the Rexp form
- * @param  R: the DCM (initialize to I3 before first use)
- * @param  bias: estimated bias of the gyro (updated automatically by the function)
- * @param  gyro: gyro reading from IMU in rad/s
- * @param  mag: magnetometer reading from the IMU
- * @param  sv: the solar vector from findSolarVector() in the SolarVectors module
- * @param  mag_inertial: magnetometer reading we expect in the inertial frame
- * @param  sv_inertial: solar vector we expect in the inertial frame
+ * @param  acs: an initialized ACS struct which has up-to-date sensor data
  * @param  K*: feedback constants for the mag and solar vectors
- * @param  dt: time since last call of integrateDCM() in seconds
+ * @param  dt: time in seconds since last call of this function
  * @return None
 */
 void integrateDCM(ACSType* acs, float Kp_mag, float Ki_mag, float Kp_sv, float Ki_sv, float dt);

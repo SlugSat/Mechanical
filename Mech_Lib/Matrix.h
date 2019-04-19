@@ -140,11 +140,12 @@ void vectorCopyArray(Matrix v, float* array, char n);
 void vectorRcross(Matrix v, Matrix vcross);
 
 /** 
- * @brief  Calculates the norm of a vector
- * @param  A column vector Matrix
- * @return The norm of v
+ * @brief  Calculates the dot product of two column vectors
+ * @param  v1 & v2: Two column vector Matrix objects with the same dimensions
+ * @param  v1xv2: An allocated column vector Matrix to hold the result
+ * @return None
 */
-float vectorNorm(Matrix v);
+void vectorCrossProduct(Matrix v1, Matrix v2, Matrix v1xv2);
 
 /** 
  * @brief  Calculates the dot product of two column vectors
@@ -152,6 +153,13 @@ float vectorNorm(Matrix v);
  * @return The dot product v1*v2
 */
 float vectorDotProduct(Matrix v1, Matrix v2);
+
+/** 
+ * @brief  Calculates the norm of a vector
+ * @param  A column vector Matrix
+ * @return The norm of v
+*/
+float vectorNorm(Matrix v);
 
 /** 
  * @brief  Prints a Matrix to a string in a format suitable for printing over serial
