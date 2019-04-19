@@ -13,13 +13,10 @@
 #define ACS_H
 
 /* Includes ------------------------------------------------------------------*/
-// Libraries
 #include <Matrix.h>
 #include <DigitalFilters.h>
 #include <main.h>
-
-// ACS modules
-#include <SolarVectors.h>
+#include <stdint.h>
 
 
 /* Constants -----------------------------------------------------------------*/
@@ -27,6 +24,12 @@
 
  
 /* Datatypes -----------------------------------------------------------------*/
+typedef enum {
+	SV_FOUND,
+	SV_NOTFOUND,
+	SV_DARK
+}SV_Status;
+
 typedef struct {
 	// Craft DCM
 	Matrix R;
@@ -48,5 +51,5 @@ typedef struct {
 	// Solar panel status
 	SV_Status sun_status;
 }ACSType;
- 
+
 #endif

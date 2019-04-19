@@ -14,8 +14,8 @@
 #define SOLARVECTOR_H
  
 /* Includes -----------------------------------------------------------------*/
-#include <Matrix.h>
-#include <stdint.h>
+#include <ACS.h>
+
 
 /* Public defines -----------------------------------------------------------*/
 
@@ -36,13 +36,6 @@
 #define ADC_RESOLUTION 12
 #define ADC_TO_VOLTS(adc_raw) ((double)(((adc_raw)*ADC_MAX_VOLTS)/(1<<ADC_RESOLUTION)))
 
-/* Public typedefs ----------------------------------------------------------*/
-
-typedef enum {
-	SV_FOUND,
-	SV_NOTFOUND,
-	SV_DARK
-}SV_Status;
 
 /* Public functions prototypes ----------------------------------------------*/
 

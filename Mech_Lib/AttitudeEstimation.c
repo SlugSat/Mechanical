@@ -16,6 +16,7 @@
 #include <AttitudeEstimation.h>
 #include <BNO055_IMU.h>
 #include <STM32SerialCommunication.h>
+#include <SolarVectors.h>
 #include <math.h>
 
 
