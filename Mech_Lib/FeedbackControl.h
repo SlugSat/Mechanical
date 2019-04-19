@@ -11,16 +11,31 @@
   ******************************************************************************
   */
 
- #ifndef FEEDBACKCONTROL_H
- #define FEEDBACKCONTROL_H
+#ifndef FEEDBACKCONTROL_H
+#define FEEDBACKCONTROL_H
+
+#include <ACS.h>
+
+ /** 
+ * @brief  Description
+ * @param  acs: a pointer to an existing Attitude Control System object
+ * @return None
+*/
+void runBdotController(ACSType* acs);
+
+ /** 
+ * @brief  Description
+ * @param  acs: a pointer to an existing Attitude Control System object
+ * @return None
+*/
+void runOrientationController(ACSType* acs);
+
+ /** 
+ * @brief  Description
+ * @param  acs: a pointer to an existing Attitude Control System object
+ * @return None
+*/
+void runStabilizationController(ACSType* acs);
  
- #include <ACS.h>
- 
- void runBdotController(ACSType* acs);
- 
- void runOrientationController(ACSType* acs);
- 
- void runStabilizationController(ACSType* acs);
- 
- #endif
+#endif
  

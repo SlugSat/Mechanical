@@ -21,6 +21,7 @@
 // ACS modules
 #include <SolarVectors.h>
 
+
 /* Constants -----------------------------------------------------------------*/
 #define NUM_SOLAR_PANELS 6
 
