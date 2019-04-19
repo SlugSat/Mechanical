@@ -12,6 +12,20 @@
 
 #include "main.h"
 
-int STM32SerialSendFloats(UART_HandleTypeDef* huart, float* f, unsigned int n);
+/** 
+ * @brief  Blocking function to send a set of n floating point numbers over serial
+ * @param  huart: pointer to a UART handle made by cubeMX
+ * @param  f: an array of floats of size >= n
+ * @param  n: the number of floats to be sent
+ * @return HAL status of the transmission
+*/
+HAL_StatusTypeDef STM32SerialSendFloats(UART_HandleTypeDef* huart, float* f, unsigned int n);
 
+/** 
+ * @brief  Blocking function to receive a set of n floating point numbers from serial
+ * @param  huart: pointer to a UART handle made by cubeMX
+ * @param  f: an array of floats of size >= n
+ * @param  n: the number of floats to receive
+ * @return Always 0 for now
+*/
 int STM32SerialReceiveFloats(UART_HandleTypeDef* huart, float* f, unsigned int n);

@@ -11,12 +11,21 @@
   */
 
 #include <AttitudeEstimation.h>
+#include <BNO055_IMU.h>
 #include <math.h>
-#include <main.h>
 
+// CONSTANTS
 #define PI 3.141592654
 
-// Helper functions
+#define KP_MAG_BASE 1.0
+#define KI_MAG_BASE 0.3
+#define KP_SV_BASE 1.0
+#define KI_SV_BASE 0.3
+
+#define MAG_HIST_LENGTH 10
+#define SV_HIST_LENGTH 10
+
+// HELPER FUNCTIONS
 /** 
  * @brief  Finds the exponential Rodrigues parameter form of an angular velocity vector
  * @param  w: a 3x1 angular velocity column vector
@@ -27,6 +36,40 @@ void findRexp(Matrix w, Matrix Rexp);
 
 // Sinc function that handles the case where x ~= 0
 float	sinc(float x);
+
+
+// PUBLIC FUNCTIONS
+
+void initializeACS(ACSType* acs) {
+	// Matrices
+	acs->R = initializeDCM(0, 0, 0);
+	acs->gyro_vector = newMatrix(3, 1);
+	acs->gyro_bias = newMatrix(3, 1);
+	acs->mag_vector = newMatrix(3, 1);
+	acs->solar_vector = newMatrix(3, 1);
+	acs->sv_inertial = newMatrix(3, 1);
+	acs->mag_inertial = newMatrix(3, 1);
+}
+
+
+void initializeSensors(ACSType* acs, I2C_HandleTypeDef* hi2c, ADC_HandleTypeDef* hadc) {
+	// Sensor hardware
+	IMU_init(hi2c, OPERATION_MODE_MAGGYRO);
+	acs->hi2c = hi2c;
+	HAL_ADC_Start_DMA(hadc, acs->sv_raw, NUM_SOLAR_PANELS);
+	
+	// Sensor moving average filters
+	acs->mag_filter = newMovingAvgFilter(3, MAG_HIST_LENGTH);
+	acs->sv_filter = newMovingAvgFilter(NUM_SOLAR_PANELS, SV_HIST_LENGTH);
+	
+	// Read sensors until moving average filters are full
+	uint8_t sensor_iterations = SV_HIST_LENGTH > MAG_HIST_LENGTH ? SV_HIST_LENGTH : MAG_HIST_LENGTH;
+	for(int i = 0;i < sensor_iterations;i++) {
+		readSensors(acs);
+		HAL_Delay(SENSOR_READ_DELAY_MS);
+	}
+}
+
 
 /** 
  * @brief  Allocates and initializes a 3x3 DCM Matrix
@@ -61,6 +104,28 @@ Matrix initializeDCM(float yaw, float pitch, float roll) {
 	return r;
 }
 
+
+void readSensors(ACSType* acs) {
+	static float gyro_data[3], mag_data[3], sv_data[NUM_SOLAR_PANELS];
+	
+	// Read gyro and transform into a column vector Matrix
+	get_gyr_data(acs->hi2c, gyro_data);
+	vectorCopyArray(acs->gyro_vector, gyro_data, 3);
+	
+	// Read magnetometer, iterate moving average filter, transform into a vector Matrix
+	get_mag_data_corrected(acs->hi2c, mag_data);
+	runMovingAvgFilter(acs->mag_filter, mag_data);
+	vectorCopyArray(acs->mag_vector, mag_data, 3);
+	
+	// Read solar vector
+	for(int i = 0;i < NUM_SOLAR_PANELS;i++) {
+		sv_data[i] = ADC_TO_VOLTS(acs->sv_raw[i]);
+	}
+	runMovingAvgFilter(acs->sv_filter, sv_data);
+	acs->sun_status = findSolarVector(sv_data, NUM_SOLAR_PANELS, acs->solar_vector);
+}
+
+
 /** 
  * @brief  Performs closed loop integration on the given DCM using the Rexp form
  * @param  R: the DCM (initially returned from an initializeDCM() call)
@@ -69,9 +134,7 @@ Matrix initializeDCM(float yaw, float pitch, float roll) {
  * @param  sv: the solar vector from findSolarVector() in the SolarVectors module
  * @return None
 */
-void integrateDCM(Matrix R, Matrix bias, Matrix gyro, Matrix mag, Matrix sv, 
-		Matrix mag_inertial, Matrix sv_inertial, float Kp_mag, float Ki_mag,
-		float Kp_sv, float Ki_sv, float dt) {
+void integrateDCM(ACSType* acs, float Kp_mag, float Ki_mag, float Kp_sv, float Ki_sv, float dt) {
 			
 	static char init_run = 0;
 	static Matrix Rt; // Transpose of the DCM
@@ -103,10 +166,10 @@ void integrateDCM(Matrix R, Matrix bias, Matrix gyro, Matrix mag, Matrix sv,
 	}
 	
 	// ***** NORMALIZE MAG, SOLAR VECTOR, AND INERTIAL VECTORS ******
-	float norm_mag = vectorNorm(mag);
-	float norm_sv = vectorNorm(sv);
-	float norm_mi = vectorNorm(mag_inertial);
-	float norm_svi = vectorNorm(sv_inertial);
+	float norm_mag = vectorNorm(acs->mag_vector);
+	float norm_sv = vectorNorm(acs->solar_vector);
+	float norm_mi = vectorNorm(acs->mag_inertial);
+	float norm_svi = vectorNorm(acs->sv_inertial);
 
 	if(norm_mag == 0 || norm_sv == 0 || norm_mi == 0 || norm_svi == 0) {
 		// Need better error handling
@@ -114,30 +177,30 @@ void integrateDCM(Matrix R, Matrix bias, Matrix gyro, Matrix mag, Matrix sv,
 		while(1);
 	}
 	
-	matrixScale(mag, 1.0/norm_mag);
-	matrixScale(sv, 1.0/norm_sv);
-	matrixScale(mag_inertial, 1.0/norm_mi);
-	matrixScale(sv_inertial, 1.0/norm_svi);
+	matrixScale(acs->mag_vector, 1.0/norm_mag);
+	matrixScale(acs->solar_vector, 1.0/norm_sv);
+	matrixScale(acs->mag_inertial, 1.0/norm_mi);
+	matrixScale(acs->sv_inertial, 1.0/norm_svi);
 	
 	// ***** TRANSPOSE DCM *****
-	matrixTranspose(R, Rt);
+	matrixTranspose(acs->R, Rt);
 	
 	// ***** FIND ERROR FROM MAG *****
-	vectorRcross(mag, mag_rx);
-	matrixMult(Rt, mag_inertial, mag_i_body); // Translate mag to body
+	vectorRcross(acs->mag_vector, mag_rx);
+	matrixMult(Rt, acs->mag_inertial, mag_i_body); // Translate mag to body
 	matrixMult(mag_rx, mag_i_body, mag_err); // Cross product
 	matrixCopy(mag_err, merr_x_Kp);
 	matrixScale(merr_x_Kp, Kp_mag); // Kp_mag * mag_err
 	
 	// ***** FIND ERROR FROM SOLAR VECTOR *****
-	vectorRcross(sv, sv_rx);
-	matrixMult(Rt, sv_inertial, sv_i_body); // Translate mag to body
+	vectorRcross(acs->solar_vector, sv_rx);
+	matrixMult(Rt, acs->sv_inertial, sv_i_body); // Translate mag to body
 	matrixMult(sv_rx, sv_i_body, sv_err); // Cross product
 	matrixCopy(sv_err, sverr_x_Kp);
 	matrixScale(sverr_x_Kp, Kp_sv); // Kp_sv * mag_err
 	
 	// ***** ADD FEEDBACK TO GYRO *****
-	matrixSubtract(gyro, bias, gyro_with_bias);
+	matrixSubtract(acs->gyro_vector, acs->gyro_bias, gyro_with_bias);
 	matrixAdd(gyro_with_bias, merr_x_Kp, gyro_with_bias); // Add mag err*Kp
 	matrixAdd(gyro_with_bias, sverr_x_Kp, gyro_with_bias); // Add sv err*Kp
 	
@@ -147,14 +210,15 @@ void integrateDCM(Matrix R, Matrix bias, Matrix gyro, Matrix mag, Matrix sv,
 	matrixCopy(mag_err, bdot); // bdot equals -Ki_mag*mag_err
 	matrixAdd(bdot, sv_err, bdot); // bdot now equals -Ki_mag*mag_err - Ki_sv*sv_err
 	matrixScale(bdot, dt); // Multiply bdot*dt
-	matrixAdd(bias, bdot, bias); // bias = bias + dt*bdot
+	matrixAdd(acs->gyro_bias, bdot, acs->gyro_bias); // bias = bias + dt*bdot
 	
 	// ***** INTEGRATE DCM *****
 	matrixScale(gyro_with_bias, dt);
 	findRexp(gyro_with_bias, Rexp); // Rexp = findRexp(gyro_with_bias*dt)
-	matrixMult(R, Rexp, new_R); // new_R = R*Rexp(gyro_with_bias*dt)
-	matrixCopy(new_R, R); // R = R*Rexp(gyro_with_bias*dt)
+	matrixMult(acs->R, Rexp, new_R); // new_R = R*Rexp(gyro_with_bias*dt)
+	matrixCopy(new_R, acs->R); // R = R*Rexp(gyro_with_bias*dt)
 }
+
 
 /** 
  * @brief  Finds Euler angles in inertial frame from a DCM
@@ -195,6 +259,7 @@ float sinc(float x) {
 		return sin(x)/x;
 	}
 }
+
 
 void findRexp(Matrix w, Matrix Rexp) {
 	static int init_run = 0;

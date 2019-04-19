@@ -25,7 +25,7 @@ void receivePacket(UART_HandleTypeDef* huart, uint8_t* packet, unsigned int byte
 	} while(status != HAL_OK);
 }
 
-int STM32SerialSendFloats(UART_HandleTypeDef* huart, float* f, unsigned int n) {
+HAL_StatusTypeDef STM32SerialSendFloats(UART_HandleTypeDef* huart, float* f, unsigned int n) {
 	// Send start packet
 //	uint8_t start_packet[CONTROL_PACKET_SIZE];
 //	makeControlPacket(start_packet, START);

@@ -19,10 +19,11 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <AttitudeEstimation.h>
-#include <SolarVectors.h>
-#include <BNO055_IMU.h>
+//#include <SolarVectors.h>
+//#include <BNO055_IMU.h>
+//#include <DigitalFilters.h>
+
 #include <string.h>
-#include <DigitalFilters.h>
 
 /* USER CODE END Includes */
 
@@ -128,43 +129,16 @@ int main(void)
   /* USER CODE BEGIN 2 */
 	
 	char transmit[200];
+	sprintf(transmit, "ATTITUDE ESTIMATION PROGRAM START\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
 	
 	// ***** INITIALIZE SENSORS *****
-	IMU_init(&hi2c1, OPERATION_MODE_MAGGYRO);
-	float gyro_data[3] = {0};
-	float mag_data[3] = {0};
+	ACSType acs;
+	initializeACS(&acs);
+	initializeSensors(&acs, &hi2c1, &hadc1);
 	
-	HAL_ADC_Start_DMA(&hadc1, sv_raw, NUM_SOLAR_PANELS); // Start ADC in DMA mode
-	float sv_data[NUM_SOLAR_PANELS] = {0};
-	
-	// ***** INITIALIZE MOVING AVERAGE FILTERS *****
-	MovingAvgFilter mag_filter = newMovingAvgFilter(3, MAG_HIST_LENGTH);
-	MovingAvgFilter sv_filter = newMovingAvgFilter(NUM_SOLAR_PANELS, SV_HIST_LENGTH);
-	
-	// Run filters to fill them with initial data
-	for(int i = 0;i < MAG_HIST_LENGTH && i < SV_HIST_LENGTH;i++) {
-		// Read magnetometer
-		get_mag_data_corrected(&hi2c1, mag_data);
-		runMovingAvgFilter(mag_filter, mag_data);
-		
-		// Read solar vector
-		for(int i = 0;i < NUM_SOLAR_PANELS;i++) {
-			sv_data[i] = ADC_TO_VOLTS(sv_raw[i]);
-		}
-		runMovingAvgFilter(sv_filter, sv_data);
-		
-		HAL_Delay(TIME_DELAY_MS);
-	}
-	
-	// ***** INITIALIZE MATRICES *****
-	Matrix gyro_vector = newMatrix(3, 1);
-	Matrix mag_vector = newMatrix(3, 1);
-	Matrix solar_vector = newMatrix(3, 1);
-	Matrix sv_inertial = make3x1Vector(1, 0, 0);
-	Matrix mag_inertial = make3x1Vector(0, -1, 0);
-	
-	vectorCopyArray(mag_inertial, mag_data, 3);
-	findSolarVector(sv_data, NUM_SOLAR_PANELS, sv_inertial); // NEEDS FIXING FOR CASE WHEN SOLAR VECTORS IS NOT FOUND ON STARTUP
+	matrixCopy(acs.mag_vector, acs.mag_inertial);
+	matrixCopy(acs.solar_vector, acs.sv_inertial); // NEEDS FIXING FOR CASE WHEN SOLAR VECTORS IS NOT FOUND ON STARTUP
 	
 	// ***** GYRO FEEDBACK *****
 	float Kp_mag = KP_MAG_BASE;
@@ -172,18 +146,14 @@ int main(void)
 	float Kp_sv = KP_SV_BASE;
 	float Ki_sv = KI_SV_BASE;
 	
-	Matrix bias_estimate = make3x1Vector(0, 0, 0);
-	
 	float dt; // In seconds
-	Matrix R = initializeDCM(0, 0, 0);
-	float y_p_r[3]; // Yaw/pitch/roll
 	
 	sprintf(transmit, "Finished init\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
 	
 	// ***** START TIMER *****
-	uint16_t last_time = 0, new_time = 0, computation_start_time;
 	HAL_TIM_Base_Start(&htim2);
+	uint16_t last_time = TIM2->CNT, new_time, computation_start_time;
 	
   /* USER CODE END 2 */
 
@@ -191,25 +161,31 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		computation_start_time = TIM2->CNT;
+		//computation_start_time = TIM2->CNT;
 		
-		// Read gyro and transform into a column vector Matrix
-		get_gyr_data(&hi2c1, gyro_data);
-		vectorCopyArray(gyro_vector, gyro_data, 3);
+		readSensors(&acs);
 		
-		// Read magnetometer, iterate moving average filter, transform into a vector Matrix
-		get_mag_data_corrected(&hi2c1, mag_data);
-		runMovingAvgFilter(mag_filter, mag_data);
-		vectorCopyArray(mag_vector, mag_data, 3);
+		#ifdef PRINT_SENSOR_VECTORS
+		// Print gyro vector
+		sprintf(transmit, "Gyro vector:\r\n");
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
+		printMatrix(acs.gyro_vector, transmit);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
 		
-		// Read solar vector
-		for(int i = 0;i < NUM_SOLAR_PANELS;i++) {
-			sv_data[i] = ADC_TO_VOLTS(sv_raw[i]);
-		}
-		runMovingAvgFilter(sv_filter, sv_data);
-		SV_Status sv_return = findSolarVector(sv_data, NUM_SOLAR_PANELS, solar_vector);
+		// Filtered mag vector
+		sprintf(transmit, "Mag vector:\r\n");
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
+		printMatrix(acs.mag_vector, transmit);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
 		
-		if(sv_return == SV_FOUND) {
+		// Print solar vector
+		sprintf(transmit, "Solar vector:\r\n");
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
+		printMatrix(acs.solar_vector, transmit);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+		#endif
+		
+		if(acs.sun_status == SV_FOUND) {
 			Kp_sv = KP_SV_BASE;
 			Ki_sv = KI_SV_BASE;
 		}
@@ -224,43 +200,22 @@ int main(void)
 		dt = TIM2_TICKS_TO_SECONDS((uint16_t)(new_time - last_time));
 		
 		// DCM integration
-		integrateDCM(R, bias_estimate, gyro_vector, mag_vector, solar_vector, mag_inertial, sv_inertial,
-								Kp_mag, Ki_mag, Kp_sv, Ki_sv, dt);
+		integrateDCM(&acs, Kp_mag, Ki_mag, Kp_sv, Ki_sv, dt);
 		
 		#ifdef PRINT_COMPUTATION_TIME
 		sprintf(transmit, "Comp. time: %1.6f[s]\r\n", TIM2_TICKS_TO_SECONDS((uint16_t)(TIM2->CNT - new_time)));
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 10);
 		#endif
 		
-		#ifdef PRINT_SENSOR_VECTORS
-		// Print gyro vector
-		sprintf(transmit, "Gyro vector:\r\n");
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
-		printMatrix(gyro_vector, transmit);
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-		
-		// Filtered mag vector
-		sprintf(transmit, "Mag vector:\r\n");
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
-		printMatrix(mag_vector, transmit);
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-		
-		// Print solar vector
-		sprintf(transmit, "Solar vector:\r\n");
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
-		printMatrix(solar_vector, transmit);
-		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-		#endif
-		
 		#ifdef PRINT_DCM
-		printMatrix(R, transmit);
+		printMatrix(acs.R, transmit);
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
 		sprintf(transmit, "\r\n");
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 10);
 		#endif
 		
 		#ifdef PRINT_EULER_ANGLES
-		findEulerAngles(R, y_p_r);
+		findEulerAngles(acs.R, y_p_r);
 		sprintf(transmit, "Yaw:   %3.2f\r\nPitch: %3.2f\r\nRoll:  %3.2f\r\n\r\n", 180.0*y_p_r[0]/PI, 180.0*y_p_r[1]/PI, 180.0*y_p_r[2]/PI);
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 40);
 		#endif

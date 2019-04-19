@@ -393,24 +393,14 @@
           <GroupName>Lib</GroupName>
           <Files>
             <File>
-              <FileName>BNO055_IMU.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Mech_Lib\BNO055_IMU.h</FilePath>
-            </File>
-            <File>
-              <FileName>Matrix.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Mech_Lib\Matrix.h</FilePath>
-            </File>
-            <File>
-              <FileName>SolarVectors.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Mech_Lib\SolarVectors.h</FilePath>
-            </File>
-            <File>
               <FileName>BNO055_IMU.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Mech_Lib\BNO055_IMU.c</FilePath>
+            </File>
+            <File>
+              <FileName>BNO055_IMU.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\BNO055_IMU.h</FilePath>
             </File>
             <File>
               <FileName>Matrix.c</FileName>
@@ -418,9 +408,19 @@
               <FilePath>..\..\Mech_Lib\Matrix.c</FilePath>
             </File>
             <File>
+              <FileName>Matrix.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\Matrix.h</FilePath>
+            </File>
+            <File>
               <FileName>SolarVectors.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Mech_Lib\SolarVectors.c</FilePath>
+            </File>
+            <File>
+              <FileName>SolarVectors.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\SolarVectors.h</FilePath>
             </File>
             <File>
               <FileName>AttitudeEstimation.c</FileName>
@@ -433,14 +433,14 @@
               <FilePath>..\..\Mech_Lib\AttitudeEstimation.h</FilePath>
             </File>
             <File>
-              <FileName>DigitalFilters.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Mech_Lib\DigitalFilters.h</FilePath>
-            </File>
-            <File>
               <FileName>DigitalFilters.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Mech_Lib\DigitalFilters.c</FilePath>
+            </File>
+            <File>
+              <FileName>DigitalFilters.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\DigitalFilters.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -6,9 +6,9 @@
   ******************************************************************************
   ** Attitude estimation test program. Includes unit tests on the Matrix and
 	* AttitudeEstimation functions as well as a main loop which runs attitude
-	* estimation with the same parameters as the Matlab program.
+	* estimation with the same parameters as the example Matlab program.
 	*
-	* See the Attitude Estimation SOP.
+	* NOT CURRENTLY WORKING AS OF 4/18/2019. 
   *
   ******************************************************************************
   */
@@ -299,9 +299,12 @@ int main(void)
 	
 	// ***** INITIALIZE ATTITUDE CONTROL TEST *****
 	
-	Matrix gyro_input = make3x1Vector(0.1, 0.1, 0.1);
-	Matrix sv_inertial = make3x1Vector(1, 0, 0);
-	Matrix mag_inertial = make3x1Vector(0, 0, -1);
+	ACSType acs;
+	initializeACS(&acs);
+	
+	acs.gyro_vector = make3x1Vector(0.1, 0.1, 0.1);
+	acs.sv_inertial = make3x1Vector(1, 0, 0);
+	acs.mag_inertial = make3x1Vector(0, 0, -1);
 	
 	float Kp_sv = 0.2;
 	float Ki_sv = 0.02;
@@ -309,17 +312,7 @@ int main(void)
 	float Kp_mag = 0.2;
 	float Ki_mag = 0.02;
 	
-	Matrix bias_estimate = make3x1Vector(0, 0, 0);
-	
 	float dt = 1;
-	
-	Matrix R = initializeDCM(0, 0, 0);
-	
-	sprintf(transmit, "Printing output of initializeDCM()\r\n");	
-	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
-	
-	printMatrix(R, transmit);
-	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
 	
   /* USER CODE END 2 */
 
@@ -327,17 +320,16 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		integrateDCM(R, bias_estimate, gyro_input, mag_inertial, sv_inertial, mag_inertial, sv_inertial,
-								Kp_mag, Ki_mag, Kp_sv, Ki_sv, dt);
+		integrateDCM(&acs, Kp_mag, Ki_mag, Kp_sv, Ki_sv, dt);
 		
 		// Print DCM every step
-		printMatrix(R, transmit);
+		printMatrix(acs.R, transmit);
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
 		
 		sprintf(transmit, "\r\n");
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
 		
-		printMatrix(bias_estimate, transmit);
+		printMatrix(acs.gyro_bias, transmit);
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
 		
 		sprintf(transmit, "\r\n");

@@ -15,15 +15,81 @@
  
 /* Includes ------------------------------------------------------------------*/
 #include <Matrix.h>
+#include <DigitalFilters.h>
+#include <SolarVectors.h>
+#include <main.h>
+#include <STM32SerialCommunication.h>
 
-/* Public functions prototypes ---------------------------------------------*/
+/* Constants -----------------------------------------------------------------*/
+#define NUM_SOLAR_PANELS 6
+#define SENSOR_READ_DELAY_MS 50
+
+/* Datatypes -----------------------------------------------------------------*/
+typedef struct {
+	// Craft DCM
+	Matrix R;
+	
+	// Vectors
+	Matrix gyro_vector;
+	Matrix gyro_bias;
+	Matrix mag_vector;
+	Matrix solar_vector;
+	Matrix sv_inertial;
+	Matrix mag_inertial;
+	
+	// Sensors
+	I2C_HandleTypeDef* hi2c;
+	MovingAvgFilter mag_filter;
+	MovingAvgFilter sv_filter;
+	uint32_t sv_raw[NUM_SOLAR_PANELS]; // For DMA to use
+	
+	// Solar panel status
+	SV_Status sun_status;
+}ACSType;
+
+
+/* Initialization Functions ---------------------------------------------*/
 
 /** 
- * @brief  Allocates and initializes a 3x3 DCM Matrix (currently always returns I3)
+ * @brief  Initializes all the fields in the given ACS struct
+ * @param  acs: a pointer to an existing Attitude Control System object
+ * @return None
+*/
+void initializeACS(ACSType* acs);
+
+/** 
+ * @brief  Initializes all the fields in the given ACS struct
+ * @param  acs: a pointer to an existing Attitude Control System object
+ * @return None
+*/
+void initializeSensors(ACSType* acs, I2C_HandleTypeDef* hi2c, ADC_HandleTypeDef* hadc);
+
+/** 
+ * @brief  Allocates and initializes a 3x3 DCM Matrix
  * @param  Euler angles for the initial DCM
  * @return The new DCM Matrix
 */
 Matrix initializeDCM(float yaw, float pitch, float roll);
+
+
+/* Sensor Functions ----------------------------------------------------*/
+
+/** 
+ * @brief  Reads sensors and updates gyro_vector, mag_vector, and solar_vector in acs
+ * @param  acs: a pointer to an existing Attitude Control System object
+ * @return None
+*/
+void readSensors(ACSType* acs);
+
+/** 
+ * @brief  Reads sensor data from serial and updates acs
+ * @param  acs: a pointer to an existing Attitude Control System object
+ * @return None
+*/
+void readSensorsFromSerial(ACSType* acs, UART_HandleTypeDef* huart); // To-do
+
+
+/* DCM Integration Functions -------------------------------------------*/
 
 /** 
  * @brief  Performs closed loop integration on the given DCM using the Rexp form
@@ -38,9 +104,7 @@ Matrix initializeDCM(float yaw, float pitch, float roll);
  * @param  dt: time since last call of integrateDCM() in seconds
  * @return None
 */
-void integrateDCM(Matrix R, Matrix bias, Matrix gyro, Matrix mag, Matrix sv, 
-		Matrix mag_inertial, Matrix sv_inertial, float Kp_mag, float Ki_mag,
-		float Kp_sv, float Ki_sv, float dt);
+void integrateDCM(ACSType* acs, float Kp_mag, float Ki_mag, float Kp_sv, float Ki_sv, float dt);
 
 /** 
  * @brief  Performs closed loop integration on the given DCM using the Rexp form

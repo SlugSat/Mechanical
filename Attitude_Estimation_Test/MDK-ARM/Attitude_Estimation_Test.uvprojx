@@ -432,6 +432,16 @@
               <FileType>5</FileType>
               <FilePath>..\..\Mech_Lib\SolarVectors.h</FilePath>
             </File>
+            <File>
+              <FileName>DigitalFilters.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\DigitalFilters.c</FilePath>
+            </File>
+            <File>
+              <FileName>DigitalFilters.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\DigitalFilters.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
