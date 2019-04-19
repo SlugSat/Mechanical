@@ -18,11 +18,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <ACS.h>
 #include <AttitudeEstimation.h>
-//#include <SolarVectors.h>
-//#include <BNO055_IMU.h>
-//#include <DigitalFilters.h>
-
 #include <string.h>
 
 /* USER CODE END Includes */

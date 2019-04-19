@@ -442,6 +442,11 @@
               <FileType>5</FileType>
               <FilePath>..\..\Mech_Lib\DigitalFilters.h</FilePath>
             </File>
+            <File>
+              <FileName>ACS.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\ACS.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
