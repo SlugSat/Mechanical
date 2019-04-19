@@ -10,6 +10,9 @@
   ******************************************************************************
   */
 
+#ifndef STM32SERIAL_H
+#define STM32SERIAL_H
+
 #include "main.h"
 
 /** 
@@ -29,3 +32,5 @@ HAL_StatusTypeDef STM32SerialSendFloats(UART_HandleTypeDef* huart, float* f, uns
  * @return Always 0 for now
 */
 int STM32SerialReceiveFloats(UART_HandleTypeDef* huart, float* f, unsigned int n);
+
+#endif

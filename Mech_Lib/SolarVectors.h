@@ -10,8 +10,8 @@
   ******************************************************************************
   */
  
- #ifndef SOLARVECTOR_H
- #define SOLARVECTOR_H
+#ifndef SOLARVECTOR_H
+#define SOLARVECTOR_H
  
 /* Includes -----------------------------------------------------------------*/
 #include <Matrix.h>

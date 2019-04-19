@@ -89,7 +89,7 @@ void readSensors(ACSType* acs);
 void readSensorsFromSerial(ACSType* acs, UART_HandleTypeDef* huart); // To-do
 
 
-/* DCM Integration Functions -------------------------------------------*/
+/* Sensor Fusion Functions -------------------------------------------*/
 
 /** 
  * @brief  Performs closed loop integration on the given DCM using the Rexp form

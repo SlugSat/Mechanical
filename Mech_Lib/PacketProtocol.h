@@ -10,6 +10,9 @@
   ******************************************************************************
   */
 
+#ifndef PACKETPROTOCOL_H
+#define PACKETPROTOCOL_H
+
 #include <stdint.h>
 
 #define BYTES_PER_FLOAT 4
@@ -56,3 +59,6 @@ void makeControlPacket(uint8_t* p, ControlPacketType type);
  * @return NONE if p is not a control packet, otherwise the packet type
 */
 ControlPacketType isControlPacket(uint8_t* p);
+
+#endif
+
