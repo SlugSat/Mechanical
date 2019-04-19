@@ -22,11 +22,11 @@ void wdot2rw_pwm(ACSType* acs, float* rw_pwm, float dt);
 // PUBLIC FUNCTIONS
 void findErrorVectors(ACSType* acs) {
 	static float init_run = 0;
-	static Matrix zhat_B, xhat_B; // Body frame unit vectors
+	static Matrix zhat_B, corner_B; // Body frame vectors
 	
 	if(init_run == 0) {
 		zhat_B = make3x1Vector(0, 0, 1);
-		xhat_B = make3x1Vector(1, 0, 0);
+		corner_B = newMatrix(3, 1);
 		init_run = 1;
 	}
 	
