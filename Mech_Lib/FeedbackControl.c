@@ -35,7 +35,7 @@ void findErrorVectors(ACSType* acs) {
 
 
 void runBdotController(ACSType* acs, float dt) {
-	// this is a comment
+	// this is a comment and another one
 	return;
 }
 
