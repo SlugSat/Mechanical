@@ -21,8 +21,6 @@
 
 
 // CONSTANTS
-#define PI 3.141592654
-
 #define KP_MAG_BASE 1.0
 #define KI_MAG_BASE 0.3
 #define KP_SV_BASE 1.0
@@ -32,6 +30,7 @@
 #define SV_HIST_LENGTH 10
 
 #define SENSOR_READ_DELAY_MS 50
+
 
 // HELPER FUNCTIONS
 /** 

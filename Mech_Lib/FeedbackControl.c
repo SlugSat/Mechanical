@@ -50,9 +50,7 @@ void findErrorVectors(ACSType* acs) {
 	matrixMult(acs->Rt, n_I, n_B); // Translate to body frame
 	
 	// Make corner_B vector point to the edge closest to n_B (roughly)
-	matrixSet(corner_B, 1, 1, DIV_ROOT2*sign(matrixGetElement(n_B, 1, 1)));
-	matrixSet(corner_B, 2, 1, DIV_ROOT2*sign(matrixGetElement(n_B, 2, 1)));
-	// corner_B.z = 0 already
+	vectorSetXYZ(corner_B, DIV_ROOT2*sign(matrixGetElement(n_B, 1, 1)), DIV_ROOT2*sign(matrixGetElement(n_B, 2, 1)), 0);
 	
 	// Take cross product to find error
 	vectorCrossProduct(n_B, corner_B, acs->n_err);
