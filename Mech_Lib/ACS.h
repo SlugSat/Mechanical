@@ -34,6 +34,7 @@ typedef enum {
 typedef struct {
 	// Craft DCM
 	Matrix R;
+	Matrix Rt;
 	
 	// Sensor vectors (body frame)
 	Matrix gyro_vector;
