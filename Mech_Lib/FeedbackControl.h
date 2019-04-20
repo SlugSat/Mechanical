@@ -39,17 +39,19 @@ void runBdotController(ACSType* acs, float dt);
  * @brief  Description
  * @param  acs: a pointer to an existing Attitude Control System object
  * @param  dt: time in seconds since last call of this function
+ * @param  first_step: 1 right after state transitions, 0 otherwise
  * @return None
  */
-void runOrientationController(ACSType* acs, float dt);
+void runOrientationController(ACSType* acs, float dt, int first_step);
 
 /**
  * @brief  Description
  * @param  acs: a pointer to an existing Attitude Control System object
  * @param  dt: time in seconds since last call of this function
+ * @param  first_step: 1 right after state transitions, 0 otherwise
  * @return None
  */
-void runStabilizationController(ACSType* acs, float dt);
+void runStabilizationController(ACSType* acs, float dt, int first_step);
 
 /**
  * @brief  Function will update the acs->sv_inertial with current julian date

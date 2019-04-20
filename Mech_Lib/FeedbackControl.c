@@ -27,7 +27,7 @@ float sign(float x);
 
 // PUBLIC FUNCTIONS
 void findErrorVectors(ACSType* acs) {
-	static float init_run = 0;
+	static int init_run = 0;
 	static Matrix zhat_B, craft_B, n_I, n_B, corner_B;
 	
 	if(init_run == 0) {
@@ -64,12 +64,7 @@ void runBdotController(ACSType* acs, float dt) {
 }
 
 
-void runOrientationController(ACSType* acs, float dt) {
-	return;
-}
-
-
-void runStabilizationController(ACSType* acs, float dt) {
+void runOrientationController(ACSType* acs, float dt, int first_step) {
 	return;
 }
 
