@@ -75,7 +75,7 @@ void runStabilizationController(ACSType* acs, float dt) {
 	return;
 }
 
-<<<<<<< HEAD
+
 void findSunInertial(ACSType* acs, double julianDate){
 	double num_days = julianDate - 2451545.0; // number of days since 1 Jan 2000.
 	float mean_longitude = fmod(280.46 + 0.9856474*num_days, 360.0);
@@ -90,7 +90,7 @@ void findSunInertial(ACSType* acs, double julianDate){
 	
 	return;
 }
-=======
+
 float sign(float x) {
 	if(x < 0) {
 		return -1.0;
@@ -99,4 +99,3 @@ float sign(float x) {
 		return 1.0;
 	}
 }
->>>>>>> 6b82595d38dac2a17148451dd2d954fa4653274f
