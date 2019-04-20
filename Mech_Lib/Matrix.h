@@ -133,6 +133,14 @@ Matrix make3x1Vector(float x, float y, float z);
 void vectorCopyArray(Matrix v, float* array, char n);
 
 /** 
+ * @brief  Sets elements 1-3 in a vector
+ * @param  v: an allocated 3x1 Matrix
+ * @param  x, y, z: vector components
+ * @return None
+*/
+void vectorSetXYZ(Matrix v, float x, float y, float z);
+
+/** 
  * @brief  Creates the skew symmetric (cross product) matrix from a vector
  * @param  A 3x1 column vector Matrix, an allocated 3x3 Matrix in which to store the result
  * @return None

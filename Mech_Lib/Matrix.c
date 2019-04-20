@@ -178,6 +178,12 @@ void vectorCopyArray(Matrix v, float* array, char n) {
 	}
 }
 
+void vectorSetXYZ(Matrix v, float x, float y, float z) {
+	v->data[0][0] = x;
+	v->data[1][0] = y;
+	v->data[2][0] = z;
+}
+
 void vectorRcross(Matrix v, Matrix vcross) {
     // Row 1
     vcross->data[0][0] = 0;
