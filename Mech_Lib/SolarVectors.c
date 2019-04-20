@@ -14,7 +14,6 @@
 #include <stdio.h>
 #include <math.h>
 
-#define PI 3.141592654
 
 // THESE NEED CHANGING POST-CALIBRATION
 #define SUN_MIN_THRESH 0.1 // Threshold (volts) for a panel to be considered in the sun at all

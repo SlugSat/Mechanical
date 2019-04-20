@@ -52,7 +52,7 @@ void runOrientationController(ACSType* acs, float dt);
 void runStabilizationController(ACSType* acs, float dt);
 
 /**
- * @brief  Description
+ * @brief  Function will update the acs->sv_inertial with current julian date
  * @param  acs: a pointer to an existing Attitude Control System object
  * @param  julianDate: current julian date
  * @return None
