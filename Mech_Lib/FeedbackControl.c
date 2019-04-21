@@ -60,19 +60,13 @@ void findErrorVectors(ACSType* acs) {
 
 void runBdotController(ACSType* acs, float dt) {
 	static int init_run = 0;
-	static Matrix b_rot, w_adj, bdot, last_mag, moment, volts, PWM;
-	float TR_resistance = 1;
-	float TR_area = 1;
-	uint16_t TR_num_turns = 3000;
-	uint8_t V_rail  = 5;
+	static Matrix b_rot, w_adj, bdot, last_mag, PWM;
 	
 	if(init_run == 0) {
 		b_rot = newMatrix(3,1);
 		w_adj = newMatrix(3,1);
 		bdot = newMatrix(3,1);
 		last_mag = newMatrix(3,1);
-		moment = newMatrix(3,1);
-		volts = newMatrix(3,1);
 		PWM = newMatrix(3,1);
 		init_run = 1;
 	}
@@ -86,15 +80,10 @@ void runBdotController(ACSType* acs, float dt) {
 	// ***** FIND MAGNETIC DIPOLE MOMENT *****
 	// find the signs of bdot vector
 	vectorSetXYZ(bdot, sign(matrixGetElement(bdot, 1, 1)), sign(matrixGetElement(bdot, 2, 1)), sign(matrixGetElement(bdot, 3, 1)));
-	// MAX_MOMENT is the gain, may need to be adjusted 
-	matrixScale(bdot, -MAX_MOMENT);
-	matrixCopy(bdot, moment);// moment = -MAX_MOMENT * sign(bdot)
 	
 	// ***** FIND PWM FOR EACH TORQUE ROD *****
-	matrixScale(moment, TR_resistance/(TR_area*TR_num_turns));
-	matrixCopy(moment, volts); // volts = moment * R/(n*A)
-	matrixScale(volts, 100/V_rail);
-	matrixCopy (volts, PWM); // PWM = volts*(100/V_rail)
+	matrixScale(bdot, 100);
+	matrixCopy (bdot, PWM);
 	
 	return;
 }
