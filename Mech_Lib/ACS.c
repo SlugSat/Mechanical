@@ -77,7 +77,7 @@ void initializeACS(ACSType* acs) {
 	Matrix err = newMatrix(3, 1);
 	
 	Matrix w_rw = make3x1Vector(0, 0, 0);
-	Matrix J_rw = newMatrix(3, 3);
+	Matrix J_rw = makeJrw();
 	Matrix A_rw = initializeDCM(0, 0, 0); // I3 (identity matrix)
 	Matrix J_body = makeJbody();
 	Matrix J_body_inv = makeJbodyInv();
