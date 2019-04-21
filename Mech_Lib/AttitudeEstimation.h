@@ -10,21 +10,14 @@
   ******************************************************************************
   */
 
- #ifndef ATTITUDEESTIMATION_H
- #define ATTITUDEESTIMATION_H
+#ifndef ATTITUDEESTIMATION_H
+#define ATTITUDEESTIMATION_H
  
 /* Includes ------------------------------------------------------------------*/
 #include "ACS.h"
 
 
 /* Initialization Functions --------------------------------------------------*/
-
-/** 
- * @brief  Initializes all the fields in the given ACS struct
- * @param  acs: a pointer to an existing Attitude Control System object
- * @return None
-*/
-void initializeSensors(ACSType* acs, I2C_HandleTypeDef* hi2c, ADC_HandleTypeDef* hadc);
 
 /** 
  * @brief  Allocates and initializes a 3x3 DCM Matrix
@@ -34,24 +27,7 @@ void initializeSensors(ACSType* acs, I2C_HandleTypeDef* hi2c, ADC_HandleTypeDef*
 Matrix initializeDCM(float yaw, float pitch, float roll);
 
 
-/* Sensor Functions ----------------------------------------------------*/
-
-/** 
- * @brief  Reads sensors and updates gyro_vector, mag_vector, and solar_vector in acs
- * @param  acs: a pointer to an existing Attitude Control System object
- * @return None
-*/
-void readSensors(ACSType* acs);
-
-/** 
- * @brief  Reads sensor data from serial and updates acs
- * @param  acs: a pointer to an existing Attitude Control System object
- * @return None
-*/
-void readSensorsFromSerial(ACSType* acs, UART_HandleTypeDef* huart); // To-do
-
-
-/* Sensor Fusion Functions -------------------------------------------*/
+/* Sensor Fusion Functions --------------------------------------------------*/
 
 /** 
  * @brief  Updates the craft attitude estimate using sensor data in acs

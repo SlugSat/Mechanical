@@ -57,7 +57,6 @@ typedef struct {
 	Matrix err; // err = z_err + n_err
 	
 	// Sensor hardware
-	I2C_HandleTypeDef* hi2c;
 	MovingAvgFilter mag_filter;
 	MovingAvgFilter sv_filter;
 	uint32_t sv_raw[NUM_SOLAR_PANELS]; // For DMA to use
@@ -82,4 +81,12 @@ typedef struct {
 */
 void initializeACS(ACSType* acs);
 
+/* Serial Communication Functions ---------------------------------------------*/
+
+/** 
+ * @brief  Reads sensor data from serial and updates acs
+ * @param  acs: a pointer to an existing Attitude Control System object
+ * @return None
+*/
+void readSensorsFromSerial(ACSType* acs, UART_HandleTypeDef* huart); // To-do
 #endif

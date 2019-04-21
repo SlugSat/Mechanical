@@ -14,9 +14,6 @@
 
 // LIBRARIES
 #include <AttitudeEstimation.h>
-#include <BNO055_IMU.h>
-#include <STM32SerialCommunication.h>
-#include <SolarVectors.h>
 #include <math.h>
 
 
@@ -25,11 +22,6 @@
 #define KI_MAG_BASE 0.3
 #define KP_SV_BASE 1.0
 #define KI_SV_BASE 0.3
-
-#define MAG_HIST_LENGTH 10
-#define SV_HIST_LENGTH 10
-
-#define SENSOR_READ_DELAY_MS 50
 
 
 // HELPER FUNCTIONS
@@ -42,9 +34,9 @@
 void findRexp(Matrix w, Matrix Rexp);
 
 /**
- * @brief	Sinc function that handles the case where x ~= 0
+ * @brief Sinc function that handles the case where x ~= 0
 */
-float	sinc(float x);
+float sinc(float x);
 
 /** 
  * @brief  Performs closed loop integration on the given DCM using the Rexp form
@@ -57,25 +49,6 @@ void integrateDCM(ACSType* acs, float Kp_mag, float Ki_mag, float Kp_sv, float K
 
 
 // PUBLIC FUNCTIONS
-
-void initializeSensors(ACSType* acs, I2C_HandleTypeDef* hi2c, ADC_HandleTypeDef* hadc) {
-	// Sensor hardware
-	IMU_init(hi2c, OPERATION_MODE_MAGGYRO);
-	acs->hi2c = hi2c;
-	HAL_ADC_Start_DMA(hadc, acs->sv_raw, NUM_SOLAR_PANELS);
-	
-	// Sensor moving average filters
-	acs->mag_filter = newMovingAvgFilter(3, MAG_HIST_LENGTH);
-	acs->sv_filter = newMovingAvgFilter(NUM_SOLAR_PANELS, SV_HIST_LENGTH);
-	
-	// Read sensors until moving average filters are full
-	uint8_t sensor_iterations = SV_HIST_LENGTH > MAG_HIST_LENGTH ? SV_HIST_LENGTH : MAG_HIST_LENGTH;
-	for(int i = 0;i < sensor_iterations;i++) {
-		readSensors(acs);
-		HAL_Delay(SENSOR_READ_DELAY_MS);
-	}
-}
-
 
 Matrix initializeDCM(float yaw, float pitch, float roll) {
 	Matrix r = newMatrix(3, 3);
@@ -103,26 +76,6 @@ Matrix initializeDCM(float yaw, float pitch, float roll) {
 	matrixSet(r, 3, 3, cos(r_r)*cos(p_r));
 	
 	return r;
-}
-
-void readSensors(ACSType* acs) {
-	static float gyro_data[3], mag_data[3], sv_data[NUM_SOLAR_PANELS];
-	
-	// Read gyro and transform into a column vector Matrix
-	get_gyr_data(acs->hi2c, gyro_data);
-	vectorCopyArray(acs->gyro_vector, gyro_data, 3);
-	
-	// Read magnetometer, iterate moving average filter, transform into a vector Matrix
-	get_mag_data_corrected(acs->hi2c, mag_data);
-	runMovingAvgFilter(acs->mag_filter, mag_data);
-	vectorCopyArray(acs->mag_vector, mag_data, 3);
-	
-	// Read solar vector
-	for(int i = 0;i < NUM_SOLAR_PANELS;i++) {
-		sv_data[i] = ADC_TO_VOLTS(acs->sv_raw[i]);
-	}
-	runMovingAvgFilter(acs->sv_filter, sv_data);
-	acs->sun_status = findSolarVector(sv_data, NUM_SOLAR_PANELS, acs->solar_vector);
 }
 
 

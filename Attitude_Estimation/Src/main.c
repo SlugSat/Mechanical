@@ -19,6 +19,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <ACS.h>
+#include <Sensors.h>
 #include <AttitudeEstimation.h>
 #include <string.h>
 
@@ -35,8 +36,6 @@
 // #define PRINT_EULER_ANGLES
 // #define PRINT_SENSOR_VECTORS
 #define PRINT_DCM
-
-#define PI 3.14159265358979323846
 
 #define NUM_SOLAR_PANELS 6
 #define MAG_HIST_LENGTH 10
@@ -152,7 +151,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		readSensors(&acs);
+		readSensors(&acs, &hi2c1);
 		
 		// Find time since last iteration
 		last_time = new_time;

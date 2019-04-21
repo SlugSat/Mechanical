@@ -452,6 +452,16 @@
               <FileType>1</FileType>
               <FilePath>..\..\Mech_Lib\ACS.c</FilePath>
             </File>
+            <File>
+              <FileName>Sensors.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\Sensors.c</FilePath>
+            </File>
+            <File>
+              <FileName>Sensors.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\Sensors.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
