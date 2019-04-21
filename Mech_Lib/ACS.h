@@ -69,6 +69,7 @@ typedef struct {
 	Matrix J_rw; // Reaction wheel inertia matrix
 	Matrix A_rw; // Reaction wheel projection onto body axes
 	Matrix J_body; // Craft inertia matrix
+	Matrix J_body_inv; // Inverse of J_body
 }ACSType;
 
 
