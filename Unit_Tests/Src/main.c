@@ -24,6 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <FeedbackControl.h>
+#include <string.h>
 
 /* USER CODE END Includes */
 
@@ -92,7 +93,22 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+	char transmit[200];
+	sprintf(transmit, "ACS UNIT TEST PROGRAM\r\nBy Mechanical team\r\n\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	
+	// Initialize ACS struct
+	sprintf(transmit, "Initializing ACS struct... ");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	ACSType acs;
+	initializeACS(&acs);
+	
+	sprintf(transmit, "Initialization done!\r\n\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	
+	
+	
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
