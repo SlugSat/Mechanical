@@ -32,8 +32,10 @@ void findErrorVectors(ACSType* acs) {
 	
 	if(init_run == 0) {
 		zhat_B = make3x1Vector(0, 0, 1);
-		corner_B = newMatrix(3, 1);
 		craft_B = newMatrix(3, 1);
+		n_I = newMatrix(3, 1);
+		n_B = newMatrix(3, 1);
+		corner_B = newMatrix(3, 1);
 		init_run = 1;
 	}
 	

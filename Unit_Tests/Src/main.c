@@ -23,6 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <AttitudeEstimation.h>
 #include <FeedbackControl.h>
 #include <string.h>
 
@@ -106,8 +107,82 @@ int main(void)
 	sprintf(transmit, "Initialization done!\r\n\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
 	
+	// ***** UNIT TESTS *****
+	// ----- Test findErrorVectors() -----
+	sprintf(transmit, "Testing findErrorVectors()\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
 	
+	// TEST 1
+	sprintf(transmit, "TEST 1\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	acs.Rt = initializeDCM(0, 0, 0);
+	vectorSetXYZ(acs.craft_inertial, 1, 2, 3);
+	float c_i_norm = vectorNorm(acs.craft_inertial);
+	matrixScale(acs.craft_inertial, 1.0/c_i_norm);
+	vectorSetXYZ(acs.sv_inertial, 4, 5, 0);
+	float s_i_norm = vectorNorm(acs.sv_inertial);
+	matrixScale(acs.sv_inertial, 1.0/s_i_norm);
 	
+	sprintf(transmit, "Rt\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	printMatrix(acs.Rt, transmit);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	sprintf(transmit, "C_I\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	printMatrix(acs.craft_inertial, transmit);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	sprintf(transmit, "S_I\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	printMatrix(acs.sv_inertial, transmit);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	
+	findErrorVectors(&acs);
+	
+	sprintf(transmit, "Z_err\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	printMatrix(acs.z_err, transmit);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	
+	sprintf(transmit, "N_err\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	printMatrix(acs.n_err, transmit);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	
+	// TEST 2
+	sprintf(transmit, "TEST 2\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	acs.Rt = initializeDCM(30, 40, 50);
+	vectorSetXYZ(acs.craft_inertial, -3, 2, 3);
+	c_i_norm = vectorNorm(acs.craft_inertial);
+	matrixScale(acs.craft_inertial, 1.0/c_i_norm);
+	vectorSetXYZ(acs.sv_inertial, 4, 1, -5);
+	s_i_norm = vectorNorm(acs.sv_inertial);
+	matrixScale(acs.sv_inertial, 1.0/s_i_norm);
+	
+	sprintf(transmit, "Rt\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	printMatrix(acs.Rt, transmit);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	sprintf(transmit, "C_I\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	printMatrix(acs.craft_inertial, transmit);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	sprintf(transmit, "S_I\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	printMatrix(acs.sv_inertial, transmit);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	
+	findErrorVectors(&acs);
+	
+	sprintf(transmit, "Z_err\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	printMatrix(acs.z_err, transmit);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	
+	sprintf(transmit, "N_err\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	printMatrix(acs.n_err, transmit);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
 	
   /* USER CODE END 2 */
 
