@@ -33,7 +33,7 @@ typedef enum {
 	SV_DARK
 }SV_Status;
 
-typedef struct {
+typedef struct {	
 	// Craft DCM
 	Matrix R;
 	Matrix Rt;
@@ -49,7 +49,7 @@ typedef struct {
 	// Inertial vectors (ecliptic frame)
 	Matrix sv_inertial; // Found using the Julian date
 	Matrix mag_inertial; // From IGRF
-	Matrix craft_inertial; // From SGP4
+	Matrix craft_inertial; // From SGP4 (normalized)
 	
 	// Feedback control error vectors (body frame)
 	Matrix z_err;

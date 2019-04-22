@@ -72,13 +72,13 @@ void initializeACS(ACSType* acs) {
 	acs->mag_inertial = newMatrix(3, 1);
 	acs->craft_inertial = newMatrix(3, 1);
 	
-	Matrix z_err = newMatrix(3, 1);
-	Matrix n_err = newMatrix(3, 1);
-	Matrix err = newMatrix(3, 1);
+	acs->z_err = newMatrix(3, 1);
+	acs->n_err = newMatrix(3, 1);
+	acs->err = newMatrix(3, 1);
 	
-	Matrix w_rw = make3x1Vector(0, 0, 0);
-	Matrix J_rw = makeJrw();
-	Matrix A_rw = initializeDCM(0, 0, 0); // I3 (identity matrix)
-	Matrix J_body = makeJbody();
-	Matrix J_body_inv = makeJbodyInv();
+	acs->w_rw = make3x1Vector(0, 0, 0);
+	acs->J_rw = makeJrw();
+	acs->A_rw = initializeDCM(0, 0, 0); // I3 (identity matrix)
+	acs->J_body = makeJbody();
+	acs->J_body_inv = makeJbodyInv();
 }
