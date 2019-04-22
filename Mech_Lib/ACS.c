@@ -38,6 +38,17 @@ Matrix makeJrw(void) {
 	return J;
 }
 
+Matrix makeJrwInv(void) {
+	float m = PI*RW_R*RW_R*RW_H*RW_D; // Mass of the flywheel
+	float x = 2.0/(m*RW_R*RW_R);
+	
+	Matrix J = newMatrix(3, 3);
+	matrixSet(J, 1, 1, x);
+	matrixSet(J, 2, 2, x);
+	matrixSet(J, 3, 3, x);
+	return J;
+}
+
 Matrix makeJbody(void) {
 	Matrix J = newMatrix(3, 3);
 	matrixSet(J, 1, 1, JB_11);
@@ -78,6 +89,7 @@ void initializeACS(ACSType* acs) {
 	
 	acs->w_rw = make3x1Vector(0, 0, 0);
 	acs->J_rw = makeJrw();
+	acs->J_rw_inv = makeJrwInv();
 	acs->A_rw = initializeDCM(0, 0, 0); // I3 (identity matrix)
 	acs->J_body = makeJbody();
 	acs->J_body_inv = makeJbodyInv();

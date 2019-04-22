@@ -67,6 +67,7 @@ typedef struct {
 	// Satellite dynamic system
 	Matrix w_rw; // Reaction wheel speed vector (body frame)
 	Matrix J_rw; // Reaction wheel inertia matrix
+	Matrix J_rw_inv; // Inverse of J_rw
 	Matrix A_rw; // Reaction wheel projection onto body axes
 	Matrix J_body; // Craft inertia matrix
 	Matrix J_body_inv; // Inverse of J_body
