@@ -19,11 +19,16 @@
 // CONSTANTS
 #define DIV_ROOT2 ((float)0.70710678118)
 
+#define V_RAIL 8.0 // Volts
+
+// Reaction wheel motor constants
+#define KT 0.00713 // Nm/A
+#define KE 0.0000782 // V/rad/s
+#define R 92.7 // Ohms
 
 // PRIVATE FUNCTIONS
-void wdot2rw_pwm(ACSType* acs, float* rw_pwm, float dt);
-
 float sign(float x);
+
 
 // PUBLIC FUNCTIONS
 void findErrorVectors(ACSType* acs) {
@@ -72,6 +77,7 @@ void runBdotController(ACSType* acs, float dt) {
 		PWM = newMatrix(3,1);
 		init_run = 1;
 	}
+	
 	// ***** FIND CHANGE OF MAGNETIC FIELD (ROTATION THROUGH MAG FIELD) *****
 	vectorCrossProduct(last_mag, acs->mag_vector, b_rot); //b_rot = last_mag X mag_vector
 	
@@ -110,6 +116,45 @@ void findSunInertial(ACSType* acs, double julianDate){
 	
 	return;
 }
+
+
+void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired, Matrix rw_pwm, float dt) {
+	static int init_run = 0;
+	static Matrix torque, p, p_rw, wxp, Jxwdot, w_rw_new;
+	
+	if(init_run == 0) {
+		torque = newMatrix(3, 1);
+		p = newMatrix(3, 1);
+		p_rw = newMatrix(3, 1);
+		wxp = newMatrix(3, 1);
+		Jxwdot = newMatrix(3, 1);
+		PWM = newMatrix(3, 1);
+		init_run = 1;
+	}
+	
+	// Find momentum vectors
+	matrixMult(acs->J_body, acs->gyro_vector, p);
+	matrixMult(acs->J_rw, acs->w_rw, p_rw);
+	matrixAdd(p, p_rw, p); // p = J_B*w + J_rw*w_rw
+	
+	// Find total torque
+	vectorCrossProduct(acs->gyro_vector, p, wxp); // wxp = w x (J_B*w + J_rw*w_rw)
+	matrixMult(acs->J_body, wdot_desired, Jxwdot);
+	matrixAdd(Jxwdot, wxp, torque); // wxp = (J_B*wdot) + w x (w*J_B + J_rw*w_rw)
+	matrixScale(torque, -1);
+	
+	// Find desired rw_wdot
+	matrixMult(acs->J_rw_inv, torque, w_rw_new);
+	matrixScale(w_rw_new, dt);
+	matrixAdd(w_rw_new, acs->w_rw, w_rw_new); // w_rw_new = w_rw + J_rw_inv*torque*dt
+	
+	// Find PWM
+	matrixScale(w_rw_new, KE);
+	matrixScale(torque, R);
+	matrixAdd(w_rw_new, torque, rw_pwm);
+	matrixScale(rw_pwm, 100.0/(KT*V_RAIL));
+}
+
 
 float sign(float x) {
 	if(x < 0) {

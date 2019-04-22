@@ -59,6 +59,16 @@ void runStabilizationController(ACSType* acs, float dt, int first_step);
  * @param  julianDate: current julian date
  * @return None
  */
- void findSunInertial(ACSType* acs, double julianDate);
- 
-#endif
+void findSunInertial(ACSType* acs, double julianDate);
+
+/**
+ * @brief  Finds reaction wheel PWM to achieve a desired craft wdot
+ * @param  acs: a pointer to an existing Attitude Control System object
+ * @param  wdot_desired: desired craft wdot
+ * @param  rw_pwm: allocated Matrix to hold the reaction wheel PWM
+ * @param  dt: expected time until next feedback controller update
+ * @return None
+ */
+void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired, Matrix rw_pwm, float dt);
+
+#endif /* FEEDBACKCONTROL_H */
