@@ -7,7 +7,7 @@
 	* As of now these functions change actuator outputs inside of the function
 	* itself but that is subject to change.
 	* 
-	* Created by Galen Savidge. Edited 4/18/2019.
+	* Created by Galen Savidge. Edited 4/21/2019.
   ******************************************************************************
   */
 
@@ -25,6 +25,7 @@
 #define KT 0.00713 // Nm/A
 #define KE 0.0000782 // V/rad/s
 #define R 92.7 // Ohms
+
 
 // PRIVATE FUNCTIONS
 float sign(float x);
@@ -93,11 +94,6 @@ void runBdotController(ACSType* acs, float dt) {
 	matrixScale(bdot, 100);
 	matrixCopy (bdot, PWM);
 	
-	return;
-}
-
-
-void runOrientationController(ACSType* acs, float dt, int first_step) {
 	return;
 }
 

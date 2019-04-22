@@ -3,11 +3,11 @@
   * @file           : FeedbackControl.h
   * @brief          : Contains implementations for the feedback control states in the ACS
   ******************************************************************************
-  ** 
-	* As of now these functions change actuator outputs inside of the function
-	* itself but that is subject to change.
+  * 
+	* Controller implementations are in OrientationController.c and
+	* StabilizationController.c.
 	* 
-	* Created by Galen Savidge. Edited 4/18/2019.
+	* Created by Galen Savidge. Edited 4/21/2019.
   ******************************************************************************
   */
 
