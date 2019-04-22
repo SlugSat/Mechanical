@@ -48,6 +48,7 @@
 # Debugger files
 # define exception below if needed
 *.ini
+*.scvd
 
 # Other files
 *.build_log.htm
