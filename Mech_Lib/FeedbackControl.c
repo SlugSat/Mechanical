@@ -128,7 +128,6 @@ void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired, Matrix rw_pwm, float dt) {
 		p_rw = newMatrix(3, 1);
 		wxp = newMatrix(3, 1);
 		Jxwdot = newMatrix(3, 1);
-		PWM = newMatrix(3, 1);
 		init_run = 1;
 	}
 	
