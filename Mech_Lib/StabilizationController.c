@@ -3,11 +3,9 @@
   * @file           : StabilizationController.c
   * @brief          : Implementation for the stabilzation state of the ACS
   ******************************************************************************
-  ** 
-	* As of now these functions change actuator outputs inside of the function
-	* itself but that is subject to change.
+  * 
 	* 
-	* Created by Galen Savidge. Edited 4/19/2019.
+	* Created by Galen Savidge. Edited 4/21/2019.
   ******************************************************************************
   */
 
@@ -55,7 +53,7 @@ void runStabilizationController(ACSType* acs, float dt, int first_step) {
 	
 	if(first_step) {
 		vectorSetXYZ(torque_integrator, 0, 0, 0);
-		// Set wdot_desired to [0, 0, 0]
+		vectorSetXYZ(wdot_desired, 0, 0, 0);
 	}
 	else {
 		// ***** TORQUE CONTROLLER *****
@@ -96,6 +94,7 @@ void runStabilizationController(ACSType* acs, float dt, int first_step) {
 		matrixAdd(wdot_desired, controller_wdot, wdot_desired);
 	}
 	
+	// Record last error
 	matrixCopy(acs->err, last_err);
 	
 	// Find reaction wheel PWM
