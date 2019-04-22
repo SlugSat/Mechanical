@@ -231,7 +231,7 @@ void printMatrix(Matrix m, char* string) {
     for(int i = 1;i <= r;i++) {
         char temp[14];
         for(int j = 1;j <= c;j++) {
-            sprintf(temp, "%8.4f\t", matrixGetElement(m, i, j));
+            sprintf(temp, "%8.4e\t", matrixGetElement(m, i, j));
 				    strcat(string, temp); // Add temp to the end of string
         }
         sprintf(temp, "\r\n");

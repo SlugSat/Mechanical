@@ -46,7 +46,6 @@
 
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart2;
-
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -103,17 +102,55 @@ int main(void)
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
 	ACSType acs;
 	initializeACS(&acs);
+	initializeACSSerial(&acs, &huart2);
 	
 	sprintf(transmit, "Initialization done!\r\n\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
 	
+	sprintf(transmit, "J_body\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	printMatrix(acs.J_body, transmit);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	
+	sprintf(transmit, "J_body_inv\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	printMatrix(acs.J_body_inv, transmit);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	
+	sprintf(transmit, "J_rw\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	printMatrix(acs.J_rw, transmit);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	
+	sprintf(transmit, "J_rw_inv\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	printMatrix(acs.J_rw_inv, transmit);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	
+	
 	// ***** UNIT TESTS *****
+	// ----- Test Matrix functions -----
+	// vectorCrossProduct()
+	Matrix v1 = make3x1Vector(1, 2, 3);
+	Matrix v2 = make3x1Vector(4, 5, 6);
+	Matrix v1xv2 = make3x1Vector(-3, 6, -3);
+	Matrix x = newMatrix(3, 1);
+	vectorCrossProduct(v1, v2, x);
+	if(matrixEquals(x, v1xv2)) {
+		sprintf(transmit, "vectorCrossProduct() PASSED\r\n");
+	}
+	else {
+		sprintf(transmit, "vectorCrossProduct() FAILED\r\n");
+	}
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	
+	
 	// ----- Test findErrorVectors() -----
-	sprintf(transmit, "Testing findErrorVectors()\r\n");
+	sprintf(transmit, "\r\nTesting findErrorVectors()\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
 	
 	// TEST 1
-	sprintf(transmit, "TEST 1\r\n");
+	sprintf(transmit, "----- TEST 1 -----\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
 	acs.Rt = initializeDCM(0, 0, 0);
 	vectorSetXYZ(acs.craft_inertial, 1, 2, 3);
@@ -149,7 +186,7 @@ int main(void)
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
 	
 	// TEST 2
-	sprintf(transmit, "TEST 2\r\n");
+	sprintf(transmit, "----- TEST 2 -----\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
 	acs.Rt = initializeDCM(30, 40, 50);
 	vectorSetXYZ(acs.craft_inertial, -3, 2, 3);
@@ -184,6 +221,57 @@ int main(void)
 	printMatrix(acs.n_err, transmit);
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
 	
+	
+	// Test wdot2rw_pwm()
+	// Uses gyro_vector, w_rw, and J's from acs
+	sprintf(transmit, "\r\nTesting wdot2rw_pwm()\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	
+	// TEST 1
+	sprintf(transmit, "----- TEST 1 -----\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	vectorSetXYZ(acs.gyro_vector, 0.1, 0.2, -0.1);
+	vectorSetXYZ(acs.w_rw, -50, -100, 200);
+	Matrix wdot_desired = make3x1Vector(0.05, 0.03, 0.04);
+	float dt = 1;
+	
+	wdot2rw_pwm(&acs, wdot_desired, dt);
+	
+	sprintf(transmit, "Reaction wheel PWM\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	printMatrix(acs.rw_PWM, transmit);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	
+	
+	// Test orientationController()
+	sprintf(transmit, "\r\nTesting orientationController()\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	
+	// TEST 1
+	sprintf(transmit, "----- TEST 1 -----\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	vectorSetXYZ(acs.gyro_vector, 0, 0, 0);
+	vectorSetXYZ(acs.w_rw, 0, 0, 0);
+	
+	runOrientationController(&acs, dt, 1);
+	
+	sprintf(transmit, "Reaction wheel PWM\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	printMatrix(acs.rw_PWM, transmit);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	
+	// TEST 2
+	sprintf(transmit, "----- TEST 2 -----\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	vectorSetXYZ(acs.gyro_vector, 0, 0, 0);
+	vectorSetXYZ(acs.w_rw, 0, 0, 0);
+	
+	runOrientationController(&acs, dt, 0);
+	
+	sprintf(transmit, "Reaction wheel PWM\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	printMatrix(acs.rw_PWM, transmit);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
   /* USER CODE END 2 */
 
   /* Infinite loop */

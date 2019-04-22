@@ -14,6 +14,7 @@
 // HEADER FILE
 #include <FeedbackControl.h>
 #include <math.h>
+#include <string.h>
 
 
 // CONSTANTS
@@ -117,7 +118,7 @@ void findSunInertial(ACSType* acs, double julianDate){
 }
 
 
-void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired, Matrix rw_pwm, float dt) {
+void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired, float dt) {
 	static int init_run = 0;
 	static Matrix torque, p, p_rw, wxp, Jxwdot, w_rw_new;
 	
@@ -127,6 +128,7 @@ void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired, Matrix rw_pwm, float dt) {
 		p_rw = newMatrix(3, 1);
 		wxp = newMatrix(3, 1);
 		Jxwdot = newMatrix(3, 1);
+		w_rw_new = newMatrix(3, 1);
 		init_run = 1;
 	}
 	
@@ -142,15 +144,15 @@ void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired, Matrix rw_pwm, float dt) {
 	matrixScale(torque, -1);
 	
 	// Find desired rw_wdot
-	matrixMult(acs->J_rw_inv, torque, w_rw_new);
-	matrixScale(w_rw_new, dt);
+	matrixMult(acs->J_rw_inv, torque, w_rw_new); // w_rw_new = J_rw_inv*torque
+	matrixScale(w_rw_new, dt); // w_rw_new = J_rw_inv*torque*dt
 	matrixAdd(w_rw_new, acs->w_rw, w_rw_new); // w_rw_new = w_rw + J_rw_inv*torque*dt
 	
 	// Find PWM
 	matrixScale(w_rw_new, KE);
-	matrixScale(torque, R);
-	matrixAdd(w_rw_new, torque, rw_pwm);
-	matrixScale(rw_pwm, 100.0/(KT*V_RAIL));
+	matrixScale(torque, R/KT);
+	matrixAdd(w_rw_new, torque, acs->rw_PWM);
+	matrixScale(acs->rw_PWM, 100.0/(V_RAIL));
 }
 
 

@@ -71,6 +71,13 @@ typedef struct {
 	Matrix A_rw; // Reaction wheel projection onto body axes
 	Matrix J_body; // Craft inertia matrix
 	Matrix J_body_inv; // Inverse of J_body
+	
+	// Actuator PWMs
+	Matrix rw_PWM;
+	Matrix tr_PWM;
+	
+	// UART handle
+	UART_HandleTypeDef* huart;
 }ACSType;
 
 
@@ -84,6 +91,14 @@ typedef struct {
 void initializeACS(ACSType* acs);
 
 /* Serial Communication Functions ---------------------------------------------*/
+
+/** 
+ * @brief  Initializes serial communication from the ACS
+ * @param  acs: a pointer to an existing Attitude Control System object
+ * @param  huart: pointer to a UART handle defined in main.c
+ * @return None
+*/
+void initializeACSSerial(ACSType* acs, UART_HandleTypeDef* huart);
 
 /** 
  * @brief  Reads sensor data from serial and updates acs

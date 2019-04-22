@@ -32,7 +32,7 @@ void torque2wdot(ACSType* acs, Matrix torque_vector, Matrix wdot_vector);
 
 void runStabilizationController(ACSType* acs, float dt, int first_step) {
 	static int init_run = 0;
-	Matrix torque_integrator, last_err, P, I, D, controller_torque, controller_wdot, wdot_desired, rw_pwm;
+	static Matrix torque_integrator, last_err, P, I, D, controller_torque, controller_wdot, wdot_desired;
 	
 	if(init_run == 0) {
 		torque_integrator = make3x1Vector(0, 0, 0);
@@ -43,7 +43,6 @@ void runStabilizationController(ACSType* acs, float dt, int first_step) {
 		controller_torque = newMatrix(3, 1);
 		controller_wdot = newMatrix(3, 1);
 		wdot_desired = newMatrix(3, 1);
-		rw_pwm = newMatrix(3, 1);
 		init_run = 1;
 	}
 	
@@ -98,10 +97,9 @@ void runStabilizationController(ACSType* acs, float dt, int first_step) {
 	matrixCopy(acs->err, last_err);
 	
 	// Find reaction wheel PWM
-	wdot2rw_pwm(acs, wdot_desired, rw_pwm, dt);
-	
-	// Set actuator output here
+	wdot2rw_pwm(acs, wdot_desired, dt);
 }
+
 
 void torque2wdot(ACSType* acs, Matrix torque_vector, Matrix wdot_vector) {
 	int init_run = 0;

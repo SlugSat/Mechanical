@@ -28,7 +28,7 @@
 
 // Helper functions
 Matrix makeJrw(void) {
-	float m = PI*RW_R*RW_R*RW_H*RW_D; // Mass of the flywheel
+	float m = PI*RW_R*RW_R*RW_H*RW_D; // Mass of the flywheel (kg)
 	float x = 0.5*m*RW_R*RW_R;
 	
 	Matrix J = newMatrix(3, 3);
@@ -93,4 +93,11 @@ void initializeACS(ACSType* acs) {
 	acs->A_rw = initializeDCM(0, 0, 0); // I3 (identity matrix)
 	acs->J_body = makeJbody();
 	acs->J_body_inv = makeJbodyInv();
+	
+	acs->rw_PWM = newMatrix(3, 1);
+	acs->tr_PWM = newMatrix(3, 1);
+}
+
+void initializeACSSerial(ACSType* acs, UART_HandleTypeDef* huart) {
+	acs->huart = huart;
 }

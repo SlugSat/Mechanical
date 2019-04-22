@@ -69,6 +69,6 @@ void findSunInertial(ACSType* acs, double julianDate);
  * @param  dt: expected time until next feedback controller update
  * @return None
  */
-void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired, Matrix rw_pwm, float dt);
+void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired, float dt);
 
 #endif /* FEEDBACKCONTROL_H */
