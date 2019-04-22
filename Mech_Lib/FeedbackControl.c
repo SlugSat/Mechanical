@@ -63,6 +63,9 @@ void findErrorVectors(ACSType* acs) {
 	// Take cross product to find error
 	vectorCrossProduct(n_B, corner_B, acs->n_err);
 	matrixScale(acs->n_err, 0.5);
+	
+	// Sum Z and N error to find total error
+	matrixAdd(acs->z_err, acs->n_err, acs->err);
 }
 
 
