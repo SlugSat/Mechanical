@@ -447,6 +447,11 @@
               <FileType>5</FileType>
               <FilePath>..\..\Mech_Lib\AttitudeEstimation.h</FilePath>
             </File>
+            <File>
+              <FileName>OrientationController.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\OrientationController.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
