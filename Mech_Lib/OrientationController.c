@@ -15,7 +15,7 @@
 // Angular speed portion
 #define K 1
 #define KP (K*0.05)
-#define KD (K*0.0)
+#define KD (K*0.1)
 
 #define ORIENTATION_W_MAG -0.017 // About 1 deg/s in rad/s
 
@@ -46,10 +46,6 @@ void runOrientationController(ACSType* acs, float dt, int first_step) {
 		float z_err_norm = vectorNorm(w_err);
 		matrixScale(w_err, ORIENTATION_W_MAG/z_err_norm);
 		matrixSubtract(acs->gyro_vector, w_err, w_err); // w_err = w - (-0.017*z_err/norm(z_err))
-		
-		char transmit[200];
-		printMatrix(w_err, transmit);
-		HAL_UART_Transmit(acs->huart, (uint8_t*)transmit, strlen(transmit), 100);
 		
 		// Proportional component
 		matrixCopy(w_err, P);
