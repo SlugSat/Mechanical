@@ -286,6 +286,23 @@ int main(void)
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
 	printMatrix(acs.rw_PWM, transmit);
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	
+	
+	// Test stabilizationController()
+	sprintf(transmit, "\r\nTesting stabilizationController()\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	
+	// TEST 1
+	sprintf(transmit, "----- TEST 1 -----\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	runStabilizationController(&acs, dt, 1);
+	runStabilizationController(&acs, dt, 0);
+	
+	sprintf(transmit, "Reaction wheel PWM\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	printMatrix(acs.rw_PWM, transmit);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
