@@ -37,16 +37,16 @@ void runOrientationController(ACSType* acs, float dt, int first_step) {
 		return;
 	}
 	
+	// Find error in rotation speed
+	matrixCopy(acs->z_err, w_err);
+	float z_err_norm = vectorNorm(w_err);
+	matrixScale(w_err, ORIENTATION_W_MAG/z_err_norm);
+	matrixSubtract(acs->gyro_vector, w_err, w_err); // w_err = w - (-0.017*z_err/norm(z_err))
+	
 	if(first_step) {
 		vectorSetXYZ(wdot_desired, 0, 0, 0);
 	}
 	else {
-		// Find error in rotation speed
-		matrixCopy(acs->z_err, w_err);
-		float z_err_norm = vectorNorm(w_err);
-		matrixScale(w_err, ORIENTATION_W_MAG/z_err_norm);
-		matrixSubtract(acs->gyro_vector, w_err, w_err); // w_err = w - (-0.017*z_err/norm(z_err))
-		
 		// Proportional component
 		matrixCopy(w_err, P);
 		matrixScale(P, KP);

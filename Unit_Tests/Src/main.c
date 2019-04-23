@@ -263,8 +263,6 @@ int main(void)
 	// TEST 2
 	sprintf(transmit, "----- TEST 2 -----\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
-	vectorSetXYZ(acs.gyro_vector, 0, 0, 0);
-	vectorSetXYZ(acs.w_rw, 0, 0, 0);
 	
 	runOrientationController(&acs, dt, 0);
 	
