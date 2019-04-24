@@ -98,6 +98,7 @@ void initializeACS(ACSType* acs) {
 	acs->tr_PWM = newMatrix(3, 1);
 }
 
+
 void initializeACSSerial(ACSType* acs, UART_HandleTypeDef* huart) {
 	acs->huart = huart;
 }
