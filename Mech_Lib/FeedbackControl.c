@@ -14,7 +14,6 @@
 // HEADER FILE
 #include <FeedbackControl.h>
 #include <math.h>
-#include <string.h>
 
 
 // CONSTANTS

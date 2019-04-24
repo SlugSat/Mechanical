@@ -17,7 +17,7 @@
 #include <DigitalFilters.h>
 #include <main.h>
 #include <stdint.h>
-
+#include <string.h>
 
 /* Constants -----------------------------------------------------------------*/
 #define NUM_SOLAR_PANELS 6

@@ -74,7 +74,6 @@ void runStabilizationController(ACSType* acs, float dt, int first_step) {
 		matrixAdd(P, I, controller_torque);
 		matrixAdd(controller_torque, D, controller_torque);
 		
-		
 		// ***** WDOT CONTROLLER *****
 		// Proportional component
 		matrixCopy(acs->err, P);
@@ -90,7 +89,19 @@ void runStabilizationController(ACSType* acs, float dt, int first_step) {
 		
 		// Sum torque and wdot controller components
 		torque2wdot(acs, controller_torque, wdot_desired);
+		
+		char transmit[200];
+		sprintf(transmit, "torque2wdot output = \n");
+		HAL_UART_Transmit(acs->huart, (uint8_t*)transmit, strlen(transmit), 100);
+		printMatrix(wdot_desired, transmit);
+		HAL_UART_Transmit(acs->huart, (uint8_t*)transmit, strlen(transmit), 100);
+		
 		matrixAdd(wdot_desired, controller_wdot, wdot_desired);
+		
+		sprintf(transmit, "wdot_desired = \n");
+		HAL_UART_Transmit(acs->huart, (uint8_t*)transmit, strlen(transmit), 100);
+		printMatrix(wdot_desired, transmit);
+		HAL_UART_Transmit(acs->huart, (uint8_t*)transmit, strlen(transmit), 100);
 	}
 	
 	// Record last error
@@ -103,13 +114,13 @@ void runStabilizationController(ACSType* acs, float dt, int first_step) {
 
 void torque2wdot(ACSType* acs, Matrix torque_vector, Matrix wdot_vector) {
 	int init_run = 0;
-	Matrix p, p_rw; // Momentum vectors
+	static Matrix p, p_rw; // Momentum vectors
 	Matrix wxp; // w x (J_B*w + J_rw*w_rw)
 	
 	if(init_run == 0) {
-		Matrix p = newMatrix(3, 1);
-		Matrix p_rw = newMatrix(3, 1);
-		Matrix wxp = newMatrix(3, 1);
+		p = newMatrix(3, 1);
+		p_rw = newMatrix(3, 1);
+		wxp = newMatrix(3, 1);
 		init_run = 1;
 	}
 	
@@ -117,6 +128,12 @@ void torque2wdot(ACSType* acs, Matrix torque_vector, Matrix wdot_vector) {
 	matrixMult(acs->J_body, acs->gyro_vector, p);
 	matrixMult(acs->J_rw, acs->w_rw, p_rw);
 	matrixAdd(p, p_rw, p); // p = J_B*w + J_rw*w_rw
+	
+	char transmit[200];
+	sprintf(transmit, "torque2wdot->J_B*w + J_rw*w_rw = \n");
+	HAL_UART_Transmit(acs->huart, (uint8_t*)transmit, strlen(transmit), 100);
+	printMatrix(p, transmit);
+	HAL_UART_Transmit(acs->huart, (uint8_t*)transmit, strlen(transmit), 100);
 	
 	// Find total torque
 	vectorCrossProduct(acs->gyro_vector, p, wxp); // wxp = w x (J_B*w + J_rw*w_rw)
