@@ -12,7 +12,6 @@
 
 #include <ACS.h>
 #include <AttitudeEstimation.h>
-#include <math.h>
 
 
 // Reaction wheel properties
