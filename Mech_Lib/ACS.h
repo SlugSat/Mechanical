@@ -103,8 +103,15 @@ void initializeACSSerial(ACSType* acs, UART_HandleTypeDef* huart);
 /** 
  * @brief  Reads sensor data from serial and updates acs
  * @param  acs: a pointer to an existing Attitude Control System object
+ * @return Updates mag_vector, gyro_vector, and solar_vector in acs
+*/
+void readSensorsFromSerial(ACSType* acs);
+
+/** 
+ * @brief  Sends actuator PWMs from acs over serial
+ * @param  acs: a pointer to an existing Attitude Control System object
  * @return None
 */
-void readSensorsFromSerial(ACSType* acs); // To-do
+void sendActuatorsToSerial(ACSType* acs);
 
 #endif

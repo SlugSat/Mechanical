@@ -132,9 +132,9 @@ int main(void)
 		char mag[100], gyro[100], accel[100];
 		printMatrix(acs.mag_vector, mag);
 		
-		float actuator_data[6] = {matrixGetElement(acs.mag_vector, 1, 1), matrixGetElement(acs.mag_vector, 2, 1), matrixGetElement(acs.mag_vector, 3, 1), 
-														matrixGetElement(acs.solar_vector, 1, 1), matrixGetElement(acs.solar_vector, 2, 1), matrixGetElement(acs.solar_vector, 3, 1)};
-		STM32SerialSendFloats(&huart2, actuator_data, 6);
+		acs.rw_PWM = acs.gyro_vector;
+		acs.tr_PWM = acs.solar_vector;
+		sendActuatorsToSerial(&acs);
   }
   /* USER CODE END 3 */
 }

@@ -112,3 +112,11 @@ void readSensorsFromSerial(ACSType* acs) {
 	vectorCopyArray(acs->gyro_vector, sensor_data + 3, 3);
 	vectorCopyArray(acs->solar_vector, sensor_data + 6, 3);
 }
+
+void sendActuatorsToSerial(ACSType* acs) {
+	float actuator_data[6] =
+		{ matrixGetElement(acs->rw_PWM, 1, 1), matrixGetElement(acs->rw_PWM, 2, 1), matrixGetElement(acs->rw_PWM, 3, 1),
+			matrixGetElement(acs->tr_PWM, 1, 1), matrixGetElement(acs->tr_PWM, 2, 1), matrixGetElement(acs->tr_PWM, 3, 1) };
+	
+		STM32SerialSendFloats(acs->huart, actuator_data, 6);
+}
