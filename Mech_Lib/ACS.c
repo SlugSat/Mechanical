@@ -12,6 +12,7 @@
 
 #include <ACS.h>
 #include <AttitudeEstimation.h>
+#include <STM32SerialCommunication.h>
 
 
 // Reaction wheel properties
@@ -100,4 +101,14 @@ void initializeACS(ACSType* acs) {
 
 void initializeACSSerial(ACSType* acs, UART_HandleTypeDef* huart) {
 	acs->huart = huart;
+}
+
+
+void readSensorsFromSerial(ACSType* acs) {
+	float sensor_data[9];
+	STM32SerialReceiveFloats(acs->huart, sensor_data, 9);
+	
+	vectorCopyArray(acs->mag_vector, sensor_data, 3);
+	vectorCopyArray(acs->gyro_vector, sensor_data + 3, 3);
+	vectorCopyArray(acs->solar_vector, sensor_data + 6, 3);
 }

@@ -105,5 +105,6 @@ void initializeACSSerial(ACSType* acs, UART_HandleTypeDef* huart);
  * @param  acs: a pointer to an existing Attitude Control System object
  * @return None
 */
-void readSensorsFromSerial(ACSType* acs, UART_HandleTypeDef* huart); // To-do
+void readSensorsFromSerial(ACSType* acs); // To-do
+
 #endif
