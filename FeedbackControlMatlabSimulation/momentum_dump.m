@@ -9,14 +9,14 @@ function newTorque = momentum_dump(w_rw,mag_body)
 %*************************************************************************
 
 % Maximum dipole strength
-max_dpl = .00002;% A*m^2
+max_dpl = 2;% A*m^2
 
 % 3x3 reaction wheel inertia matrix
 J_rw = rwInertiaMatrix(); 
 
 % reaction wheel angular momentum
-h_rw = J_rw*w_rw
+h_rw = J_rw*w_rw;
 
-newTorque = max_dpl*(cross(h_rw,mag_body)/(norm(cross(h_rw, mag_body))));
+newTorque = max_dpl*(cross(h_rw,mag_body)/(norm(cross(h_rw, mag_body))))
 end
 

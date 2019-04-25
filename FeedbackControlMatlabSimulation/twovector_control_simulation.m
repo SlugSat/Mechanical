@@ -11,21 +11,24 @@ clear all
 close all
 
 % SIMULATION SETTINGS
-simulation_time = 400; % Amount of time to be simulated (seconds)
+simulation_time = 2000; % Amount of time to be simulated (seconds)
 dt = 2; % Time between steps (seconds)
-draw_cube = 0; % Set to 1 to render the cube
-orbit_time = 0; % Craft orbital period (seconds); 0 for static position
+draw_cube = 0;
+orbit_time = 5400; % Craft orbital period (seconds); 0 for static position
 R = rotx(60)*roty(-160)*rotz(150); % Initial craft DCM
 w = [0; 0; 0]; % Initial angular velocity
 w_rw = [0; 0; 0]; % Initial reaction wheel angular velocity vector
+mag_i = magField(1); % Initial mag readings
+mag_body  = R'*mag_i;
+torque_tr = [0;0;0];
 
 % Disturbance torque vector in inertial frame
 use_42_disturbance = 0;
 if use_42_disturbance == 0
-    disturbance_mag = 0; %60e-6; % In Nm (orbital disturbance = ~60 uNm)
+    disturbance_mag = 15e-6; % In Nm (orbital disturbance = ~60 uNm)
     disturbance_vec = [1;0;1];
     disturbance_vec = disturbance_mag*disturbance_vec/norm(disturbance_vec);
-    % disturbance_vec = envtorque(1)';
+    %disturbance_vec = envtorque(1)';
 end
 
 % GIF SETTINGS
@@ -129,6 +132,7 @@ for i=1:num_steps
             end
         else
             controller_wdot = largeErrorController(w, z_err, dt, initial_step);
+            torque_tr = [0; 0; 0];
             initial_step = 0;
         end
     else
@@ -140,7 +144,7 @@ for i=1:num_steps
                 pause
             end
         else
-            controller_wdot = stabilizationController(w, w_rw, err, dt, initial_step);
+            [controller_wdot, torque_tr] = stabilizationController(w, w_rw, err, dt, mag_body, initial_step);
             initial_step = 0;
         end
     end
@@ -153,17 +157,20 @@ for i=1:num_steps
     [w_rw, pwm] = Alpha2RW_PWM(w, controller_wdot, w_rw, dt);
     pwm_hist(i,:) = pwm;
     
+    
     % Simulate the craft's dyanamics
     w_rw_dot = (w_rw - w_rw_old)/dt;
     if use_42_disturbance
         disturbance_vec = envtorque(floor(t)+1)';
     end
-    torque = rwInertiaMatrix()*w_rw_dot + R'*disturbance_vec; % Add torque rod torque here
+    torque = rwInertiaMatrix()*w_rw_dot + R'*disturbance_vec + torque_tr; % Add torque rod torque here
+    
+    
     w_dot = torque2wdot(w, w_rw, torque);
     w = w + w_dot*dt; % Integrate wdot to get angular velocity
     w_hist(i,:) = w;
     R = R*Rexp(w*dt); % Integrate w to get attitude
-    
+    mag_body  = R'*mag_i;
     t = t + dt;
     t_hist(i) = t;
     
