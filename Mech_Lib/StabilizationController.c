@@ -89,6 +89,7 @@ void runStabilizationController(ACSType* acs, float dt, int first_step) {
 		
 		// Sum torque and wdot controller components
 		torque2wdot(acs, controller_torque, wdot_desired);
+		matrixAdd(wdot_desired, controller_wdot, wdot_desired);
 	}
 	
 	// Record last error
