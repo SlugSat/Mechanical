@@ -21,9 +21,9 @@
 /* Public Functions ----------------------------------------------------------*/
 
 /**
- * @brief  Description
+ * @brief  Uses the craft orientation and inertial vectors to find error
  * @param  acs: a pointer to an existing Attitude Control System object
- * @return None
+ * @return Updates z_err, n_err, and err in acs
  */
 void findErrorVectors(ACSType* acs);
 
@@ -36,28 +36,28 @@ void findErrorVectors(ACSType* acs);
 void runBdotController(ACSType* acs, float dt);
 
  /**
- * @brief  Description
+ * @brief  Runs the feedback controller used to move the craft over large angles
  * @param  acs: a pointer to an existing Attitude Control System object
  * @param  dt: time in seconds since last call of this function
  * @param  first_step: 1 right after state transitions, 0 otherwise
- * @return None
+ * @return Updates acs->rw_PWM
  */
 void runOrientationController(ACSType* acs, float dt, int first_step);
 
 /**
- * @brief  Description
+ * @brief  Runs the feedback controller used to stabilize the craft when error is low
  * @param  acs: a pointer to an existing Attitude Control System object
  * @param  dt: time in seconds since last call of this function
  * @param  first_step: 1 right after state transitions, 0 otherwise
- * @return None
+ * @return Updates acs->rw_PWM
  */
 void runStabilizationController(ACSType* acs, float dt, int first_step);
 
 /**
- * @brief  Function will update the acs->sv_inertial with current julian date
+ * @brief  Finds the Earth to sun inertial vector using the current Julian date
  * @param  acs: a pointer to an existing Attitude Control System object
  * @param  julianDate: current julian date
- * @return None
+ * @return Updates acs->sv_inertial
  */
 void findSunInertial(ACSType* acs, double julianDate);
 
@@ -67,7 +67,7 @@ void findSunInertial(ACSType* acs, double julianDate);
  * @param  wdot_desired: desired craft wdot
  * @param  rw_pwm: allocated Matrix to hold the reaction wheel PWM
  * @param  dt: expected time until next feedback controller update
- * @return None
+ * @return Updates acs->rw_PWM
  */
 void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired, float dt);
 
