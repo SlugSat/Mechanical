@@ -33,7 +33,9 @@ typedef enum {
 	SV_DARK
 }SV_Status;
 
-typedef struct {	
+typedef struct {
+	float julian_date;
+	
 	// Craft DCM
 	Matrix R;
 	Matrix Rt;

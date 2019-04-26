@@ -105,13 +105,16 @@ void initializeACSSerial(ACSType* acs, UART_HandleTypeDef* huart) {
 
 
 void readSensorsFromSerial(ACSType* acs) {
-	float sensor_data[9];
-	STM32SerialReceiveFloats(acs->huart, sensor_data, 9);
+	float sensor_data[13];
+	STM32SerialReceiveFloats(acs->huart, sensor_data, 13);
 	
 	vectorCopyArray(acs->mag_vector, sensor_data, 3);
 	vectorCopyArray(acs->gyro_vector, sensor_data + 3, 3);
 	vectorCopyArray(acs->solar_vector, sensor_data + 6, 3);
+	vectorCopyArray(acs->craft_inertial, sensor_data + 9, 3);
+	acs->julian_date = sensor_data[12];
 }
+
 
 void sendActuatorsToSerial(ACSType* acs) {
 	float actuator_data[6] =

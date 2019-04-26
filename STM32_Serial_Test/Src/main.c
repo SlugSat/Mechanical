@@ -129,11 +129,9 @@ int main(void)
     /* USER CODE BEGIN 3 */
 		readSensorsFromSerial(&acs);
 		
-		char mag[100], gyro[100], accel[100];
-		printMatrix(acs.mag_vector, mag);
+		vectorSetXYZ(acs.tr_PWM, 0, 0, 0);
+		vectorSetXYZ(acs.rw_PWM, 100, 0, 0);
 		
-		acs.rw_PWM = acs.gyro_vector;
-		acs.tr_PWM = acs.solar_vector;
 		sendActuatorsToSerial(&acs);
   }
   /* USER CODE END 3 */
