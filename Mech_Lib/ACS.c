@@ -25,6 +25,8 @@
 #define JB_22 0.01330
 #define JB_33 0.59753
 
+#define J2000_TO_ECLIPTIC_ANGLE 23.5 // Degrees
+
 
 // Helper functions
 Matrix makeJrw(void) {
@@ -105,13 +107,22 @@ void initializeACSSerial(ACSType* acs, UART_HandleTypeDef* huart) {
 
 
 void readSensorsFromSerial(ACSType* acs) {
+	static int init_run = 0;
+	static Matrix c_i_j2000;
+	
+	if(init_run == 0) {
+		c_i_j2000 = newMatrix(3, 1);
+		init_run = 1;
+	}
+	
 	float sensor_data[13];
 	STM32SerialReceiveFloats(acs->huart, sensor_data, 13);
 	
 	vectorCopyArray(acs->mag_vector, sensor_data, 3);
 	vectorCopyArray(acs->gyro_vector, sensor_data + 3, 3);
 	vectorCopyArray(acs->solar_vector, sensor_data + 6, 3);
-	vectorCopyArray(acs->craft_inertial, sensor_data + 9, 3);
+	vectorCopyArray(c_i_j2000, sensor_data + 9, 3);
+	J2000_2_ecliptic(c_i_j2000, acs->craft_inertial);
 	acs->julian_date = sensor_data[12];
 }
 
@@ -122,4 +133,17 @@ void sendActuatorsToSerial(ACSType* acs) {
 			matrixGetElement(acs->tr_PWM, 1, 1), matrixGetElement(acs->tr_PWM, 2, 1), matrixGetElement(acs->tr_PWM, 3, 1) };
 	
 		STM32SerialSendFloats(acs->huart, actuator_data, 6);
+}
+
+
+void J2000_2_ecliptic(Matrix v_j2000, Matrix v_ecliptic) {
+	static int init_run = 0;
+	static Matrix xrot; // This frame conversion is a simple rotation around x
+	
+	if(init_run == 0) {
+		xrot = initializeDCM(0, 0, J2000_TO_ECLIPTIC_ANGLE);
+		init_run = 1;
+	}
+	
+	matrixMult(xrot, v_j2000, v_ecliptic);
 }

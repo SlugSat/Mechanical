@@ -116,4 +116,12 @@ void readSensorsFromSerial(ACSType* acs);
 */
 void sendActuatorsToSerial(ACSType* acs);
 
+/** 
+ * @brief  Converts vectors in the J2000 frame to the ecliptic ECI frame
+ * @param  v_j2000: a column vector Matrix in the J2000 frame
+ * @param  v_ecliptic: an allocated column vector Matrix to hold the result
+ * @return v_ecliptic now holds v_j2000 converted into the ecliptic frame
+*/
+void J2000_2_ecliptic(Matrix v_j2000, Matrix v_ecliptic);
+
 #endif
