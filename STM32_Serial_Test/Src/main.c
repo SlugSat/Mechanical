@@ -130,9 +130,18 @@ int main(void)
 		readSensorsFromSerial(&acs);
 		
 		vectorSetXYZ(acs.tr_PWM, 0, 0, 0);
-		vectorSetXYZ(acs.rw_PWM, 100, 0, 0);
+		vectorSetXYZ(acs.rw_PWM, 0, 0, 100);
 		
 		sendActuatorsToSerial(&acs);
+		
+		char pos[100], w_rw[100];
+		
+		printMatrix(acs.craft_inertial, pos);
+		printMatrix(acs.w_rw, w_rw);
+		char string[300];
+		sprintf(string, "Position:\n%s\nw_rw:\n%s", pos, w_rw);
+		
+		STM32SerialSendString(&huart2, string);
   }
   /* USER CODE END 3 */
 }

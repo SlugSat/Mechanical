@@ -34,7 +34,10 @@ typedef enum {
 }SV_Status;
 
 typedef struct {
+	// Current time
 	float julian_date;
+	float t; // In seconds
+	float dt;
 	
 	// Craft DCM
 	Matrix R;

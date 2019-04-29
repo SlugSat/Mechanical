@@ -115,8 +115,8 @@ void readSensorsFromSerial(ACSType* acs) {
 		init_run = 1;
 	}
 	
-	float sensor_data[16];
-	STM32SerialReceiveFloats(acs->huart, sensor_data, 16);
+	float sensor_data[17];
+	STM32SerialReceiveFloats(acs->huart, sensor_data, 17);
 	
 	vectorCopyArray(acs->mag_vector, sensor_data, 3);
 	vectorCopyArray(acs->gyro_vector, sensor_data + 3, 3);
@@ -125,6 +125,9 @@ void readSensorsFromSerial(ACSType* acs) {
 	J2000_2_ecliptic(c_i_j2000, acs->craft_inertial);
 	vectorCopyArray(acs->w_rw, sensor_data + 12, 3);
 	acs->julian_date = sensor_data[15];
+	float new_t = sensor_data[16];
+	acs->dt = new_t - acs->t;
+	acs->t = new_t;
 }
 
 
