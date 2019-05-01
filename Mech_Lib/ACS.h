@@ -35,7 +35,7 @@ typedef enum {
 
 typedef struct {
 	// Current time
-	float julian_date;
+	double julian_date;
 	float t; // In seconds
 	float dt;
 	

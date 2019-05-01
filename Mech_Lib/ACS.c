@@ -27,6 +27,9 @@
 
 #define J2000_TO_ECLIPTIC_ANGLE 23.5 // Degrees
 
+#define RECEIVED_FLOATS 18
+#define SENT_FLOATS 6
+
 
 // Helper functions
 Matrix makeJrw(void) {
@@ -116,8 +119,8 @@ void readSensorsFromSerial(ACSType* acs) {
 	}
 	
 	// Read floats from UART
-	float sensor_data[17];
-	STM32SerialReceiveFloats(acs->huart, sensor_data, 17);
+	float sensor_data[RECEIVED_FLOATS];
+	STM32SerialReceiveFloats(acs->huart, sensor_data, RECEIVED_FLOATS);
 	
 	// Get sensor vectors
 	vectorCopyArray(acs->mag_vector, sensor_data, 3);
@@ -139,8 +142,8 @@ void readSensorsFromSerial(ACSType* acs) {
 	vectorCopyArray(acs->w_rw, sensor_data + 12, 3);
 	
 	// Get current time
-	acs->julian_date = sensor_data[15];
-	float new_t = sensor_data[16];
+	acs->julian_date = (double)sensor_data[15] + (double)sensor_data[16]; // Reconstruct Julian date
+	float new_t = sensor_data[17];
 	acs->dt = new_t - acs->t;
 	acs->t = new_t;
 }
@@ -148,11 +151,11 @@ void readSensorsFromSerial(ACSType* acs) {
 
 void sendActuatorsToSerial(ACSType* acs) {
 	// Packet: {rw_x, rw_y, rw_z, tr_x, tr_y, tr_z}
-	float actuator_data[6] =
+	float actuator_data[SENT_FLOATS] =
 		{ matrixGetElement(acs->rw_PWM, 1, 1), matrixGetElement(acs->rw_PWM, 2, 1), matrixGetElement(acs->rw_PWM, 3, 1),
 			matrixGetElement(acs->tr_PWM, 1, 1), matrixGetElement(acs->tr_PWM, 2, 1), matrixGetElement(acs->tr_PWM, 3, 1) };
 	
-		STM32SerialSendFloats(acs->huart, actuator_data, 6);
+		STM32SerialSendFloats(acs->huart, actuator_data, SENT_FLOATS);
 }
 
 
