@@ -9,10 +9,14 @@
 
 clear all
 close all
+clc
+
+%Bdot
+bold = [0;0;0];
 
 % SIMULATION SETTINGS
-simulation_time = 2000; % Amount of time to be simulated (seconds)
-dt = 2; % Time between steps (seconds)
+simulation_time = 5000; % Amount of time to be simulated (seconds)
+dt = .5; % Time between steps (seconds)
 draw_cube = 0;
 orbit_time = 5400; % Craft orbital period (seconds); 0 for static position
 R = rotx(60)*roty(-160)*rotz(150); % Initial craft DCM
@@ -25,8 +29,8 @@ torque_tr = [0;0;0];
 % Disturbance torque vector in inertial frame
 use_42_disturbance = 0;
 if use_42_disturbance == 0
-    disturbance_mag = 15e-6; % In Nm (orbital disturbance = ~60 uNm)
-    disturbance_vec = [1;0;1];
+    disturbance_mag = 5e-6; % In Nm (orbital disturbance = ~60 uNm)
+    disturbance_vec = [1;1;1];
     disturbance_vec = disturbance_mag*disturbance_vec/norm(disturbance_vec);
     %disturbance_vec = envtorque(1)';
 end
@@ -107,7 +111,12 @@ err_hist = zeros(num_steps, 3);
 pwm_hist = zeros(num_steps, 3);
 t_hist = zeros(num_steps, 1);
 w_hist = zeros(num_steps, 3);
+w_rwhist = zeros(num_steps, 3);
+torque_trhist= zeros(num_steps, 3);
+mag_bodyhist= zeros(num_steps, 3);
 transition_times = [];
+
+bdot_hist= zeros(num_steps, 3);
 
 % RUN SIMULATION
 for i=1:num_steps    
@@ -144,7 +153,11 @@ for i=1:num_steps
                 pause
             end
         else
-            [controller_wdot, torque_tr] = stabilizationController(w, w_rw, err, dt, mag_body, initial_step);
+            %Bang Bang bdot for momentum dumping
+            bdot = bdotControl(w, mag_body, bold);
+            bdot_hist(i,:) = bdot;
+            %Stabilization control
+            [controller_wdot, torque_tr] = stabilizationController(w, w_rw, err, dt, mag_body, bdot, initial_step);
             initial_step = 0;
         end
     end
@@ -156,15 +169,16 @@ for i=1:num_steps
     w_rw_old = w_rw;
     [w_rw, pwm] = Alpha2RW_PWM(w, controller_wdot, w_rw, dt);
     pwm_hist(i,:) = pwm;
-    
+   
     
     % Simulate the craft's dyanamics
     w_rw_dot = (w_rw - w_rw_old)/dt;
     if use_42_disturbance
         disturbance_vec = envtorque(floor(t)+1)';
     end
-    torque = rwInertiaMatrix()*w_rw_dot + R'*disturbance_vec + torque_tr; % Add torque rod torque here
+    torque = rwInertiaMatrix()*w_rw_dot + R'*disturbance_vec -torque_tr; % Add torque rod torque here
     
+    torque_trhist(i,:) = torque_tr;
     
     w_dot = torque2wdot(w, w_rw, torque);
     w = w + w_dot*dt; % Integrate wdot to get angular velocity
@@ -173,7 +187,10 @@ for i=1:num_steps
     mag_body  = R'*mag_i;
     t = t + dt;
     t_hist(i) = t;
+    mag_bodyhist(i,:)= mag_body;
     
+    
+     w_rwhist(i,:) = w_rw;
     
     if draw_cube
         % Update quiver plot
@@ -277,6 +294,20 @@ xlabel('Time (s)')
 plot(t_hist, w_hist(:,1), 'r')
 plot(t_hist, w_hist(:,2), 'b')
 plot(t_hist, w_hist(:,3), 'k')
+set(gcf,'Color','w');
+legend('x', 'y', 'z')
+movegui(5,'north');
+
+% Plot angular velocity over time
+figure(6)
+hold on
+grid on
+title('Reaction Wheel Angular Velocity On Each Axis')
+ylabel('\omega (rad/s)')
+xlabel('Time (s)')
+plot(t_hist, w_rwhist(:,1), 'r')
+plot(t_hist, w_rwhist(:,2), 'b')
+plot(t_hist, w_rwhist(:,3), 'k')
 set(gcf,'Color','w');
 legend('x', 'y', 'z')
 movegui(5,'north');
