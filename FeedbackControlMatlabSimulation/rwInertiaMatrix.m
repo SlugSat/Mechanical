@@ -7,8 +7,8 @@ function Rw = rwInertiaMatrix()
 %   radius = radius of flywheel in meters
 
 d=2700; % density of aluminum in kg/meters^3
-r=0.01265; % radius of reaction wheel in meters
-h=0.005;  % height of reaction wheel in meters 
+r=0.02; % radius of reaction wheel in meters
+h=0.01;  % height of reaction wheel in meters 
 
 % m is the mass of the flywheel
 m = pi*r^2*h*d;

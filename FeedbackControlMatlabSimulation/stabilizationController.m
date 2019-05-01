@@ -1,4 +1,4 @@
-function [wdot_desired, torque_tr] = stabilizationController(w, w_rw, err, dt, mag_body, bdot, first_step)
+function [m,wdot_desired, torque_tr] = stabilizationController(w, w_rw, err, dt, mag_body, bdot, first_step)
 % Feedback controller for small errors
 % Inputs:
 %   w: Craft angular velocity vector (rad/s)
@@ -31,31 +31,32 @@ persistent torque_integrator last_err
     torque_integrator = [0; 0; 0];
     wdot_desired = [0; 0; 0];
     torque_tr = [0; 0; 0];
+    m = [0,0,0];
     
 else
         
-% Momentum dumping    
+%Momentum dumping    
     %Determine available torque
-    torque_tr = momentum_dump(w_rw, mag_body, bdot);
+    [m,torque_tr] = momentum_dump(w_rw, mag_body, bdot);
     
     %Use angular velocity of each axis to see if momentum dumping is needed
     
     %X-axis
-     if (w_rw(1) >100)
+     if (abs(w_rw(1)) > 100)
          torque_tr(1) = torque_tr(1);
      else 
          torque_tr(1) = 0;
      end
          
      %Y-Axis
-     if (w_rw(2) > 100)
+     if (abs(w_rw(2)) > 100)
          torque_tr(2) = torque_tr(2);
      else 
          torque_tr(2) = 0;
      end
          
      %Z-axis    
-     if (w_rw(3) > 100)
+     if (abs(w_rw(3)) > 100)
          torque_tr(3) = torque_tr(3);
      else 
          torque_tr(3) = 0;
@@ -67,7 +68,7 @@ else
     %Calculate wdot desired
     wdot_desired = -(Kp_wdot*err + Kd_wdot*(err - last_err)/dt);
     wdot_desired = wdot_desired + torque2wdot(w, w_rw, controller_torque);
-    
+    m=m;
      
     end        
     

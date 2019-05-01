@@ -8,15 +8,15 @@
 
 
 clear all
-close all
 clc
+close all
 
 %Bdot
 bold = [0;0;0];
 
 % SIMULATION SETTINGS
-simulation_time = 5000; % Amount of time to be simulated (seconds)
-dt = .5; % Time between steps (seconds)
+simulation_time = 10000; % Amount of time to be simulated (seconds)
+dt = .1; % Time between steps (seconds)
 draw_cube = 0;
 orbit_time = 5400; % Craft orbital period (seconds); 0 for static position
 R = rotx(60)*roty(-160)*rotz(150); % Initial craft DCM
@@ -114,6 +114,8 @@ w_hist = zeros(num_steps, 3);
 w_rwhist = zeros(num_steps, 3);
 torque_trhist= zeros(num_steps, 3);
 mag_bodyhist= zeros(num_steps, 3);
+mhist= zeros(num_steps, 3);
+
 transition_times = [];
 
 bdot_hist= zeros(num_steps, 3);
@@ -157,8 +159,9 @@ for i=1:num_steps
             bdot = bdotControl(w, mag_body, bold);
             bdot_hist(i,:) = bdot;
             %Stabilization control
-            [controller_wdot, torque_tr] = stabilizationController(w, w_rw, err, dt, mag_body, bdot, initial_step);
+            [m , controller_wdot, torque_tr] = stabilizationController(w, w_rw, err, dt, mag_body, bdot, initial_step);
             initial_step = 0;
+            mhist(i,:) = m;
         end
     end
     
@@ -179,6 +182,7 @@ for i=1:num_steps
     torque = rwInertiaMatrix()*w_rw_dot + R'*disturbance_vec -torque_tr; % Add torque rod torque here
     
     torque_trhist(i,:) = torque_tr;
+    
     
     w_dot = torque2wdot(w, w_rw, torque);
     w = w + w_dot*dt; % Integrate wdot to get angular velocity
@@ -288,7 +292,7 @@ movegui(4,'northeast');
 figure(5)
 hold on
 grid on
-title('Angular Velocity On Each Axis')
+title('CubeSat Angular Velocity On Each Axis')
 ylabel('\omega (rad/s)')
 xlabel('Time (s)')
 plot(t_hist, w_hist(:,1), 'r')
@@ -312,11 +316,11 @@ set(gcf,'Color','w');
 legend('x', 'y', 'z')
 movegui(5,'north');
 
-% Plot transition times on the plots
-if ~isempty(transition_times)
-    for i = 3:5
-        figure(i)
-        hold on
-        vline(transition_times)
-    end
-end
+% % Plot transition times on the plots
+% if ~isempty(transition_times)
+%     for i = 3:5
+%         figure(i)
+%         hold on
+%         vline(transition_times)
+%     end
+% end
