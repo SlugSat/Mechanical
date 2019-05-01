@@ -23,7 +23,7 @@
 
 // Reaction wheel motor constants
 #define KT 0.00713 // Nm/A
-#define KE 0.0000782 // V/rad/s
+#define KE 0.00713332454 // V/rad/s
 #define R 92.7 // Ohms
 
 
