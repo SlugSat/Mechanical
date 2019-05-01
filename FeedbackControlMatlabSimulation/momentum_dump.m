@@ -9,7 +9,7 @@ function newTorque = momentum_dump(w_rw, mag_body, bdot)
 %*************************************************************************
 
 % Maximum dipole strength
-max_dpl = 2; % A*m^2
+max_dpl = [2;2;2]; % A*m^2
 
 % 3x3 reaction wheel inertia matrix
 J_rw = rwInertiaMatrix(); 
@@ -21,11 +21,14 @@ h_rw = -J_rw*w_rw;
 m = cross(h_rw/norm(h_rw) , bdot);
 
 %Ensure desired dipole moment is not greater than torque rod capacity
-if m > max_dpl
-    m = max_dpl;
-else 
-    m = m;
+for i=1:3
+if (m(i) > max_dpl(i))
+     m(i) = max_dpl(i);
+else
+     m(i) = m(i);
 end
+end
+
 
 %Find torque from dipole moment and mag field
 newTorque = cross (m,mag_body); 
