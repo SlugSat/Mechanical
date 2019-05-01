@@ -115,15 +115,30 @@ void readSensorsFromSerial(ACSType* acs) {
 		init_run = 1;
 	}
 	
+	// Read floats from UART
 	float sensor_data[17];
 	STM32SerialReceiveFloats(acs->huart, sensor_data, 17);
 	
+	// Get sensor vectors
 	vectorCopyArray(acs->mag_vector, sensor_data, 3);
 	vectorCopyArray(acs->gyro_vector, sensor_data + 3, 3);
 	vectorCopyArray(acs->solar_vector, sensor_data + 6, 3);
+	
+	// Check for invalid solar vector
+	if(vectorNorm(acs->solar_vector) == 0) {
+		acs->sun_status = SV_DARK;
+		vectorSetXYZ(acs->solar_vector, 1, 0, 0); // Set to x+ to avoid divide by 0 errors
+	}
+	else {
+		acs->sun_status = SV_FOUND;
+	}
+	
+	// Get position in Ecliptic ECI frame
 	vectorCopyArray(c_i_j2000, sensor_data + 9, 3);
 	J2000_2_ecliptic(c_i_j2000, acs->craft_inertial);
 	vectorCopyArray(acs->w_rw, sensor_data + 12, 3);
+	
+	// Get current time
 	acs->julian_date = sensor_data[15];
 	float new_t = sensor_data[16];
 	acs->dt = new_t - acs->t;
@@ -132,6 +147,7 @@ void readSensorsFromSerial(ACSType* acs) {
 
 
 void sendActuatorsToSerial(ACSType* acs) {
+	// Packet: {rw_x, rw_y, rw_z, tr_x, tr_y, tr_z}
 	float actuator_data[6] =
 		{ matrixGetElement(acs->rw_PWM, 1, 1), matrixGetElement(acs->rw_PWM, 2, 1), matrixGetElement(acs->rw_PWM, 3, 1),
 			matrixGetElement(acs->tr_PWM, 1, 1), matrixGetElement(acs->tr_PWM, 2, 1), matrixGetElement(acs->tr_PWM, 3, 1) };
