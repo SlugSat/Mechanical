@@ -8,7 +8,7 @@ Date: 4/29/2019
 */
 /*********INCLUDES**********/
 #include "mag_inertial.h"
-
+#include "IGRF12.h"
 
 /*********DEFINES**********/
 #define NaN log(-1.0)
