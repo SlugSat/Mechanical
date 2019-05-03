@@ -1,10 +1,8 @@
 /**
   ******************************************************************************
-  * @file           : AttitudeEstimation.h
-  * @brief          : Header file for the Attitude Control System (ACS).
+  * @file           : ACS.c
+  * @brief          : Source file for the Attitude Control System (ACS).
   ******************************************************************************
-  ** 
-	* 
 	* Created by Galen Savidge. Edited 4/21/2019.
   ******************************************************************************
   */
@@ -13,6 +11,7 @@
 #include <ACS.h>
 #include <AttitudeEstimation.h>
 #include <STM32SerialCommunication.h>
+#include <ReferenceFrames.h>
 
 
 // Reaction wheel properties
@@ -24,8 +23,6 @@
 #define JB_11 0.60579
 #define JB_22 0.01330
 #define JB_33 0.59753
-
-#define J2000_TO_ECLIPTIC_ANGLE 23.5 // Degrees
 
 #define RECEIVED_FLOATS 18
 #define SENT_FLOATS 6
@@ -110,14 +107,6 @@ void initializeACSSerial(ACSType* acs, UART_HandleTypeDef* huart) {
 
 
 void readSensorsFromSerial(ACSType* acs) {
-	static int init_run = 0;
-	static Matrix c_i_j2000;
-	
-	if(init_run == 0) {
-		c_i_j2000 = newMatrix(3, 1);
-		init_run = 1;
-	}
-	
 	// Read floats from UART
 	float sensor_data[RECEIVED_FLOATS];
 	STM32SerialReceiveFloats(acs->huart, sensor_data, RECEIVED_FLOATS);
@@ -137,8 +126,8 @@ void readSensorsFromSerial(ACSType* acs) {
 	}
 	
 	// Get position in Ecliptic ECI frame
-	vectorCopyArray(c_i_j2000, sensor_data + 9, 3);
-	J2000_2_ecliptic(c_i_j2000, acs->craft_inertial);
+	vectorCopyArray(acs->craft_j2000, sensor_data + 9, 3);
+	J2000_2_ecliptic(acs->craft_j2000, acs->craft_inertial);
 	vectorCopyArray(acs->w_rw, sensor_data + 12, 3);
 	
 	// Get current time
@@ -156,17 +145,4 @@ void sendActuatorsToSerial(ACSType* acs) {
 			matrixGetElement(acs->tr_PWM, 1, 1), matrixGetElement(acs->tr_PWM, 2, 1), matrixGetElement(acs->tr_PWM, 3, 1) };
 	
 		STM32SerialSendFloats(acs->huart, actuator_data, SENT_FLOATS);
-}
-
-
-void J2000_2_ecliptic(Matrix v_j2000, Matrix v_ecliptic) {
-	static int init_run = 0;
-	static Matrix xrot; // This frame conversion is a simple rotation around x
-	
-	if(init_run == 0) {
-		xrot = initializeDCM(0, 0, J2000_TO_ECLIPTIC_ANGLE);
-		init_run = 1;
-	}
-	
-	matrixMult(xrot, v_j2000, v_ecliptic);
 }

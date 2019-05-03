@@ -1,10 +1,8 @@
 /**
   ******************************************************************************
-  * @file           : AttitudeEstimation.h
+  * @file           : ACS.h
   * @brief          : Header file for the Attitude Control System (ACS).
   ******************************************************************************
-  ** 
-	* 
 	* Created by Galen Savidge. Edited 4/21/2019.
   ******************************************************************************
   */
@@ -18,6 +16,7 @@
 #include <main.h>
 #include <stdint.h>
 #include <string.h>
+
 
 /* Constants -----------------------------------------------------------------*/
 #define NUM_SOLAR_PANELS 6
@@ -55,6 +54,7 @@ typedef struct {
 	Matrix sv_inertial; // Found using the Julian date
 	Matrix mag_inertial; // From IGRF
 	Matrix craft_inertial; // From SGP4 (normalized)
+	Matrix craft_j2000;
 	
 	// Feedback control error vectors (body frame)
 	Matrix z_err;
@@ -118,13 +118,5 @@ void readSensorsFromSerial(ACSType* acs);
  * @return None
 */
 void sendActuatorsToSerial(ACSType* acs);
-
-/** 
- * @brief  Converts vectors in the J2000 frame to the ecliptic ECI frame
- * @param  v_j2000: a column vector Matrix in the J2000 frame
- * @param  v_ecliptic: an allocated column vector Matrix to hold the result
- * @return v_ecliptic now holds v_j2000 converted into the ecliptic frame
-*/
-void J2000_2_ecliptic(Matrix v_j2000, Matrix v_ecliptic);
 
 #endif
