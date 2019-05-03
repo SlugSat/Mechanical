@@ -13,6 +13,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include <Matrix.h>
 #include <DigitalFilters.h>
+#include <ReferenceFrames.h>
 #include <main.h>
 #include <stdint.h>
 #include <string.h>
@@ -20,9 +21,7 @@
 
 /* Constants -----------------------------------------------------------------*/
 #define NUM_SOLAR_PANELS 6
-#define PI 3.14159265359
-#define MAX_MOMENT 2
-
+#define MAX_MOMENT 2.0
 
  
 /* Datatypes -----------------------------------------------------------------*/

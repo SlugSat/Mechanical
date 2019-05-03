@@ -10,7 +10,6 @@
   */
 
 #include "ReferenceFrames.h"
-#include <ACS.h>
 #include <math.h>
 
 
@@ -69,7 +68,7 @@ void J2000_2_ecliptic(Matrix v_j2000, Matrix v_ecliptic) {
 }
 
 
-void J2000_2_LongLatAlt(ACSType* acs, Matrix v_j2000, float* lng, float* lat, float* alt) {
+void J2000_2_LongLatAlt(Matrix v_j2000, double JD, float* lng, float* lat, float* alt) {
 	float v_norm = vectorNorm(v_j2000);
 	
 	// Find altitude
@@ -79,5 +78,5 @@ void J2000_2_LongLatAlt(ACSType* acs, Matrix v_j2000, float* lng, float* lat, fl
 	*lat = RAD2DEG*asin(matrixGetElement(v_j2000, 3, 1)/v_norm);
 	
 	// Find longitude
-	*lng = RAD2DEG*acos(matrixGetElement(v_j2000, 1, 1)/v_norm) - getGMSTDegrees(acs->julian_date);
+	*lng = RAD2DEG*acos(matrixGetElement(v_j2000, 1, 1)/v_norm) - getGMSTDegrees(JD);
 }

@@ -84,6 +84,7 @@ void initializeACS(ACSType* acs) {
 	acs->sv_inertial = newMatrix(3, 1);
 	acs->mag_inertial = newMatrix(3, 1);
 	acs->craft_inertial = newMatrix(3, 1);
+	acs->craft_j2000 = newMatrix(3, 1);
 	
 	acs->z_err = newMatrix(3, 1);
 	acs->n_err = newMatrix(3, 1);

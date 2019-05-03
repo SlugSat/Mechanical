@@ -13,9 +13,10 @@
 #define REFERENCEFRAMES_H
 
 /* Includes ------------------------------------------------------------------*/
-#include <ACS.h>
+#include <Matrix.h>
 
 
+#define PI 3.14159265359
 #define EARTH_RADIUS_KM 6371.2
 #define RAD2DEG (180.0/PI)
 
@@ -42,7 +43,7 @@ void J2000_2_ecliptic(Matrix v_j2000, Matrix v_ecliptic);
  * @param  
  * @return 
 */
-void J2000_2_LongLatAlt(ACSType* acs, Matrix v_j2000, float* lng, float* lat, float* alt);
+void J2000_2_LongLatAlt(Matrix v_j2000, double JD, float* lng, float* lat, float* alt);
 
 /** 
  * @brief  
@@ -50,6 +51,6 @@ void J2000_2_LongLatAlt(ACSType* acs, Matrix v_j2000, float* lng, float* lat, fl
  * @param  
  * @return 
 */
-void NED_2_J2000(ACSType* acs, Matrix v_ned, Matrix v_j2000);
+void NED_2_J2000(Matrix v_ned, double JD, Matrix v_j2000);
 
 #endif /* REFERENCEFRAMES_H */
