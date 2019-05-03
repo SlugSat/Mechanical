@@ -34,8 +34,6 @@ Date: 4/29/2019
 typedef struct
 {
 	float gh[MAXCOEF];//harmonic coefficients
-	//float gh1[MAXCOEF];
-	//float gh2[MAXCOEF];
 	float north; // x
 	float east;  // y
 	float down;  // z
@@ -46,7 +44,6 @@ typedef struct
 }IGRF;
 
 /*********PRIVATE FUNCTIONS**********/
-//void getshc(IGRF* igrf, int iflag);
 int extrapsh(IGRF* igrf,double date);
 void shva13(IGRF* igrf, double lat, double lon, double alt, int nmax);
 void dihf (IGRF* igrf);
@@ -70,9 +67,6 @@ void get_mag_inertial(void)
 	IGRF igrf;
 	int nmax;
 	
-	//getshc(&igrf, 1);
-	//getshc(&igrf, 2);
-	
 	double date = julday(month, day, year);
 	
 	nmax = extrapsh(&igrf,date);
@@ -90,81 +84,6 @@ void get_mag_inertial(void)
 
 /**************************************/
 
-
-
-/*
-funciton: Reads spherical harmonic coefficients from the specified
-			model into an array. 
-			
-input: IGRF struct and a flag = (1 or 2) to get the two types.
-
-output: updates IGRF struct with gh1[] and gh2[] harmonic coeff.
-*/
-/*
-void getshc(IGRF* igrf, int iflag)
-{
-	int ii,m,n,mm,nn;
-	int line_num;
-	int max_num_coef = 13;
-	double g,hh;
-	double trash;
-	
-	char irat[9];
-	char inbuff[MAXINBUFF];
-	char* file = "IGRF12.COF";
-	FILE* stream = fopen(file, "rt");
-	if (stream == NULL)
-	{
-		printf("\nERROR: Can't open file: %s", file);
-		exit(1);
-	}
-	ii = 0;
-	for ( nn = 1; nn <= max_num_coef; ++nn)
-	{
-		for (mm = 0; mm <= nn; ++mm)
-		{
-			if (iflag == 1)
-            {
-              	fgets(inbuff, MAXREAD, stream);
-              	sscanf(inbuff, "%d%d%lg%lg%lg%lg%s%d",
-                     &n, &m, &g, &hh, &trash, &trash, irat, &line_num);
-            }
-          	else // iflag == 2
-            {
-				fgets(inbuff, MAXREAD, stream);
-				sscanf(inbuff, "%d%d%lg%lg%lg%lg%s%d",
-					 &n, &m, &trash, &trash, &g, &hh, irat, &line_num);
-            }
-        	if((nn != n)||(mm != m))
-            {
-            	fclose(stream);
-            	return;
-            }
-            ii += 1;
-            switch(iflag)
-            {
-            	case 1: igrf->gh1[ii] = g;
-            		break;
-            	case 2: igrf->gh2[ii] = g;
-            		break;
-            }
-            if (m != 0)
-            {
-            	ii += 1;
-				switch(iflag)
-				{
-					case 1: igrf->gh1[ii] = hh;
-						break;
-					case 2: igrf->gh2[ii] = hh;
-						break;
-				}
-            }       
-		}
-	}
-	fclose(stream);
-	return;
-}
-*/
 
 /*
 funciton: Extrapolates linearly a spherical harmonic model with a
@@ -195,16 +114,12 @@ int extrapsh(IGRF* igrf,double date)
 	l = nmax1 * (nmax1 + 2);
 	for(ii = k+1; ii <= l; ++ii)
 	{
-		//igrf->gh[ii] = igrf->gh1[ii];
 		igrf->gh[ii] = gh1[ii];
-		//printf("\ngha[%d] = %f\n", ii, igrf->gh[ii]);
 	}
 	nmax = nmax1;
 	for (ii = 1; ii <= k; ++ii)
 	{
-		//igrf->gh[ii] = igrf->gh1[ii] + factor*igrf->gh2[ii];
 		igrf->gh[ii] = gh1[ii] + factor*gh2[ii];
-		//printf("\ngha[%d] = %f\n", ii, igrf->gh[ii]);
 	}
 	return nmax;
 }
