@@ -34,8 +34,8 @@ Date: 4/29/2019
 typedef struct
 {
 	float gh[MAXCOEF];//harmonic coefficients
-	float gh1[MAXCOEF];
-	float gh2[MAXCOEF];
+	//float gh1[MAXCOEF];
+	//float gh2[MAXCOEF];
 	float north; // x
 	float east;  // y
 	float down;  // z
@@ -46,7 +46,7 @@ typedef struct
 }IGRF;
 
 /*********PRIVATE FUNCTIONS**********/
-void getshc(IGRF* igrf, int iflag);
+//void getshc(IGRF* igrf, int iflag);
 int extrapsh(IGRF* igrf,double date);
 void shva13(IGRF* igrf, double lat, double lon, double alt, int nmax);
 void dihf (IGRF* igrf);
@@ -70,8 +70,8 @@ void get_mag_inertial(void)
 	IGRF igrf;
 	int nmax;
 	
-	getshc(&igrf, 1);
-	getshc(&igrf, 2);
+	//getshc(&igrf, 1);
+	//getshc(&igrf, 2);
 	
 	double date = julday(month, day, year);
 	
@@ -100,6 +100,7 @@ input: IGRF struct and a flag = (1 or 2) to get the two types.
 
 output: updates IGRF struct with gh1[] and gh2[] harmonic coeff.
 */
+/*
 void getshc(IGRF* igrf, int iflag)
 {
 	int ii,m,n,mm,nn;
@@ -163,7 +164,7 @@ void getshc(IGRF* igrf, int iflag)
 	fclose(stream);
 	return;
 }
-
+*/
 
 /*
 funciton: Extrapolates linearly a spherical harmonic model with a
@@ -185,8 +186,8 @@ int extrapsh(IGRF* igrf,double date)
 	int ii;
 	double factor;
 	
-	int nmax1 = 13;
-	int nmax2 = 8;
+	int nmax1 = 13; //number of Orders in 2015 model
+	int nmax2 = 8;  //number of Degres in 2105 model
 	double dte1 = 2015;
 	
 	factor = date - dte1;
@@ -194,13 +195,15 @@ int extrapsh(IGRF* igrf,double date)
 	l = nmax1 * (nmax1 + 2);
 	for(ii = k+1; ii <= l; ++ii)
 	{
-		igrf->gh[ii] = igrf->gh1[ii];
+		//igrf->gh[ii] = igrf->gh1[ii];
+		igrf->gh[ii] = gh1[ii];
 		//printf("\ngha[%d] = %f\n", ii, igrf->gh[ii]);
 	}
 	nmax = nmax1;
 	for (ii = 1; ii <= k; ++ii)
 	{
-		igrf->gh[ii] = igrf->gh1[ii] + factor*igrf->gh2[ii];
+		//igrf->gh[ii] = igrf->gh1[ii] + factor*igrf->gh2[ii];
+		igrf->gh[ii] = gh1[ii] + factor*gh2[ii];
 		//printf("\ngha[%d] = %f\n", ii, igrf->gh[ii]);
 	}
 	return nmax;
