@@ -45,6 +45,7 @@
 /* USER CODE BEGIN Includes */
 #include <ACS.h>
 #include <STM32SerialCommunication.h>
+#include <ReferenceFrames.h>
 
 /* USER CODE END Includes */
 
@@ -134,12 +135,18 @@ int main(void)
 		
 		sendActuatorsToSerial(&acs);
 		
-		char pos[100], w_rw[100];
+		float lng, lat, alt;
+		J2000_2_LongLatAlt(acs.craft_j2000, acs.julian_date, &lng, &lat, &alt);
 		
-		printMatrix(acs.craft_inertial, pos);
-		printMatrix(acs.w_rw, w_rw);
+//		char pos[100], w_rw[100];
+//		
+//		printMatrix(acs.craft_inertial, pos);
+//		printMatrix(acs.w_rw, w_rw);
+//		char string[300];
+//		sprintf(string, "Position:\n%s\nw_rw:\n%s", pos, w_rw);
+		
 		char string[300];
-		sprintf(string, "Position:\n%s\nw_rw:\n%s", pos, w_rw);
+		sprintf(string, "Longitude\tLatitude\tAltitude\n%6.2f\t\t%6.2f\t\t%6.2f", lng, lat, alt);
 		
 		STM32SerialSendString(&huart2, string);
   }
