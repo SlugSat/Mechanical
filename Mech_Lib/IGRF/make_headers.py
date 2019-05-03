@@ -28,8 +28,8 @@ g1 = []
 h1 = []
 g2 = []
 h2 = []
-gh1 = []
-gh2 = []
+gh1 = [0.0]
+gh2 = [0.0]
 
 invars = [deg, order, g1, h1, g2, h2]
 
@@ -47,16 +47,12 @@ for line in igrf:
         gh2.append(h2[-1])
 
 
-outvars = [deg, order, gh1, gh2]
-varnames = ["deg", "order", "gh1", "gh2"]
+outvars = [gh1, gh2]
+varnames = ["float gh1", "float gh2"]
 
 # Write to header file
 vals_per_line = 10
 for i in range(0, len(outvars)):
-    if i < 2:
-        header.write("uint8_t ")
-    else:
-        header.write("float ")
     header.write(varnames[i]+"[] = {")
     for j in range(0, len(outvars[i])):
         header.write(str(outvars[i][j]))
