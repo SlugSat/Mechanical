@@ -28,27 +28,39 @@ g1 = []
 h1 = []
 g2 = []
 h2 = []
+gh1 = []
+gh2 = []
 
-var = [deg, order, g1, h1, g2, h2]
-varnames = ["deg", "order", "g1", "h1", "g2", "h2"]
+invars = [deg, order, g1, h1, g2, h2]
 
 # Read coefficient file
 for line in igrf:
     floats = [float(n) for n in line.split() if isFloat(n)]
-    for i in range(0, 5):
-        var[i].append(floats[i])
+    for i in range(0, len(invars)):
+        invars[i].append(floats[i])
+    
+    gh1.append(g1[-1])
+    gh2.append(g2[-1])
+    
+    if order[-1] != 0:
+        gh1.append(h1[-1])
+        gh2.append(h2[-1])
+
+
+outvars = [deg, order, gh1, gh2]
+varnames = ["deg", "order", "gh1", "gh2"]
 
 # Write to header file
 vals_per_line = 10
-for i in range(0, 5):
+for i in range(0, len(outvars)):
     if i < 2:
         header.write("uint8_t ")
     else:
         header.write("float ")
     header.write(varnames[i]+"[] = {")
-    for j in range(0, len(var[i])):
-        header.write(str(var[i][j]))
-        if j != len(var[i])-1:
+    for j in range(0, len(outvars[i])):
+        header.write(str(outvars[i][j]))
+        if j != len(outvars[i])-1:
             header.write(", ")
         if (j+1)%vals_per_line == 0:
             header.write("\n\t")
