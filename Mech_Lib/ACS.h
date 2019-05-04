@@ -52,8 +52,11 @@ typedef struct {
 	// Inertial vectors (ecliptic frame)
 	Matrix sv_inertial; // Found using the Julian date
 	Matrix mag_inertial; // From IGRF
-	Matrix craft_inertial; // From SGP4 (normalized)
-	Matrix craft_j2000;
+	Matrix craft_inertial; // Normalized
+	
+	// Craft position in different frames
+	Matrix craft_j2000; // From SGP4 or 42
+	float longitude, latitude, altitude; // In degrees, degrees, meters wrt prime meridian
 	
 	// Feedback control error vectors (body frame)
 	Matrix z_err;

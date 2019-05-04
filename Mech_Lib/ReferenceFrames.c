@@ -100,3 +100,48 @@ void J2000_2_LongLatAlt(Matrix v_j2000, double JD, float* lng, float* lat, float
 		*lng -= 360.0;
 	}
 }
+
+
+void NED_2_J2000(Matrix v_ned, Matrix c_j2000, double JD, Matrix v_j2000) {
+	static int init_run = 0;
+	static Matrix R, Rxv;
+	
+	if(init_run == 0) {
+		R = newMatrix(3, 3);
+		Rxv = newMatrix(3, 1);
+		init_run = 1;
+	}
+	
+	// Find rotation angles
+	float c_norm = vectorNorm(c_j2000);
+	float c_xy_norm = sqrt(pow(matrixGetElement(c_j2000, 1, 1), 2) + pow(matrixGetElement(c_j2000, 2, 1), 2)); // Norm of proj of v onto xy plane
+	float theta = asin(matrixGetElement(c_j2000, 3, 1)/c_norm);
+	float alpha = (float)-acos(matrixGetElement(c_j2000, 1, 1)/c_xy_norm); // Angle from J2000 x-axis to craft J2000 position projection onto equatorial plane
+	if(matrixGetElement(c_j2000, 2, 1) < 0) {
+		alpha = 2*PI - alpha; // Make sure the angle is in the correct quadrant
+	}
+	
+	// Make rotation matrix
+	// Row 1
+	matrixSet(R, 1, 1, cos(theta));
+	matrixSet(R, 1, 2, 0);
+	matrixSet(R, 1, 3, sin(theta));
+	
+	// Row 2
+	matrixSet(R, 2, 1, sin(alpha)*sin(theta));
+	matrixSet(R, 2, 2, cos(alpha)); 
+	matrixSet(R, 2, 3, -cos(theta)*sin(alpha)); 
+	
+	// Row 3
+	matrixSet(R, 3, 1, -cos(alpha)*sin(theta));
+	matrixSet(R, 3, 2, sin(alpha)); 
+	matrixSet(R, 3, 3, cos(alpha)*cos(theta));
+	
+	// Multiply by rotation matrix
+	matrixMult(R, v_ned, Rxv);
+	
+	// Assemble J2000 vector
+	matrixSet(v_j2000, 1, 1, -matrixGetElement(Rxv, 3, 1)); // x = -down
+	matrixSet(v_j2000, 2, 1, matrixGetElement(Rxv, 2, 1)); // y = east
+	matrixSet(v_j2000, 3, 1, matrixGetElement(Rxv, 1, 1)); // z = north
+}
