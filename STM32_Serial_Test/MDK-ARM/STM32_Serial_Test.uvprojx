@@ -452,6 +452,36 @@
               <FileType>1</FileType>
               <FilePath>..\..\Mech_Lib\ReferenceFrames.c</FilePath>
             </File>
+            <File>
+              <FileName>InertialVectors.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\InertialVectors.c</FilePath>
+            </File>
+            <File>
+              <FileName>InertialVectors.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\InertialVectors.h</FilePath>
+            </File>
+            <File>
+              <FileName>FeedbackControl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\FeedbackControl.c</FilePath>
+            </File>
+            <File>
+              <FileName>FeedbackControl.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\FeedbackControl.h</FilePath>
+            </File>
+            <File>
+              <FileName>OrientationController.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\OrientationController.c</FilePath>
+            </File>
+            <File>
+              <FileName>StabilizationController.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\StabilizationController.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
