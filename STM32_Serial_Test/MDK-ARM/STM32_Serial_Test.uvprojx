@@ -442,6 +442,16 @@
               <FileType>5</FileType>
               <FilePath>..\..\Mech_Lib\Matrix.h</FilePath>
             </File>
+            <File>
+              <FileName>ReferenceFrames.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\ReferenceFrames.h</FilePath>
+            </File>
+            <File>
+              <FileName>ReferenceFrames.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\ReferenceFrames.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

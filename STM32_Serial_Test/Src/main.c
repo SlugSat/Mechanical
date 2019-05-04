@@ -146,7 +146,7 @@ int main(void)
 //		sprintf(string, "Position:\n%s\nw_rw:\n%s", pos, w_rw);
 		
 		char string[300];
-		sprintf(string, "Longitude\tLatitude\tAltitude\n%6.2f\t\t%6.2f\t\t%6.2f", lng, lat, alt);
+		sprintf(string, "Julian Date: %11.4f\nLongitude\tLatitude\tAltitude\n%6.2f\t\t%6.2f\t\t%6.2f", acs.julian_date, lng, lat, alt);
 		
 		STM32SerialSendString(&huart2, string);
   }

@@ -21,7 +21,13 @@
 float getGMSTDegrees(double JD) {
 	double d = JD - 2451545.0; // Days since noon Jan 1, 2000
 	double GMST_hr = 18.697374558 + 24.06570982441908*d;
-	double GMST_deg = 360.0*GMST_hr/24.0;
+	double GMST_deg = 15.0*GMST_hr;
+	while(GMST_deg < 0) {
+		GMST_deg += 360.0;
+	}
+	while(GMST_deg >= 360.0) {
+		GMST_deg -= 360.0;
+	}
 	return (float)GMST_deg;
 //	double T = d/36525; // Centuries since noon Jan 1, 2000
 //	double GMST_sec = 24110.54841 + 8640184.812866 * T + 0.093104*T*T - 0.0000062*T*T*T; // Seconds in UT1
@@ -73,6 +79,7 @@ void J2000_2_ecliptic(Matrix v_j2000, Matrix v_ecliptic) {
 
 void J2000_2_LongLatAlt(Matrix v_j2000, double JD, float* lng, float* lat, float* alt) {
 	float v_norm = vectorNorm(v_j2000);
+	float v_xy_norm = sqrt(pow(matrixGetElement(v_j2000, 1, 1), 2) + pow(matrixGetElement(v_j2000, 2, 1), 2)); // Norm of proj of v onto xy plane
 	
 	// Find altitude
 	*alt = v_norm - EARTH_RADIUS_KM*1000;
@@ -81,7 +88,7 @@ void J2000_2_LongLatAlt(Matrix v_j2000, double JD, float* lng, float* lat, float
 	*lat = RAD2DEG*asin(matrixGetElement(v_j2000, 3, 1)/v_norm);
 	
 	// Find longitude
-	float alpha_deg = RAD2DEG*acos(matrixGetElement(v_j2000, 1, 1)/v_norm); // Angle from J2000 x-axis to craft J2000 position projection onto equatorial plane
+	float alpha_deg = RAD2DEG*(float)acos(matrixGetElement(v_j2000, 1, 1)/v_xy_norm); // Angle from J2000 x-axis to craft J2000 position projection onto equatorial plane
 	if(matrixGetElement(v_j2000, 2, 1) < 0) {
 		alpha_deg = 360.0 - alpha_deg; // Make sure the angle is in the correct quadrant
 	}
