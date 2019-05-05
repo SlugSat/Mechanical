@@ -42,7 +42,7 @@ void runBdotController(ACSType* acs, float dt);
  * @param  first_step: 1 right after state transitions, 0 otherwise
  * @return Updates acs->rw_PWM
  */
-void runOrientationController(ACSType* acs, float dt, int first_step);
+void runOrientationController(ACSType* acs, int first_step);
 
 /**
  * @brief  Runs the feedback controller used to stabilize the craft when error is low
@@ -51,7 +51,7 @@ void runOrientationController(ACSType* acs, float dt, int first_step);
  * @param  first_step: 1 right after state transitions, 0 otherwise
  * @return Updates acs->rw_PWM
  */
-void runStabilizationController(ACSType* acs, float dt, int first_step);
+void runStabilizationController(ACSType* acs, int first_step);
 
 /**
  * @brief  Finds reaction wheel PWM to achieve a desired craft wdot

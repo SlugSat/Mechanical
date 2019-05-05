@@ -20,7 +20,7 @@
 #define ORIENTATION_W_MAG -0.017 // About 1 deg/s in rad/s
 
 
-void runOrientationController(ACSType* acs, float dt, int first_step) {
+void runOrientationController(ACSType* acs, int first_step) {
 	static int init_run = 0;
 	static Matrix w_err, last_w_err, P, D, wdot_desired;
 	
@@ -33,7 +33,7 @@ void runOrientationController(ACSType* acs, float dt, int first_step) {
 		init_run = 1;
 	}
 	
-	if(dt == 0) {
+	if(acs->dt == 0) {
 		return;
 	}
 	
@@ -54,7 +54,7 @@ void runOrientationController(ACSType* acs, float dt, int first_step) {
 		// Derivative component
 		matrixCopy(w_err, D);
 		matrixSubtract(D, last_w_err, D);
-		matrixScale(D, KD/dt); // D = (w_err - last_w_err)*KD/dt
+		matrixScale(D, KD/acs->dt); // D = (w_err - last_w_err)*KD/dt
 		
 		// Sum P and D
 		matrixAdd(P, D, wdot_desired);
@@ -65,5 +65,5 @@ void runOrientationController(ACSType* acs, float dt, int first_step) {
 	matrixCopy(w_err, last_w_err);
 	
 	// Find reaction wheel PWM
-	wdot2rw_pwm(acs, wdot_desired, dt);
+	wdot2rw_pwm(acs, wdot_desired, acs->dt);
 }

@@ -30,7 +30,7 @@
 void torque2wdot(ACSType* acs, Matrix torque_vector, Matrix wdot_vector);
 
 
-void runStabilizationController(ACSType* acs, float dt, int first_step) {
+void runStabilizationController(ACSType* acs, int first_step) {
 	static int init_run = 0;
 	static Matrix torque_integrator, last_err, P, I, D, controller_torque, controller_wdot, wdot_desired;
 	
@@ -46,7 +46,7 @@ void runStabilizationController(ACSType* acs, float dt, int first_step) {
 		init_run = 1;
 	}
 	
-	if(dt == 0) {
+	if(acs->dt == 0) {
 		return;
 	}
 	
@@ -62,13 +62,13 @@ void runStabilizationController(ACSType* acs, float dt, int first_step) {
 		
 		// Integrator component
 		matrixCopy(acs->err, I);
-		matrixScale(I, KI_T*dt);
+		matrixScale(I, KI_T*acs->dt);
 		matrixAdd(torque_integrator, I, torque_integrator); // Adding in place works; multiplying in place doesn't
 		
 		// Derivative component
 		matrixCopy(acs->err, D);
 		matrixSubtract(D, last_err, D);
-		matrixScale(D, KD_T/dt);
+		matrixScale(D, KD_T/acs->dt);
 		
 		// Sum the P, I, and D components
 		matrixAdd(P, I, controller_torque);
@@ -82,7 +82,7 @@ void runStabilizationController(ACSType* acs, float dt, int first_step) {
 		// Derivative component
 		matrixCopy(acs->err, D);
 		matrixSubtract(D, last_err, D);
-		matrixScale(D, KD_WDOT/dt);
+		matrixScale(D, KD_WDOT/acs->dt);
 		
 		// Sum the P and D components
 		matrixAdd(P, D, controller_wdot);
@@ -96,7 +96,7 @@ void runStabilizationController(ACSType* acs, float dt, int first_step) {
 	matrixCopy(acs->err, last_err);
 	
 	// Find reaction wheel PWM
-	wdot2rw_pwm(acs, wdot_desired, dt);
+	wdot2rw_pwm(acs, wdot_desired, acs->dt);
 }
 
 
