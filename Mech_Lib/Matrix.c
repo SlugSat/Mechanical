@@ -229,7 +229,7 @@ void printMatrix(Matrix m, char* string) {
     int c = matrixGetCol(m);
     string[0] = '\0'; // Make string an empty string
     for(int i = 1;i <= r;i++) {
-        char temp[14];
+        char temp[20];
         for(int j = 1;j <= c;j++) {
             sprintf(temp, "%8.4e\t", matrixGetElement(m, i, j));
 				    strcat(string, temp); // Add temp to the end of string

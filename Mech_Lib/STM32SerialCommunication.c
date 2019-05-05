@@ -13,6 +13,7 @@
 #include "STM32SerialCommunication.h"
 
 #include <PacketProtocol.h>
+#include <string.h>
 
 #define BAUD 115200
 #define UART_TIMEOUT 500
@@ -20,7 +21,7 @@
 // Private functions
 void receivePacket(UART_HandleTypeDef* huart, uint8_t* packet, unsigned int bytes) {
 	HAL_StatusTypeDef status;
-	do{
+	do {
 		status = HAL_UART_Receive(huart, packet, bytes, UART_TIMEOUT);
 	} while(status != HAL_OK);
 }
@@ -40,6 +41,10 @@ HAL_StatusTypeDef STM32SerialSendFloats(UART_HandleTypeDef* huart, float* f, uns
 	return err;
 
 	// Add wait for ack here
+}
+
+HAL_StatusTypeDef STM32SerialSendString(UART_HandleTypeDef* huart, char* string) {
+	return HAL_UART_Transmit(huart, (uint8_t*)string, strlen(string) + 1, 2*UART_TIMEOUT);
 }
 
 int STM32SerialReceiveFloats(UART_HandleTypeDef* huart, float* f, unsigned int n) {

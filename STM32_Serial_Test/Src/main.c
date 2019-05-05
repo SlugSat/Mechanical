@@ -43,7 +43,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "STM32SerialCommunication.h"
+#include <ACS.h>
+#include <STM32SerialCommunication.h>
+#include <ReferenceFrames.h>
 
 /* USER CODE END Includes */
 
@@ -112,7 +114,11 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+	
+	ACSType acs;
+	initializeACS(&acs);
+	initializeACSSerial(&acs, &huart2);
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -122,16 +128,27 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		// HAL_UART_Transmit(&huart2, (uint8_t*)"Hello!", 6, 20);
+		readSensorsFromSerial(&acs);
 		
-		float B[9], gyro[3], sun[3];
-		STM32SerialReceiveFloats(&huart2, B, 9);
-		//STM32SerialReceiveFloats(&huart2, gyro, 3);
-		//STM32SerialReceiveFloats(&huart2, sun, 3);
+		vectorSetXYZ(acs.tr_PWM, 0, 0, 0);
+		vectorSetXYZ(acs.rw_PWM, 0, 0, 100);
 		
-		STM32SerialSendFloats(&huart2, B, 9);
-		//STM32SerialSendFloats(&huart2, gyro, 3);
-		//STM32SerialSendFloats(&huart2, sun, 3);
+		sendActuatorsToSerial(&acs);
+		
+		J2000_2_LongLatAlt(acs.craft_j2000, acs.julian_date, &acs.longitude, &acs.latitude, &acs.altitude);
+		
+//		char pos[100], w_rw[100];
+//		
+//		printMatrix(acs.craft_inertial, pos);
+//		printMatrix(acs.w_rw, w_rw);
+//		char string[300];
+//		sprintf(string, "Position:\n%s\nw_rw:\n%s", pos, w_rw);
+		
+		char string[300];
+		sprintf(string, "Julian Date: %11.4f\nLongitude\tLatitude\tAltitude\n%6.2f\t\t%6.2f\t\t%6.2f", 
+			acs.julian_date, acs.longitude, acs.latitude, acs.altitude);
+		
+		STM32SerialSendString(&huart2, string);
   }
   /* USER CODE END 3 */
 }
@@ -145,7 +162,7 @@ void SystemClock_Config(void)
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
-  /**Initializes the CPU, AHB and APB busses clocks 
+  /** Initializes the CPU, AHB and APB busses clocks 
   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
@@ -157,7 +174,7 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  /**Initializes the CPU, AHB and APB busses clocks 
+  /** Initializes the CPU, AHB and APB busses clocks 
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;

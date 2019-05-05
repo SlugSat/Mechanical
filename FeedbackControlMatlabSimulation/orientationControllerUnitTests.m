@@ -39,3 +39,9 @@ wdot_desired = stabilizationController(w, w_rw, err, dt, 1)
 % Test 2
 wdot_desired = stabilizationController(w, w_rw, err, dt, 0)
 [wdot_rw, pwm] = Alpha2RW_PWM(w, wdot_desired, w_rw, dt)
+
+% Test 3
+w = [0.08; 0; -0.025];
+w_rw = [110; 20; -45];
+wdot_desired = stabilizationController(w, w_rw, err, dt, 0)
+[wdot_rw, pwm] = Alpha2RW_PWM(w, wdot_desired, w_rw, dt)
