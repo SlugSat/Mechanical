@@ -10,8 +10,8 @@ Date: 4/29/2019
 #include <Matrix.h>
 
 /**
- * @brief 
- * @param
- * @return
+ * @brief  
+ * @param  altitude: in meters
+ * @return 
  */
 void get_mag_inertial(double JD, float longitude, float latitude, float altitude, Matrix mag_NED);

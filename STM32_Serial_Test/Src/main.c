@@ -45,7 +45,7 @@
 /* USER CODE BEGIN Includes */
 #include <ACS.h>
 #include <STM32SerialCommunication.h>
-#include <ReferenceFrames.h>
+#include <InertialVectors.h>
 
 /* USER CODE END Includes */
 
@@ -135,18 +135,14 @@ int main(void)
 		
 		sendActuatorsToSerial(&acs);
 		
-		J2000_2_LongLatAlt(acs.craft_j2000, acs.julian_date, &acs.longitude, &acs.latitude, &acs.altitude);
+		findMagInertial(&acs);
 		
-//		char pos[100], w_rw[100];
-//		
-//		printMatrix(acs.craft_inertial, pos);
-//		printMatrix(acs.w_rw, w_rw);
-//		char string[300];
-//		sprintf(string, "Position:\n%s\nw_rw:\n%s", pos, w_rw);
+		char mag[100];
 		
+		printMatrix(acs.mag_inertial, mag);
 		char string[300];
-		sprintf(string, "Julian Date: %11.4f\nLongitude\tLatitude\tAltitude\n%6.2f\t\t%6.2f\t\t%6.2f", 
-			acs.julian_date, acs.longitude, acs.latitude, acs.altitude);
+		sprintf(string, "Julian Date: %11.4f\nLongitude\tLatitude\tAltitude\n%6.2f\t\t%6.2f\t\t%6.2f\nMag_I:\n%s\n", 
+				acs.julian_date, acs.longitude, acs.latitude, acs.altitude, mag);
 		
 		STM32SerialSendString(&huart2, string);
   }

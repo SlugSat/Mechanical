@@ -34,7 +34,7 @@ Date: 4/29/2019
 /** Max to read 2 less than total size (just to be safe) **/
 
 /**********TEST**********/
-#define IGRF_TEST
+// #define IGRF_TEST
 
 
 /*******************STRUCT************/
@@ -68,7 +68,7 @@ void get_mag_inertial(double JD, float longitude, float latitude, float altitude
 	
 	nmax = extrapsh(&igrf,date);
 	
-	shva13(&igrf, latitude, longitude, altitude, nmax);
+	shva13(&igrf, latitude, longitude, altitude/1000.0 + EARTH_RADIUS, nmax);
 	
 	dihf(&igrf);
 	

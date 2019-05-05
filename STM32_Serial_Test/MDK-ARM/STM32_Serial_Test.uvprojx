@@ -585,6 +585,26 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>IGRF</GroupName>
+          <Files>
+            <File>
+              <FileName>mag_inertial.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\IGRF\mag_inertial.h</FilePath>
+            </File>
+            <File>
+              <FileName>mag_inertial.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\IGRF\mag_inertial.c</FilePath>
+            </File>
+            <File>
+              <FileName>IGRF12.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\IGRF\IGRF12.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>

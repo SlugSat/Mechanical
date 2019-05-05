@@ -115,8 +115,8 @@ void NED_2_J2000(Matrix v_ned, Matrix c_j2000, double JD, Matrix v_j2000) {
 	// Find rotation angles
 	float c_norm = vectorNorm(c_j2000);
 	float c_xy_norm = sqrt(pow(matrixGetElement(c_j2000, 1, 1), 2) + pow(matrixGetElement(c_j2000, 2, 1), 2)); // Norm of proj of v onto xy plane
-	float theta = asin(matrixGetElement(c_j2000, 3, 1)/c_norm);
-	float alpha = (float)-acos(matrixGetElement(c_j2000, 1, 1)/c_xy_norm); // Angle from J2000 x-axis to craft J2000 position projection onto equatorial plane
+	float theta = -asin(matrixGetElement(c_j2000, 3, 1)/c_norm);
+	float alpha = (float)acos(matrixGetElement(c_j2000, 1, 1)/c_xy_norm); // Angle from J2000 x-axis to craft J2000 position projection onto equatorial plane
 	if(matrixGetElement(c_j2000, 2, 1) < 0) {
 		alpha = 2*PI - alpha; // Make sure the angle is in the correct quadrant
 	}
