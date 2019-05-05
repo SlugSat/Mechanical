@@ -34,7 +34,7 @@ Date: 4/29/2019
 /** Max to read 2 less than total size (just to be safe) **/
 
 /**********TEST**********/
-// #define IGRF_TEST
+#define IGRF_TEST
 
 
 /*******************STRUCT************/
@@ -358,6 +358,10 @@ double JD_2_decdate(double JD)
 		else {
 			days_per_year = 365;
 		}
+		if (JD < days_per_year)
+		{
+			break;
+		}
 		
 		year++;
 		JD -= days_per_year;
@@ -371,15 +375,15 @@ double JD_2_decdate(double JD)
 int main(void)
 {
 	// These should come from ACS struct
-	int day = 30;
-	int month = 4;
-	int year = 2019;
+	double JD = 2458608.30832;
 	
-	double longitude = 0;
-	double latitude = 0;
-	double altitude = 6820.0;	
+	float longitude = 0;
+	float latitude = 0;
+	float altitude = 6820.0;	
 	
-	get_mag_inertial(day, month, year, longitude, latitude, altitude);
+	Matrix igrf_ned = newMatrix(3,1);
+	
+	get_mag_inertial(JD, longitude, latitude, altitude, igrf_ned);
 
 	return 0;
 }
