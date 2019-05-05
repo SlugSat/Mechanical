@@ -34,7 +34,7 @@ Date: 4/29/2019
 /** Max to read 2 less than total size (just to be safe) **/
 
 /**********TEST**********/
-#define IGRF_TEST
+//#define IGRF_TEST
 
 
 /*******************STRUCT************/
@@ -375,11 +375,11 @@ double JD_2_decdate(double JD)
 int main(void)
 {
 	// These should come from ACS struct
-	double JD = 2458608.30832;
+	double JD = 2458602.93;
 	
-	float longitude = 0;
-	float latitude = 0;
-	float altitude = 6820.0;	
+	float longitude = 146.3;
+	float latitude = -51.26;
+	float altitude = 408226.5;	
 	
 	Matrix igrf_ned = newMatrix(3,1);
 	
