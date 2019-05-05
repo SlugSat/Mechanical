@@ -15,8 +15,8 @@ close all
 bold = [0;0;0];
 
 % SIMULATION SETTINGS
-simulation_time = 10000; % Amount of time to be simulated (seconds)
-dt = .1; % Time between steps (seconds)
+simulation_time = 100000; % Amount of time to be simulated (seconds)
+dt = 1; % Time between steps (seconds)
 draw_cube = 0;
 orbit_time = 5400; % Craft orbital period (seconds); 0 for static position
 R = rotx(60)*roty(-160)*rotz(150); % Initial craft DCM

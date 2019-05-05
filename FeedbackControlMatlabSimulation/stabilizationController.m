@@ -40,36 +40,19 @@ else
     [m,torque_tr] = momentum_dump(w_rw, mag_body, bdot);
     
     %Use angular velocity of each axis to see if momentum dumping is needed
-    
-    %X-axis
-     if (abs(w_rw(1)) > 100)
-         torque_tr(1) = torque_tr(1);
+    for i=1:3
+     if (abs(w_rw(i)) > 100)
+         torque_tr(i) = torque_tr(i);
      else 
-         torque_tr(1) = 0;
+         torque_tr(i) = 0;
      end
-         
-     %Y-Axis
-     if (abs(w_rw(2)) > 100)
-         torque_tr(2) = torque_tr(2);
-     else 
-         torque_tr(2) = 0;
-     end
-         
-     %Z-axis    
-     if (abs(w_rw(3)) > 100)
-         torque_tr(3) = torque_tr(3);
-     else 
-         torque_tr(3) = 0;
-     end
-         
+    end
     %Calculate reaction wheel torque    
     torque_integrator = torque_integrator + Ki_t*err*dt;
     controller_torque = Kp_t*err + torque_integrator + (Kd_t*(err - last_err)/dt) + torque_tr; % Subtract torque rod torque
     %Calculate wdot desired
     wdot_desired = -(Kp_wdot*err + Kd_wdot*(err - last_err)/dt);
     wdot_desired = wdot_desired + torque2wdot(w, w_rw, controller_torque);
-    m=m;
-     
     end        
     
 last_err = err;
