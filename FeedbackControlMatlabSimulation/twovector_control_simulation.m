@@ -72,7 +72,7 @@ if draw_cube
     v5 = [-1*xwidth/2;   -1*ywidth/2;     -1*zwidth/2];
     v6 = [xwidth/2;      -1*ywidth/2;     -1*zwidth/2];
     v7 = [xwidth/2;      ywidth/2;        -1*zwidth/2];
-    v8 = [-1*xwidth/2;   ywidth/2;        -1*zwidth/2];
+    v8 = [-1*xwidth/2;   ywidth/2;        -1*zwidth/2];git 
 
     % Initialize quiver plot
     figure(1)
