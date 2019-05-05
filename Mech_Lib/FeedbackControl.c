@@ -54,7 +54,9 @@ void findErrorVectors(ACSType* acs) {
 	// Find the unit vector normal to the plane containing the Earth, craft, and Sun
 	vectorCrossProduct(acs->craft_inertial, acs->sv_inertial, n_I);
 	float n_I_norm = vectorNorm(n_I);
-	matrixScale(n_I, 1.0/n_I_norm);
+	if(n_I_norm != 0) {
+		matrixScale(n_I, 1.0/n_I_norm);
+	}
 	matrixMult(acs->Rt, n_I, n_B); // Translate to body frame
 	
 	// Make corner_B vector point to the edge closest to n_B (roughly)

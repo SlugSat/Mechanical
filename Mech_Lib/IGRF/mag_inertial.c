@@ -61,6 +61,10 @@ double JD_2_decdate(double JD);
 /***********PUBLIC FUNCTIONS**********/
 void get_mag_inertial(double JD, float longitude, float latitude, float altitude, Matrix mag_NED)
 {
+	if(altitude == 0) {
+		return;
+	}
+	
 	IGRF igrf;
 	int nmax;
 	
@@ -350,7 +354,7 @@ double JD_2_decdate(double JD)
 {
 	JD = JD - 2451545 + 0.5;
 	int year = 2000;
-	int days_per_year;
+	int days_per_year = 365;
 	while(1) {
 		if(((year % 4) == 0) && (((year % 100) != 0) || ((year % 400) == 0))) {
 			days_per_year = 366; // Leap year

@@ -35,7 +35,7 @@ Matrix initializeDCM(float yaw, float pitch, float roll);
  * @param  dt: time in seconds since last call of this function
  * @return None
 */
-void updateAttitudeEstimate(ACSType* acs, float dt);
+void updateAttitudeEstimate(ACSType* acs);
 
 /** 
  * @brief  Performs closed loop integration on the given DCM using the Rexp form

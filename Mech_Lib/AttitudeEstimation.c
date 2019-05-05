@@ -65,7 +65,11 @@ Matrix initializeDCM(float yaw, float pitch, float roll) {
 }
 
 
-void updateAttitudeEstimate(ACSType* acs, float dt) {
+void updateAttitudeEstimate(ACSType* acs) {
+	if(acs->dt == 0) {
+		return;
+	}
+	
 	float Kp_mag, Ki_mag, Kp_sv, Ki_sv;
 	
 	Kp_mag = KP_MAG_BASE;
@@ -80,7 +84,7 @@ void updateAttitudeEstimate(ACSType* acs, float dt) {
 		Ki_sv = 0;
 	}
 	
-	integrateDCM(acs, Kp_mag, Ki_mag, Kp_sv, Ki_sv, dt);
+	integrateDCM(acs, Kp_mag, Ki_mag, Kp_sv, Ki_sv, acs->dt);
 }
 
 
@@ -118,8 +122,7 @@ void integrateDCM(ACSType* acs, float Kp_mag, float Ki_mag, float Kp_sv, float K
 
 	if(norm_mag == 0 || norm_sv == 0 || norm_mi == 0 || norm_svi == 0) {
 		// Need better error handling
-		// printf("EULER ERROR: DIVIDE BY 0");
-		while(1);
+		return;
 	}
 	
 	matrixScale(acs->mag_vector, 1.0/norm_mag);

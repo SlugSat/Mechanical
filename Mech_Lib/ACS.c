@@ -70,6 +70,8 @@ Matrix makeJbodyInv(void) {
 
 // Public functions
 void initializeACS(ACSType* acs) {
+	acs->t = 0;
+	
 	// Allocate Matrix structs
 	acs->R = initializeDCM(0, 0, 0);
 	acs->Rt = newMatrix(3, 3);
@@ -129,6 +131,12 @@ void readSensorsFromSerial(ACSType* acs) {
 	// Get position in Ecliptic ECI frame
 	vectorCopyArray(acs->craft_j2000, sensor_data + 9, 3);
 	J2000_2_ecliptic(acs->craft_j2000, acs->craft_inertial);
+	float c_I_norm = vectorNorm(acs->craft_inertial);
+	if(c_I_norm != 0) {
+		matrixScale(acs->craft_inertial, 1.0/c_I_norm); // Normalize c_I
+	}
+	
+	// Get reaction wheel speeds
 	vectorCopyArray(acs->w_rw, sensor_data + 12, 3);
 	
 	// Get current time
