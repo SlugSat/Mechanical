@@ -13,7 +13,7 @@
 #include <math.h>
 
 
-#define J2000_TO_ECLIPTIC_ANGLE 23.5 // Degrees
+#define J2000_TO_ECLIPTIC_ANGLE -0.4101524 // -23.5 degrees in radians
 
 
 // Private functions
@@ -29,10 +29,6 @@ float getGMSTDegrees(double JD) {
 		GMST_deg -= 360.0;
 	}
 	return (float)GMST_deg;
-//	double T = d/36525; // Centuries since noon Jan 1, 2000
-//	double GMST_sec = 24110.54841 + 8640184.812866 * T + 0.093104*T*T - 0.0000062*T*T*T; // Seconds in UT1
-//	double GMST_deg = GMST_sec/240.0; // Degrees between J2000 x-axis and the prime meridian
-//	return (float)fmod(GMST_deg, 360.0);
 }
 
 
