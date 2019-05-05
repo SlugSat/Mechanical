@@ -61,6 +61,6 @@ void runStabilizationController(ACSType* acs, int first_step);
  * @param  dt: expected time until next feedback controller update
  * @return Updates acs->rw_PWM
  */
-void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired, float dt);
+void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired);
 
 #endif /* FEEDBACKCONTROL_H */

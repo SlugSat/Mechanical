@@ -102,7 +102,7 @@ void runBdotController(ACSType* acs, float dt) {
 }
 
 
-void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired, float dt) {
+void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired) {
 	static int init_run = 0;
 	static Matrix torque, p, p_rw, wxp, Jxwdot, w_rw_new;
 	
@@ -129,7 +129,7 @@ void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired, float dt) {
 	
 	// Find desired rw_wdot
 	matrixMult(acs->J_rw_inv, torque, w_rw_new); // w_rw_new = J_rw_inv*torque
-	matrixScale(w_rw_new, dt); // w_rw_new = J_rw_inv*torque*dt
+	matrixScale(w_rw_new, acs->dt); // w_rw_new = J_rw_inv*torque*dt
 	matrixAdd(w_rw_new, acs->w_rw, w_rw_new); // w_rw_new = w_rw + J_rw_inv*torque*dt
 	
 	// Find PWM

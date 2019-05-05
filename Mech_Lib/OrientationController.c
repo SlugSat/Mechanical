@@ -65,5 +65,5 @@ void runOrientationController(ACSType* acs, int first_step) {
 	matrixCopy(w_err, last_w_err);
 	
 	// Find reaction wheel PWM
-	wdot2rw_pwm(acs, wdot_desired, acs->dt);
+	wdot2rw_pwm(acs, wdot_desired);
 }

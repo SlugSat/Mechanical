@@ -96,7 +96,7 @@ void runStabilizationController(ACSType* acs, int first_step) {
 	matrixCopy(acs->err, last_err);
 	
 	// Find reaction wheel PWM
-	wdot2rw_pwm(acs, wdot_desired, acs->dt);
+	wdot2rw_pwm(acs, wdot_desired);
 }
 
 
