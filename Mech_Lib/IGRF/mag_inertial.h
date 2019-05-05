@@ -1,29 +1,17 @@
-#include <stdio.h>
-#include <stdlib.h>            
-#include <string.h>
-#include <ctype.h>
-#include <math.h> 
-
 /*
-typedef struct
-{
-	float gh[MAXCOEF];//harmonic coefficients
-	float gh1[MAXCOEF];
-	float gh2[MAXCOEF];
-	float north; // x
-	float east;  // y
-	float down;  // z
-	float declination;
-	float inclination;
-	float horizontal;
-	float total;
-}IGRF;
+Author: Gabriel Barbosa
+
+Reference: All functions are pulled from geomag70.c found here:
+	https://www.ngdc.noaa.gov/IAGA/vmod/igrf.html
+	
+Date: 4/29/2019
 */
 
-/*
-* Input: takes in an ACS struct
-* note: void input as placeholer
-*
-* void get_mag_inertial(ACStype* acs);
-*/
-void get_mag_inertial(void);
+#include <Matrix.h>
+
+/**
+ * @brief 
+ * @param
+ * @return
+ */
+void get_mag_inertial(double JD, float longitude, float latitude, float altitude, Matrix mag_NED);

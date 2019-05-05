@@ -31,4 +31,22 @@ void findSunInertial(ACSType* acs){
 
 
 void findMagInertial(ACSType* acs) {
+	static int init_run = 0;
+	static Matrix igrf_ned, igrf_j2000;
+	
+	if(init_run == 0) {
+		igrf_ned = newMatrix(3, 1);
+		igrf_j2000 = newMatrix(3, 1);
+		init_run = 1;
+	}
+	
+	// Find longitude, latitude, and altitude
+	J2000_2_LongLatAlt(acs->craft_j2000, acs->julian_date, &acs->longitude, &acs->latitude, &acs->altitude);
+	
+	// Run IGRF
+	get_mag_inertial(acs->julian_date, acs->longitude, acs->latitude, acs->altitude, igrf_ned);
+	
+	// Convert result to ecliptic frame
+	NED_2_J2000(igrf_ned, acs->craft_j2000, acs->julian_date, igrf_j2000);
+	J2000_2_ecliptic(igrf_j2000, acs->mag_inertial);
 }

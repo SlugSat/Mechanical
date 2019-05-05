@@ -6,9 +6,16 @@ Reference: All functions are pulled from geomag70.c found here:
 	
 Date: 4/29/2019
 */
+
 /*********INCLUDES**********/
 #include "mag_inertial.h"
 #include "IGRF12.h"
+#include <stdio.h>
+#include <stdlib.h>            
+#include <string.h>
+#include <ctype.h>
+#include <math.h>
+
 
 /*********DEFINES**********/
 #define NaN log(-1.0)
@@ -27,7 +34,7 @@ Date: 4/29/2019
 /** Max to read 2 less than total size (just to be safe) **/
 
 /**********TEST**********/
-#define IGRF_TEST
+// #define IGRF_TEST
 
 
 /*******************STRUCT************/
@@ -47,27 +54,17 @@ typedef struct
 int extrapsh(IGRF* igrf,double date);
 void shva13(IGRF* igrf, double lat, double lon, double alt, int nmax);
 void dihf (IGRF* igrf);
-double julday(int month, int day, int year);
+double JD_2_decdate(double JD);
 
 
 
 /***********PUBLIC FUNCTIONS**********/
-void get_mag_inertial(void)
+void get_mag_inertial(double JD, float longitude, float latitude, float altitude, Matrix mag_NED)
 {
-
-	// These should come from ACS struct
-	int day = 30;
-	int month = 4;
-	int year = 2019;
-	
-	double longitude = 0;
-	double latitude = 0;
-	double altitude = 6820.0;	
-	/***************************/
 	IGRF igrf;
 	int nmax;
 	
-	double date = julday(month, day, year);
+	double date = JD_2_decdate(JD);
 	
 	nmax = extrapsh(&igrf,date);
 	
@@ -75,10 +72,13 @@ void get_mag_inertial(void)
 	
 	dihf(&igrf);
 	
-	printf("\nNorth: %f\nEast: %f\nDown: %f\n",(&igrf)->north, (&igrf)->east, (&igrf)->down);
-	 
-	printf("\nDeclination: %f\nInclination: %f\nHorizontal: %f\nTotal: %f\n",(&igrf)->declination*RAD2DEG, (&igrf)->inclination*RAD2DEG, (&igrf)->horizontal, (&igrf)->total);
+	vectorSetXYZ(mag_NED, igrf.north, igrf.east, igrf.down);
 	
+	#ifdef IGRF_TEST
+	printf("\nNorth: %f\nEast: %f\nDown: %f\n", igrf.north, igrf.east, igrf.down);
+	 
+	printf("\nDeclination: %f\nInclination: %f\nHorizontal: %f\nTotal: %f\n", igrf.declination*RAD2DEG, igrf.inclination*RAD2DEG, igrf.horizontal, igrf.total);
+	#endif
 	return;
 }
 
@@ -346,23 +346,40 @@ void dihf (IGRF* igrf)
 
 
 
-double julday(int month, int day, int year)
+double JD_2_decdate(double JD)
 {
-  int days[12] = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334};
-
-  int leap_year = (((year % 4) == 0) &&
-                   (((year % 100) != 0) || ((year % 400) == 0)));
-
-  double day_in_year = (days[month - 1] + day + (month > 2 ? leap_year : 0));
-
-  return ((double)year + (day_in_year / (365.0 + leap_year)));
+	JD = JD - 2451545 + 0.5;
+	int year = 2000;
+	int days_per_year;
+	while(1) {
+		if(((year % 4) == 0) && (((year % 100) != 0) || ((year % 400) == 0))) {
+			days_per_year = 366; // Leap year
+		}
+		else {
+			days_per_year = 365;
+		}
+		
+		year++;
+		JD -= days_per_year;
+	}
+	
+	return (double)year + JD/days_per_year;
 }
 
 #ifdef IGRF_TEST
 
 int main(void)
 {
-	get_mag_inertial();
+	// These should come from ACS struct
+	int day = 30;
+	int month = 4;
+	int year = 2019;
+	
+	double longitude = 0;
+	double latitude = 0;
+	double altitude = 6820.0;	
+	
+	get_mag_inertial(day, month, year, longitude, latitude, altitude);
 
 	return 0;
 }
