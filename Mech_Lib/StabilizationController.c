@@ -89,6 +89,7 @@ void runStabilizationController(ACSType* acs, float dt, int first_step) {
 		
 		// Sum torque and wdot controller components
 		torque2wdot(acs, controller_torque, wdot_desired);
+		matrixAdd(wdot_desired, controller_wdot, wdot_desired);
 	}
 	
 	// Record last error
@@ -118,6 +119,7 @@ void torque2wdot(ACSType* acs, Matrix torque_vector, Matrix wdot_vector) {
 	
 	// Find total torque
 	vectorCrossProduct(acs->gyro_vector, p, wxp); // wxp = w x (J_B*w + J_rw*w_rw)
+	
 	matrixAdd(wxp, torque_vector, wxp);// wxp = torque + w x (J_B*w + J_rw*w_rw)
 	matrixScale(wxp, -1.0); // wxp = -torque - w x (J_B*w + J_rw*w_rw)
 	

@@ -14,6 +14,7 @@
 
 // LIBRARIES
 #include <AttitudeEstimation.h>
+#include <ReferenceFrames.h>
 #include <math.h>
 
 
@@ -58,22 +59,7 @@ Matrix initializeDCM(float yaw, float pitch, float roll) {
 	float p_r = PI*pitch/180;
 	float r_r = PI*roll/180;
 	
-	// From: https://en.wikipedia.org/wiki/Rotation_formalisms_in_three_dimensions#Euler_angles_(z-y%E2%80%B2-x%E2%80%B3_intrinsic)_%E2%86%92_rotation_matrix
-	
-	// Row 1
-	matrixSet(r, 1, 1, cos(p_r)*cos(y_r));
-	matrixSet(r, 1, 2, -cos(r_r)*sin(y_r)+sin(r_r)*sin(p_r)*cos(y_r));
-	matrixSet(r, 1, 3, sin(r_r)*sin(y_r)+cos(r_r)*sin(p_r)*cos(y_r));
-	
-	// Row 2
-	matrixSet(r, 2, 1, cos(p_r)*sin(y_r));
-	matrixSet(r, 2, 2, cos(r_r)*cos(y_r)+sin(r_r)*sin(p_r)*sin(y_r));
-	matrixSet(r, 2, 3, -sin(r_r)*cos(y_r)+cos(r_r)*sin(p_r)*sin(y_r));
-	
-	// Row 3
-	matrixSet(r, 3, 1, -sin(p_r));
-	matrixSet(r, 3, 2, sin(r_r)*cos(p_r));
-	matrixSet(r, 3, 3, cos(r_r)*cos(p_r));
+	makeDCM_zyx(r, y_r, p_r, r_r);
 	
 	return r;
 }

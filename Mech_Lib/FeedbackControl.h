@@ -54,14 +54,6 @@ void runOrientationController(ACSType* acs, float dt, int first_step);
 void runStabilizationController(ACSType* acs, float dt, int first_step);
 
 /**
- * @brief  Finds the Earth to sun inertial vector using the current Julian date
- * @param  acs: a pointer to an existing Attitude Control System object
- * @param  julianDate: current julian date
- * @return Updates acs->sv_inertial
- */
-void findSunInertial(ACSType* acs, double julianDate);
-
-/**
  * @brief  Finds reaction wheel PWM to achieve a desired craft wdot
  * @param  acs: a pointer to an existing Attitude Control System object
  * @param  wdot_desired: desired craft wdot

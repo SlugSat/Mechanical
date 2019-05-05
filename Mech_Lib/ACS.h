@@ -1,10 +1,8 @@
 /**
   ******************************************************************************
-  * @file           : AttitudeEstimation.h
+  * @file           : ACS.h
   * @brief          : Header file for the Attitude Control System (ACS).
   ******************************************************************************
-  ** 
-	* 
 	* Created by Galen Savidge. Edited 4/21/2019.
   ******************************************************************************
   */
@@ -15,15 +13,15 @@
 /* Includes ------------------------------------------------------------------*/
 #include <Matrix.h>
 #include <DigitalFilters.h>
+#include <ReferenceFrames.h>
 #include <main.h>
 #include <stdint.h>
 #include <string.h>
 
+
 /* Constants -----------------------------------------------------------------*/
 #define NUM_SOLAR_PANELS 6
-#define PI 3.14159265359
-#define MAX_MOMENT 2
-
+#define MAX_MOMENT 2.0
 
  
 /* Datatypes -----------------------------------------------------------------*/
@@ -33,7 +31,12 @@ typedef enum {
 	SV_DARK
 }SV_Status;
 
-typedef struct {	
+typedef struct {
+	// Current time
+	double julian_date;
+	float t; // In seconds
+	float dt;
+	
 	// Craft DCM
 	Matrix R;
 	Matrix Rt;
@@ -49,7 +52,11 @@ typedef struct {
 	// Inertial vectors (ecliptic frame)
 	Matrix sv_inertial; // Found using the Julian date
 	Matrix mag_inertial; // From IGRF
-	Matrix craft_inertial; // From SGP4 (normalized)
+	Matrix craft_inertial; // Normalized
+	
+	// Craft position in different frames
+	Matrix craft_j2000; // From SGP4 or 42
+	float longitude, latitude, altitude; // In degrees, degrees, meters wrt prime meridian
 	
 	// Feedback control error vectors (body frame)
 	Matrix z_err;
@@ -103,7 +110,15 @@ void initializeACSSerial(ACSType* acs, UART_HandleTypeDef* huart);
 /** 
  * @brief  Reads sensor data from serial and updates acs
  * @param  acs: a pointer to an existing Attitude Control System object
+ * @return Updates mag_vector, gyro_vector, and solar_vector in acs
+*/
+void readSensorsFromSerial(ACSType* acs);
+
+/** 
+ * @brief  Sends actuator PWMs from acs over serial
+ * @param  acs: a pointer to an existing Attitude Control System object
  * @return None
 */
-void readSensorsFromSerial(ACSType* acs, UART_HandleTypeDef* huart); // To-do
+void sendActuatorsToSerial(ACSType* acs);
+
 #endif
