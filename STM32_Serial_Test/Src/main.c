@@ -121,7 +121,7 @@ int main(void)
 	initializeACS(&acs);
 	initializeACSSerial(&acs, &huart2);
 	
-	vectorSetXYZ(acs.tr_PWM, 0, 0, 0);
+	vectorSetXYZ(acs.tr_PWM, 0, 100, 0);
 	vectorSetXYZ(acs.rw_PWM, 0, 0, 0);
 	
 	int first_step = 1;
