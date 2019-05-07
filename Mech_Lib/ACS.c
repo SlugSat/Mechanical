@@ -112,7 +112,9 @@ void initializeACSSerial(ACSType* acs, UART_HandleTypeDef* huart) {
 void readSensorsFromSerial(ACSType* acs) {
 	// Read floats from UART
 	float sensor_data[RECEIVED_FLOATS];
-	STM32SerialReceiveFloats(acs->huart, sensor_data, RECEIVED_FLOATS);
+	if(STM32SerialReceiveFloats(acs->huart, sensor_data, RECEIVED_FLOATS) != HAL_OK) {
+		return;
+	}
 	
 	// Get sensor vectors
 	vectorCopyArray(acs->mag_vector, sensor_data, 3);
