@@ -3,7 +3,7 @@
   * @file           : ACS.c
   * @brief          : Source file for the Attitude Control System (ACS).
   ******************************************************************************
-	* Created by Galen Savidge. Edited 4/21/2019.
+	* Created by Galen Savidge. Edited 5/6/2019.
   ******************************************************************************
   */
 
@@ -20,7 +20,7 @@
 #define RW_H 0.005
 
 // Body inertia matrices
-#define JB_11  0.01151603
+#define JB_11 0.01151603
 #define JB_22 0.10225145
 #define JB_33 0.09528751
 

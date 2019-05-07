@@ -152,7 +152,7 @@ int main(void)
 		char string[300];
 		printMatrix(acs.solar_vector, s1);
 		printMatrix(acs.mag_vector, s2);
-		sprintf(string, "Solar vector:\n%s\nMag vector:\n%s", s1, s2);
+		sprintf(string, "Solar vector:\n%s\nMag vector:\n%s\nJulian date: %15.7f", s1, s2, acs.julian_date);
 //		printMatrix(acs.mag_inertial, s1);
 //		printMatrix(acs.sv_inertial, s2);
 		//sprintf(string, "Mag inertial:\n%s\nSV inertial:\n%s", s1, s2);

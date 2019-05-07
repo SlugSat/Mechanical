@@ -33,7 +33,7 @@ void findErrorVectors(ACSType* acs);
  * @param  dt: time in seconds since last call of this function
  * @return None
  */
-void runBdotController(ACSType* acs, float dt);
+void runBdotController(ACSType* acs);
 
  /**
  * @brief  Runs the feedback controller used to move the craft over large angles

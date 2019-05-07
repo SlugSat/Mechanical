@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;  ../Drivers/STM32F1xx_HAL_Driver/Inc;  ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;  ../Drivers/CMSIS/Device/ST/STM32F1xx/Include;  ../Drivers/CMSIS/Include;  ..\..\Mech_Lib</IncludePath>
+              <IncludePath>../Inc;    ../Drivers/STM32F1xx_HAL_Driver/Inc;    ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;    ../Drivers/CMSIS/Device/ST/STM32F1xx/Include;    ../Drivers/CMSIS/Include;    ..\..\Mech_Lib</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -416,21 +416,6 @@
               <FileName>stm32f1xx_hal_gpio_ex.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f1xx_hal_adc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f1xx_hal_adc_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f1xx_hal_i2c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.c</FilePath>
             </File>
             <File>
               <FileName>stm32f1xx_hal_tim.c</FileName>
@@ -528,26 +513,6 @@
               <FilePath>..\..\Mech_Lib\AttitudeEstimation.h</FilePath>
             </File>
             <File>
-              <FileName>BNO055_IMU.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Mech_Lib\BNO055_IMU.c</FilePath>
-            </File>
-            <File>
-              <FileName>BNO055_IMU.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Mech_Lib\BNO055_IMU.h</FilePath>
-            </File>
-            <File>
-              <FileName>DigitalFilters.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Mech_Lib\DigitalFilters.c</FilePath>
-            </File>
-            <File>
-              <FileName>DigitalFilters.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Mech_Lib\DigitalFilters.h</FilePath>
-            </File>
-            <File>
               <FileName>FeedbackControl.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Mech_Lib\FeedbackControl.c</FilePath>
@@ -578,16 +543,6 @@
               <FilePath>..\..\Mech_Lib\PacketProtocol.h</FilePath>
             </File>
             <File>
-              <FileName>SolarVectors.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Mech_Lib\SolarVectors.c</FilePath>
-            </File>
-            <File>
-              <FileName>SolarVectors.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Mech_Lib\SolarVectors.h</FilePath>
-            </File>
-            <File>
               <FileName>STM32SerialCommunication.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Mech_Lib\STM32SerialCommunication.c</FilePath>
@@ -596,6 +551,56 @@
               <FileName>STM32SerialCommunication.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\Mech_Lib\STM32SerialCommunication.h</FilePath>
+            </File>
+            <File>
+              <FileName>OrientationController.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\OrientationController.c</FilePath>
+            </File>
+            <File>
+              <FileName>StabilizationController.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\StabilizationController.c</FilePath>
+            </File>
+            <File>
+              <FileName>InertialVectors.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\InertialVectors.c</FilePath>
+            </File>
+            <File>
+              <FileName>InertialVectors.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\InertialVectors.h</FilePath>
+            </File>
+            <File>
+              <FileName>ReferenceFrames.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\ReferenceFrames.c</FilePath>
+            </File>
+            <File>
+              <FileName>ReferenceFrames.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\ReferenceFrames.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>IGRF</GroupName>
+          <Files>
+            <File>
+              <FileName>IGRF12.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\IGRF\IGRF12.h</FilePath>
+            </File>
+            <File>
+              <FileName>mag_inertial.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\IGRF\mag_inertial.c</FilePath>
+            </File>
+            <File>
+              <FileName>mag_inertial.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\IGRF\mag_inertial.h</FilePath>
             </File>
           </Files>
         </Group>
