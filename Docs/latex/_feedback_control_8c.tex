@@ -1,0 +1,111 @@
+\hypertarget{_feedback_control_8c}{}\section{C\+:/\+Users/galey/\+Documents/\+Mechanical/\+Mech\+\_\+\+Lib/\+Feedback\+Control.c File Reference}
+\label{_feedback_control_8c}\index{C:/Users/galey/Documents/Mechanical/Mech\_Lib/FeedbackControl.c@{C:/Users/galey/Documents/Mechanical/Mech\_Lib/FeedbackControl.c}}
+
+
+\+: Contains implementations for the feedback control states in the A\+CS  
+
+
+{\ttfamily \#include $<$Feedback\+Control.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_feedback_control_8c_a8156f18002f4cd254f58839917a9bdc8}\label{_feedback_control_8c_a8156f18002f4cd254f58839917a9bdc8}} 
+\#define {\bfseries D\+I\+V\+\_\+\+R\+O\+O\+T2}~((float)0.\+70710678118)
+\item 
+\mbox{\Hypertarget{_feedback_control_8c_a8895121ba6bf6312ee735332bcbd73fe}\label{_feedback_control_8c_a8895121ba6bf6312ee735332bcbd73fe}} 
+\#define {\bfseries V\+\_\+\+R\+A\+IL}~8.\+0
+\item 
+\mbox{\Hypertarget{_feedback_control_8c_ad282c1441a76959af9d0becfce01d64c}\label{_feedback_control_8c_ad282c1441a76959af9d0becfce01d64c}} 
+\#define {\bfseries KT}~0.\+00713
+\item 
+\mbox{\Hypertarget{_feedback_control_8c_ad6cbab9b816acb64dddbf8bcb3098ef4}\label{_feedback_control_8c_ad6cbab9b816acb64dddbf8bcb3098ef4}} 
+\#define {\bfseries KE}~0.\+00713332454
+\item 
+\mbox{\Hypertarget{_feedback_control_8c_a5c71a5e59a53413cd6c270266d63b031}\label{_feedback_control_8c_a5c71a5e59a53413cd6c270266d63b031}} 
+\#define {\bfseries R}~92.\+7
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_feedback_control_8c_a6d948b25daa674d67f2e7eae9b747ddb}\label{_feedback_control_8c_a6d948b25daa674d67f2e7eae9b747ddb}} 
+float {\bfseries sign} (float x)
+\item 
+void \mbox{\hyperlink{_feedback_control_8c_a061127a629c487f3bc31574e39e3d684}{find\+Error\+Vectors}} (\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$acs)
+\begin{DoxyCompactList}\small\item\em Uses the craft orientation and inertial vectors to find error. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_feedback_control_8c_affa49e3f0a204edacd077326721d4f6d}{run\+Bdot\+Controller}} (\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$acs, float dt)
+\begin{DoxyCompactList}\small\item\em Description. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_feedback_control_8c_a6663ec72a8ac78e77f38251b5a11c9e0}{wdot2rw\+\_\+pwm}} (\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$acs, \mbox{\hyperlink{struct___matrix}{Matrix}} wdot\+\_\+desired)
+\begin{DoxyCompactList}\small\item\em Finds reaction wheel P\+WM to achieve a desired craft wdot. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\+: Contains implementations for the feedback control states in the A\+CS 
+
+As of now these functions change actuator outputs inside of the function itself but that is subject to change.
+
+Created by Galen Savidge. Edited 4/21/2019. 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_feedback_control_8c_a061127a629c487f3bc31574e39e3d684}\label{_feedback_control_8c_a061127a629c487f3bc31574e39e3d684}} 
+\index{FeedbackControl.c@{FeedbackControl.c}!findErrorVectors@{findErrorVectors}}
+\index{findErrorVectors@{findErrorVectors}!FeedbackControl.c@{FeedbackControl.c}}
+\subsubsection{\texorpdfstring{findErrorVectors()}{findErrorVectors()}}
+{\footnotesize\ttfamily void find\+Error\+Vectors (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$}]{acs }\end{DoxyParamCaption})}
+
+
+
+Uses the craft orientation and inertial vectors to find error. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em acs} & a pointer to an existing Attitude Control System object \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Updates z\+\_\+err, n\+\_\+err, and err in acs 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_feedback_control_8c_affa49e3f0a204edacd077326721d4f6d}\label{_feedback_control_8c_affa49e3f0a204edacd077326721d4f6d}} 
+\index{FeedbackControl.c@{FeedbackControl.c}!runBdotController@{runBdotController}}
+\index{runBdotController@{runBdotController}!FeedbackControl.c@{FeedbackControl.c}}
+\subsubsection{\texorpdfstring{runBdotController()}{runBdotController()}}
+{\footnotesize\ttfamily void run\+Bdot\+Controller (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$}]{acs,  }\item[{float}]{dt }\end{DoxyParamCaption})}
+
+
+
+Description. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em acs} & a pointer to an existing Attitude Control System object \\
+\hline
+{\em dt} & time in seconds since last call of this function \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_feedback_control_8c_a6663ec72a8ac78e77f38251b5a11c9e0}\label{_feedback_control_8c_a6663ec72a8ac78e77f38251b5a11c9e0}} 
+\index{FeedbackControl.c@{FeedbackControl.c}!wdot2rw\_pwm@{wdot2rw\_pwm}}
+\index{wdot2rw\_pwm@{wdot2rw\_pwm}!FeedbackControl.c@{FeedbackControl.c}}
+\subsubsection{\texorpdfstring{wdot2rw\_pwm()}{wdot2rw\_pwm()}}
+{\footnotesize\ttfamily void wdot2rw\+\_\+pwm (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$}]{acs,  }\item[{\mbox{\hyperlink{struct___matrix}{Matrix}}}]{wdot\+\_\+desired }\end{DoxyParamCaption})}
+
+
+
+Finds reaction wheel P\+WM to achieve a desired craft wdot. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em acs} & a pointer to an existing Attitude Control System object \\
+\hline
+{\em wdot\+\_\+desired} & desired craft wdot \\
+\hline
+{\em rw\+\_\+pwm} & allocated Matrix to hold the reaction wheel P\+WM \\
+\hline
+{\em dt} & expected time until next feedback controller update \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Updates acs-\/$>$rw\+\_\+\+P\+WM 
+\end{DoxyReturn}

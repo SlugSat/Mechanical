@@ -1,0 +1,143 @@
+\hypertarget{_a_c_s_8c}{}\section{C\+:/\+Users/galey/\+Documents/\+Mechanical/\+Mech\+\_\+\+Lib/\+A\+CS.c File Reference}
+\label{_a_c_s_8c}\index{C:/Users/galey/Documents/Mechanical/Mech\_Lib/ACS.c@{C:/Users/galey/Documents/Mechanical/Mech\_Lib/ACS.c}}
+
+
+\+: Source file for the Attitude Control System (A\+CS).  
+
+
+{\ttfamily \#include $<$A\+C\+S.\+h$>$}\newline
+{\ttfamily \#include $<$Attitude\+Estimation.\+h$>$}\newline
+{\ttfamily \#include $<$S\+T\+M32\+Serial\+Communication.\+h$>$}\newline
+{\ttfamily \#include $<$Reference\+Frames.\+h$>$}\newline
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_a_c_s_8c_a258cbe2452dd25663a105aea9a597429}\label{_a_c_s_8c_a258cbe2452dd25663a105aea9a597429}} 
+\#define {\bfseries R\+W\+\_\+D}~8700
+\item 
+\mbox{\Hypertarget{_a_c_s_8c_a4704399431bb3857ec95c381d235393d}\label{_a_c_s_8c_a4704399431bb3857ec95c381d235393d}} 
+\#define {\bfseries R\+W\+\_\+R}~0.\+0207
+\item 
+\mbox{\Hypertarget{_a_c_s_8c_a9c29f02469fc9afe07251bb0675337f2}\label{_a_c_s_8c_a9c29f02469fc9afe07251bb0675337f2}} 
+\#define {\bfseries R\+W\+\_\+H}~0.\+005
+\item 
+\mbox{\Hypertarget{_a_c_s_8c_a42bfaeda8406a0f177c8292a20494186}\label{_a_c_s_8c_a42bfaeda8406a0f177c8292a20494186}} 
+\#define {\bfseries J\+B\+\_\+11}~0.\+01151603
+\item 
+\mbox{\Hypertarget{_a_c_s_8c_afdfd2d5f39f307d98ed877459dce7a34}\label{_a_c_s_8c_afdfd2d5f39f307d98ed877459dce7a34}} 
+\#define {\bfseries J\+B\+\_\+22}~0.\+10225145
+\item 
+\mbox{\Hypertarget{_a_c_s_8c_a77e50bd541b42782fbe7825e05bfe26a}\label{_a_c_s_8c_a77e50bd541b42782fbe7825e05bfe26a}} 
+\#define {\bfseries J\+B\+\_\+33}~0.\+09528751
+\item 
+\mbox{\Hypertarget{_a_c_s_8c_af3da7ae37ef1204b733a04003c238e2d}\label{_a_c_s_8c_af3da7ae37ef1204b733a04003c238e2d}} 
+\#define {\bfseries R\+E\+C\+E\+I\+V\+E\+D\+\_\+\+F\+L\+O\+A\+TS}~18
+\item 
+\mbox{\Hypertarget{_a_c_s_8c_a0f6a60138c4452897952fbf9e3f6f92d}\label{_a_c_s_8c_a0f6a60138c4452897952fbf9e3f6f92d}} 
+\#define {\bfseries S\+E\+N\+T\+\_\+\+F\+L\+O\+A\+TS}~6
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_a_c_s_8c_a3a2e1511dd2c70dbcd37924ea8a72b94}\label{_a_c_s_8c_a3a2e1511dd2c70dbcd37924ea8a72b94}} 
+\mbox{\hyperlink{struct___matrix}{Matrix}} {\bfseries make\+Jrw} (void)
+\item 
+\mbox{\Hypertarget{_a_c_s_8c_a31306f5014381611df9e0db9909948fc}\label{_a_c_s_8c_a31306f5014381611df9e0db9909948fc}} 
+\mbox{\hyperlink{struct___matrix}{Matrix}} {\bfseries make\+Jrw\+Inv} (void)
+\item 
+\mbox{\Hypertarget{_a_c_s_8c_a250dce415d891f2a79a43bd0e43bf5f9}\label{_a_c_s_8c_a250dce415d891f2a79a43bd0e43bf5f9}} 
+\mbox{\hyperlink{struct___matrix}{Matrix}} {\bfseries make\+Jbody} (void)
+\item 
+\mbox{\Hypertarget{_a_c_s_8c_a4f287036e8d65c12bf6463c1f9a0a54b}\label{_a_c_s_8c_a4f287036e8d65c12bf6463c1f9a0a54b}} 
+\mbox{\hyperlink{struct___matrix}{Matrix}} {\bfseries make\+Jbody\+Inv} (void)
+\item 
+void \mbox{\hyperlink{_a_c_s_8c_a7d4a74e5fab5e091bab15dfefc8400e3}{initialize\+A\+CS}} (\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$acs)
+\begin{DoxyCompactList}\small\item\em Initializes all the fields in the given A\+CS struct. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_a_c_s_8c_a23b8c90f719c7f419e93d52afa22b3f8}{initialize\+A\+C\+S\+Serial}} (\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$acs, U\+A\+R\+T\+\_\+\+Handle\+Type\+Def $\ast$huart)
+\begin{DoxyCompactList}\small\item\em Initializes serial communication from the A\+CS. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_a_c_s_8c_ad072f619e7cd898708cb18f8046dddf4}{read\+Sensors\+From\+Serial}} (\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$acs)
+\begin{DoxyCompactList}\small\item\em Reads sensor data from serial and updates acs. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_a_c_s_8c_abddb75ac826a5945edf2bd9d9e936aaf}{send\+Actuators\+To\+Serial}} (\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$acs)
+\begin{DoxyCompactList}\small\item\em Sends actuator P\+W\+Ms from acs over serial. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\+: Source file for the Attitude Control System (A\+CS). 
+
+Created by Galen Savidge. Edited 4/21/2019. 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_a_c_s_8c_a7d4a74e5fab5e091bab15dfefc8400e3}\label{_a_c_s_8c_a7d4a74e5fab5e091bab15dfefc8400e3}} 
+\index{ACS.c@{ACS.c}!initializeACS@{initializeACS}}
+\index{initializeACS@{initializeACS}!ACS.c@{ACS.c}}
+\subsubsection{\texorpdfstring{initializeACS()}{initializeACS()}}
+{\footnotesize\ttfamily void initialize\+A\+CS (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$}]{acs }\end{DoxyParamCaption})}
+
+
+
+Initializes all the fields in the given A\+CS struct. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em acs} & a pointer to an existing Attitude Control System object \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_a_c_s_8c_a23b8c90f719c7f419e93d52afa22b3f8}\label{_a_c_s_8c_a23b8c90f719c7f419e93d52afa22b3f8}} 
+\index{ACS.c@{ACS.c}!initializeACSSerial@{initializeACSSerial}}
+\index{initializeACSSerial@{initializeACSSerial}!ACS.c@{ACS.c}}
+\subsubsection{\texorpdfstring{initializeACSSerial()}{initializeACSSerial()}}
+{\footnotesize\ttfamily void initialize\+A\+C\+S\+Serial (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$}]{acs,  }\item[{U\+A\+R\+T\+\_\+\+Handle\+Type\+Def $\ast$}]{huart }\end{DoxyParamCaption})}
+
+
+
+Initializes serial communication from the A\+CS. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em acs} & a pointer to an existing Attitude Control System object \\
+\hline
+{\em huart} & pointer to a U\+A\+RT handle defined in main.\+c \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_a_c_s_8c_ad072f619e7cd898708cb18f8046dddf4}\label{_a_c_s_8c_ad072f619e7cd898708cb18f8046dddf4}} 
+\index{ACS.c@{ACS.c}!readSensorsFromSerial@{readSensorsFromSerial}}
+\index{readSensorsFromSerial@{readSensorsFromSerial}!ACS.c@{ACS.c}}
+\subsubsection{\texorpdfstring{readSensorsFromSerial()}{readSensorsFromSerial()}}
+{\footnotesize\ttfamily void read\+Sensors\+From\+Serial (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$}]{acs }\end{DoxyParamCaption})}
+
+
+
+Reads sensor data from serial and updates acs. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em acs} & a pointer to an existing Attitude Control System object \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Updates mag\+\_\+vector, gyro\+\_\+vector, and solar\+\_\+vector in acs 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_a_c_s_8c_abddb75ac826a5945edf2bd9d9e936aaf}\label{_a_c_s_8c_abddb75ac826a5945edf2bd9d9e936aaf}} 
+\index{ACS.c@{ACS.c}!sendActuatorsToSerial@{sendActuatorsToSerial}}
+\index{sendActuatorsToSerial@{sendActuatorsToSerial}!ACS.c@{ACS.c}}
+\subsubsection{\texorpdfstring{sendActuatorsToSerial()}{sendActuatorsToSerial()}}
+{\footnotesize\ttfamily void send\+Actuators\+To\+Serial (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$}]{acs }\end{DoxyParamCaption})}
+
+
+
+Sends actuator P\+W\+Ms from acs over serial. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em acs} & a pointer to an existing Attitude Control System object \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}

@@ -1,0 +1,55 @@
+\hypertarget{_inertial_vectors_8h}{}\section{C\+:/\+Users/galey/\+Documents/\+Mechanical/\+Mech\+\_\+\+Lib/\+Inertial\+Vectors.h File Reference}
+\label{_inertial_vectors_8h}\index{C:/Users/galey/Documents/Mechanical/Mech\_Lib/InertialVectors.h@{C:/Users/galey/Documents/Mechanical/Mech\_Lib/InertialVectors.h}}
+
+
+\+: Contains functions to find sun and magnetic field inertial vectors  
+
+
+{\ttfamily \#include $<$A\+C\+S.\+h$>$}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{_inertial_vectors_8h_a95b2b0bb7d3d728f8a56ff4e47ed0fb3}{find\+Sun\+Inertial}} (\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$acs)
+\begin{DoxyCompactList}\small\item\em Finds the Earth to sun inertial vector using the current Julian date. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_inertial_vectors_8h_a9bebb3912845c95e905ba04e51527483}{find\+Mag\+Inertial}} (\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$acs)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\+: Contains functions to find sun and magnetic field inertial vectors 
+
+Created by Galen Savidge. Edited 5/4/2019. 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_inertial_vectors_8h_a9bebb3912845c95e905ba04e51527483}\label{_inertial_vectors_8h_a9bebb3912845c95e905ba04e51527483}} 
+\index{InertialVectors.h@{InertialVectors.h}!findMagInertial@{findMagInertial}}
+\index{findMagInertial@{findMagInertial}!InertialVectors.h@{InertialVectors.h}}
+\subsubsection{\texorpdfstring{findMagInertial()}{findMagInertial()}}
+{\footnotesize\ttfamily void find\+Mag\+Inertial (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$}]{acs }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em acs} & a pointer to an existing Attitude Control System object \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Updates acs-\/$>$sv\+\_\+inertial 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_inertial_vectors_8h_a95b2b0bb7d3d728f8a56ff4e47ed0fb3}\label{_inertial_vectors_8h_a95b2b0bb7d3d728f8a56ff4e47ed0fb3}} 
+\index{InertialVectors.h@{InertialVectors.h}!findSunInertial@{findSunInertial}}
+\index{findSunInertial@{findSunInertial}!InertialVectors.h@{InertialVectors.h}}
+\subsubsection{\texorpdfstring{findSunInertial()}{findSunInertial()}}
+{\footnotesize\ttfamily void find\+Sun\+Inertial (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$}]{acs }\end{DoxyParamCaption})}
+
+
+
+Finds the Earth to sun inertial vector using the current Julian date. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em acs} & a pointer to an existing Attitude Control System object \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Updates acs-\/$>$sv\+\_\+inertial 
+\end{DoxyReturn}

@@ -1,0 +1,63 @@
+\hypertarget{_sensors_8h}{}\section{C\+:/\+Users/galey/\+Documents/\+Mechanical/\+Mech\+\_\+\+Lib/\+Sensors.h File Reference}
+\label{_sensors_8h}\index{C:/Users/galey/Documents/Mechanical/Mech\_Lib/Sensors.h@{C:/Users/galey/Documents/Mechanical/Mech\_Lib/Sensors.h}}
+
+
+\+: Header for the Sensors module.  
+
+
+{\ttfamily \#include \char`\"{}A\+C\+S.\+h\char`\"{}}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{_sensors_8h_a12eb9cee0bd52f1a3183f01a7ff952fe}{initialize\+Sensors}} (\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$acs, I2\+C\+\_\+\+Handle\+Type\+Def $\ast$hi2c, A\+D\+C\+\_\+\+Handle\+Type\+Def $\ast$hadc)
+\begin{DoxyCompactList}\small\item\em Initializes all the fields in the given A\+CS struct. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_sensors_8h_ad0150d4dfa3bc3847664a94cc6987229}{read\+Sensors}} (\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$acs, I2\+C\+\_\+\+Handle\+Type\+Def $\ast$hi2c)
+\begin{DoxyCompactList}\small\item\em Reads sensors and updates gyro\+\_\+vector, mag\+\_\+vector, and solar\+\_\+vector in acs. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\+: Header for the Sensors module. 
+
+This module contains functions to read from the physical sensors on the satellite.
+
+Created by Galen Savidge. Edited 4/21/2019. 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_sensors_8h_a12eb9cee0bd52f1a3183f01a7ff952fe}\label{_sensors_8h_a12eb9cee0bd52f1a3183f01a7ff952fe}} 
+\index{Sensors.h@{Sensors.h}!initializeSensors@{initializeSensors}}
+\index{initializeSensors@{initializeSensors}!Sensors.h@{Sensors.h}}
+\subsubsection{\texorpdfstring{initializeSensors()}{initializeSensors()}}
+{\footnotesize\ttfamily void initialize\+Sensors (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$}]{acs,  }\item[{I2\+C\+\_\+\+Handle\+Type\+Def $\ast$}]{hi2c,  }\item[{A\+D\+C\+\_\+\+Handle\+Type\+Def $\ast$}]{hadc }\end{DoxyParamCaption})}
+
+
+
+Initializes all the fields in the given A\+CS struct. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em acs} & a pointer to an existing Attitude Control System object \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_sensors_8h_ad0150d4dfa3bc3847664a94cc6987229}\label{_sensors_8h_ad0150d4dfa3bc3847664a94cc6987229}} 
+\index{Sensors.h@{Sensors.h}!readSensors@{readSensors}}
+\index{readSensors@{readSensors}!Sensors.h@{Sensors.h}}
+\subsubsection{\texorpdfstring{readSensors()}{readSensors()}}
+{\footnotesize\ttfamily void read\+Sensors (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$}]{acs,  }\item[{I2\+C\+\_\+\+Handle\+Type\+Def $\ast$}]{hi2c }\end{DoxyParamCaption})}
+
+
+
+Reads sensors and updates gyro\+\_\+vector, mag\+\_\+vector, and solar\+\_\+vector in acs. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em acs} & a pointer to an existing Attitude Control System object \\
+\hline
+{\em hi2c} & i2c handle for the I\+MU \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
