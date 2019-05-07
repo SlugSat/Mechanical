@@ -21,7 +21,7 @@ void findSunInertial(ACSType* acs){
 	
 	//Ecliptic Longitude:
 	float lambda = mean_longitude + 1.915*sin(mean_anomoly*PI/180) + 0.020*sin(2*mean_anomoly*PI/180);
-	
+	lambda = lambda*PI/180; // Convert to radians
 	vectorSetXYZ(acs->sv_inertial, cos(lambda), sin(lambda), 0);
 	
 	return;
