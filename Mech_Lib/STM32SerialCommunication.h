@@ -16,6 +16,13 @@
 #include "main.h"
 
 /** 
+ * @brief  Blocks until completing a handshake with 42
+ * @param  huart: pointer to a UART handle made by cubeMX
+ * @return None
+*/
+void STM32SerialHandshake(UART_HandleTypeDef* huart);
+
+/** 
  * @brief  Blocking function to send a set of n floating point numbers over serial
  * @param  huart: pointer to a UART handle made by cubeMX
  * @param  f: an array of floats of size >= n

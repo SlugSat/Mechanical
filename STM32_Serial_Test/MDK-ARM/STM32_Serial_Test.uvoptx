@@ -152,18 +152,18 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>130</LineNumber>
+          <LineNumber>156</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134228606</Address>
+          <Address>134240622</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../Src/main.c</Filename>
+          <Filename>..\..\Mech_Lib\ACS.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\STM32_Serial_Test\../Src/main.c\130</Expression>
+          <Expression>\\STM32_Serial_Test\../../Mech_Lib/ACS.c\156</Expression>
         </Bp>
       </Breakpoint>
       <Tracepoint>
@@ -464,7 +464,7 @@
 
   <Group>
     <GroupName>Application/User</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
