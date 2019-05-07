@@ -23,6 +23,8 @@
 #define KI_T (K_T*0.05)
 #define KD_T (K_T*8)
 
+//Torque rod
+#define MAXDIP 2
 /**
  * Convert torque into an angular acceleration based on the craft's physical
  * system. CURRENTLY ASSUMES A IS I3.
@@ -30,9 +32,9 @@
 void torque2wdot(ACSType* acs, Matrix torque_vector, Matrix wdot_vector);
 
 
-void runStabilizationController(ACSType* acs, int first_step) {
+void runStabilizationController(ACSType* acs, float dt, int first_step) {
 	static int init_run = 0;
-	static Matrix torque_integrator, last_err, P, I, D, controller_torque, controller_wdot, wdot_desired;
+	static Matrix torque_integrator, last_err, P, I, D, controller_torque, controller_wdot, wdot_desired, h_rw, m, trTorque, trTorquePWM;
 	
 	if(init_run == 0) {
 		torque_integrator = make3x1Vector(0, 0, 0);
@@ -43,10 +45,14 @@ void runStabilizationController(ACSType* acs, int first_step) {
 		controller_torque = newMatrix(3, 1);
 		controller_wdot = newMatrix(3, 1);
 		wdot_desired = newMatrix(3, 1);
+		h_rw = newMatrix(3, 1);
+		m = newMatrix(3, 1);
+		trTorque = newMatrix(3,1);
+		trTorquePWM = newMatrix(3,1);
 		init_run = 1;
 	}
 	
-	if(acs->dt == 0) {
+	if(dt == 0) {
 		return;
 	}
 	
@@ -55,6 +61,38 @@ void runStabilizationController(ACSType* acs, int first_step) {
 		vectorSetXYZ(wdot_desired, 0, 0, 0);
 	}
 	else {
+
+
+		// ***** MOMENTUM DUMPING *****
+		//Variables
+		int i;
+
+		//Determine available torque from torque rods
+		matrixMultiply(acs->J_rw,acs->w_rw, h_rw); //Reaction wheel momentum
+		float normMom = vectorNorm(h_rw);  //Normalize
+		m = 1000 * vectorRcross(h_rw/normMom, acs->mag_vector);  //Dipole moment
+
+		//Ensure dipole moment stays within bounds
+		for(i=0;i<3;i++){
+			if(matrixGetElement(m,i,1) > 2){
+				matrixSet(m, i, 1, 2);
+			}
+		}
+		//Torque rod torque
+		vectorCrossProduct(m, acs->mag_vector, trTorque);
+
+		// ***** FIND PWM FOR EACH TORQUE ROD *****
+		trTorquePWM = trTorque;
+		matrixScale(trTorquePWM, 100.0/MAXDIP);	//Scale to PWM
+
+		//Check reaction wheels angular velocity
+		for(i=0;i<3;i++){
+		if(fabs(matrixGetElement(acs->w_rw, i, 1)) > 100)
+			{
+			matrixSet(acs->tr_PWM, i, 1, trTorquePWM(i) );
+						}
+		}
+
 		// ***** TORQUE CONTROLLER *****
 		// Proportional component
 		matrixCopy(acs->err, P);
@@ -62,17 +100,21 @@ void runStabilizationController(ACSType* acs, int first_step) {
 		
 		// Integrator component
 		matrixCopy(acs->err, I);
-		matrixScale(I, KI_T*acs->dt);
+		matrixScale(I, KI_T*dt);
 		matrixAdd(torque_integrator, I, torque_integrator); // Adding in place works; multiplying in place doesn't
 		
+
 		// Derivative component
 		matrixCopy(acs->err, D);
 		matrixSubtract(D, last_err, D);
-		matrixScale(D, KD_T/acs->dt);
+		matrixScale(D, KD_T/dt);
 		
 		// Sum the P, I, and D components
 		matrixAdd(P, I, controller_torque);
 		matrixAdd(controller_torque, D, controller_torque);
+		//Add Torque rod torque
+		matrixAdd(controller_torque, trTorque, controller_torque);
+
 		
 		// ***** WDOT CONTROLLER *****
 		// Proportional component
@@ -82,7 +124,7 @@ void runStabilizationController(ACSType* acs, int first_step) {
 		// Derivative component
 		matrixCopy(acs->err, D);
 		matrixSubtract(D, last_err, D);
-		matrixScale(D, KD_WDOT/acs->dt);
+		matrixScale(D, KD_WDOT/dt);
 		
 		// Sum the P and D components
 		matrixAdd(P, D, controller_wdot);
@@ -96,7 +138,7 @@ void runStabilizationController(ACSType* acs, int first_step) {
 	matrixCopy(acs->err, last_err);
 	
 	// Find reaction wheel PWM
-	wdot2rw_pwm(acs, wdot_desired);
+	wdot2rw_pwm(acs, wdot_desired, dt);
 }
 
 
