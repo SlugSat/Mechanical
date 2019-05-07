@@ -20,9 +20,9 @@
 #define RW_H 0.005
 
 // Body inertia matrices
-#define JB_11 0.60579
-#define JB_22 0.01330
-#define JB_33 0.59753
+#define JB_11  0.01151603
+#define JB_22 0.10225145
+#define JB_33 0.09528751
 
 #define RECEIVED_FLOATS 18
 #define SENT_FLOATS 6
