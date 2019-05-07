@@ -13,7 +13,7 @@
 #include <string.h>
 
 // Angular speed portion
-#define K 1.0
+#define K 1
 #define KP (K*0.05)
 #define KD (K*0.1)
 
