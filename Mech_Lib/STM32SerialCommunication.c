@@ -16,8 +16,8 @@
 #include <string.h>
 
 #define BAUD 115200
-#define UART_TIMEOUT 200
-#define HANDSHAKE_TIMEOUT 1000
+#define UART_TIMEOUT 20
+#define HANDSHAKE_TIMEOUT 30
 
 // Private functions
 void receivePacket(UART_HandleTypeDef* huart, uint8_t* packet, unsigned int bytes) {
@@ -73,12 +73,6 @@ HAL_StatusTypeDef STM32SerialSendString(UART_HandleTypeDef* huart, char* string)
 
 
 int STM32SerialReceiveFloats(UART_HandleTypeDef* huart, float* f, unsigned int n) {
-	// Wait for start packet
-//	uint8_t start_packet[CONTROL_PACKET_SIZE] = {0};
-//	do {
-//		receivePacket(huart, start_packet, CONTROL_PACKET_SIZE);
-//	} while(isControlPacket(start_packet) != START);
-	
 	// Receive packet
 	uint8_t data_packet[BYTES_PER_FLOAT*n];
 	//receivePacket(huart, data_packet, BYTES_PER_FLOAT*n);
