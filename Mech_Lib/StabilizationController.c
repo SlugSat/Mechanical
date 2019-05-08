@@ -18,7 +18,7 @@
 #define KD_WDOT (K_WDOT*0.4)
 
 // Torque portion
-#define K_T 0.0005
+#define K_T 5e-4
 #define KP_T (K_T*1.5)
 #define KI_T (K_T*0.05)
 #define KD_T (K_T*8)

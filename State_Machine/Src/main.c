@@ -82,7 +82,8 @@ char state_names[][20] = {
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
-#define DETUMBLE_THRESHOLD 0.00872665 	// 0.5 deg/s in rad/s
+#define DETUMBLE_LOW_THRESHOLD 0.00872665 	// 0.5 deg/s in rad/s
+#define DETUBMLE_HIGH_THRESHOLD 0.05
 #define STABLE_ATTITUDE_THRESHOLD 0.1 	// Rad/s^2
 #define POINT_ERROR_THRESHOLD_HIGH 20		// Degrees
 #define POINT_ERROR_THRESHOLD_LOW 10
@@ -197,12 +198,14 @@ int main(void)
 		
 		
 		/***** RUN ACS SUBROUTINES *****/
+		gyro_vector_norm = vectorNorm(acs.gyro_vector);
+		
+		
 		if(state == DETUMBLE) {
 			// Read gyro here
 			
 			// Run bdot controller
 			runBdotController(&acs);
-			gyro_vector_norm = vectorNorm(acs.gyro_vector);
 		}
 		
 		if(state == WAIT_FOR_ATTITUDE || state == REORIENT || state == STABILIZE) {
@@ -240,7 +243,7 @@ int main(void)
 				break;
 			
 			case DETUMBLE:
-				if(gyro_vector_norm < DETUMBLE_THRESHOLD) {
+				if(gyro_vector_norm < DETUMBLE_LOW_THRESHOLD) {
 					next_state = WAIT_FOR_ATTITUDE;
 				}
 				break;
