@@ -103,7 +103,7 @@ void runStabilizationController(ACSType* acs, int first_step) {
 void torque2wdot(ACSType* acs, Matrix torque_vector, Matrix wdot_vector) {
 	int init_run = 0;
 	static Matrix p, p_rw; // Momentum vectors
-	Matrix wxp; // w x (J_B*w + J_rw*w_rw)
+	static Matrix wxp; // w x (J_B*w + J_rw*w_rw)
 	
 	if(init_run == 0) {
 		p = newMatrix(3, 1);
