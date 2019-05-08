@@ -82,7 +82,7 @@ char state_names[][20] = {
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
-#define DETUMBLE_THRESHOLD 0.1 					// Rad/s
+#define DETUMBLE_THRESHOLD 0.00872665 	// 0.5 deg/s in rad/s
 #define STABLE_ATTITUDE_THRESHOLD 0.1 	// Rad/s^2
 #define POINT_ERROR_THRESHOLD_HIGH 20		// Degrees
 #define POINT_ERROR_THRESHOLD_LOW 10
@@ -110,7 +110,7 @@ ACSType acs;
 
 // Temporary variables to hold values that are important for state transitions
 uint8_t acs_enable = 1;					// Bool
-float gyro_vector_norm = 0;			// Rad/s
+float gyro_vector_norm;			// Rad/s
 float gyro_vector_norm_dot = 0;	// Rad/s^2
 float pointing_error = 3;				// Degrees
 
@@ -185,7 +185,8 @@ int main(void)
     /* USER CODE BEGIN 3 */
 		
 		// Print to terminal
-		sprintf(prnt, "State -- %s\nPointing error: %6.2f", state_names[state], acs.pointing_err);
+		sprintf(prnt, "State -- %s\nPointing error: %6.2f [deg]\nCraft rotational rate: %6.2f [deg/s]", 
+				state_names[state], acs.pointing_err, 180*gyro_vector_norm/PI);
 		
 		
 		/***** READ/WRITE TO 42 *****/
@@ -194,10 +195,6 @@ int main(void)
 		sendActuatorsToSerial(&acs);
 		STM32SerialSendString(&huart2, prnt);
 		
-		// Update inertial vectors (this should be optimized)
-		findSunInertial(&acs);
-		findMagInertial(&acs);
-		
 		
 		/***** RUN ACS SUBROUTINES *****/
 		if(state == DETUMBLE) {
@@ -205,12 +202,15 @@ int main(void)
 			
 			// Run bdot controller
 			runBdotController(&acs);
+			gyro_vector_norm = vectorNorm(acs.gyro_vector);
 		}
 		
 		if(state == WAIT_FOR_ATTITUDE || state == REORIENT || state == STABILIZE) {
 			// Read IMU (mag and gyro) here
 			
 			// Run attitude estimation
+			findSunInertial(&acs);
+			findMagInertial(&acs);
 			updateAttitudeEstimate(&acs);
 		}
 		
