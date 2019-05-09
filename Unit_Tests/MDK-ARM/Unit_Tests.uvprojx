@@ -452,6 +452,36 @@
               <FileType>1</FileType>
               <FilePath>..\..\Mech_Lib\OrientationController.c</FilePath>
             </File>
+            <File>
+              <FileName>ReferenceFrames.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\ReferenceFrames.c</FilePath>
+            </File>
+            <File>
+              <FileName>ReferenceFrames.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\ReferenceFrames.h</FilePath>
+            </File>
+            <File>
+              <FileName>STM32SerialCommunication.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\STM32SerialCommunication.c</FilePath>
+            </File>
+            <File>
+              <FileName>STM32SerialCommunication.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\STM32SerialCommunication.h</FilePath>
+            </File>
+            <File>
+              <FileName>PacketProtocol.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\PacketProtocol.c</FilePath>
+            </File>
+            <File>
+              <FileName>PacketProtocol.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\PacketProtocol.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
