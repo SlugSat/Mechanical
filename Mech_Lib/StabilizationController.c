@@ -30,7 +30,7 @@
 void torque2wdot(ACSType* acs, Matrix torque_vector, Matrix wdot_vector);
 
 
-void runStabilizationController(ACSType* acs, int first_step) {
+void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 	static int init_run = 0;
 	static Matrix torque_integrator, last_err, P, I, D, controller_torque, controller_wdot, wdot_desired;
 	
@@ -57,16 +57,16 @@ void runStabilizationController(ACSType* acs, int first_step) {
 	else {
 		// ***** TORQUE CONTROLLER *****
 		// Proportional component
-		matrixCopy(acs->err, P);
+		matrixCopy(err, P);
 		matrixScale(P, KP_T);
 		
 		// Integrator component
-		matrixCopy(acs->err, I);
+		matrixCopy(err, I);
 		matrixScale(I, KI_T*acs->dt);
 		matrixAdd(torque_integrator, I, torque_integrator); // Adding in place works; multiplying in place doesn't
 		
 		// Derivative component
-		matrixCopy(acs->err, D);
+		matrixCopy(err, D);
 		matrixSubtract(D, last_err, D);
 		matrixScale(D, KD_T/acs->dt);
 		
@@ -76,11 +76,11 @@ void runStabilizationController(ACSType* acs, int first_step) {
 		
 		// ***** WDOT CONTROLLER *****
 		// Proportional component
-		matrixCopy(acs->err, P);
+		matrixCopy(err, P);
 		matrixScale(P, KP_WDOT);
 		
 		// Derivative component
-		matrixCopy(acs->err, D);
+		matrixCopy(err, D);
 		matrixSubtract(D, last_err, D);
 		matrixScale(D, KD_WDOT/acs->dt);
 		
@@ -93,7 +93,7 @@ void runStabilizationController(ACSType* acs, int first_step) {
 	}
 	
 	// Record last error
-	matrixCopy(acs->err, last_err);
+	matrixCopy(err, last_err);
 	
 	// Find reaction wheel PWM
 	wdot2rw_pwm(acs, wdot_desired);
