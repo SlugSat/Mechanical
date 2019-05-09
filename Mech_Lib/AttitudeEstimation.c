@@ -152,6 +152,7 @@ void integrateDCM(ACSType* acs, float Kp_mag, float Ki_mag, float Kp_sv, float K
 	matrixScale(sv_err, -Ki_sv);
 	matrixCopy(mag_err, bdot); // bdot equals -Ki_mag*mag_err
 	matrixAdd(bdot, sv_err, bdot); // bdot now equals -Ki_mag*mag_err - Ki_sv*sv_err
+	acs->gyro_bias_dot_norm = vectorNorm(bdot);
 	matrixScale(bdot, dt); // Multiply bdot*dt
 	matrixAdd(acs->gyro_bias, bdot, acs->gyro_bias); // bias = bias + dt*bdot
 	

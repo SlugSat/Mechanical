@@ -47,6 +47,7 @@ typedef struct {
 	
 	// Attitude estimation vectors
 	Matrix gyro_bias;
+	float gyro_bias_dot_norm;
 	
 	// Inertial vectors (ecliptic frame)
 	Matrix sv_inertial; // Found using the Julian date
