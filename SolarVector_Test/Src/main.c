@@ -51,8 +51,6 @@
 #define NUM_ADC_CHANNELS 6
 #define MOVING_AVG_LENGTH 20
 
-#define PI 3.1416
-
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/

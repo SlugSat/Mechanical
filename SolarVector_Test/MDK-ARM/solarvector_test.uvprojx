@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc; ../Drivers/STM32F1xx_HAL_Driver/Inc; ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy; ../Drivers/CMSIS/Device/ST/STM32F1xx/Include; ../Drivers/CMSIS/Include; ..\..\..\Mech_Lib</IncludePath>
+              <IncludePath>../Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;..\..\Mech_Lib</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -393,36 +393,6 @@
           <GroupName>Application/User</GroupName>
           <Files>
             <File>
-              <FileName>Matrix.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\Mech_Lib\Matrix.c</FilePath>
-            </File>
-            <File>
-              <FileName>Matrix.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\..\Mech_Lib\Matrix.h</FilePath>
-            </File>
-            <File>
-              <FileName>SolarVectors.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\..\Mech_Lib\SolarVectors.h</FilePath>
-            </File>
-            <File>
-              <FileName>SolarVectors.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\Mech_Lib\SolarVectors.c</FilePath>
-            </File>
-            <File>
-              <FileName>DigitalFilters.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\Mech_Lib\DigitalFilters.c</FilePath>
-            </File>
-            <File>
-              <FileName>DigitalFilters.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\..\Mech_Lib\DigitalFilters.h</FilePath>
-            </File>
-            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/main.c</FilePath>
@@ -436,6 +406,36 @@
               <FileName>stm32f1xx_hal_msp.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/stm32f1xx_hal_msp.c</FilePath>
+            </File>
+            <File>
+              <FileName>SolarVectors.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\SolarVectors.c</FilePath>
+            </File>
+            <File>
+              <FileName>SolarVectors.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\SolarVectors.h</FilePath>
+            </File>
+            <File>
+              <FileName>DigitalFilters.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\DigitalFilters.c</FilePath>
+            </File>
+            <File>
+              <FileName>DigitalFilters.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\DigitalFilters.h</FilePath>
+            </File>
+            <File>
+              <FileName>Matrix.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\Matrix.c</FilePath>
+            </File>
+            <File>
+              <FileName>Matrix.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\Matrix.h</FilePath>
             </File>
           </Files>
         </Group>
