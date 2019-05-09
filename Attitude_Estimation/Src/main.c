@@ -156,12 +156,12 @@ int main(void)
 		// Find time since last iteration
 		last_time = new_time;
 		new_time = TIM2->CNT;
-		dt = TIM2_TICKS_TO_SECONDS((uint16_t)(new_time - last_time));
+		acs.dt = TIM2_TICKS_TO_SECONDS((uint16_t)(new_time - last_time));
 		
 		computation_start_time = TIM2->CNT;
 		
 		// DCM integration
-		updateAttitudeEstimate(&acs, dt);
+		updateAttitudeEstimate(&acs);
 		
 		#ifdef PRINT_SENSOR_VECTORS
 		// Print gyro vector
