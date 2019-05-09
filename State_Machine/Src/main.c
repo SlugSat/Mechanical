@@ -2,38 +2,11 @@
 /**
   ******************************************************************************
   * @file           : main.c
-  * @brief          : Main program body
+  * @brief          : ACS state machine main file
   ******************************************************************************
-  ** This notice applies to any and all portions of this file
-  * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
-  * inserted by the user or by software development tools
-  * are owned by their respective copyright owners.
-  *
-  * COPYRIGHT(c) 2019 STMicroelectronics
-  *
-  * Redistribution and use in source and binary forms, with or without modification,
-  * are permitted provided that the following conditions are met:
-  *   1. Redistributions of source code must retain the above copyright notice,
-  *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
-  *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
-  *      may be used to endorse or promote products derived from this software
-  *      without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  *
+  ** This file contains the ACS flight software used on SlugSat's flat-sat. This
+	* program is designed to run in conjunction with SlugSat's 42 simulation to 
+	* show the behavior of the full ACS.
   ******************************************************************************
   */
 /* USER CODE END Header */
@@ -84,16 +57,9 @@ char state_names[][20] = {
 
 #define DETUMBLE_LOW_THRESHOLD 0.00872665 	// 0.5 deg/s in rad/s
 #define DETUBMLE_HIGH_THRESHOLD 0.05
-#define STABLE_ATTITUDE_THRESHOLD 0.1 	// Rad/s^2
+#define STABLE_ATTITUDE_THRESHOLD 0.01 	// Rad/s^2
 #define POINT_ERROR_THRESHOLD_HIGH 20		// Degrees
 #define POINT_ERROR_THRESHOLD_LOW 10
-
-#define GYRO_READ_TIME_MS 5
-#define IMU_READ_TIME_MS 9
-#define ATTITUDE_EST_TIME_MS 11
-#define FEEDBACK_CONTROL_TIME_MS 15
-#define BDOT_TIME_MS 10
-#define MOMENTUM_DUMP_TIME_MS 10
 
 /* USER CODE END PD */
 
@@ -106,13 +72,13 @@ char state_names[][20] = {
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-ACSState state = REORIENT;
+ACSState state = WAIT_FOR_ATTITUDE;
 ACSType acs;
 
 // Temporary variables to hold values that are important for state transitions
 uint8_t acs_enable = 1;					// Bool
 float gyro_vector_norm;			// Rad/s
-float gyro_vector_norm_dot = 0;	// Rad/s^2
+float attitude_est_stable_counter = 0;
 float pointing_error = 3;				// Degrees
 
 float v; // Variable used by delay function
@@ -124,10 +90,6 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-
-// Simulates processor load by doing floating point operations for the specified
-// number of ms
-void LoadProcessor(uint8_t time_ms);
 
 /* USER CODE END PFP */
 
@@ -186,8 +148,8 @@ int main(void)
     /* USER CODE BEGIN 3 */
 		
 		// Print to terminal
-		sprintf(prnt, "State -- %s\nPointing error: %6.2f [deg]\nCraft rotational rate: %6.2f [deg/s]", 
-				state_names[state], acs.pointing_err, 180*gyro_vector_norm/PI);
+		sprintf(prnt, "State -- %s\nPointing error: %6.2f [deg]\nCraft rotational rate: %6.2f [deg/s]\nGyro bias dot: %6.2f [rad/s^2]", 
+				state_names[state], acs.pointing_err, 180*gyro_vector_norm/PI, acs.gyro_bias_dot_norm);
 		
 		
 		/***** READ/WRITE TO 42 *****/
@@ -199,7 +161,6 @@ int main(void)
 		
 		/***** RUN ACS SUBROUTINES *****/
 		gyro_vector_norm = vectorNorm(acs.gyro_vector);
-		
 		
 		if(state == DETUMBLE) {
 			// Read gyro here
@@ -227,7 +188,7 @@ int main(void)
 		if(state == STABILIZE) {
 			// Run momentum dumping
 			findErrorVectors(&acs);
-			runStabilizationController(&acs, first_step);
+			runStabilizationController(&acs, acs.err, first_step);
 			first_step = 0;
 		}
 		
@@ -235,6 +196,7 @@ int main(void)
 		/***** RUN STATE MACHINE *****/
 		ACSState next_state = state;
 		
+		// Check for state transitions
 		switch(state) {
 			case WAIT_FOR_ENABLE:
 				if(acs_enable){
@@ -249,23 +211,29 @@ int main(void)
 				break;
 				
 			case WAIT_FOR_ATTITUDE:
-				if(fabsf(gyro_vector_norm_dot) < STABLE_ATTITUDE_THRESHOLD) {
+				// Count iterations where attitude is stable
+				if(fabsf(acs.gyro_bias_dot_norm) < STABLE_ATTITUDE_THRESHOLD) {
+					attitude_est_stable_counter++;
+				}
+				else {
+					attitude_est_stable_counter = 0;
+				}
+				
+				// Transition when we hit 10 in a row
+				if(attitude_est_stable_counter >= 10) {
 					next_state = REORIENT;
-					first_step = 1;
 				}
 				break;
 				
 			case REORIENT:
 				if(acs.pointing_err < POINT_ERROR_THRESHOLD_LOW) {
 					next_state = STABILIZE;
-					first_step = 1;
 				}
 				break;
 				
 			case STABILIZE:
 				if(acs.pointing_err > POINT_ERROR_THRESHOLD_HIGH) {
 					next_state = REORIENT;
-					first_step = 1;
 				}
 				break;
 				
@@ -273,9 +241,56 @@ int main(void)
 				break;
 		}
 		
+		// State transition logic
 		if(next_state != state)
 		{
+			// Exit events
+			switch(state) {
+			case WAIT_FOR_ENABLE:
+				break;
+			
+			case DETUMBLE:
+				break;
+				
+			case WAIT_FOR_ATTITUDE:
+				break;
+				
+			case REORIENT:
+				break;
+				
+			case STABILIZE:
+				break;
+				
+			default:
+				break;
+			}
+			
+			// Switch states
 			state = next_state;
+			
+			// Entry events
+			switch(state) {
+			case WAIT_FOR_ENABLE:
+				break;
+			
+			case DETUMBLE:
+				break;
+				
+			case WAIT_FOR_ATTITUDE:
+				attitude_est_stable_counter = 0;
+				break;
+				
+			case REORIENT:
+				first_step = 1;
+				break;
+				
+			case STABILIZE:
+				first_step = 1;
+				break;
+				
+			default:
+				break;
+			}
 		}
 	}
   /* USER CODE END 3 */
@@ -365,17 +380,17 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
-void LoadProcessor(uint8_t time_ms)
-{
-	uint16_t init_time = TIM2->CNT;
-	uint16_t delay_time_10us = time_ms*100;
-	
-	v = (float)rand()/(float)rand();
-	
-	while((uint16_t)(TIM2->CNT - init_time) < delay_time_10us) {
-		v = v*(float)rand()/(float)rand();
-	}
-}
+//void LoadProcessor(uint8_t time_ms)
+//{
+//	uint16_t init_time = TIM2->CNT;
+//	uint16_t delay_time_10us = time_ms*100;
+//	
+//	v = (float)rand()/(float)rand();
+//	
+//	while((uint16_t)(TIM2->CNT - init_time) < delay_time_10us) {
+//		v = v*(float)rand()/(float)rand();
+//	}
+//}
 
 /* USER CODE END 4 */
 
