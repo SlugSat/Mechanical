@@ -66,12 +66,7 @@ void runACS(UART_HandleTypeDef* huart) {
 	
 	char prnt[300]; // String buffer to print to 42
 	
-  while (1)
-  {
-    /* USER CODE END WHILE */
-
-    /* USER CODE BEGIN 3 */
-		
+  while (1) {
 		// Print to terminal
 		sprintf(prnt, "State -- %s\nPointing error: %6.2f [deg]\nCraft rotational rate: %6.2f [deg/s]\nGyro bias dot: %6.2f [rad/s^2]", 
 				state_names[state], acs.pointing_err, 180*gyro_vector_norm/PI, acs.gyro_bias_dot_norm);
