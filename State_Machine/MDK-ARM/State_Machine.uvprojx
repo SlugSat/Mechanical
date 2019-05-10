@@ -582,6 +582,16 @@
               <FileType>5</FileType>
               <FilePath>..\..\Mech_Lib\ReferenceFrames.h</FilePath>
             </File>
+            <File>
+              <FileName>ACSStateMachine.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\ACSStateMachine.h</FilePath>
+            </File>
+            <File>
+              <FileName>ACSStateMachine.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\ACSStateMachine.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
