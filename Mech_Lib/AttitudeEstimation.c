@@ -19,10 +19,10 @@
 
 
 // CONSTANTS
-#define KP_MAG_BASE 1.0
-#define KI_MAG_BASE 0.3
-#define KP_SV_BASE 1.0
-#define KI_SV_BASE 0.3
+#define KP_MAG_BASE 0.1 //1.0
+#define KI_MAG_BASE 0.03 //0.3
+#define KP_SV_BASE 0.2 //1.0
+#define KI_SV_BASE 0.06 //0.3
 
 
 // HELPER FUNCTIONS
