@@ -24,11 +24,15 @@
 
 
 // Thresholds used for state machine transitions
-#define DETUMBLE_LOW_THRESHOLD 0.00872665	// 0.5 deg/s in rad/s
+#define DETUMBLE_LOW_THRESHOLD 0.00872665			// 0.5 deg/s in rad/s
 #define DETUBMLE_HIGH_THRESHOLD 0.05
-#define STABLE_ATTITUDE_THRESHOLD 0.015 	// Rad/s^2; will have to be updated for real sensors
-#define POINT_ERROR_THRESHOLD_HIGH 20			// Degrees
-#define POINT_ERROR_THRESHOLD_LOW 10
+#define STABLE_ATTITUDE_LOW_THRESHOLD 0.015 	// Rad/s^2; will have to be updated for real sensors
+#define STABLE_ATTITUDE_HIGH_THRESHOLD 0.05
+#define POINT_ERROR_HIGH_THRESHOLD 20					// Degrees
+#define POINT_ERROR_LOW_THRESHOLD 10
+
+
+#define INERTIAL_UPDATE_RATE 10 							// Seconds between intertial vector updates
 
 
 typedef enum {
@@ -37,15 +41,17 @@ typedef enum {
 	DETUMBLE,
 	WAIT_FOR_ATTITUDE,
 	REORIENT,
+	STABILIZE_NO_SUN,
 	STABILIZE
 }ACSState;
 
-char state_names[][20] = {
+char state_names[][30] = {
 		"Default", 
 		"Wait for Enable", 
 		"Detumble", 
 		"Wait for Attitude", 
-		"Reorient", 
+		"Reorient",
+		"Stabilize (Ignore Sun)",
 		"Stabilize"
 };
 
@@ -56,8 +62,9 @@ void runACS(UART_HandleTypeDef* huart) {
 	initializeACS(&acs);
 	initializeACSSerial(&acs, huart); // Only necessary to communicate with 42
 	
-	ACSState state = WAIT_FOR_ATTITUDE;
+	ACSState state = DEFAULT;
 	int first_step = 1;
+	float last_inertial_update_time = -INFINITY;	// In seconds
 	
 	// Variables to hold values that are important for state transitions
 	uint8_t acs_enable = 1;			// Temporary bool
@@ -80,7 +87,7 @@ void runACS(UART_HandleTypeDef* huart) {
 		
 		
 		/***** RUN ACS SUBROUTINES *****/
-		gyro_vector_norm = vectorNorm(acs.gyro_vector);
+		// Read solar vectors here to get sun state
 		
 		if(state == DETUMBLE) {
 			// Read gyro here
@@ -89,19 +96,31 @@ void runACS(UART_HandleTypeDef* huart) {
 			runBdotController(&acs);
 		}
 		
-		if(state == WAIT_FOR_ATTITUDE || state == REORIENT || state == STABILIZE) {
+		if(state == WAIT_FOR_ATTITUDE || state == REORIENT || state == STABILIZE_NO_SUN || state == STABILIZE) {
 			// Read IMU (mag and gyro) here
 			
+			// Update inertial vectors
+			if(acs.t - last_inertial_update_time >= INERTIAL_UPDATE_RATE) {
+				findSunInertial(&acs);
+				findMagInertial(&acs);
+				last_inertial_update_time = acs.t;
+			}
+			
 			// Run attitude estimation
-			findSunInertial(&acs);
-			findMagInertial(&acs);
 			updateAttitudeEstimate(&acs);
 		}
 		
-		if(state == REORIENT || state == STABILIZE) {
+		if(state == REORIENT) {
 			// Run feedback controller
 			findErrorVectors(&acs);
 			runOrientationController(&acs, first_step);
+			first_step = 0;
+		}
+		
+		if(state == STABILIZE_NO_SUN) {
+			// Run momentum dumping
+			findErrorVectors(&acs);
+			runStabilizationController(&acs, acs.z_err, first_step);
 			first_step = 0;
 		}
 		
@@ -114,10 +133,21 @@ void runACS(UART_HandleTypeDef* huart) {
 		
 		
 		/***** RUN STATE MACHINE *****/
+		/**
+		 * See ACS State Machine (figure x, page x of the Year 3 Sping Report).
+		 *
+		 * State transition checks at the top of the code have low priority,
+		 * checks at the bottom have high priority.
+		 */
 		ACSState next_state = state;
 		
-		// Check for state transitions
+		gyro_vector_norm = vectorNorm(acs.gyro_vector);
+		
+		// Check forward state transitions
 		switch(state) {
+			case DEFAULT:
+				next_state = DETUMBLE; // Initial state transition
+				break;
 			case WAIT_FOR_ENABLE:
 				if(acs_enable){
 					next_state = DETUMBLE;
@@ -132,7 +162,7 @@ void runACS(UART_HandleTypeDef* huart) {
 				
 			case WAIT_FOR_ATTITUDE:
 				// Count iterations where attitude is stable
-				if(fabsf(acs.gyro_bias_dot_norm) < STABLE_ATTITUDE_THRESHOLD) {
+				if(acs.gyro_bias_dot_norm < STABLE_ATTITUDE_LOW_THRESHOLD) {
 					attitude_est_stable_counter++;
 				}
 				else {
@@ -146,20 +176,48 @@ void runACS(UART_HandleTypeDef* huart) {
 				break;
 				
 			case REORIENT:
-				if(acs.pointing_err < POINT_ERROR_THRESHOLD_LOW) {
+				if(acs.pointing_err < POINT_ERROR_LOW_THRESHOLD) {
+					next_state = STABILIZE_NO_SUN;
+				}
+				break;
+				
+			case STABILIZE_NO_SUN:
+				if(acs.sun_status != SV_DARK) {
 					next_state = STABILIZE;
 				}
 				break;
 				
-			case STABILIZE:
-				if(acs.pointing_err > POINT_ERROR_THRESHOLD_HIGH) {
-					next_state = REORIENT;
-				}
-				break;
+			// Stabilize has no forward transition
 				
 			default:
 				break;
 		}
+		
+		// Reverse state transitions
+		if(state >= STABILIZE) {
+			if(acs.sun_status == SV_DARK) { // In eclipse
+				next_state = STABILIZE_NO_SUN;
+			}
+		}
+		
+		if(state >= STABILIZE_NO_SUN) {
+			if(acs.pointing_err > POINT_ERROR_HIGH_THRESHOLD) { // We are no longer nadir pointing
+				next_state = REORIENT;
+			}
+		}
+		
+		if(state >= REORIENT) {
+			if(acs.gyro_bias_dot_norm > STABLE_ATTITUDE_HIGH_THRESHOLD) { // Attitude estimate is no longer accurate
+				next_state = WAIT_FOR_ATTITUDE;
+			}
+		}
+		
+		if(state >= WAIT_FOR_ATTITUDE) {
+			if(gyro_vector_norm > DETUBMLE_HIGH_THRESHOLD) { // We are tumbling again
+				next_state = DETUMBLE;
+			}
+		}
+		
 		
 		// State transition logic
 		if(next_state != state)
@@ -170,6 +228,8 @@ void runACS(UART_HandleTypeDef* huart) {
 				break;
 			
 			case DETUMBLE:
+				// Turn off torque rods
+				vectorSetXYZ(acs.tr_PWM, 0, 0, 0);
 				break;
 				
 			case WAIT_FOR_ATTITUDE:
@@ -178,7 +238,14 @@ void runACS(UART_HandleTypeDef* huart) {
 			case REORIENT:
 				break;
 				
+			case STABILIZE_NO_SUN:
+				// Turn off torque rods
+				vectorSetXYZ(acs.tr_PWM, 0, 0, 0);
+				break;
+			
 			case STABILIZE:
+				// Turn off torque rods
+				vectorSetXYZ(acs.tr_PWM, 0, 0, 0);
 				break;
 				
 			default:
@@ -194,6 +261,8 @@ void runACS(UART_HandleTypeDef* huart) {
 				break;
 			
 			case DETUMBLE:
+				// Set reaction wheels to default state
+				vectorSetXYZ(acs.rw_PWM, 50, 50, 50);
 				break;
 				
 			case WAIT_FOR_ATTITUDE:
@@ -203,7 +272,11 @@ void runACS(UART_HandleTypeDef* huart) {
 			case REORIENT:
 				first_step = 1;
 				break;
-				
+			
+			case STABILIZE_NO_SUN:
+				first_step = 1;
+				break;
+			
 			case STABILIZE:
 				first_step = 1;
 				break;
