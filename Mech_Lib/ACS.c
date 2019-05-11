@@ -16,8 +16,8 @@
 
 // Reaction wheel properties
 #define RW_D 8700
-#define RW_R 0.0207
-#define RW_H 0.005
+#define RW_R 0.010
+#define RW_H 0.010
 
 // Body inertia matrices
 #define JB_11 0.01151603
