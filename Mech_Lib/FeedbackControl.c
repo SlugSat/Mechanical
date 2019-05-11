@@ -93,23 +93,10 @@ void runBdotController(ACSType* acs) {
 	
 	// ***** FIND CHANGE OF MAGNETIC FIELD (ROTATION THROUGH MAG FIELD) *****
 	vectorCrossProduct(last_mag, acs->mag_vector, b_rot); //b_rot = last_mag X mag_vector
-	//Copy old value of mag field
-	 matrixCopy(last_mag, acs->mag_vector);
 	
 	// ***** ADJUSTS OMEGA TO GET TRUE ROTATION AND FIND BDOT*****
 	matrixSubtract(b_rot, acs->gyro_vector, w_adj);//w_adj = b_rot - w 
 	vectorCrossProduct(w_adj, acs->mag_vector, bdot);
-	
-
-	// ***** FIND MAGNETIC DIPOLE MOMENT *****
-	// find the signs of bdot vector
-
-	vectorSetXYZ(bdot, -MAXDIP * (matrixGetElement(bdot, 1, 1) / vectorNorm(bdot) ),
-			-MAXDIP * (matrixGetElement(bdot, 2, 1)/ vectorNorm(bdot)),
-			-MAXDIP * (matrixGetElement(bdot, 3, 1) / vectorNorm(bdot)));
-	
-	// ***** FIND PWM FOR EACH TORQUE ROD *****
-	matrixScale(bdot, 100.0);
 	
 	// ***** FIND PWM FOR EACH TORQUE ROD *****
 	float bdot_norm = vectorNorm(bdot);

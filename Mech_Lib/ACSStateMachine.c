@@ -26,13 +26,13 @@
 // Thresholds used for state machine transitions
 #define DETUMBLE_LOW_THRESHOLD 0.00872665			// 0.5 deg/s in rad/s
 #define DETUBMLE_HIGH_THRESHOLD 0.05
-#define STABLE_ATTITUDE_LOW_THRESHOLD 0.015 	// Rad/s^2; will have to be updated for real sensors
-#define STABLE_ATTITUDE_HIGH_THRESHOLD 0.05
+#define STABLE_ATTITUDE_LOW_THRESHOLD 0.02 	// Rad/s^2; will have to be updated for real sensors
+#define STABLE_ATTITUDE_HIGH_THRESHOLD 0.10
 #define POINT_ERROR_HIGH_THRESHOLD 20					// Degrees
 #define POINT_ERROR_LOW_THRESHOLD 10
 
 
-#define INERTIAL_UPDATE_RATE 10 							// Seconds between intertial vector updates
+#define INERTIAL_UPDATE_RATE 2 							// Seconds between intertial vector updates
 
 
 typedef enum {

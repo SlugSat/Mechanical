@@ -121,6 +121,9 @@ void readSensorsFromSerial(ACSType* acs) {
 	vectorCopyArray(acs->gyro_vector, sensor_data + 3, 3);
 	vectorCopyArray(acs->solar_vector, sensor_data + 6, 3);
 	
+	// Scale mag_vector to be in Tesla
+	matrixScale(acs->mag_vector, 1e-6);
+	
 	// Check for invalid solar vector
 	if(vectorNorm(acs->solar_vector) == 0) {
 		acs->sun_status = SV_DARK;

@@ -91,6 +91,7 @@ void updateAttitudeEstimate(ACSType* acs) {
 void integrateDCM(ACSType* acs, float Kp_mag, float Ki_mag, float Kp_sv, float Ki_sv, float dt) {
 			
 	static char init_run = 0;
+	static Matrix mag_normalized;
 	static Matrix mag_i_body, sv_i_body; // Inertial sensor vectors translated to body
 	static Matrix mag_err, sv_err; // Error vectors (result of cross product between measured and inertial)
 	static Matrix merr_x_Kp, sverr_x_Kp; // Error multiplied by Kp
@@ -110,6 +111,7 @@ void integrateDCM(ACSType* acs, float Kp_mag, float Ki_mag, float Kp_sv, float K
 		bdot = newMatrix(3, 1);
 		Rexp = newMatrix(3, 3);
 		new_R = newMatrix(3, 3);
+		mag_normalized = newMatrix(3, 1);
 		
 		init_run = 1;
 	}
@@ -124,15 +126,15 @@ void integrateDCM(ACSType* acs, float Kp_mag, float Ki_mag, float Kp_sv, float K
 		// Need better error handling
 		return;
 	}
-	
-	matrixScale(acs->mag_vector, 1.0/norm_mag);
+	matrixCopy(acs->mag_vector, mag_normalized);
+	matrixScale(mag_normalized, 1.0/norm_mag);
 	matrixScale(acs->solar_vector, 1.0/norm_sv);
 	matrixScale(acs->mag_inertial, 1.0/norm_mi);
 	matrixScale(acs->sv_inertial, 1.0/norm_svi);
 	
 	// ***** FIND ERROR FROM MAG *****
 	matrixMult(acs->Rt, acs->mag_inertial, mag_i_body); // Translate mag to body
-	vectorCrossProduct(acs->mag_vector, mag_i_body, mag_err);
+	vectorCrossProduct(mag_normalized, mag_i_body, mag_err);
 	matrixCopy(mag_err, merr_x_Kp);
 	matrixScale(merr_x_Kp, Kp_mag); // Kp_mag * mag_err
 	

@@ -148,7 +148,7 @@ void vectorSetXYZ(Matrix v, float x, float y, float z);
 void vectorRcross(Matrix v, Matrix vcross);
 
 /** 
- * @brief  Calculates the dot product of two column vectors
+ * @brief  Calculates the cross product of two column vectors
  * @param  v1 & v2: Two column vector Matrix objects with the same dimensions
  * @param  v1xv2: An allocated column vector Matrix to hold the result
  * @return None

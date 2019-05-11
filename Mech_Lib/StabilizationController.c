@@ -85,15 +85,18 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 
 		//Ensure dipole moment stays within bounds
 		for(i=0;i<3;i++){
-			if(matrixGetElement(m,i,1) > 2){
-				matrixSet(m, i, 1, 2);
+			if(matrixGetElement(m,i,1) > MAXDIP){
+				matrixSet(m, i, 1, MAXDIP);
+			}
+			else if (matrixGetElement(m,i,1) < -MAXDIP){
+				matrixSet(m, i, 1, -MAXDIP);
 			}
 		}
 		//Torque rod torque
 		vectorCrossProduct(m, acs->mag_vector, trTorque);
 
 		// ***** FIND PWM FOR EACH TORQUE ROD *****
-		matrixCopy(trTorque, trTorquePWM); // trTorquePWM = trTorque;
+		matrixCopy(m, trTorquePWM); // trTorquePWM = trTorque;
 		matrixScale(trTorquePWM, 100.0/MAXDIP);	//Scale to PWM
 
 		//Check reaction wheels angular velocity
@@ -104,6 +107,7 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 				matrixSet(acs->tr_PWM, i, 1, matrixGetElement(trTorquePWM, i, 1) );
 			}
 		}
+		
 
 		// ***** TORQUE CONTROLLER *****
 		// Proportional component
@@ -124,7 +128,7 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 		matrixAdd(P, I, controller_torque);
 		matrixAdd(controller_torque, D, controller_torque);
 		//Add Torque rod torque
-		matrixAdd(controller_torque, trTorque, controller_torque);
+		matrixSubtract(controller_torque, trTorque, controller_torque);
 
 		
 		// ***** WDOT CONTROLLER *****
