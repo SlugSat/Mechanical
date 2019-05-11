@@ -100,15 +100,14 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 		matrixScale(trTorquePWM, 100.0/MAXDIP);	//Scale to PWM
 
 		//Check reaction wheels angular velocity
-		for(i = 0; i < 3; i++)
-		{
-			if(fabs(matrixGetElement(acs->w_rw, i, 1)) > 100)
-			{
+		for(i = 0; i < 3; i++){		
+			if(fabs(matrixGetElement(acs->w_rw, i, 1)) > 100){
+		//Ensure that torque rod is going to exert an appreciable amount of torque.
+			if(matrixGetElement(trTorque, i, 1) > 30e-6 )
 				matrixSet(acs->tr_PWM, i, 1, matrixGetElement(trTorquePWM, i, 1) );
 			}
 		}
 		
-
 		// ***** TORQUE CONTROLLER *****
 		// Proportional component
 		matrixCopy(err, P);
