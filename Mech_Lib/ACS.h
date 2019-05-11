@@ -65,6 +65,7 @@ typedef struct {
 	
 	// Error scalars (degrees)
 	float pointing_err;
+	float zb_sun_angle;
 	
 	// Sensor hardware
 	MovingAvgFilter mag_filter;

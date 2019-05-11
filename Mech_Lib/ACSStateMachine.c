@@ -26,10 +26,12 @@
 // Thresholds used for state machine transitions
 #define DETUMBLE_LOW_THRESHOLD 0.00872665			// 0.5 deg/s in rad/s
 #define DETUBMLE_HIGH_THRESHOLD 0.05
-#define STABLE_ATTITUDE_LOW_THRESHOLD 0.02 	// Rad/s^2; will have to be updated for real sensors
+#define STABLE_ATTITUDE_LOW_THRESHOLD 0.02		// Rad/s^2; will have to be updated for real sensors
 #define STABLE_ATTITUDE_HIGH_THRESHOLD 0.08
-#define POINT_ERROR_HIGH_THRESHOLD 20					// Degrees
+#define POINT_ERROR_HIGH_THRESHOLD 15					// Degrees
 #define POINT_ERROR_LOW_THRESHOLD 10
+#define SUN_ANGLE_HIGH_THRESHOLD 40						// Degrees
+#define SUN_ANGLE_LOW_THRESHOLD 30
 
 
 #define INERTIAL_UPDATE_RATE 10 							// Seconds between intertial vector updates
@@ -74,11 +76,6 @@ void runACS(UART_HandleTypeDef* huart) {
 	char prnt[300]; // String buffer to print to 42
 	
   while (1) {
-		// Print to terminal
-		sprintf(prnt, "State -- %s\nPointing error: %6.2f [deg]\nCraft rotational rate: %6.2f [deg/s]\nGyro bias dot: %6.2f [rad/s^2]", 
-				state_names[state], acs.pointing_err, 180*gyro_vector_norm/PI, acs.gyro_bias_dot_norm);
-		printTo42(prnt);
-		
 		/***** READ/WRITE TO 42 *****/
 		syncWith42(&acs);
 		
@@ -132,6 +129,13 @@ void runACS(UART_HandleTypeDef* huart) {
 			first_step = 0;
 		}
 		
+		// Print to 42 terminal
+		sprintf(prnt, "State -- %s\nPointing error: %6.2f [deg]\nCraft rotational rate: %6.2f [deg/s]\nGyro bias dot: %6.2f [rad/s^2]", 
+				state_names[state], acs.pointing_err, 180*gyro_vector_norm/PI, acs.gyro_bias_dot_norm);
+		printTo42(prnt);
+		
+		sprintf(prnt, "\nAngle to sun: %6.2f [deg]", acs.zb_sun_angle);
+		printTo42(prnt);
 		
 		/***** RUN STATE MACHINE *****/
 		/**
@@ -183,7 +187,7 @@ void runACS(UART_HandleTypeDef* huart) {
 				break;
 				
 			case STABILIZE_NO_SUN:
-				if(acs.sun_status != SV_DARK) {
+				if(acs.sun_status != SV_DARK && acs.zb_sun_angle > SUN_ANGLE_HIGH_THRESHOLD) {
 					next_state = STABILIZE;
 				}
 				break;
@@ -196,7 +200,7 @@ void runACS(UART_HandleTypeDef* huart) {
 		
 		// Reverse state transitions
 		if(state >= STABILIZE) {
-			if(acs.sun_status == SV_DARK) { // In eclipse
+			if(acs.sun_status == SV_DARK || acs.zb_sun_angle < SUN_ANGLE_LOW_THRESHOLD) { // In eclipse or right under the sun
 				next_state = STABILIZE_NO_SUN;
 			}
 		}
