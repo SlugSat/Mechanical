@@ -3,7 +3,7 @@
   * @file           : ACS.h
   * @brief          : Header file for the Attitude Control System (ACS).
   ******************************************************************************
-	* Created by Galen Savidge. Edited 4/21/2019.
+	* Created by Galen Savidge. Edited 5/11/2019.
   ******************************************************************************
   */
 
@@ -85,9 +85,6 @@ typedef struct {
 	// Actuator PWMs
 	Matrix rw_PWM;
 	Matrix tr_PWM;
-	
-	// UART handle
-	UART_HandleTypeDef* huart;
 }ACSType;
 
 
@@ -99,29 +96,5 @@ typedef struct {
  * @return None
 */
 void initializeACS(ACSType* acs);
-
-/* Serial Communication Functions ---------------------------------------------*/
-
-/** 
- * @brief  Initializes serial communication from the ACS
- * @param  acs: a pointer to an existing Attitude Control System object
- * @param  huart: pointer to a UART handle defined in main.c
- * @return None
-*/
-void initializeACSSerial(ACSType* acs, UART_HandleTypeDef* huart);
-
-/** 
- * @brief  Reads sensor data from serial and updates acs
- * @param  acs: a pointer to an existing Attitude Control System object
- * @return Updates mag_vector, gyro_vector, and solar_vector in acs
-*/
-void readSensorsFromSerial(ACSType* acs);
-
-/** 
- * @brief  Sends actuator PWMs from acs over serial
- * @param  acs: a pointer to an existing Attitude Control System object
- * @return None
-*/
-void sendActuatorsToSerial(ACSType* acs);
 
 #endif

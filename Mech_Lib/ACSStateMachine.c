@@ -26,8 +26,8 @@
 // Thresholds used for state machine transitions
 #define DETUMBLE_LOW_THRESHOLD 0.00872665			// 0.5 deg/s in rad/s
 #define DETUBMLE_HIGH_THRESHOLD 0.05
-#define STABLE_ATTITUDE_LOW_THRESHOLD 0.015 	// Rad/s^2; will have to be updated for real sensors
-#define STABLE_ATTITUDE_HIGH_THRESHOLD 0.05
+#define STABLE_ATTITUDE_LOW_THRESHOLD 0.02 	// Rad/s^2; will have to be updated for real sensors
+#define STABLE_ATTITUDE_HIGH_THRESHOLD 0.08
 #define POINT_ERROR_HIGH_THRESHOLD 20					// Degrees
 #define POINT_ERROR_LOW_THRESHOLD 10
 
@@ -60,9 +60,9 @@ void runACS(UART_HandleTypeDef* huart) {
 	/***** INITIALIZE ACS *****/
 	ACSType acs;
 	initializeACS(&acs);
-	initializeACSSerial(&acs, huart); // Only necessary to communicate with 42
+	initializeACSSerial(huart); // Only necessary to communicate with 42
 	
-	ACSState state = DEFAULT;
+	ACSState state = WAIT_FOR_ATTITUDE;
 	int first_step = 1;
 	float last_inertial_update_time = -INFINITY;	// In seconds
 	
@@ -77,17 +77,18 @@ void runACS(UART_HandleTypeDef* huart) {
 		// Print to terminal
 		sprintf(prnt, "State -- %s\nPointing error: %6.2f [deg]\nCraft rotational rate: %6.2f [deg/s]\nGyro bias dot: %6.2f [rad/s^2]", 
 				state_names[state], acs.pointing_err, 180*gyro_vector_norm/PI, acs.gyro_bias_dot_norm);
-		
+		printTo42(prnt);
 		
 		/***** READ/WRITE TO 42 *****/
-		STM32SerialHandshake(huart);
-		readSensorsFromSerial(&acs);
-		sendActuatorsToSerial(&acs);
-		STM32SerialSendString(huart, prnt);
+		syncWith42(&acs);
 		
 		
 		/***** RUN ACS SUBROUTINES *****/
 		// Read solar vectors here to get sun state
+		
+		// Update ACS fields
+		J2000_2_LongLatAlt(acs.craft_j2000, acs.julian_date, &acs.longitude, &acs.latitude, &acs.altitude);
+		
 		
 		if(state == DETUMBLE) {
 			// Read gyro here

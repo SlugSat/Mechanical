@@ -38,9 +38,6 @@ void findMagInertial(ACSType* acs) {
 		init_run = 1;
 	}
 	
-	// Find longitude, latitude, and altitude
-	J2000_2_LongLatAlt(acs->craft_j2000, acs->julian_date, &acs->longitude, &acs->latitude, &acs->altitude);
-	
 	// Run IGRF
 	get_mag_inertial(acs->julian_date, acs->longitude, acs->latitude, acs->altitude, igrf_ned);
 	

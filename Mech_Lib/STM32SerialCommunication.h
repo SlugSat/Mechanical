@@ -14,6 +14,36 @@
 #define STM32SERIAL_H
 
 #include "main.h"
+#include <ACS.h>
+
+/** 
+ * @brief  Initializes serial communication from the ACS
+ * @param  acs: a pointer to an existing Attitude Control System object
+ * @param  huart: pointer to a UART handle defined in main.c
+ * @return None
+*/
+void initializeACSSerial(UART_HandleTypeDef* uart);
+
+/** 
+ * @brief  Handles I/O with 42. Should be called at the beginning of every loop.
+ * @param  acs: a pointer to an existing Attitude Control System object
+ * @return Updates mag_vector, gyro_vector, and solar_vector in acs
+*/
+void syncWith42(ACSType* acs);
+
+/** 
+ * @brief  Reads sensor data from serial and updates acs
+ * @param  acs: a pointer to an existing Attitude Control System object
+ * @return Updates mag_vector, gyro_vector, solar_vector, & clears printstring in acs
+*/
+void readSensorsFromSerial(ACSType* acs);
+
+/** 
+ * @brief  Sends actuator PWMs from acs over serial
+ * @param  acs: a pointer to an existing Attitude Control System object
+ * @return None
+*/
+void sendActuatorsToSerial(ACSType* acs);
 
 /** 
  * @brief  Blocks until completing a handshake with 42
@@ -47,5 +77,13 @@ HAL_StatusTypeDef STM32SerialSendString(UART_HandleTypeDef* huart, char* string)
  * @return Always 0 for now
 */
 int STM32SerialReceiveFloats(UART_HandleTypeDef* huart, float* f, unsigned int n);
+
+/** 
+ * @brief  Prints str to 42 on the next call of syncWith42()
+ * @param  acs: a pointer to an existing Attitude Control System object
+ * @param  str: string to print
+ * @return Updates printstring in acs
+*/
+void printTo42(char* str);
 
 #endif
