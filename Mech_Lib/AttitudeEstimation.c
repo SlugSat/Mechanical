@@ -91,6 +91,7 @@ void updateAttitudeEstimate(ACSType* acs) {
 void integrateDCM(ACSType* acs, float Kp_mag, float Ki_mag, float Kp_sv, float Ki_sv, float dt) {
 			
 	static char init_run = 0;
+	static Matrix mag_normalized, sv_normalized, mi_normalized, svi_normalized;
 	static Matrix mag_i_body, sv_i_body; // Inertial sensor vectors translated to body
 	static Matrix mag_err, sv_err; // Error vectors (result of cross product between measured and inertial)
 	static Matrix merr_x_Kp, sverr_x_Kp; // Error multiplied by Kp
@@ -100,6 +101,10 @@ void integrateDCM(ACSType* acs, float Kp_mag, float Ki_mag, float Kp_sv, float K
 	static Matrix new_R;
 			
 	if(init_run == 0) { // Initialize local Matrix objects on first run
+		mag_normalized = newMatrix(3, 1);
+		sv_normalized = newMatrix(3, 1);
+		mi_normalized = newMatrix(3, 1);
+		svi_normalized = newMatrix(3, 1);
 		mag_i_body = newMatrix(3, 1);
 		sv_i_body = newMatrix(3, 1);
 		mag_err = newMatrix(3, 1);
@@ -125,20 +130,24 @@ void integrateDCM(ACSType* acs, float Kp_mag, float Ki_mag, float Kp_sv, float K
 		return;
 	}
 	
-	matrixScale(acs->mag_vector, 1.0/norm_mag);
-	matrixScale(acs->solar_vector, 1.0/norm_sv);
-	matrixScale(acs->mag_inertial, 1.0/norm_mi);
-	matrixScale(acs->sv_inertial, 1.0/norm_svi);
+	matrixCopy(acs->mag_vector, mag_normalized);
+	matrixCopy(acs->solar_vector, sv_normalized);
+	matrixCopy(acs->mag_inertial, mi_normalized);
+	matrixCopy(acs->sv_inertial, svi_normalized);
+	matrixScale(mag_normalized, 1.0/norm_mag);
+	matrixScale(sv_normalized, 1.0/norm_sv);
+	matrixScale(mi_normalized, 1.0/norm_mi);
+	matrixScale(svi_normalized, 1.0/norm_svi);
 	
 	// ***** FIND ERROR FROM MAG *****
-	matrixMult(acs->Rt, acs->mag_inertial, mag_i_body); // Translate mag to body
-	vectorCrossProduct(acs->mag_vector, mag_i_body, mag_err);
+	matrixMult(acs->Rt, mi_normalized, mag_i_body); // Translate mag to body
+	vectorCrossProduct(mag_normalized, mag_i_body, mag_err);
 	matrixCopy(mag_err, merr_x_Kp);
 	matrixScale(merr_x_Kp, Kp_mag); // Kp_mag * mag_err
 	
 	// ***** FIND ERROR FROM SOLAR VECTOR *****
-	matrixMult(acs->Rt, acs->sv_inertial, sv_i_body); // Translate mag to body
-	vectorCrossProduct(acs->solar_vector, sv_i_body, sv_err); // Cross product
+	matrixMult(acs->Rt, svi_normalized, sv_i_body); // Translate mag to body
+	vectorCrossProduct(sv_normalized, sv_i_body, sv_err); // Cross product
 	matrixCopy(sv_err, sverr_x_Kp);
 	matrixScale(sverr_x_Kp, Kp_sv); // Kp_sv * mag_err
 	
