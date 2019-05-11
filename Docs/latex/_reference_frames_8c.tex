@@ -1,0 +1,117 @@
+\hypertarget{_reference_frames_8c}{}\section{C\+:/\+Users/galey/\+Documents/\+Mechanical/\+Mech\+\_\+\+Lib/\+Reference\+Frames.c File Reference}
+\label{_reference_frames_8c}\index{C:/Users/galey/Documents/Mechanical/Mech\_Lib/ReferenceFrames.c@{C:/Users/galey/Documents/Mechanical/Mech\_Lib/ReferenceFrames.c}}
+
+
+\+: Contains functions to translate between reference frames.  
+
+
+{\ttfamily \#include \char`\"{}Reference\+Frames.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_reference_frames_8c_ae0ac6fa3b43e92d488883a2f00081c46}\label{_reference_frames_8c_ae0ac6fa3b43e92d488883a2f00081c46}} 
+\#define {\bfseries J2000\+\_\+\+T\+O\+\_\+\+E\+C\+L\+I\+P\+T\+I\+C\+\_\+\+A\+N\+G\+LE}~-\/0.\+4101524
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_reference_frames_8c_abdaf8a766e1bd2a6c7d4c05f4fcac88d}\label{_reference_frames_8c_abdaf8a766e1bd2a6c7d4c05f4fcac88d}} 
+float {\bfseries get\+G\+M\+S\+T\+Degrees} (double JD)
+\item 
+void \mbox{\hyperlink{_reference_frames_8c_ad810fd5bc0fcf16966ed6c0ba2420a5b}{make\+D\+C\+M\+\_\+zyx}} (\mbox{\hyperlink{struct___matrix}{Matrix}} R, float yaw, float pitch, float roll)
+\item 
+void \mbox{\hyperlink{_reference_frames_8c_ad05396fc4343e314a56ae160f6f526bf}{J2000\+\_\+2\+\_\+ecliptic}} (\mbox{\hyperlink{struct___matrix}{Matrix}} v\+\_\+j2000, \mbox{\hyperlink{struct___matrix}{Matrix}} v\+\_\+ecliptic)
+\begin{DoxyCompactList}\small\item\em Converts vectors in the J2000 frame to the ecliptic E\+CI frame. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_reference_frames_8c_a38b7b208edf749de266f264e570fe511}{J2000\+\_\+2\+\_\+\+Long\+Lat\+Alt}} (\mbox{\hyperlink{struct___matrix}{Matrix}} v\+\_\+j2000, double JD, float $\ast$lng, float $\ast$lat, float $\ast$alt)
+\begin{DoxyCompactList}\small\item\em Converts J2000 vectors to longitude, latitude, and altitude on Earth. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_reference_frames_8c_a8a8f67366e55b9d6d15e3c2f3f5cd33c}{N\+E\+D\+\_\+2\+\_\+\+J2000}} (\mbox{\hyperlink{struct___matrix}{Matrix}} v\+\_\+ned, \mbox{\hyperlink{struct___matrix}{Matrix}} c\+\_\+j2000, double JD, \mbox{\hyperlink{struct___matrix}{Matrix}} v\+\_\+j2000)
+\begin{DoxyCompactList}\small\item\em Converts body centered vectors in a North/\+East/\+Down (N\+ED) frame to J2000. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\+: Contains functions to translate between reference frames. 
+
+Created by Galen Savidge. Edited 5/2/2019. 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_reference_frames_8c_ad05396fc4343e314a56ae160f6f526bf}\label{_reference_frames_8c_ad05396fc4343e314a56ae160f6f526bf}} 
+\index{ReferenceFrames.c@{ReferenceFrames.c}!J2000\_2\_ecliptic@{J2000\_2\_ecliptic}}
+\index{J2000\_2\_ecliptic@{J2000\_2\_ecliptic}!ReferenceFrames.c@{ReferenceFrames.c}}
+\subsubsection{\texorpdfstring{J2000\_2\_ecliptic()}{J2000\_2\_ecliptic()}}
+{\footnotesize\ttfamily void J2000\+\_\+2\+\_\+ecliptic (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct___matrix}{Matrix}}}]{v\+\_\+j2000,  }\item[{\mbox{\hyperlink{struct___matrix}{Matrix}}}]{v\+\_\+ecliptic }\end{DoxyParamCaption})}
+
+
+
+Converts vectors in the J2000 frame to the ecliptic E\+CI frame. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v\+\_\+j2000} & a column vector Matrix in the J2000 frame \\
+\hline
+{\em v\+\_\+ecliptic} & an allocated column vector Matrix to hold the result \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+v\+\_\+ecliptic now holds v\+\_\+j2000 converted into the ecliptic frame 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_reference_frames_8c_a38b7b208edf749de266f264e570fe511}\label{_reference_frames_8c_a38b7b208edf749de266f264e570fe511}} 
+\index{ReferenceFrames.c@{ReferenceFrames.c}!J2000\_2\_LongLatAlt@{J2000\_2\_LongLatAlt}}
+\index{J2000\_2\_LongLatAlt@{J2000\_2\_LongLatAlt}!ReferenceFrames.c@{ReferenceFrames.c}}
+\subsubsection{\texorpdfstring{J2000\_2\_LongLatAlt()}{J2000\_2\_LongLatAlt()}}
+{\footnotesize\ttfamily void J2000\+\_\+2\+\_\+\+Long\+Lat\+Alt (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct___matrix}{Matrix}}}]{v\+\_\+j2000,  }\item[{double}]{JD,  }\item[{float $\ast$}]{lng,  }\item[{float $\ast$}]{lat,  }\item[{float $\ast$}]{alt }\end{DoxyParamCaption})}
+
+
+
+Converts J2000 vectors to longitude, latitude, and altitude on Earth. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v\+\_\+j2000} & a column vector Matrix in the J2000 frame \\
+\hline
+{\em JD} & the current Julian date (days, with fraction) \\
+\hline
+{\em lng,lat,alt} & variables to return results \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+longitude \& latitude (degrees), altitude (meters) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_reference_frames_8c_ad810fd5bc0fcf16966ed6c0ba2420a5b}\label{_reference_frames_8c_ad810fd5bc0fcf16966ed6c0ba2420a5b}} 
+\index{ReferenceFrames.c@{ReferenceFrames.c}!makeDCM\_zyx@{makeDCM\_zyx}}
+\index{makeDCM\_zyx@{makeDCM\_zyx}!ReferenceFrames.c@{ReferenceFrames.c}}
+\subsubsection{\texorpdfstring{makeDCM\_zyx()}{makeDCM\_zyx()}}
+{\footnotesize\ttfamily void make\+D\+C\+M\+\_\+zyx (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct___matrix}{Matrix}}}]{R,  }\item[{float}]{yaw,  }\item[{float}]{pitch,  }\item[{float}]{roll }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em Euler} & angles \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+R contains the D\+CM 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_reference_frames_8c_a8a8f67366e55b9d6d15e3c2f3f5cd33c}\label{_reference_frames_8c_a8a8f67366e55b9d6d15e3c2f3f5cd33c}} 
+\index{ReferenceFrames.c@{ReferenceFrames.c}!NED\_2\_J2000@{NED\_2\_J2000}}
+\index{NED\_2\_J2000@{NED\_2\_J2000}!ReferenceFrames.c@{ReferenceFrames.c}}
+\subsubsection{\texorpdfstring{NED\_2\_J2000()}{NED\_2\_J2000()}}
+{\footnotesize\ttfamily void N\+E\+D\+\_\+2\+\_\+\+J2000 (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct___matrix}{Matrix}}}]{v\+\_\+ned,  }\item[{\mbox{\hyperlink{struct___matrix}{Matrix}}}]{c\+\_\+j2000,  }\item[{double}]{JD,  }\item[{\mbox{\hyperlink{struct___matrix}{Matrix}}}]{v\+\_\+j2000 }\end{DoxyParamCaption})}
+
+
+
+Converts body centered vectors in a North/\+East/\+Down (N\+ED) frame to J2000. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v\+\_\+ned} & a column vector Matrix in N\+ED \\
+\hline
+{\em c\+\_\+j2000} & craft position in J2000 \\
+\hline
+{\em JD} & the current Julian date (days, with fraction) \\
+\hline
+{\em v\+\_\+j2000} & an allocated column vector Matrix \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+v\+\_\+j2000 now holds v\+\_\+ned in J2000 
+\end{DoxyReturn}

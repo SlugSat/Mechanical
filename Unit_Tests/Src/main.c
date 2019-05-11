@@ -233,9 +233,9 @@ int main(void)
 	vectorSetXYZ(acs.gyro_vector, 0.1, 0.2, -0.1);
 	vectorSetXYZ(acs.w_rw, -50, -100, 200);
 	Matrix wdot_desired = make3x1Vector(0.05, 0.03, 0.04);
-	float dt = 1;
+	acs.dt = 1;
 	
-	wdot2rw_pwm(&acs, wdot_desired, dt);
+	wdot2rw_pwm(&acs, wdot_desired);
 	
 	sprintf(transmit, "Reaction wheel PWM\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
@@ -253,7 +253,7 @@ int main(void)
 	vectorSetXYZ(acs.gyro_vector, 0, 0, 0);
 	vectorSetXYZ(acs.w_rw, 0, 0, 0);
 	
-	runOrientationController(&acs, dt, 1);
+	runOrientationController(&acs, 1);
 	
 	sprintf(transmit, "Reaction wheel PWM\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
@@ -264,7 +264,7 @@ int main(void)
 	sprintf(transmit, "----- TEST 2 -----\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
 	
-	runOrientationController(&acs, dt, 0);
+	runOrientationController(&acs, 0);
 	
 	sprintf(transmit, "Reaction wheel PWM\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
@@ -276,9 +276,9 @@ int main(void)
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
 	vectorSetXYZ(acs.gyro_vector, 0.03, -0.015, 0.01);
 	vectorSetXYZ(acs.w_rw, -30, -150, -190);
-	dt = 0.1;
+	acs.dt = 0.1;
 	
-	runOrientationController(&acs, dt, 0);
+	runOrientationController(&acs, 0);
 	
 	sprintf(transmit, "Reaction wheel PWM\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
@@ -294,7 +294,7 @@ int main(void)
 	sprintf(transmit, "----- TEST 1 -----\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
 	
-	runStabilizationController(&acs, dt, 1);
+	runStabilizationController(&acs, 1);
 	
 	sprintf(transmit, "Reaction wheel PWM\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
@@ -305,7 +305,7 @@ int main(void)
 	sprintf(transmit, "----- TEST 2 -----\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
 	
-	runStabilizationController(&acs, dt, 0);
+	runStabilizationController(&acs, 0);
 	
 	sprintf(transmit, "Reaction wheel PWM\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
@@ -318,7 +318,7 @@ int main(void)
 	vectorSetXYZ(acs.gyro_vector, 0.08, 0, -0.025);
 	vectorSetXYZ(acs.w_rw, 110, 20, -45);
 	
-	runStabilizationController(&acs, dt, 0);
+	runStabilizationController(&acs, 0);
 	
 	sprintf(transmit, "Reaction wheel PWM\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);

@@ -17,6 +17,7 @@
 
 #define BYTES_PER_FLOAT 4
 #define CONTROL_PACKET_SIZE BYTES_PER_FLOAT
+#define HANDSHAKE_BYTE 0xA5
 
 typedef enum {
 	SERIAL_ENABLE,

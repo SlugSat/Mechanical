@@ -21,7 +21,6 @@
 
 /* Constants -----------------------------------------------------------------*/
 #define NUM_SOLAR_PANELS 6
-#define MAX_MOMENT 2.0
 
  
 /* Datatypes -----------------------------------------------------------------*/
@@ -48,6 +47,7 @@ typedef struct {
 	
 	// Attitude estimation vectors
 	Matrix gyro_bias;
+	float gyro_bias_dot_norm;
 	
 	// Inertial vectors (ecliptic frame)
 	Matrix sv_inertial; // Found using the Julian date
@@ -62,6 +62,9 @@ typedef struct {
 	Matrix z_err;
 	Matrix n_err;
 	Matrix err; // err = z_err + n_err
+	
+	// Error scalars (degrees)
+	float pointing_err;
 	
 	// Sensor hardware
 	MovingAvgFilter mag_filter;

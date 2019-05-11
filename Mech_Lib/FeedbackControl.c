@@ -13,7 +13,7 @@
 
 // HEADER FILE
 #include <FeedbackControl.h>
-#include <math.h>
+
 
 //Torque rod
 #define MAXDIP 2.0
@@ -26,6 +26,9 @@
 #define KT 0.00713 // Nm/A
 #define KE 0.00713332454 // V/rad/s
 #define R 92.7 // Ohms
+
+// Torque rod moment
+#define MAX_MOMENT 2.0
 
 
 
@@ -48,7 +51,7 @@ void findErrorVectors(ACSType* acs) {
 	}
 	
 	// ***** FIND POINTING ERROR BETWEEN Z AXIS AND CRAFT POSITION VECTOR *****
-	matrixMult(acs->Rt, acs->craft_inertial, craft_B); // Earth->craft vector in body frame
+	matrixMult(acs->Rt, acs->craft_inertial, craft_B); // Find Earth->craft vector in body frame
 	vectorCrossProduct(craft_B, zhat_B, acs->z_err);
 	matrixScale(acs->z_err, 0.5);
 	
@@ -66,12 +69,17 @@ void findErrorVectors(ACSType* acs) {
 	vectorCrossProduct(n_B, corner_B, acs->n_err);
 	matrixScale(acs->n_err, 0.5);
 	
+	
 	// Sum Z and N error to find total error
 	matrixAdd(acs->z_err, acs->n_err, acs->err);
+	
+	
+	// Find scalar pointing error (used for state transitions)
+	acs->pointing_err = acos(vectorDotProduct(zhat_B, craft_B))*180/PI;
 }
 
 
-void runBdotController(ACSType* acs, float dt) {
+void runBdotController(ACSType* acs) {
 	static int init_run = 0;
 	static Matrix b_rot, w_adj, bdot, last_mag;
 	
@@ -92,6 +100,7 @@ void runBdotController(ACSType* acs, float dt) {
 	matrixSubtract(b_rot, acs->gyro_vector, w_adj);//w_adj = b_rot - w 
 	vectorCrossProduct(w_adj, acs->mag_vector, bdot);
 	
+
 	// ***** FIND MAGNETIC DIPOLE MOMENT *****
 	// find the signs of bdot vector
 
@@ -101,13 +110,18 @@ void runBdotController(ACSType* acs, float dt) {
 	
 	// ***** FIND PWM FOR EACH TORQUE ROD *****
 	matrixScale(bdot, 100.0);
+	
+	// ***** FIND PWM FOR EACH TORQUE ROD *****
+	float bdot_norm = vectorNorm(bdot);
+	if(bdot_norm == 0) return;
+	matrixScale(bdot, -100.0/bdot_norm);
 	matrixCopy (bdot, acs->tr_PWM);
 	
 	return;
 }
 
 
-void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired, float dt) {
+void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired) {
 	static int init_run = 0;
 	static Matrix torque, p, p_rw, wxp, Jxwdot, w_rw_new;
 	
@@ -134,7 +148,7 @@ void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired, float dt) {
 	
 	// Find desired rw_wdot
 	matrixMult(acs->J_rw_inv, torque, w_rw_new); // w_rw_new = J_rw_inv*torque
-	matrixScale(w_rw_new, dt); // w_rw_new = J_rw_inv*torque*dt
+	matrixScale(w_rw_new, acs->dt); // w_rw_new = J_rw_inv*torque*dt
 	matrixAdd(w_rw_new, acs->w_rw, w_rw_new); // w_rw_new = w_rw + J_rw_inv*torque*dt
 	
 	// Find PWM

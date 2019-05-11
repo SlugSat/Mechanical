@@ -33,12 +33,11 @@ void findErrorVectors(ACSType* acs);
  * @param  dt: time in seconds since last call of this function
  * @return None
  */
-void runBdotController(ACSType* acs, float dt);
+void runBdotController(ACSType* acs);
 
  /**
  * @brief  Runs the feedback controller used to move the craft over large angles
  * @param  acs: a pointer to an existing Attitude Control System object
- * @param  dt: time in seconds since last call of this function
  * @param  first_step: 1 right after state transitions, 0 otherwise
  * @return Updates acs->rw_PWM
  */
@@ -47,11 +46,11 @@ void runOrientationController(ACSType* acs, int first_step);
 /**
  * @brief  Runs the feedback controller used to stabilize the craft when error is low
  * @param  acs: a pointer to an existing Attitude Control System object
- * @param  dt: time in seconds since last call of this function
+ * @param  err: generally either acs.z_err or acs.err
  * @param  first_step: 1 right after state transitions, 0 otherwise
  * @return Updates acs->rw_PWM
  */
-void runStabilizationController(ACSType* acs, int first_step);
+void runStabilizationController(ACSType* acs, Matrix err, int first_step);
 
 /**
  * @brief  Finds reaction wheel PWM to achieve a desired craft wdot

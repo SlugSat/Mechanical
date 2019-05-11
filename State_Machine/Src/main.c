@@ -2,38 +2,11 @@
 /**
   ******************************************************************************
   * @file           : main.c
-  * @brief          : Main program body
+  * @brief          : ACS state machine main file
   ******************************************************************************
-  ** This notice applies to any and all portions of this file
-  * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
-  * inserted by the user or by software development tools
-  * are owned by their respective copyright owners.
-  *
-  * COPYRIGHT(c) 2019 STMicroelectronics
-  *
-  * Redistribution and use in source and binary forms, with or without modification,
-  * are permitted provided that the following conditions are met:
-  *   1. Redistributions of source code must retain the above copyright notice,
-  *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
-  *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
-  *      may be used to endorse or promote products derived from this software
-  *      without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  *
+  ** This file contains the ACS flight software used on SlugSat's flat-sat. This
+	* program is designed to run in conjunction with SlugSat's 42 simulation to 
+	* show the behavior of the full ACS.
   ******************************************************************************
   */
 /* USER CODE END Header */
@@ -44,44 +17,18 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 // ACS modules
-#include <ACS.h>
-#include <AttitudeEstimation.h>
-#include <FeedbackControl.h>
-
-// C libraries
-#include <math.h>
-#include <stdlib.h>
-#include <string.h>
+#include <ACSStateMachine.h>
 
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-typedef enum {
-	DEFAULT,
-	WAIT_FOR_ENABLE,
-	DETUMBLE,
-	WAIT_FOR_ATTITUDE,
-	REORIENT,
-	STABILIZE
-}ACSState;
 	
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
-#define DETUMBLE_THRESHOLD 0.1 					// Rad/s
-#define STABLE_ATTITUDE_THRESHOLD 0.1 	// Rad/s^2
-#define POINT_ERROR_THRESHOLD_HIGH 20		// Degrees
-#define POINT_ERROR_THRESHOLD_LOW 5
-
-#define GYRO_READ_TIME_MS 5
-#define IMU_READ_TIME_MS 9
-#define ATTITUDE_EST_TIME_MS 11
-#define FEEDBACK_CONTROL_TIME_MS 15
-#define BDOT_TIME_MS 10
-#define MOMENTUM_DUMP_TIME_MS 10
 
 /* USER CODE END PD */
 
@@ -91,41 +38,17 @@ typedef enum {
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-ADC_HandleTypeDef hadc1;
-DMA_HandleTypeDef hdma_adc1;
-
-I2C_HandleTypeDef hi2c1;
-
-TIM_HandleTypeDef htim2;
-
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-ACSState state = WAIT_FOR_ENABLE;
-
-// Temporary variables to hold values that are important for state transitions
-uint8_t acs_enable = 1;					// Bool
-float gyro_vector_norm = 0;			// Rad/s
-float gyro_vector_norm_dot = 0;	// Rad/s^2
-float pointing_error = 3;				// Degrees
-
-float v; // Variable used by delay function
 
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_DMA_Init(void);
-static void MX_TIM2_Init(void);
-static void MX_ADC1_Init(void);
-static void MX_I2C1_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-
-// Simulates processor load by doing floating point operations for the specified
-// number of ms
-void LoadProcessor(uint8_t time_ms);
 
 /* USER CODE END PFP */
 
@@ -162,14 +85,10 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_DMA_Init();
-  MX_TIM2_Init();
-  MX_ADC1_Init();
-  MX_I2C1_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 	
-	HAL_TIM_Base_Start(&htim2);
+	runACS(&huart2);
 	
   /* USER CODE END 2 */
 
@@ -181,75 +100,6 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		
-		/***** RUN ACS SUBROUTINES *****/
-		if(state == DETUMBLE) {
-			// Read gyro
-			LoadProcessor(GYRO_READ_TIME_MS);
-			
-			// Run bdot controller
-			LoadProcessor(BDOT_TIME_MS);
-		}
-		
-		if(state == WAIT_FOR_ATTITUDE || state == REORIENT || state == STABILIZE) {
-			// Read IMU (mag and gyro)
-			LoadProcessor(IMU_READ_TIME_MS);
-			
-			// Run attitude estimation
-			LoadProcessor(ATTITUDE_EST_TIME_MS);
-		}
-		
-		if(state == REORIENT || state == STABILIZE) {
-			// Run feedback controller
-			LoadProcessor(FEEDBACK_CONTROL_TIME_MS);
-		}
-		
-		if(state == STABILIZE) {
-			// Run momentum dumping
-			LoadProcessor(MOMENTUM_DUMP_TIME_MS);
-		}
-		
-		/***** RUN STATE MACHINE *****/
-		ACSState next_state = state;
-		
-		switch(state) {
-			case WAIT_FOR_ENABLE:
-				if(acs_enable){
-					next_state = DETUMBLE;
-				}
-				break;
-			
-			case DETUMBLE:
-				if(gyro_vector_norm < DETUMBLE_THRESHOLD) {
-					next_state = WAIT_FOR_ATTITUDE;
-				}
-				break;
-				
-			case WAIT_FOR_ATTITUDE:
-				if(fabsf(gyro_vector_norm_dot) < STABLE_ATTITUDE_THRESHOLD) {
-					next_state = REORIENT;
-				}
-				break;
-				
-			case REORIENT:
-				if(pointing_error < POINT_ERROR_THRESHOLD_LOW) {
-					next_state = STABILIZE;
-				}
-				break;
-				
-			case STABILIZE:
-				if(pointing_error > POINT_ERROR_THRESHOLD_HIGH) {
-					next_state = REORIENT;
-				}
-				break;
-				
-			default:
-				break;
-		}
-		
-		if(next_state != state)
-		{
-			state = next_state;
-		}
 	}
   /* USER CODE END 3 */
 }
@@ -262,14 +112,15 @@ void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
   /** Initializes the CPU, AHB and APB busses clocks 
   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI_DIV2;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL16;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -278,145 +129,15 @@ void SystemClock_Config(void)
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
   {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC;
-  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV2;
-  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
-  {
-    Error_Handler();
-  }
-}
-
-/**
-  * @brief ADC1 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_ADC1_Init(void)
-{
-
-  /* USER CODE BEGIN ADC1_Init 0 */
-
-  /* USER CODE END ADC1_Init 0 */
-
-  ADC_ChannelConfTypeDef sConfig = {0};
-
-  /* USER CODE BEGIN ADC1_Init 1 */
-
-  /* USER CODE END ADC1_Init 1 */
-  /** Common config 
-  */
-  hadc1.Instance = ADC1;
-  hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
-  hadc1.Init.ContinuousConvMode = DISABLE;
-  hadc1.Init.DiscontinuousConvMode = DISABLE;
-  hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
-  hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 1;
-  if (HAL_ADC_Init(&hadc1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /** Configure Regular Channel 
-  */
-  sConfig.Channel = ADC_CHANNEL_0;
-  sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN ADC1_Init 2 */
-
-  /* USER CODE END ADC1_Init 2 */
-
-}
-
-/**
-  * @brief I2C1 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_I2C1_Init(void)
-{
-
-  /* USER CODE BEGIN I2C1_Init 0 */
-
-  /* USER CODE END I2C1_Init 0 */
-
-  /* USER CODE BEGIN I2C1_Init 1 */
-
-  /* USER CODE END I2C1_Init 1 */
-  hi2c1.Instance = I2C1;
-  hi2c1.Init.ClockSpeed = 100000;
-  hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
-  hi2c1.Init.OwnAddress1 = 0;
-  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-  hi2c1.Init.OwnAddress2 = 0;
-  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN I2C1_Init 2 */
-
-  /* USER CODE END I2C1_Init 2 */
-
-}
-
-/**
-  * @brief TIM2 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_TIM2_Init(void)
-{
-
-  /* USER CODE BEGIN TIM2_Init 0 */
-
-  /* USER CODE END TIM2_Init 0 */
-
-  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
-  TIM_MasterConfigTypeDef sMasterConfig = {0};
-
-  /* USER CODE BEGIN TIM2_Init 1 */
-
-  /* USER CODE END TIM2_Init 1 */
-  htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 40-1;
-  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 65535;
-  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN TIM2_Init 2 */
-
-  /* USER CODE END TIM2_Init 2 */
-
 }
 
 /**
@@ -452,21 +173,6 @@ static void MX_USART2_UART_Init(void)
 
 }
 
-/** 
-  * Enable DMA controller clock
-  */
-static void MX_DMA_Init(void) 
-{
-  /* DMA controller clock enable */
-  __HAL_RCC_DMA1_CLK_ENABLE();
-
-  /* DMA interrupt init */
-  /* DMA1_Channel1_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
-
-}
-
 /**
   * @brief GPIO Initialization Function
   * @param None
@@ -477,23 +183,22 @@ static void MX_GPIO_Init(void)
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOB_CLK_ENABLE();
 
 }
 
 /* USER CODE BEGIN 4 */
 
-void LoadProcessor(uint8_t time_ms)
-{
-	uint16_t init_time = TIM2->CNT;
-	uint16_t delay_time_10us = time_ms*100;
-	
-	v = (float)rand()/(float)rand();
-	
-	while((uint16_t)(TIM2->CNT - init_time) < delay_time_10us) {
-		v = v*(float)rand()/(float)rand();
-	}
-}
+//void LoadProcessor(uint8_t time_ms)
+//{
+//	uint16_t init_time = TIM2->CNT;
+//	uint16_t delay_time_10us = time_ms*100;
+//	
+//	v = (float)rand()/(float)rand();
+//	
+//	while((uint16_t)(TIM2->CNT - init_time) < delay_time_10us) {
+//		v = v*(float)rand()/(float)rand();
+//	}
+//}
 
 /* USER CODE END 4 */
 

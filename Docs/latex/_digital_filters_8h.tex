@@ -1,0 +1,70 @@
+\hypertarget{_digital_filters_8h}{}\section{C\+:/\+Users/galey/\+Documents/\+Mechanical/\+Mech\+\_\+\+Lib/\+Digital\+Filters.h File Reference}
+\label{_digital_filters_8h}\index{C:/Users/galey/Documents/Mechanical/Mech\_Lib/DigitalFilters.h@{C:/Users/galey/Documents/Mechanical/Mech\_Lib/DigitalFilters.h}}
+
+
+\+: Source file for the Digital\+Filters module.  
+
+
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_digital_filters_8h_a4da9266b7a157ad146deed92ef74f826}\label{_digital_filters_8h_a4da9266b7a157ad146deed92ef74f826}} 
+typedef struct \mbox{\hyperlink{struct___moving_avg_filter}{\+\_\+\+Moving\+Avg\+Filter}} $\ast$ {\bfseries Moving\+Avg\+Filter}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct___moving_avg_filter}{Moving\+Avg\+Filter}} \mbox{\hyperlink{_digital_filters_8h_a8ef38f79b0e457d8293ad5ecb350bd88}{new\+Moving\+Avg\+Filter}} (char num\+\_\+sensors, char num\+\_\+readings)
+\begin{DoxyCompactList}\small\item\em Allocates a new Moving\+Avg\+Filter; initializes history to 0. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_digital_filters_8h_a7e8cbba6d231e26a3c97dcd5b4daf474}{run\+Moving\+Avg\+Filter}} (\mbox{\hyperlink{struct___moving_avg_filter}{Moving\+Avg\+Filter}} f, float $\ast$new\+\_\+readings)
+\begin{DoxyCompactList}\small\item\em Runs the Moving\+Avg\+Filter with new data and returns filtered result. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\+: Source file for the Digital\+Filters module. 
+
+\+: Header for the Digital\+Filters module.
+
+Use this module to digitally filter sensor data.
+
+Created by Galen Savidge. Edited 3/4/2019. 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_digital_filters_8h_a8ef38f79b0e457d8293ad5ecb350bd88}\label{_digital_filters_8h_a8ef38f79b0e457d8293ad5ecb350bd88}} 
+\index{DigitalFilters.h@{DigitalFilters.h}!newMovingAvgFilter@{newMovingAvgFilter}}
+\index{newMovingAvgFilter@{newMovingAvgFilter}!DigitalFilters.h@{DigitalFilters.h}}
+\subsubsection{\texorpdfstring{newMovingAvgFilter()}{newMovingAvgFilter()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct___moving_avg_filter}{Moving\+Avg\+Filter}} new\+Moving\+Avg\+Filter (\begin{DoxyParamCaption}\item[{char}]{num\+\_\+sensors,  }\item[{char}]{num\+\_\+readings }\end{DoxyParamCaption})}
+
+
+
+Allocates a new Moving\+Avg\+Filter; initializes history to 0. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Number} & of sensors and number of readings per sensor to average \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to the new Moving\+Avg\+Filter 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_digital_filters_8h_a7e8cbba6d231e26a3c97dcd5b4daf474}\label{_digital_filters_8h_a7e8cbba6d231e26a3c97dcd5b4daf474}} 
+\index{DigitalFilters.h@{DigitalFilters.h}!runMovingAvgFilter@{runMovingAvgFilter}}
+\index{runMovingAvgFilter@{runMovingAvgFilter}!DigitalFilters.h@{DigitalFilters.h}}
+\subsubsection{\texorpdfstring{runMovingAvgFilter()}{runMovingAvgFilter()}}
+{\footnotesize\ttfamily void run\+Moving\+Avg\+Filter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct___moving_avg_filter}{Moving\+Avg\+Filter}}}]{f,  }\item[{float $\ast$}]{new\+\_\+readings }\end{DoxyParamCaption})}
+
+
+
+Runs the Moving\+Avg\+Filter with new data and returns filtered result. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em f} & An allocated Moving\+Avg\+Filter \\
+\hline
+{\em new\+\_\+readings} & A num\+\_\+sensors size array of raw data. Contains filtered data after the function returns. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}

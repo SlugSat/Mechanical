@@ -8,7 +8,8 @@
 	* AttitudeEstimation functions as well as a main loop which runs attitude
 	* estimation with the same parameters as the example Matlab program.
 	*
-	* NOT CURRENTLY WORKING AS OF 4/18/2019. 
+	* Working as of 5/8/2019, but the feedback constants are no longer the same as
+	* Matlab.
   *
   ******************************************************************************
   */
@@ -306,13 +307,7 @@ int main(void)
 	acs.sv_inertial = make3x1Vector(1, 0, 0);
 	acs.mag_inertial = make3x1Vector(0, 0, -1);
 	
-	float Kp_sv = 0.2;
-	float Ki_sv = 0.02;
-	
-	float Kp_mag = 0.2;
-	float Ki_mag = 0.02;
-	
-	float dt = 1;
+	acs.dt = 1;
 	
   /* USER CODE END 2 */
 
@@ -320,7 +315,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		integrateDCM(&acs, Kp_mag, Ki_mag, Kp_sv, Ki_sv, dt);
+		updateAttitudeEstimate(&acs);
 		
 		// Print DCM every step
 		printMatrix(acs.R, transmit);

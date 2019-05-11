@@ -46,6 +46,8 @@
 #include <ACS.h>
 #include <STM32SerialCommunication.h>
 #include <InertialVectors.h>
+#include <AttitudeEstimation.h>
+#include <FeedbackControl.h>
 
 /* USER CODE END Includes */
 
@@ -119,6 +121,11 @@ int main(void)
 	initializeACS(&acs);
 	initializeACSSerial(&acs, &huart2);
 	
+	vectorSetXYZ(acs.tr_PWM, 0, 0, 0);
+	vectorSetXYZ(acs.rw_PWM, 0, 10, 0);
+	
+	int first_step = 1;
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -128,23 +135,46 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+		/***** 42 I/0 *****/
+		STM32SerialHandshake(&huart2);
 		readSensorsFromSerial(&acs);
-		
-		vectorSetXYZ(acs.tr_PWM, 0, 0, 0);
-		vectorSetXYZ(acs.rw_PWM, 0, 0, 100);
-		
 		sendActuatorsToSerial(&acs);
 		
-		findMagInertial(&acs);
+		char gyrobias[100];
+		printMatrix(acs.gyro_bias, gyrobias);
 		
-		char mag[100];
+		char s1[100];
+		char s2[100];
 		
-		printMatrix(acs.mag_inertial, mag);
+		float ypr[3];
+		findEulerAngles(acs.R, ypr);
+		
 		char string[300];
-		sprintf(string, "Julian Date: %11.4f\nLongitude\tLatitude\tAltitude\n%6.2f\t\t%6.2f\t\t%6.2f\nMag_I:\n%s\n", 
-				acs.julian_date, acs.longitude, acs.latitude, acs.altitude, mag);
+		printMatrix(acs.solar_vector, s1);
+		printMatrix(acs.mag_vector, s2);
+		sprintf(string, "Solar vector:\n%s\nMag vector:\n%s\nJulian date: %15.7f", s1, s2, acs.julian_date);
+//		printMatrix(acs.mag_inertial, s1);
+//		printMatrix(acs.sv_inertial, s2);
+		//sprintf(string, "Mag inertial:\n%s\nSV inertial:\n%s", s1, s2);
+		//sprintf(string, "Yaw\tPitch\tRoll\n%6.2f\t%6.2f\t%6.2f\nGyro bias:\n%s", 180*ypr[0]/PI, 180*ypr[1]/PI, 180*ypr[2]/PI, gyrobias);
+		
+//		printMatrix(acs.z_err, s1);
+//		printMatrix(acs.n_err, s2);
+//		sprintf(string, "Z error:\n%s\nN error:\n%s", s1, s2);
 		
 		STM32SerialSendString(&huart2, string);
+		
+		
+		/***** ATTITUDE DETERMINATION *****/
+		findMagInertial(&acs);
+		findSunInertial(&acs);
+		updateAttitudeEstimate(&acs);
+		
+		
+		/***** FEEDBACK CONTROL *****/
+		findErrorVectors(&acs);
+		//runOrientationController(&acs, first_step);
+		first_step = 0;
   }
   /* USER CODE END 3 */
 }

@@ -1,0 +1,139 @@
+\hypertarget{_packet_protocol_8h}{}\section{C\+:/\+Users/galey/\+Documents/\+Mechanical/\+Mech\+\_\+\+Lib/\+Packet\+Protocol.h File Reference}
+\label{_packet_protocol_8h}\index{C:/Users/galey/Documents/Mechanical/Mech\_Lib/PacketProtocol.h@{C:/Users/galey/Documents/Mechanical/Mech\_Lib/PacketProtocol.h}}
+
+
+\+: Source file for the Packet\+Protocol module.  
+
+
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_packet_protocol_8h_ad95833963a96cc2dcb44c6f9fd95d76c}\label{_packet_protocol_8h_ad95833963a96cc2dcb44c6f9fd95d76c}} 
+\#define {\bfseries B\+Y\+T\+E\+S\+\_\+\+P\+E\+R\+\_\+\+F\+L\+O\+AT}~4
+\item 
+\mbox{\Hypertarget{_packet_protocol_8h_aa4346db7ba09eb39e70a10cec1972b44}\label{_packet_protocol_8h_aa4346db7ba09eb39e70a10cec1972b44}} 
+\#define {\bfseries C\+O\+N\+T\+R\+O\+L\+\_\+\+P\+A\+C\+K\+E\+T\+\_\+\+S\+I\+ZE}~B\+Y\+T\+E\+S\+\_\+\+P\+E\+R\+\_\+\+F\+L\+O\+AT
+\item 
+\mbox{\Hypertarget{_packet_protocol_8h_aa22dac7b28411a3a8bdcdb306e352d31}\label{_packet_protocol_8h_aa22dac7b28411a3a8bdcdb306e352d31}} 
+\#define {\bfseries H\+A\+N\+D\+S\+H\+A\+K\+E\+\_\+\+B\+Y\+TE}~0x\+A5
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_packet_protocol_8h_afff1737b43ebc30e138ec9a1fb7cf73c}\label{_packet_protocol_8h_afff1737b43ebc30e138ec9a1fb7cf73c}} 
+enum {\bfseries Control\+Packet\+Type} \{ {\bfseries S\+E\+R\+I\+A\+L\+\_\+\+E\+N\+A\+B\+LE}, 
+{\bfseries S\+T\+A\+RT}, 
+{\bfseries A\+CK}, 
+{\bfseries N\+O\+NE}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{_packet_protocol_8h_ab46bd48a54ff720ea657960a4ae1d2a6}{floats\+To\+Packet}} (float $\ast$f, uint8\+\_\+t $\ast$p, unsigned int n)
+\begin{DoxyCompactList}\small\item\em Writes n floats to a packet of size n$\ast$4 bytes. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_packet_protocol_8h_ab96a1915824174b721ba0b03421252ac}{packet\+To\+Floats}} (float $\ast$f, uint8\+\_\+t $\ast$p, unsigned int n)
+\begin{DoxyCompactList}\small\item\em Reads n floats from a packet of size n$\ast$4 bytes. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_packet_protocol_8h_a095ad1e03e3fa106ec33af1e092661d3}{make\+Control\+Packet}} (uint8\+\_\+t $\ast$p, Control\+Packet\+Type type)
+\begin{DoxyCompactList}\small\item\em Makes a control packet in packet array p. \end{DoxyCompactList}\item 
+Control\+Packet\+Type \mbox{\hyperlink{_packet_protocol_8h_aa941a3f021502c97d498ed13c4ff972b}{is\+Control\+Packet}} (uint8\+\_\+t $\ast$p)
+\begin{DoxyCompactList}\small\item\em Checks if p contains a control packet. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\+: Source file for the Packet\+Protocol module. 
+
+\+: Header for the Packet\+Protocol module.
+
+Use this module to create packets to send to and from the flat-\/sat over serial.
+
+Created by Galen Savidge. Edited 4/13/2019.
+
+Use this module to create packets to send to and from the flat-\/sat over serial.
+
+Created by Galen Savidge. Edited 3/6/2019. 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_packet_protocol_8h_ab46bd48a54ff720ea657960a4ae1d2a6}\label{_packet_protocol_8h_ab46bd48a54ff720ea657960a4ae1d2a6}} 
+\index{PacketProtocol.h@{PacketProtocol.h}!floatsToPacket@{floatsToPacket}}
+\index{floatsToPacket@{floatsToPacket}!PacketProtocol.h@{PacketProtocol.h}}
+\subsubsection{\texorpdfstring{floatsToPacket()}{floatsToPacket()}}
+{\footnotesize\ttfamily void floats\+To\+Packet (\begin{DoxyParamCaption}\item[{float $\ast$}]{f,  }\item[{uint8\+\_\+t $\ast$}]{p,  }\item[{unsigned int}]{n }\end{DoxyParamCaption})}
+
+
+
+Writes n floats to a packet of size n$\ast$4 bytes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em f} & array of floats to be sent \\
+\hline
+{\em p} & byte array of size n$\ast$4 to contain the packet \\
+\hline
+{\em n} & number of floats in f \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_packet_protocol_8h_aa941a3f021502c97d498ed13c4ff972b}\label{_packet_protocol_8h_aa941a3f021502c97d498ed13c4ff972b}} 
+\index{PacketProtocol.h@{PacketProtocol.h}!isControlPacket@{isControlPacket}}
+\index{isControlPacket@{isControlPacket}!PacketProtocol.h@{PacketProtocol.h}}
+\subsubsection{\texorpdfstring{isControlPacket()}{isControlPacket()}}
+{\footnotesize\ttfamily Control\+Packet\+Type is\+Control\+Packet (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{p }\end{DoxyParamCaption})}
+
+
+
+Checks if p contains a control packet. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & received packet of size 4 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+N\+O\+NE if p is not a control packet, otherwise the packet type 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_packet_protocol_8h_a095ad1e03e3fa106ec33af1e092661d3}\label{_packet_protocol_8h_a095ad1e03e3fa106ec33af1e092661d3}} 
+\index{PacketProtocol.h@{PacketProtocol.h}!makeControlPacket@{makeControlPacket}}
+\index{makeControlPacket@{makeControlPacket}!PacketProtocol.h@{PacketProtocol.h}}
+\subsubsection{\texorpdfstring{makeControlPacket()}{makeControlPacket()}}
+{\footnotesize\ttfamily void make\+Control\+Packet (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{p,  }\item[{Control\+Packet\+Type}]{type }\end{DoxyParamCaption})}
+
+
+
+Makes a control packet in packet array p. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & byte array of size 4 to contain the packet \\
+\hline
+{\em type} & type of control packet to make \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_packet_protocol_8h_ab96a1915824174b721ba0b03421252ac}\label{_packet_protocol_8h_ab96a1915824174b721ba0b03421252ac}} 
+\index{PacketProtocol.h@{PacketProtocol.h}!packetToFloats@{packetToFloats}}
+\index{packetToFloats@{packetToFloats}!PacketProtocol.h@{PacketProtocol.h}}
+\subsubsection{\texorpdfstring{packetToFloats()}{packetToFloats()}}
+{\footnotesize\ttfamily void packet\+To\+Floats (\begin{DoxyParamCaption}\item[{float $\ast$}]{f,  }\item[{uint8\+\_\+t $\ast$}]{p,  }\item[{unsigned int}]{n }\end{DoxyParamCaption})}
+
+
+
+Reads n floats from a packet of size n$\ast$4 bytes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em f} & array to hold received floats \\
+\hline
+{\em p} & received packet (must have size n$\ast$4) \\
+\hline
+{\em n} & size of f \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}

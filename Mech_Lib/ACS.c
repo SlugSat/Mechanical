@@ -3,7 +3,7 @@
   * @file           : ACS.c
   * @brief          : Source file for the Attitude Control System (ACS).
   ******************************************************************************
-	* Created by Galen Savidge. Edited 4/21/2019.
+	* Created by Galen Savidge. Edited 5/6/2019.
   ******************************************************************************
   */
 
@@ -20,9 +20,9 @@
 #define RW_H 0.005
 
 // Body inertia matrices
-#define JB_11 0.60579
-#define JB_22 0.01330
-#define JB_33 0.59753
+#define JB_11 0.01151603
+#define JB_22 0.10225145
+#define JB_33 0.09528751
 
 #define RECEIVED_FLOATS 18
 #define SENT_FLOATS 6
@@ -112,7 +112,9 @@ void initializeACSSerial(ACSType* acs, UART_HandleTypeDef* huart) {
 void readSensorsFromSerial(ACSType* acs) {
 	// Read floats from UART
 	float sensor_data[RECEIVED_FLOATS];
-	STM32SerialReceiveFloats(acs->huart, sensor_data, RECEIVED_FLOATS);
+	if(STM32SerialReceiveFloats(acs->huart, sensor_data, RECEIVED_FLOATS) != HAL_OK) {
+		return;
+	}
 	
 	// Get sensor vectors
 	vectorCopyArray(acs->mag_vector, sensor_data, 3);
