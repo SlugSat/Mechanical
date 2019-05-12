@@ -99,19 +99,23 @@ int main(void)
   MX_SPI1_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
-
-	runACS(&huart2);
+	
+	// Set global handles to allow the ACS to access them
+	setUartHandle(&huart2);
+	setSpiHandle(&hspi1);
+	
+	// Run the ACS main loop
+	runACS();
 	
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+	
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  }
+	
   /* USER CODE END 3 */
 }
 

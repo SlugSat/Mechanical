@@ -24,8 +24,8 @@
 
 
 // Module level variables
-UART_HandleTypeDef* huart;
-char printstring[1000];
+static UART_HandleTypeDef* huart;
+static char printstring[1000];
 
 
 // Private functions

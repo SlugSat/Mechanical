@@ -10,6 +10,7 @@
       <TargetName>FlatSatACS</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
+      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -620,6 +621,26 @@
               <FileName>system_stm32f1xx.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/system_stm32f1xx.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>IGRF</GroupName>
+          <Files>
+            <File>
+              <FileName>IGRF12.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\IGRF\IGRF12.h</FilePath>
+            </File>
+            <File>
+              <FileName>mag_inertial.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Mech_Lib\IGRF\mag_inertial.c</FilePath>
+            </File>
+            <File>
+              <FileName>mag_inertial.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Mech_Lib\IGRF\mag_inertial.h</FilePath>
             </File>
           </Files>
         </Group>

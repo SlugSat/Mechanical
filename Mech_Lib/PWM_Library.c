@@ -1,6 +1,6 @@
 #include "PWM_Library.h"
 
-void PWM_Set_Duty_Cycle(TIM_HandleTypeDef *htim, uint16_t duty_cycle, uint32_t channel)
+void PWM_Set_Duty_Cycle(TIM_HandleTypeDef *htim, float duty_cycle, uint32_t channel)
 {
 	switch(channel) {
 		case TIM_CHANNEL_1:

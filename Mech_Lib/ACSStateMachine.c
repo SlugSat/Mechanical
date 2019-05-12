@@ -5,7 +5,7 @@
   ******************************************************************************
   * 
 	* 
-	* Created by Galen Savidge. Edited 5/9/2019.
+	* Created by Galen Savidge. Edited 5/11/2019.
   ******************************************************************************
   */
 
@@ -66,15 +66,32 @@ char state_names[][30] = {
 		"Stabilize"
 };
 
+
+// Serial device handles
 #ifdef ENABLE_42
-void runACS(UART_HandleTypeDef* huart) {
-#else
-void runACS(void) {
+static UART_HandleTypeDef* huart;
+
+void setUartHandle(UART_HandleTypeDef* uart) {
+	huart = uart;
+}
 #endif
+
+#ifdef ENABLE_FRAM
+static SPI_HandleTypeDef* hspi;
+
+void setSpiHandle(SPI_HandleTypeDef* spi) {
+	hspi = spi;
+}
+#endif
+
+
+void runACS(void) {
 	/***** INITIALIZE ACS *****/
 	ACSType acs;
 	initializeACS(&acs);
-	initializeACSSerial(huart); // Only necessary to communicate with 42
+	#ifdef ENABLE_42
+	initializeACSSerial(huart);
+	#endif
 	
 	ACSState state = WAIT_FOR_ATTITUDE;
 	int first_step = 1;

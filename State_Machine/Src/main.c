@@ -88,7 +88,8 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 	
-	runACS(&huart2);
+	setUartHandle(&huart2);
+	runACS();
 	
   /* USER CODE END 2 */
 

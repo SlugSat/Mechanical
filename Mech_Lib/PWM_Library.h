@@ -11,7 +11,7 @@
 // (note: the duty cycle is in percent so the range is 0-100
 //======================================================================
 void PWM_Set_Duty_Cycle(TIM_HandleTypeDef *htim, // timer handler
-												uint16_t duty_cycle,		 // percent duty cycle
+												float duty_cycle,		 			// percent duty cycle
 												uint32_t channel);				 // pwm generation channel
 
 //======================================================================
