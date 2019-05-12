@@ -115,6 +115,7 @@ w_rwhist = zeros(num_steps, 3);
 torque_trhist= zeros(num_steps, 3);
 mag_bodyhist= zeros(num_steps, 3);
 mhist= zeros(num_steps, 3);
+trPWM_hist = zeros(num_steps, 3);
 
 transition_times = [];
 
@@ -159,9 +160,10 @@ for i=1:num_steps
             bdot = bdotControl(w, mag_body, bold);
             bdot_hist(i,:) = bdot;
             %Stabilization control
-            [m , controller_wdot, torque_tr] = stabilizationController(w, w_rw, err, dt, mag_body, bdot, initial_step);
+            [m , controller_wdot, torque_tr] = stabilizationController(w, w_rw, err, dt, mag_body, initial_step);
             initial_step = 0;
             mhist(i,:) = m;
+            trPWM_hist(i,:) = m*100/2;
         end
     end
     
