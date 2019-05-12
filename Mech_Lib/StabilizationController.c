@@ -42,12 +42,12 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 		wdot_desired, h_rw, m, trTorque;
 	
 	if(init_run == 0) {
+		controller_torque = newMatrix(3, 1);
 		torque_integrator = make3x1Vector(0, 0, 0);
 		last_err = newMatrix(3, 1);
 		P = newMatrix(3, 1);
 		I = newMatrix(3, 1);
 		D = newMatrix(3, 1);
-		controller_torque = newMatrix(3, 1);
 		controller_wdot = newMatrix(3, 1);
 		wdot_desired = newMatrix(3, 1);
 		h_rw = newMatrix(3, 1);
@@ -94,7 +94,7 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 			vectorCrossProduct(m, acs->mag_vector, trTorque);
 		
 			//Check reaction wheels angular velocity
-			for(i = 0; i < 3; i++)
+			for(i = 1; i <= 3; i++)
 			{
 				//Turn on torque rods when reaction wheels are greater than 1000 RPM
 				if(fabs(matrixGetElement(acs->w_rw, i, 1)) > 100)
@@ -112,6 +112,8 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 			vectorSetXYZ(m, 0, 0, 0);
 			vectorSetXYZ(trTorque, 0, 0, 0);
 		}
+		
+		
 		// ***** FIND PWM FOR EACH TORQUE ROD *****
 		matrixCopy(m, acs->tr_PWM); 
 		matrixScale(acs->tr_PWM, 100.0/MAXDIP);	//Scale to PWM
@@ -133,11 +135,12 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 		matrixScale(D, KD_T/acs->dt);
 		
 		// Sum the P, I, and D components
-		matrixAdd(P, I, controller_torque);
+		matrixAdd(torque_integrator, P, controller_torque);
 		matrixAdd(controller_torque, D, controller_torque);
+		
 		//Add Torque rod torque
 		matrixAdd(controller_torque, trTorque, controller_torque);
-
+		
 		
 		// ***** WDOT CONTROLLER *****
 		// Proportional component
