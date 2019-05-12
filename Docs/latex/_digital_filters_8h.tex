@@ -2,7 +2,7 @@
 \label{_digital_filters_8h}\index{C:/Users/galey/Documents/Mechanical/Mech\_Lib/DigitalFilters.h@{C:/Users/galey/Documents/Mechanical/Mech\_Lib/DigitalFilters.h}}
 
 
-\+: Source file for the Digital\+Filters module.  
+Filter sensor data.  
 
 
 \subsection*{Typedefs}
@@ -21,13 +21,11 @@ void \mbox{\hyperlink{_digital_filters_8h_a7e8cbba6d231e26a3c97dcd5b4daf474}{run
 
 
 \subsection{Detailed Description}
-\+: Source file for the Digital\+Filters module. 
+Filter sensor data. 
 
-\+: Header for the Digital\+Filters module.
+Currently includes a moving average filter datatype, which runs a variable length digital moving average filter on a configurable number of sensor readings. Use \mbox{\hyperlink{_digital_filters_8h_a8ef38f79b0e457d8293ad5ecb350bd88}{new\+Moving\+Avg\+Filter()}} to allocate a Moving\+Avg\+Filter and then pass it to \mbox{\hyperlink{_digital_filters_8h_a7e8cbba6d231e26a3c97dcd5b4daf474}{run\+Moving\+Avg\+Filter()}} each loop to filter sensor data.
 
-Use this module to digitally filter sensor data.
-
-Created by Galen Savidge. Edited 3/4/2019. 
+Created by Galen Savidge. Edited 5/12/2019. 
 
 \subsection{Function Documentation}
 \mbox{\Hypertarget{_digital_filters_8h_a8ef38f79b0e457d8293ad5ecb350bd88}\label{_digital_filters_8h_a8ef38f79b0e457d8293ad5ecb350bd88}} 

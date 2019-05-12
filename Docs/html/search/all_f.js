@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['wdot2rw_5fpwm',['wdot2rw_pwm',['../_feedback_control_8c.html#a6663ec72a8ac78e77f38251b5a11c9e0',1,'wdot2rw_pwm(ACSType *acs, Matrix wdot_desired):&#160;FeedbackControl.c'],['../_feedback_control_8h.html#a6663ec72a8ac78e77f38251b5a11c9e0',1,'wdot2rw_pwm(ACSType *acs, Matrix wdot_desired):&#160;FeedbackControl.c']]]
+  ['t',['t',['../struct_a_c_s_type.html#afea36502e9d227ff62c5fb2719a246f2',1,'ACSType']]],
+  ['torque2wdot',['torque2wdot',['../_stabilization_controller_8c.html#a1de9230226c0e44b83be8cc202f82875',1,'StabilizationController.c']]],
+  ['tr_5fpwm',['tr_PWM',['../struct_a_c_s_type.html#a479836cb6277d49ac363e5aef596c7db',1,'ACSType']]]
 ];

@@ -3,9 +3,9 @@
   * @file           ACSStateMachine.h
   * @brief          Runs the logic for the ACS
   ******************************************************************************
+  **
   * 
-	* 
-	* Created by Galen Savidge. Edited 5/11/2019.
+  * Created by Galen Savidge. Edited 5/11/2019.
   ******************************************************************************
   */
 

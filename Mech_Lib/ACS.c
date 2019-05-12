@@ -1,8 +1,12 @@
 /**
   ******************************************************************************
-  * @file           : ACS.c
-  * @brief          : Source file for the Attitude Control System (ACS).
+  * @file           ACS.c
+  * @brief          Contains the Attitude Control System (ACS) struct
   ******************************************************************************
+    ** The ACS struct includes all the data needed to run the ACS. One struct 
+	* should be created when the ACS starts. A pointer to the struct should 
+	* then be passed to other ACS functions as appropriate.
+	* 
 	* Created by Galen Savidge. Edited 5/11/2019.
   ******************************************************************************
   */

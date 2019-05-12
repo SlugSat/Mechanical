@@ -115,6 +115,9 @@ Macros</h2></td></tr>
 <tr class="memitem:a5c71a5e59a53413cd6c270266d63b031"><td class="memItemLeft" align="right" valign="top"><a id="a5c71a5e59a53413cd6c270266d63b031"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>R</b>&#160;&#160;&#160;92.7</td></tr>
 <tr class="separator:a5c71a5e59a53413cd6c270266d63b031"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a844863df70a1327ae031ccc3e6560095"><td class="memItemLeft" align="right" valign="top"><a id="a844863df70a1327ae031ccc3e6560095"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_MOMENT</b>&#160;&#160;&#160;2.0</td></tr>
+<tr class="separator:a844863df70a1327ae031ccc3e6560095"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -124,9 +127,9 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>sign</b> (float x)</
 <tr class="memitem:a061127a629c487f3bc31574e39e3d684"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_feedback_control_8c.html#a061127a629c487f3bc31574e39e3d684">findErrorVectors</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs)</td></tr>
 <tr class="memdesc:a061127a629c487f3bc31574e39e3d684"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses the craft orientation and inertial vectors to find error.  <a href="#a061127a629c487f3bc31574e39e3d684">More...</a><br /></td></tr>
 <tr class="separator:a061127a629c487f3bc31574e39e3d684"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affa49e3f0a204edacd077326721d4f6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_feedback_control_8c.html#affa49e3f0a204edacd077326721d4f6d">runBdotController</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs, float dt)</td></tr>
-<tr class="memdesc:affa49e3f0a204edacd077326721d4f6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description.  <a href="#affa49e3f0a204edacd077326721d4f6d">More...</a><br /></td></tr>
-<tr class="separator:affa49e3f0a204edacd077326721d4f6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa55908d5fa5b58816b0d5ba386fe1954"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_feedback_control_8c.html#aa55908d5fa5b58816b0d5ba386fe1954">runBdotController</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs)</td></tr>
+<tr class="memdesc:aa55908d5fa5b58816b0d5ba386fe1954"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description.  <a href="#aa55908d5fa5b58816b0d5ba386fe1954">More...</a><br /></td></tr>
+<tr class="separator:aa55908d5fa5b58816b0d5ba386fe1954"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6663ec72a8ac78e77f38251b5a11c9e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_feedback_control_8c.html#a6663ec72a8ac78e77f38251b5a11c9e0">wdot2rw_pwm</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs, <a class="el" href="struct___matrix.html">Matrix</a> wdot_desired)</td></tr>
 <tr class="memdesc:a6663ec72a8ac78e77f38251b5a11c9e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds reaction wheel PWM to achieve a desired craft wdot.  <a href="#a6663ec72a8ac78e77f38251b5a11c9e0">More...</a><br /></td></tr>
 <tr class="separator:a6663ec72a8ac78e77f38251b5a11c9e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,8 +166,8 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>sign</b> (float x)</
 
 </div>
 </div>
-<a id="affa49e3f0a204edacd077326721d4f6d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#affa49e3f0a204edacd077326721d4f6d">&#9670;&nbsp;</a></span>runBdotController()</h2>
+<a id="aa55908d5fa5b58816b0d5ba386fe1954"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa55908d5fa5b58816b0d5ba386fe1954">&#9670;&nbsp;</a></span>runBdotController()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -173,18 +176,8 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>sign</b> (float x)</
           <td class="memname">void runBdotController </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_a_c_s_type.html">ACSType</a> *&#160;</td>
-          <td class="paramname"><em>acs</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>acs</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>dt</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">

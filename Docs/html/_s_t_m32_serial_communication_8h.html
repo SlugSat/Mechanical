@@ -95,11 +95,24 @@ $(document).ready(function(){initNavTree('_s_t_m32_serial_communication_8h.html'
 <p>: Send and receive data over serial  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;main.h&quot;</code><br />
+<code>#include &lt;<a class="el" href="_a_c_s_8h_source.html">ACS.h</a>&gt;</code><br />
 </div>
 <p><a href="_s_t_m32_serial_communication_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ada2e5bf03fac6669fcb8dd37890f57a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_s_t_m32_serial_communication_8h.html#ada2e5bf03fac6669fcb8dd37890f57a6">initializeACSSerial</a> (UART_HandleTypeDef *uart)</td></tr>
+<tr class="memdesc:ada2e5bf03fac6669fcb8dd37890f57a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes serial communication from the ACS.  <a href="#ada2e5bf03fac6669fcb8dd37890f57a6">More...</a><br /></td></tr>
+<tr class="separator:ada2e5bf03fac6669fcb8dd37890f57a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a033eff7bc0e28e99f5898e1cc9866f9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_s_t_m32_serial_communication_8h.html#a033eff7bc0e28e99f5898e1cc9866f9f">syncWith42</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs)</td></tr>
+<tr class="memdesc:a033eff7bc0e28e99f5898e1cc9866f9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles I/O with 42. Should be called at the beginning of every loop.  <a href="#a033eff7bc0e28e99f5898e1cc9866f9f">More...</a><br /></td></tr>
+<tr class="separator:a033eff7bc0e28e99f5898e1cc9866f9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad072f619e7cd898708cb18f8046dddf4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_s_t_m32_serial_communication_8h.html#ad072f619e7cd898708cb18f8046dddf4">readSensorsFromSerial</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs)</td></tr>
+<tr class="memdesc:ad072f619e7cd898708cb18f8046dddf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads sensor data from serial and updates acs.  <a href="#ad072f619e7cd898708cb18f8046dddf4">More...</a><br /></td></tr>
+<tr class="separator:ad072f619e7cd898708cb18f8046dddf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abddb75ac826a5945edf2bd9d9e936aaf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_s_t_m32_serial_communication_8h.html#abddb75ac826a5945edf2bd9d9e936aaf">sendActuatorsToSerial</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs)</td></tr>
+<tr class="memdesc:abddb75ac826a5945edf2bd9d9e936aaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends actuator PWMs from acs over serial.  <a href="#abddb75ac826a5945edf2bd9d9e936aaf">More...</a><br /></td></tr>
+<tr class="separator:abddb75ac826a5945edf2bd9d9e936aaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6100f2f60bcdce42fbdf84f725c492a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_s_t_m32_serial_communication_8h.html#ab6100f2f60bcdce42fbdf84f725c492a">STM32SerialHandshake</a> (UART_HandleTypeDef *huart)</td></tr>
 <tr class="memdesc:ab6100f2f60bcdce42fbdf84f725c492a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocks until completing a handshake with 42.  <a href="#ab6100f2f60bcdce42fbdf84f725c492a">More...</a><br /></td></tr>
 <tr class="separator:ab6100f2f60bcdce42fbdf84f725c492a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -112,12 +125,125 @@ Functions</h2></td></tr>
 <tr class="memitem:a0915517c1034bd40430b88a147d30776"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_s_t_m32_serial_communication_8h.html#a0915517c1034bd40430b88a147d30776">STM32SerialReceiveFloats</a> (UART_HandleTypeDef *huart, float *f, unsigned int n)</td></tr>
 <tr class="memdesc:a0915517c1034bd40430b88a147d30776"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking function to receive a set of n floating point numbers from serial.  <a href="#a0915517c1034bd40430b88a147d30776">More...</a><br /></td></tr>
 <tr class="separator:a0915517c1034bd40430b88a147d30776"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a822aae6b64d253b9a112dcb649ee547d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_s_t_m32_serial_communication_8h.html#a822aae6b64d253b9a112dcb649ee547d">printTo42</a> (char *str)</td></tr>
+<tr class="memdesc:a822aae6b64d253b9a112dcb649ee547d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints str to 42 on the next call of <a class="el" href="_s_t_m32_serial_communication_8h.html#a033eff7bc0e28e99f5898e1cc9866f9f" title="Handles I/O with 42. Should be called at the beginning of every loop.">syncWith42()</a>  <a href="#a822aae6b64d253b9a112dcb649ee547d">More...</a><br /></td></tr>
+<tr class="separator:a822aae6b64d253b9a112dcb649ee547d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>: Send and receive data over serial </p>
 <p>This module handles UART communication with the flight simulation running on a Linux PC/VM.</p>
 <p>Created by Galen Savidge. Edited 4/13/2019. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="ada2e5bf03fac6669fcb8dd37890f57a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada2e5bf03fac6669fcb8dd37890f57a6">&#9670;&nbsp;</a></span>initializeACSSerial()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void initializeACSSerial </td>
+          <td>(</td>
+          <td class="paramtype">UART_HandleTypeDef *&#160;</td>
+          <td class="paramname"><em>uart</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initializes serial communication from the ACS. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">acs</td><td>a pointer to an existing Attitude Control System object </td></tr>
+    <tr><td class="paramname">huart</td><td>pointer to a UART handle defined in main.c </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+
+</div>
+</div>
+<a id="a822aae6b64d253b9a112dcb649ee547d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a822aae6b64d253b9a112dcb649ee547d">&#9670;&nbsp;</a></span>printTo42()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void printTo42 </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints str to 42 on the next call of <a class="el" href="_s_t_m32_serial_communication_8h.html#a033eff7bc0e28e99f5898e1cc9866f9f" title="Handles I/O with 42. Should be called at the beginning of every loop.">syncWith42()</a> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">acs</td><td>a pointer to an existing Attitude Control System object </td></tr>
+    <tr><td class="paramname">str</td><td>string to print </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Updates printstring in acs </dd></dl>
+
+</div>
+</div>
+<a id="ad072f619e7cd898708cb18f8046dddf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad072f619e7cd898708cb18f8046dddf4">&#9670;&nbsp;</a></span>readSensorsFromSerial()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void readSensorsFromSerial </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_a_c_s_type.html">ACSType</a> *&#160;</td>
+          <td class="paramname"><em>acs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads sensor data from serial and updates acs. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">acs</td><td>a pointer to an existing Attitude Control System object </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Updates mag_vector, gyro_vector, solar_vector, &amp; clears printstring in acs </dd></dl>
+
+</div>
+</div>
+<a id="abddb75ac826a5945edf2bd9d9e936aaf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abddb75ac826a5945edf2bd9d9e936aaf">&#9670;&nbsp;</a></span>sendActuatorsToSerial()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sendActuatorsToSerial </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_a_c_s_type.html">ACSType</a> *&#160;</td>
+          <td class="paramname"><em>acs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sends actuator PWMs from acs over serial. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">acs</td><td>a pointer to an existing Attitude Control System object </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+
+</div>
+</div>
 <a id="ab6100f2f60bcdce42fbdf84f725c492a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab6100f2f60bcdce42fbdf84f725c492a">&#9670;&nbsp;</a></span>STM32SerialHandshake()</h2>
 
@@ -270,6 +396,33 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>HAL status of the transmission </dd></dl>
+
+</div>
+</div>
+<a id="a033eff7bc0e28e99f5898e1cc9866f9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a033eff7bc0e28e99f5898e1cc9866f9f">&#9670;&nbsp;</a></span>syncWith42()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void syncWith42 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_a_c_s_type.html">ACSType</a> *&#160;</td>
+          <td class="paramname"><em>acs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Handles I/O with 42. Should be called at the beginning of every loop. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">acs</td><td>a pointer to an existing Attitude Control System object </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Updates mag_vector, gyro_vector, and solar_vector in acs </dd></dl>
 
 </div>
 </div>

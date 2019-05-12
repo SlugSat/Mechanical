@@ -1,0 +1,76 @@
+\hypertarget{_a_c_s_state_machine_8h}{}\section{C\+:/\+Users/galey/\+Documents/\+Mechanical/\+Mech\+\_\+\+Lib/\+A\+C\+S\+State\+Machine.h File Reference}
+\label{_a_c_s_state_machine_8h}\index{C:/Users/galey/Documents/Mechanical/Mech\_Lib/ACSStateMachine.h@{C:/Users/galey/Documents/Mechanical/Mech\_Lib/ACSStateMachine.h}}
+
+
+Runs the logic for the A\+CS.  
+
+
+{\ttfamily \#include $<$main.\+h$>$}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{_a_c_s_state_machine_8h_af493e1e0197f128de043ff6d3062f77c}{set\+Uart\+Handle}} (U\+A\+R\+T\+\_\+\+Handle\+Type\+Def $\ast$uart)
+\begin{DoxyCompactList}\small\item\em Sets the U\+A\+RT handle used to communicate with 42. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_a_c_s_state_machine_8h_aab4bf2646d5fa50b15643cdf6d1338da}{set\+Spi\+Handle}} (S\+P\+I\+\_\+\+Handle\+Type\+Def $\ast$spi)
+\begin{DoxyCompactList}\small\item\em Sets the S\+PI handle used to communicate with F\+R\+AM. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_a_c_s_state_machine_8h_a17ce655d7656c8625b8eaee880b4c04b}{run\+A\+CS}} (void)
+\begin{DoxyCompactList}\small\item\em Runs the A\+CS in an infinite loop. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Runs the logic for the A\+CS. 
+
+Created by Galen Savidge. Edited 5/11/2019. 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_a_c_s_state_machine_8h_a17ce655d7656c8625b8eaee880b4c04b}\label{_a_c_s_state_machine_8h_a17ce655d7656c8625b8eaee880b4c04b}} 
+\index{ACSStateMachine.h@{ACSStateMachine.h}!runACS@{runACS}}
+\index{runACS@{runACS}!ACSStateMachine.h@{ACSStateMachine.h}}
+\subsubsection{\texorpdfstring{runACS()}{runACS()}}
+{\footnotesize\ttfamily void run\+A\+CS (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Runs the A\+CS in an infinite loop. 
+
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+See A\+CS State Machine (figure x, page x of the Year 3 Sping Report).
+
+State transition checks at the top of the code have low priority, checks at the bottom have high priority.\mbox{\Hypertarget{_a_c_s_state_machine_8h_aab4bf2646d5fa50b15643cdf6d1338da}\label{_a_c_s_state_machine_8h_aab4bf2646d5fa50b15643cdf6d1338da}} 
+\index{ACSStateMachine.h@{ACSStateMachine.h}!setSpiHandle@{setSpiHandle}}
+\index{setSpiHandle@{setSpiHandle}!ACSStateMachine.h@{ACSStateMachine.h}}
+\subsubsection{\texorpdfstring{setSpiHandle()}{setSpiHandle()}}
+{\footnotesize\ttfamily void set\+Spi\+Handle (\begin{DoxyParamCaption}\item[{S\+P\+I\+\_\+\+Handle\+Type\+Def $\ast$}]{spi }\end{DoxyParamCaption})}
+
+
+
+Sets the S\+PI handle used to communicate with F\+R\+AM. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em spi} & pointer to a S\+PI handle from main.\+c \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_a_c_s_state_machine_8h_af493e1e0197f128de043ff6d3062f77c}\label{_a_c_s_state_machine_8h_af493e1e0197f128de043ff6d3062f77c}} 
+\index{ACSStateMachine.h@{ACSStateMachine.h}!setUartHandle@{setUartHandle}}
+\index{setUartHandle@{setUartHandle}!ACSStateMachine.h@{ACSStateMachine.h}}
+\subsubsection{\texorpdfstring{setUartHandle()}{setUartHandle()}}
+{\footnotesize\ttfamily void set\+Uart\+Handle (\begin{DoxyParamCaption}\item[{U\+A\+R\+T\+\_\+\+Handle\+Type\+Def $\ast$}]{uart }\end{DoxyParamCaption})}
+
+
+
+Sets the U\+A\+RT handle used to communicate with 42. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em uart} & pointer to a U\+A\+RT handle from main.\+c \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}

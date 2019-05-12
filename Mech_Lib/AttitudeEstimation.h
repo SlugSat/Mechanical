@@ -1,12 +1,15 @@
 /**
   ******************************************************************************
-  * @file           : AttitudeEstimation.h
-  * @brief          : Header for the AttitudEstimation module.
+  * @file           AttitudeEstimation.h
+  * @brief          Sensor fusion and attitude determination
   ******************************************************************************
-  ** This module contains the code to run closed loop integration of the gyro
-	* using feedback from the magnetometer and solar vector.
-	* 
-	* Created by Galen Savidge. Edited 3/6/2019.
+  ** This module contains the code to run closed loop gyro integration using
+  * feedback from the magnetometer and solar vector. Call initalizeACS() in 
+  * ACS.h to initialize an Attitude Control System struct, then pass it into
+  * updateAttitudeEstimate() every loop to get the craft's Direction Consine
+  * Matrix (DCM).
+  * 
+  * Created by Galen Savidge. Edited 5/12/2019.
   ******************************************************************************
   */
 

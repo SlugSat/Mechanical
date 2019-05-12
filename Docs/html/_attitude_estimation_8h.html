@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('_attitude_estimation_8h.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>: Header for the AttitudEstimation module.  
+<p>Sensor fusion and attitude determination.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="_a_c_s_8h_source.html">ACS.h</a>&quot;</code><br />
 </div>
@@ -111,9 +111,9 @@ Functions</h2></td></tr>
 <tr class="separator:ade543c963382408c5820da341714c3fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>: Header for the AttitudEstimation module. </p>
-<p>This module contains the code to run closed loop integration of the gyro using feedback from the magnetometer and solar vector.</p>
-<p>Created by Galen Savidge. Edited 3/6/2019. </p>
+<div class="textblock"><p>Sensor fusion and attitude determination. </p>
+<p>This module contains the code to run closed loop gyro integration using feedback from the magnetometer and solar vector. Call initalizeACS() in <a class="el" href="_a_c_s_8h.html" title="Contains the Attitude Control System (ACS) struct.">ACS.h</a> to initialize an Attitude Control System struct, then pass it into <a class="el" href="_attitude_estimation_8h.html#a5aec64402f3df1a6482b514b354f46b0" title="Updates the craft attitude estimate using sensor data in acs.">updateAttitudeEstimate()</a> every loop to get the craft's Direction Consine Matrix (DCM).</p>
+<p>Created by Galen Savidge. Edited 5/12/2019. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ade543c963382408c5820da341714c3fc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ade543c963382408c5820da341714c3fc">&#9670;&nbsp;</a></span>findEulerAngles()</h2>

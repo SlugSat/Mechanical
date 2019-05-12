@@ -2,7 +2,7 @@
 \label{_attitude_estimation_8h}\index{C:/Users/galey/Documents/Mechanical/Mech\_Lib/AttitudeEstimation.h@{C:/Users/galey/Documents/Mechanical/Mech\_Lib/AttitudeEstimation.h}}
 
 
-\+: Header for the Attitud\+Estimation module.  
+Sensor fusion and attitude determination.  
 
 
 {\ttfamily \#include \char`\"{}A\+C\+S.\+h\char`\"{}}\newline
@@ -18,11 +18,11 @@ void \mbox{\hyperlink{_attitude_estimation_8h_ade543c963382408c5820da341714c3fc}
 
 
 \subsection{Detailed Description}
-\+: Header for the Attitud\+Estimation module. 
+Sensor fusion and attitude determination. 
 
-This module contains the code to run closed loop integration of the gyro using feedback from the magnetometer and solar vector.
+This module contains the code to run closed loop gyro integration using feedback from the magnetometer and solar vector. Call initalize\+A\+C\+S() in \mbox{\hyperlink{_a_c_s_8h}{A\+C\+S.\+h}} to initialize an Attitude Control System struct, then pass it into \mbox{\hyperlink{_attitude_estimation_8h_a5aec64402f3df1a6482b514b354f46b0}{update\+Attitude\+Estimate()}} every loop to get the craft\textquotesingle{}s Direction Consine Matrix (D\+CM).
 
-Created by Galen Savidge. Edited 3/6/2019. 
+Created by Galen Savidge. Edited 5/12/2019. 
 
 \subsection{Function Documentation}
 \mbox{\Hypertarget{_attitude_estimation_8h_ade543c963382408c5820da341714c3fc}\label{_attitude_estimation_8h_ade543c963382408c5820da341714c3fc}} 

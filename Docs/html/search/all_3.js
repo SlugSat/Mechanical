@@ -1,13 +1,5 @@
 var searchData=
 [
-  ['feedbackcontrol_2ec',['FeedbackControl.c',['../_feedback_control_8c.html',1,'']]],
-  ['feedbackcontrol_2eh',['FeedbackControl.h',['../_feedback_control_8h.html',1,'']]],
-  ['finderrorvectors',['findErrorVectors',['../_feedback_control_8c.html#a061127a629c487f3bc31574e39e3d684',1,'findErrorVectors(ACSType *acs):&#160;FeedbackControl.c'],['../_feedback_control_8h.html#a061127a629c487f3bc31574e39e3d684',1,'findErrorVectors(ACSType *acs):&#160;FeedbackControl.c']]],
-  ['findeulerangles',['findEulerAngles',['../_attitude_estimation_8c.html#ade543c963382408c5820da341714c3fc',1,'findEulerAngles(Matrix R, float *yaw_pitch_roll):&#160;AttitudeEstimation.c'],['../_attitude_estimation_8h.html#ade543c963382408c5820da341714c3fc',1,'findEulerAngles(Matrix R, float *yaw_pitch_roll):&#160;AttitudeEstimation.c']]],
-  ['findmaginertial',['findMagInertial',['../_inertial_vectors_8h.html#a9bebb3912845c95e905ba04e51527483',1,'InertialVectors.c']]],
-  ['findrexp',['findRexp',['../_attitude_estimation_8c.html#af3787f9ac84c74879bf0be115620c91b',1,'AttitudeEstimation.c']]],
-  ['findsolarvector',['findSolarVector',['../_solar_vectors_8c.html#ad340c5d51e50e8cd1c46bbf70ff0650d',1,'findSolarVector(float *adc_readings, char num_panels, Matrix v):&#160;SolarVectors.c'],['../_solar_vectors_8h.html#ad340c5d51e50e8cd1c46bbf70ff0650d',1,'findSolarVector(float *adc_readings, char num_panels, Matrix v):&#160;SolarVectors.c']]],
-  ['findsuninertial',['findSunInertial',['../_inertial_vectors_8h.html#a95b2b0bb7d3d728f8a56ff4e47ed0fb3',1,'InertialVectors.c']]],
-  ['floatstopacket',['floatsToPacket',['../_packet_protocol_8h.html#ab46bd48a54ff720ea657960a4ae1d2a6',1,'PacketProtocol.c']]],
-  ['freematrix',['freeMatrix',['../_matrix_8c.html#a5d8a09b6767d880bac87ff258d263268',1,'freeMatrix(Matrix *mp):&#160;Matrix.c'],['../_matrix_8h.html#a5d8a09b6767d880bac87ff258d263268',1,'freeMatrix(Matrix *mp):&#160;Matrix.c']]]
+  ['digitalfilters_2eh',['DigitalFilters.h',['../_digital_filters_8h.html',1,'']]],
+  ['dt',['dt',['../struct_a_c_s_type.html#a778e38aa889751afffa2dea6b803e67a',1,'ACSType']]]
 ];

@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('_feedback_control_8h.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>: Contains implementations for the feedback control states in the ACS  
+<p>Contains implementations for the feedback control states in the ACS.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;<a class="el" href="_a_c_s_8h_source.html">ACS.h</a>&gt;</code><br />
 </div>
@@ -103,22 +103,22 @@ Functions</h2></td></tr>
 <tr class="memitem:a061127a629c487f3bc31574e39e3d684"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_feedback_control_8h.html#a061127a629c487f3bc31574e39e3d684">findErrorVectors</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs)</td></tr>
 <tr class="memdesc:a061127a629c487f3bc31574e39e3d684"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses the craft orientation and inertial vectors to find error.  <a href="#a061127a629c487f3bc31574e39e3d684">More...</a><br /></td></tr>
 <tr class="separator:a061127a629c487f3bc31574e39e3d684"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affa49e3f0a204edacd077326721d4f6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_feedback_control_8h.html#affa49e3f0a204edacd077326721d4f6d">runBdotController</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs, float dt)</td></tr>
-<tr class="memdesc:affa49e3f0a204edacd077326721d4f6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description.  <a href="#affa49e3f0a204edacd077326721d4f6d">More...</a><br /></td></tr>
-<tr class="separator:affa49e3f0a204edacd077326721d4f6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa55908d5fa5b58816b0d5ba386fe1954"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_feedback_control_8h.html#aa55908d5fa5b58816b0d5ba386fe1954">runBdotController</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs)</td></tr>
+<tr class="memdesc:aa55908d5fa5b58816b0d5ba386fe1954"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description.  <a href="#aa55908d5fa5b58816b0d5ba386fe1954">More...</a><br /></td></tr>
+<tr class="separator:aa55908d5fa5b58816b0d5ba386fe1954"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad350e4cca0fbe67125ed1ad51ad185fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_feedback_control_8h.html#ad350e4cca0fbe67125ed1ad51ad185fb">runOrientationController</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs, int first_step)</td></tr>
 <tr class="memdesc:ad350e4cca0fbe67125ed1ad51ad185fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the feedback controller used to move the craft over large angles.  <a href="#ad350e4cca0fbe67125ed1ad51ad185fb">More...</a><br /></td></tr>
 <tr class="separator:ad350e4cca0fbe67125ed1ad51ad185fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af299ea65b7e3c10a2894db10675394d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_feedback_control_8h.html#af299ea65b7e3c10a2894db10675394d3">runStabilizationController</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs, int first_step)</td></tr>
-<tr class="memdesc:af299ea65b7e3c10a2894db10675394d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the feedback controller used to stabilize the craft when error is low.  <a href="#af299ea65b7e3c10a2894db10675394d3">More...</a><br /></td></tr>
-<tr class="separator:af299ea65b7e3c10a2894db10675394d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad05f96d934d3de9d9fda2a8f1702bc83"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_feedback_control_8h.html#ad05f96d934d3de9d9fda2a8f1702bc83">runStabilizationController</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs, <a class="el" href="struct___matrix.html">Matrix</a> err, int first_step)</td></tr>
+<tr class="memdesc:ad05f96d934d3de9d9fda2a8f1702bc83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the feedback controller used to stabilize the craft when error is low.  <a href="#ad05f96d934d3de9d9fda2a8f1702bc83">More...</a><br /></td></tr>
+<tr class="separator:ad05f96d934d3de9d9fda2a8f1702bc83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6663ec72a8ac78e77f38251b5a11c9e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_feedback_control_8h.html#a6663ec72a8ac78e77f38251b5a11c9e0">wdot2rw_pwm</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs, <a class="el" href="struct___matrix.html">Matrix</a> wdot_desired)</td></tr>
 <tr class="memdesc:a6663ec72a8ac78e77f38251b5a11c9e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds reaction wheel PWM to achieve a desired craft wdot.  <a href="#a6663ec72a8ac78e77f38251b5a11c9e0">More...</a><br /></td></tr>
 <tr class="separator:a6663ec72a8ac78e77f38251b5a11c9e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>: Contains implementations for the feedback control states in the ACS </p>
-<p>Controller implementations are in <a class="el" href="_orientation_controller_8c.html" title=": Implementation for the reorientation state of the ACS">OrientationController.c</a> and <a class="el" href="_stabilization_controller_8c.html" title=": Implementation for the stabilzation state of the ACS">StabilizationController.c</a>.</p>
+<div class="textblock"><p>Contains implementations for the feedback control states in the ACS. </p>
+<p>Controller implementations are in <a class="el" href="_orientation_controller_8c.html" title=": Implementation for the reorientation state of the ACS">OrientationController.c</a> and <a class="el" href="_stabilization_controller_8c.html" title=": Implementation for the stabilzation state of the ACS">StabilizationController.c</a>. A call of <a class="el" href="_feedback_control_8h.html#a061127a629c487f3bc31574e39e3d684" title="Uses the craft orientation and inertial vectors to find error.">findErrorVectors()</a> is required before either <a class="el" href="_feedback_control_8h.html#ad350e4cca0fbe67125ed1ad51ad185fb" title="Runs the feedback controller used to move the craft over large angles.">runOrientationController()</a> or <a class="el" href="_feedback_control_8h.html#ad05f96d934d3de9d9fda2a8f1702bc83" title="Runs the feedback controller used to stabilize the craft when error is low.">runStabilizationController()</a> for the ACS to work correctly.</p>
 <p>Created by Galen Savidge. Edited 4/21/2019. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a061127a629c487f3bc31574e39e3d684"></a>
@@ -148,8 +148,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="affa49e3f0a204edacd077326721d4f6d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#affa49e3f0a204edacd077326721d4f6d">&#9670;&nbsp;</a></span>runBdotController()</h2>
+<a id="aa55908d5fa5b58816b0d5ba386fe1954"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa55908d5fa5b58816b0d5ba386fe1954">&#9670;&nbsp;</a></span>runBdotController()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -158,18 +158,8 @@ Functions</h2></td></tr>
           <td class="memname">void runBdotController </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_a_c_s_type.html">ACSType</a> *&#160;</td>
-          <td class="paramname"><em>acs</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>acs</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>dt</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -216,7 +206,6 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">acs</td><td>a pointer to an existing Attitude Control System object </td></tr>
-    <tr><td class="paramname">dt</td><td>time in seconds since last call of this function </td></tr>
     <tr><td class="paramname">first_step</td><td>1 right after state transitions, 0 otherwise </td></tr>
   </table>
   </dd>
@@ -225,8 +214,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="af299ea65b7e3c10a2894db10675394d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af299ea65b7e3c10a2894db10675394d3">&#9670;&nbsp;</a></span>runStabilizationController()</h2>
+<a id="ad05f96d934d3de9d9fda2a8f1702bc83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad05f96d934d3de9d9fda2a8f1702bc83">&#9670;&nbsp;</a></span>runStabilizationController()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -236,6 +225,12 @@ Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_a_c_s_type.html">ACSType</a> *&#160;</td>
           <td class="paramname"><em>acs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct___matrix.html">Matrix</a>&#160;</td>
+          <td class="paramname"><em>err</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -255,7 +250,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">acs</td><td>a pointer to an existing Attitude Control System object </td></tr>
-    <tr><td class="paramname">dt</td><td>time in seconds since last call of this function </td></tr>
+    <tr><td class="paramname">err</td><td>generally either acs.z_err or acs.err </td></tr>
     <tr><td class="paramname">first_step</td><td>1 right after state transitions, 0 otherwise </td></tr>
   </table>
   </dd>

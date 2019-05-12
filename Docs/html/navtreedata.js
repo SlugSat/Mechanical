@@ -26,7 +26,11 @@ var NAVTREE =
   [ "ACS Source Code", "index.html", [
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
-      [ "Data Structure Index", "classes.html", null ]
+      [ "Data Structure Index", "classes.html", null ],
+      [ "Data Fields", "functions.html", [
+        [ "All", "functions.html", null ],
+        [ "Variables", "functions_vars.html", null ]
+      ] ]
     ] ],
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ],
@@ -41,7 +45,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_a_c_s_8c.html",
-"struct_a_c_s_type.html#ae1e2a82621824ccb4bc27eb3dc76c924"
+"struct_a_c_s_type.html#a880b6eef6382841a030de56f08f7c234"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

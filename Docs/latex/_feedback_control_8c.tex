@@ -24,6 +24,9 @@
 \item 
 \mbox{\Hypertarget{_feedback_control_8c_a5c71a5e59a53413cd6c270266d63b031}\label{_feedback_control_8c_a5c71a5e59a53413cd6c270266d63b031}} 
 \#define {\bfseries R}~92.\+7
+\item 
+\mbox{\Hypertarget{_feedback_control_8c_a844863df70a1327ae031ccc3e6560095}\label{_feedback_control_8c_a844863df70a1327ae031ccc3e6560095}} 
+\#define {\bfseries M\+A\+X\+\_\+\+M\+O\+M\+E\+NT}~2.\+0
 \end{DoxyCompactItemize}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
@@ -33,7 +36,7 @@ float {\bfseries sign} (float x)
 \item 
 void \mbox{\hyperlink{_feedback_control_8c_a061127a629c487f3bc31574e39e3d684}{find\+Error\+Vectors}} (\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$acs)
 \begin{DoxyCompactList}\small\item\em Uses the craft orientation and inertial vectors to find error. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{_feedback_control_8c_affa49e3f0a204edacd077326721d4f6d}{run\+Bdot\+Controller}} (\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$acs, float dt)
+void \mbox{\hyperlink{_feedback_control_8c_aa55908d5fa5b58816b0d5ba386fe1954}{run\+Bdot\+Controller}} (\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$acs)
 \begin{DoxyCompactList}\small\item\em Description. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{_feedback_control_8c_a6663ec72a8ac78e77f38251b5a11c9e0}{wdot2rw\+\_\+pwm}} (\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$acs, \mbox{\hyperlink{struct___matrix}{Matrix}} wdot\+\_\+desired)
 \begin{DoxyCompactList}\small\item\em Finds reaction wheel P\+WM to achieve a desired craft wdot. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -65,11 +68,11 @@ Uses the craft orientation and inertial vectors to find error.
 \begin{DoxyReturn}{Returns}
 Updates z\+\_\+err, n\+\_\+err, and err in acs 
 \end{DoxyReturn}
-\mbox{\Hypertarget{_feedback_control_8c_affa49e3f0a204edacd077326721d4f6d}\label{_feedback_control_8c_affa49e3f0a204edacd077326721d4f6d}} 
+\mbox{\Hypertarget{_feedback_control_8c_aa55908d5fa5b58816b0d5ba386fe1954}\label{_feedback_control_8c_aa55908d5fa5b58816b0d5ba386fe1954}} 
 \index{FeedbackControl.c@{FeedbackControl.c}!runBdotController@{runBdotController}}
 \index{runBdotController@{runBdotController}!FeedbackControl.c@{FeedbackControl.c}}
 \subsubsection{\texorpdfstring{runBdotController()}{runBdotController()}}
-{\footnotesize\ttfamily void run\+Bdot\+Controller (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$}]{acs,  }\item[{float}]{dt }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void run\+Bdot\+Controller (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_a_c_s_type}{A\+C\+S\+Type}} $\ast$}]{acs }\end{DoxyParamCaption})}
 
 
 

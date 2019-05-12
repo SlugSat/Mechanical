@@ -93,7 +93,7 @@ $(document).ready(function(){initNavTree('_digital_filters_8h.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>: Source file for the DigitalFilters module.  
+<p>Filter sensor data.  
 <a href="#details">More...</a></p>
 
 <p><a href="_digital_filters_8h_source.html">Go to the source code of this file.</a></p>
@@ -114,10 +114,9 @@ Functions</h2></td></tr>
 <tr class="separator:a7e8cbba6d231e26a3c97dcd5b4daf474"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>: Source file for the DigitalFilters module. </p>
-<p>: Header for the DigitalFilters module.</p>
-<p>Use this module to digitally filter sensor data.</p>
-<p>Created by Galen Savidge. Edited 3/4/2019. </p>
+<div class="textblock"><p>Filter sensor data. </p>
+<p>Currently includes a moving average filter datatype, which runs a variable length digital moving average filter on a configurable number of sensor readings. Use <a class="el" href="_digital_filters_8h.html#a8ef38f79b0e457d8293ad5ecb350bd88" title="Allocates a new MovingAvgFilter; initializes history to 0.">newMovingAvgFilter()</a> to allocate a MovingAvgFilter and then pass it to <a class="el" href="_digital_filters_8h.html#a7e8cbba6d231e26a3c97dcd5b4daf474" title="Runs the MovingAvgFilter with new data and returns filtered result.">runMovingAvgFilter()</a> each loop to filter sensor data.</p>
+<p>Created by Galen Savidge. Edited 5/12/2019. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a8ef38f79b0e457d8293ad5ecb350bd88"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8ef38f79b0e457d8293ad5ecb350bd88">&#9670;&nbsp;</a></span>newMovingAvgFilter()</h2>
