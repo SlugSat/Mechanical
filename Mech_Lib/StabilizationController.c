@@ -107,6 +107,7 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 				}
 			}
 		}
+		
 		else
 		{
 			vectorSetXYZ(m, 0, 0, 0);
