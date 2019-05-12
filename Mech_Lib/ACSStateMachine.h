@@ -11,6 +11,7 @@
 
 #include <main.h>
 
+#ifdef ENABLE_42
 
 /** 
  * @brief  Runs the ACS in an infinite loop
@@ -18,3 +19,13 @@
  * @return None
 */
 void runACS(UART_HandleTypeDef* huart);
+
+#else
+
+/** 
+ * @brief  Runs the ACS in an infinite loop
+ * @return None
+*/
+void runACS(void);
+
+#endif

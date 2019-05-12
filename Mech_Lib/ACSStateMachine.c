@@ -14,10 +14,19 @@
 
 // ACS modules
 #include <ACS.h>
-#include <STM32SerialCommunication.h>
 #include <InertialVectors.h>
 #include <AttitudeEstimation.h>
 #include <FeedbackControl.h>
+
+// 42
+#ifdef ENABLE_42
+#include <STM32SerialCommunication.h>
+#endif
+
+// FRAM
+#ifdef ENABLE_FRAM
+#include <SPI_FRAM.h>
+#endif
 
 // Standard libraries
 #include <math.h>
@@ -57,8 +66,11 @@ char state_names[][30] = {
 		"Stabilize"
 };
 
-
+#ifdef ENABLE_42
 void runACS(UART_HandleTypeDef* huart) {
+#else
+void runACS(void) {
+#endif
 	/***** INITIALIZE ACS *****/
 	ACSType acs;
 	initializeACS(&acs);
@@ -76,9 +88,16 @@ void runACS(UART_HandleTypeDef* huart) {
 	char prnt[300]; // String buffer to print to 42
 	
   while (1) {
+		#ifdef ENABLE_42
 		/***** READ/WRITE TO 42 *****/
 		syncWith42(&acs);
+		#endif
 		
+		
+		#ifdef ENABLE_FRAM
+		/***** READ/WRITE TO FRAM *****/
+		
+		#endif
 		
 		/***** RUN ACS SUBROUTINES *****/
 		// Read solar vectors here to get sun state
@@ -129,6 +148,7 @@ void runACS(UART_HandleTypeDef* huart) {
 			first_step = 0;
 		}
 		
+		#ifdef ENABLE_42
 		// Print to 42 terminal
 		sprintf(prnt, "State -- %s\nPointing error: %6.2f [deg]\nCraft rotational rate: %6.2f [deg/s]\nGyro bias dot: %6.2f [rad/s^2]", 
 				state_names[state], acs.pointing_err, 180*gyro_vector_norm/PI, acs.gyro_bias_dot_norm);
@@ -136,6 +156,7 @@ void runACS(UART_HandleTypeDef* huart) {
 		
 		sprintf(prnt, "\nAngle to sun: %6.2f [deg]", acs.zb_sun_angle);
 		printTo42(prnt);
+		#endif
 		
 		/***** RUN STATE MACHINE *****/
 		/**
