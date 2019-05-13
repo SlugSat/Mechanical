@@ -1,9 +1,10 @@
 /**
   ******************************************************************************
-  * @file           : StabilizationController.c
-  * @brief          : Implementation for the stabilzation state of the ACS
+  * @file           StabilizationController.c
+  * @brief          Implementation for the stabilzation state of the ACS
   ******************************************************************************
-  * 
+  * This controller includes momentum dumping and an integrator to remove steady
+	* state bias.
 	* 
 	* Created by Galen Savidge. Edited 4/21/2019.
   ******************************************************************************

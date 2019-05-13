@@ -1,12 +1,12 @@
 /**
   ******************************************************************************
-  * @file           : SolarVectors.h
-  * @brief          : Header for the SolarVectors module.
+  * @file           SolarVectors.h
+  * @brief          Reads the solar panels to find solar vectors
   ******************************************************************************
   ** This module contains functions for finding and printing solar vectors from
-	* solar panel current measurements.
-	*
-	* Created by Galen Savidge. Edited 2/16/2019.
+  * solar panel current measurements.
+  *
+  * Created by Galen Savidge. Edited 5/12/2019.
   ******************************************************************************
   */
  
@@ -26,12 +26,6 @@
 #define ZP_SCALE 0.49058996685
 #define ZN_SCALE 0.99001688847
 
-//#define XN_SCALE 0.81669394435
-//#define YP_SCALE 0.51860928166
-//#define YN_SCALE 0.73545849720
-//#define ZP_SCALE 0.74533233756
-//#define ZN_SCALE 0.94866920152
-
 #define ADC_MAX_VOLTS 3.3
 #define ADC_RESOLUTION 12
 #define ADC_TO_VOLTS(adc_raw) ((double)(((adc_raw)*ADC_MAX_VOLTS)/(1<<ADC_RESOLUTION)))
@@ -50,8 +44,9 @@ SV_Status findSolarVector(float* adc_readings, char num_panels, Matrix v);
 
 /** 
  * @brief  Prints yaw and pitch of a solar vector relative to the +X unit vector
- * @param  Normalized 3x1 column vector Matrix, string to hold the result
- * @return None
+ * @param  m: a normalized 3x1 column vector Matrix
+ * @param  string: char array with size at least 24 to hold the result
+ * @return string is a formatted null terminated char array containing yaw and pitch
 */
 void printSolarVector(Matrix v, char* string);
 

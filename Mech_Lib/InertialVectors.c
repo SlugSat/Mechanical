@@ -1,9 +1,9 @@
 /**
   ******************************************************************************
-  * @file           : InertialVectors.h
-  * @brief          : Contains functions to find sun and magnetic field inertial vectors
+  * @file           InertialVectors.h
+  * @brief          Contains functions to find sun and magnetic field inertial vectors
   ******************************************************************************
-	* Created by Galen Savidge. Edited 5/4/2019.
+	* Created by Galen Savidge. Edited 5/12/2019.
   ******************************************************************************
   */
 

@@ -1,7 +1,6 @@
 var _matrix_8c =
 [
     [ "_Matrix", "struct___matrix.html", "struct___matrix" ],
-    [ "freeMatrix", "_matrix_8c.html#a5d8a09b6767d880bac87ff258d263268", null ],
     [ "make3x1Vector", "_matrix_8c.html#ab6065a8b3ea0d9d10bcacafbff82ebf7", null ],
     [ "matrixAdd", "_matrix_8c.html#a218330358f2769f7853cfd5be4ebcdfb", null ],
     [ "matrixAddScalar", "_matrix_8c.html#a0bfa2a49919757b0983c335f47b90f66", null ],

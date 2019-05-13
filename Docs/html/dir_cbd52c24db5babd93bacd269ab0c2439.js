@@ -13,14 +13,15 @@ var dir_cbd52c24db5babd93bacd269ab0c2439 =
     [ "Matrix.c", "_matrix_8c.html", "_matrix_8c" ],
     [ "Matrix.h", "_matrix_8h.html", "_matrix_8h" ],
     [ "OrientationController.c", "_orientation_controller_8c.html", "_orientation_controller_8c" ],
+    [ "PacketProtocol.c", "_packet_protocol_8c.html", "_packet_protocol_8c" ],
     [ "PacketProtocol.h", "_packet_protocol_8h.html", "_packet_protocol_8h" ],
     [ "PWM_Library.h", "_p_w_m___library_8h_source.html", null ],
     [ "ReferenceFrames.c", "_reference_frames_8c.html", "_reference_frames_8c" ],
     [ "ReferenceFrames.h", "_reference_frames_8h.html", "_reference_frames_8h" ],
     [ "Sensors.c", "_sensors_8c.html", "_sensors_8c" ],
     [ "Sensors.h", "_sensors_8h.html", "_sensors_8h" ],
-    [ "SolarVectors.c", "_solar_vectors_8c.html", "_solar_vectors_8c" ],
     [ "SolarVectors.h", "_solar_vectors_8h.html", "_solar_vectors_8h" ],
     [ "StabilizationController.c", "_stabilization_controller_8c.html", "_stabilization_controller_8c" ],
+    [ "STM32SerialCommunication.c", "_s_t_m32_serial_communication_8c.html", "_s_t_m32_serial_communication_8c" ],
     [ "STM32SerialCommunication.h", "_s_t_m32_serial_communication_8h.html", "_s_t_m32_serial_communication_8h" ]
 ];

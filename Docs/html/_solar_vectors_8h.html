@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ACS Source Code: C:/Users/galey/Documents/Mechanical/Mech_Lib/SolarVectors.h File Reference</title>
+<title>ACS Source Code: C:/Users/gsavidge/Documents/Mechanical/Mech_Lib/SolarVectors.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -93,7 +93,7 @@ $(document).ready(function(){initNavTree('_solar_vectors_8h.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>: Header for the SolarVectors module.  
+<p>Reads the solar panels to find solar vectors.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;<a class="el" href="_a_c_s_8h_source.html">ACS.h</a>&gt;</code><br />
 </div>
@@ -139,9 +139,9 @@ Functions</h2></td></tr>
 <tr class="separator:a66eaa48b5366941a66a00639fd0b7a5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>: Header for the SolarVectors module. </p>
+<div class="textblock"><p>Reads the solar panels to find solar vectors. </p>
 <p>This module contains functions for finding and printing solar vectors from solar panel current measurements.</p>
-<p>Created by Galen Savidge. Edited 2/16/2019. </p>
+<p>Created by Galen Savidge. Edited 5/12/2019. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ad340c5d51e50e8cd1c46bbf70ff0650d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad340c5d51e50e8cd1c46bbf70ff0650d">&#9670;&nbsp;</a></span>findSolarVector()</h2>
@@ -226,11 +226,12 @@ Functions</h2></td></tr>
 <p>Prints yaw and pitch of a solar vector relative to the +X unit vector. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Normalized</td><td>3x1 column vector Matrix, string to hold the result </td></tr>
+    <tr><td class="paramname">m</td><td>a normalized 3x1 column vector Matrix </td></tr>
+    <tr><td class="paramname">string</td><td>char array with size at least 24 to hold the result </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>None</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>string is a formatted null terminated char array containing yaw and pitch</dd></dl>
 <p>Prints yaw and pitch of a solar vector relative to the +X unit vector.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">

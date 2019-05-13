@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ACS Source Code: C:/Users/gsavidge/Documents/Mechanical/Mech_Lib/Sensors.c File Reference</title>
+<title>ACS Source Code: C:/Users/gsavidge/Documents/Mechanical/Mech_Lib/PacketProtocol.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -66,7 +66,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('_sensors_8c.html','');});
+$(document).ready(function(){initNavTree('_packet_protocol_8c.html','');});
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -89,65 +89,56 @@ $(document).ready(function(){initNavTree('_sensors_8c.html','');});
 <a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">Sensors.c File Reference</div>  </div>
+<div class="title">PacketProtocol.c File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Contains functions to read from the physical sensors on the satellite.  
+<p>Makes packets to send to 42 and decodes packets from 42.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;<a class="el" href="_sensors_8h_source.html">Sensors.h</a>&gt;</code><br />
-<code>#include &lt;BNO055_IMU.h&gt;</code><br />
-<code>#include &lt;<a class="el" href="_solar_vectors_8h_source.html">SolarVectors.h</a>&gt;</code><br />
-<code>#include &lt;math.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="_packet_protocol_8h_source.html">PacketProtocol.h</a>&gt;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a2dfa80678636af944f327b6c540d4f14"><td class="memItemLeft" align="right" valign="top"><a id="a2dfa80678636af944f327b6c540d4f14"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MAG_HIST_LENGTH</b>&#160;&#160;&#160;10</td></tr>
-<tr class="separator:a2dfa80678636af944f327b6c540d4f14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a051a981b096b9c58f931893b50275955"><td class="memItemLeft" align="right" valign="top"><a id="a051a981b096b9c58f931893b50275955"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SV_HIST_LENGTH</b>&#160;&#160;&#160;10</td></tr>
-<tr class="separator:a051a981b096b9c58f931893b50275955"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41b9f8b152ca734cb44b4014f5e82e54"><td class="memItemLeft" align="right" valign="top"><a id="a41b9f8b152ca734cb44b4014f5e82e54"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SENSOR_READ_DELAY_MS</b>&#160;&#160;&#160;50</td></tr>
-<tr class="separator:a41b9f8b152ca734cb44b4014f5e82e54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cbc16ce6b1ff600e8238b709dfd8b1d"><td class="memItemLeft" align="right" valign="top"><a id="a0cbc16ce6b1ff600e8238b709dfd8b1d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>get_byte_n</b>(x,  n)&#160;&#160;&#160;(((x) &amp; (0xFF &lt;&lt; ((n)*8))) &gt;&gt; ((n)*8))</td></tr>
+<tr class="separator:a0cbc16ce6b1ff600e8238b709dfd8b1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a12eb9cee0bd52f1a3183f01a7ff952fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_sensors_8c.html#a12eb9cee0bd52f1a3183f01a7ff952fe">initializeSensors</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs, I2C_HandleTypeDef *hi2c, ADC_HandleTypeDef *hadc)</td></tr>
-<tr class="memdesc:a12eb9cee0bd52f1a3183f01a7ff952fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes sensor hardware and the digital filters in an ACS struct.  <a href="#a12eb9cee0bd52f1a3183f01a7ff952fe">More...</a><br /></td></tr>
-<tr class="separator:a12eb9cee0bd52f1a3183f01a7ff952fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0150d4dfa3bc3847664a94cc6987229"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_sensors_8c.html#ad0150d4dfa3bc3847664a94cc6987229">readSensors</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs, I2C_HandleTypeDef *hi2c)</td></tr>
-<tr class="memdesc:ad0150d4dfa3bc3847664a94cc6987229"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads sensors and updates vectors.  <a href="#ad0150d4dfa3bc3847664a94cc6987229">More...</a><br /></td></tr>
-<tr class="separator:ad0150d4dfa3bc3847664a94cc6987229"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab46bd48a54ff720ea657960a4ae1d2a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_packet_protocol_8c.html#ab46bd48a54ff720ea657960a4ae1d2a6">floatsToPacket</a> (float *f, uint8_t *p, unsigned int n)</td></tr>
+<tr class="memdesc:ab46bd48a54ff720ea657960a4ae1d2a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes n floats to a packet of size n*4 bytes.  <a href="#ab46bd48a54ff720ea657960a4ae1d2a6">More...</a><br /></td></tr>
+<tr class="separator:ab46bd48a54ff720ea657960a4ae1d2a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab96a1915824174b721ba0b03421252ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_packet_protocol_8c.html#ab96a1915824174b721ba0b03421252ac">packetToFloats</a> (float *f, uint8_t *p, unsigned int n)</td></tr>
+<tr class="memdesc:ab96a1915824174b721ba0b03421252ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads n floats from a packet of size n*4 bytes.  <a href="#ab96a1915824174b721ba0b03421252ac">More...</a><br /></td></tr>
+<tr class="separator:ab96a1915824174b721ba0b03421252ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Contains functions to read from the physical sensors on the satellite. </p>
+<div class="textblock"><p>Makes packets to send to 42 and decodes packets from 42. </p>
 <p>Created by Galen Savidge. Edited 5/12/2019. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a12eb9cee0bd52f1a3183f01a7ff952fe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12eb9cee0bd52f1a3183f01a7ff952fe">&#9670;&nbsp;</a></span>initializeSensors()</h2>
+<a id="ab46bd48a54ff720ea657960a4ae1d2a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab46bd48a54ff720ea657960a4ae1d2a6">&#9670;&nbsp;</a></span>floatsToPacket()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void initializeSensors </td>
+          <td class="memname">void floatsToPacket </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_a_c_s_type.html">ACSType</a> *&#160;</td>
-          <td class="paramname"><em>acs</em>, </td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">I2C_HandleTypeDef *&#160;</td>
-          <td class="paramname"><em>hi2c</em>, </td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ADC_HandleTypeDef *&#160;</td>
-          <td class="paramname"><em>hadc</em>&#160;</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -157,35 +148,42 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Initializes sensor hardware and the digital filters in an ACS struct. </p>
-<p>Initializes the IMU and starts the ADCs. Also initializes each MovingAverageFilter in acs and runs them until they are each full of readings.</p>
+<p>Writes n floats to a packet of size n*4 bytes. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">acs</td><td>a pointer to an existing Attitude Control System object </td></tr>
+    <tr><td class="paramname">f</td><td>array of floats to be sent </td></tr>
+    <tr><td class="paramname">p</td><td>byte array of size n*4 to contain the packet </td></tr>
+    <tr><td class="paramname">n</td><td>number of floats in f </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>p is a packet containing n values from f </dd></dl>
 
 </div>
 </div>
-<a id="ad0150d4dfa3bc3847664a94cc6987229"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad0150d4dfa3bc3847664a94cc6987229">&#9670;&nbsp;</a></span>readSensors()</h2>
+<a id="ab96a1915824174b721ba0b03421252ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab96a1915824174b721ba0b03421252ac">&#9670;&nbsp;</a></span>packetToFloats()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void readSensors </td>
+          <td class="memname">void packetToFloats </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_a_c_s_type.html">ACSType</a> *&#160;</td>
-          <td class="paramname"><em>acs</em>, </td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">I2C_HandleTypeDef *&#160;</td>
-          <td class="paramname"><em>hi2c</em>&#160;</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -195,15 +193,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Reads sensors and updates vectors. </p>
+<p>Reads n floats from a packet of size n*4 bytes. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">acs</td><td>a pointer to an existing Attitude Control System object </td></tr>
-    <tr><td class="paramname">hi2c</td><td>i2c handle for the IMU </td></tr>
+    <tr><td class="paramname">f</td><td>array to hold received floats </td></tr>
+    <tr><td class="paramname">p</td><td>received packet (must have size n*4) </td></tr>
+    <tr><td class="paramname">n</td><td>size of f </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Updates gyro_vector, mag_vector, solar_vector, and sun_status in acs </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>f contains n values from p </dd></dl>
 
 </div>
 </div>
@@ -212,7 +211,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_cbd52c24db5babd93bacd269ab0c2439.html">Mech_Lib</a></li><li class="navelem"><a class="el" href="_sensors_8c.html">Sensors.c</a></li>
+    <li class="navelem"><a class="el" href="dir_cbd52c24db5babd93bacd269ab0c2439.html">Mech_Lib</a></li><li class="navelem"><a class="el" href="_packet_protocol_8c.html">PacketProtocol.c</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.15 </li>

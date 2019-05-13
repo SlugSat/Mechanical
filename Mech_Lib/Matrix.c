@@ -1,14 +1,18 @@
 /**
   ******************************************************************************
-  * @file           : Matrix.c
-  * @brief          : Source file for the Matrix module.
+  * @file           Matrix.c
+  * @brief          A library of matrix and vector math functions
   ******************************************************************************
-  ** This module contains matrix and vector math functions. Matrices contain r
-	* by c arrays of floats.
+  ** This module contains matrix and vector math functions. To use, first 
+	* allocate  Matrix objects by using newMatrix(), or another function that 
+	* retuns a Matrix. Next, pass this Matrix into the other functions in the 
+	* library. A Matrix is a pointer to an allocated struct stored on the heap. 
+	* Matrices contain r by c arrays of floats.
 	*
-	* Created by Galen Savidge. Edited 2/23/2019.
+	* Created by Galen Savidge. Edited 5/12/2019.
   ******************************************************************************
   */
+
 
 #include <Matrix.h>
 #include <stdlib.h>
@@ -16,11 +20,14 @@
 #include <string.h>
 #include <math.h>
 
+
 // Matrix struct
 struct _Matrix {
-    int r, c;
-    float** data;
+    int r; /**< Number of rows */
+		int c; /**< Number of columns */
+    float** data; /**< Data array of size [r][c] */
 };
+
 
 Matrix newMatrix(int r, int c) {
     // Allocate a _Matrix struct
@@ -239,16 +246,22 @@ void printMatrix(Matrix m, char* string) {
     }
 }
 
-void freeMatrix(Matrix *mp) {
-    if(mp == NULL || *mp == NULL) {
-        printf("MATRIX FREE ERROR: NULL POINTER\r\n");
-        while(1);
-    }
-    
-    for(int i = 0;i < (*mp)->r;i++) {
-        free((*mp)->data[i]);
-    }
-    free((*mp)->data);
-    free(*mp);
-    *mp = NULL;
-}
+/*
+	We think freeing memory doesn't work on the STM32 Nucleo boards. If
+	this library is used on another board, the function below can be 
+	used to free Matrix structs from memory.
+*/
+
+//void freeMatrix(Matrix *mp) {
+//    if(mp == NULL || *mp == NULL) {
+//        printf("MATRIX FREE ERROR: NULL POINTER\r\n");
+//        while(1);
+//    }
+//    
+//    for(int i = 0;i < (*mp)->r;i++) {
+//        free((*mp)->data[i]);
+//    }
+//    free((*mp)->data);
+//    free(*mp);
+//    *mp = NULL;
+//}

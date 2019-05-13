@@ -1,12 +1,9 @@
 /**
   ******************************************************************************
-  * @file           : Sensors.c
-  * @brief          : Source for the Sensors module.
+  * @file           Sensors.c
+  * @brief          Contains functions to read from the physical sensors on the satellite
   ******************************************************************************
-  ** This module contains functions to read from the physical sensors on the 
-    * satellite.
-	* 
-	* Created by Galen Savidge. Edited 4/21/2019.
+  * Created by Galen Savidge. Edited 5/12/2019.
   ******************************************************************************
   */
 

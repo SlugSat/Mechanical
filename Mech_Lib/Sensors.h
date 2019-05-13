@@ -1,12 +1,9 @@
 /**
   ******************************************************************************
-  * @file           : Sensors.h
-  * @brief          : Header for the Sensors module.
+  * @file           Sensors.h
+  * @brief          Contains functions to read from the physical sensors on the satellite
   ******************************************************************************
-  ** This module contains functions to read from the physical sensors on the 
-    * satellite.
-	* 
-	* Created by Galen Savidge. Edited 4/21/2019.
+  * Created by Galen Savidge. Edited 5/12/2019.
   ******************************************************************************
   */
 
@@ -20,7 +17,11 @@
 /* Public Functions ----------------------------------------------------------*/
 
 /** 
- * @brief  Initializes all the fields in the given ACS struct
+ * @brief  Initializes sensor hardware and the digital filters in an ACS struct
+ *
+ * Initializes the IMU and starts the ADCs. Also initializes each 
+ * MovingAverageFilter in acs and runs them until they are each full of readings.
+ * 
  * @param  acs: a pointer to an existing Attitude Control System object
  * @return None
 */
@@ -28,10 +29,10 @@ void initializeSensors(ACSType* acs, I2C_HandleTypeDef* hi2c, ADC_HandleTypeDef*
 
 
 /** 
- * @brief  Reads sensors and updates gyro_vector, mag_vector, and solar_vector in acs
+ * @brief  Reads sensors and updates vectors
  * @param  acs: a pointer to an existing Attitude Control System object
  * @param  hi2c: i2c handle for the IMU
- * @return None
+ * @return Updates gyro_vector, mag_vector, solar_vector, and sun_status in acs
 */
 void readSensors(ACSType* acs, I2C_HandleTypeDef* hi2c);
 

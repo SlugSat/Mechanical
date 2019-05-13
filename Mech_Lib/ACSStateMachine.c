@@ -176,8 +176,8 @@ void runACS(void) {
 		#endif
 		
 		/***** RUN STATE MACHINE *****/
-		/**
-		 * See ACS State Machine (figure x, page x of the Year 3 Sping Report).
+		/*
+		 * See the ACS State Machine (figure x, page x of the Year 3 Sping Report).
 		 *
 		 * State transition checks at the top of the code have low priority,
 		 * checks at the bottom have high priority.

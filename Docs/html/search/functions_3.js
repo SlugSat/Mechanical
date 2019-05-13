@@ -1,7 +1,6 @@
 var searchData=
 [
   ['make3x1vector',['make3x1Vector',['../_matrix_8c.html#ab6065a8b3ea0d9d10bcacafbff82ebf7',1,'make3x1Vector(float x, float y, float z):&#160;Matrix.c'],['../_matrix_8h.html#ab6065a8b3ea0d9d10bcacafbff82ebf7',1,'make3x1Vector(float x, float y, float z):&#160;Matrix.c']]],
-  ['makecontrolpacket',['makeControlPacket',['../_packet_protocol_8h.html#a095ad1e03e3fa106ec33af1e092661d3',1,'PacketProtocol.c']]],
   ['makedcm_5fzyx',['makeDCM_zyx',['../_reference_frames_8c.html#ad810fd5bc0fcf16966ed6c0ba2420a5b',1,'makeDCM_zyx(Matrix R, float yaw, float pitch, float roll):&#160;ReferenceFrames.c'],['../_reference_frames_8h.html#ad810fd5bc0fcf16966ed6c0ba2420a5b',1,'makeDCM_zyx(Matrix R, float yaw, float pitch, float roll):&#160;ReferenceFrames.c']]],
   ['matrixadd',['matrixAdd',['../_matrix_8c.html#a218330358f2769f7853cfd5be4ebcdfb',1,'matrixAdd(Matrix m1, Matrix m2, Matrix sum):&#160;Matrix.c'],['../_matrix_8h.html#a218330358f2769f7853cfd5be4ebcdfb',1,'matrixAdd(Matrix m1, Matrix m2, Matrix sum):&#160;Matrix.c']]],
   ['matrixaddscalar',['matrixAddScalar',['../_matrix_8c.html#a0bfa2a49919757b0983c335f47b90f66',1,'matrixAddScalar(Matrix m, float x):&#160;Matrix.c'],['../_matrix_8h.html#a0bfa2a49919757b0983c335f47b90f66',1,'matrixAddScalar(Matrix m, float x):&#160;Matrix.c']]],

@@ -1,12 +1,12 @@
 /**
   ******************************************************************************
-  * @file           : STM32SerialCommunication.h
-  * @brief          : Send and receive data over serial
+  * @file           STM32SerialCommunication.c
+  * @brief          A library to send and receive data from 42
   ******************************************************************************
-  ** This module handles UART communication with the flight simulation running 
-	* on a Linux PC/VM.
+  ** This module handles UART communication with 42 SlugSat (our customized 
+	* flight simulation).
   * 
-  * Created by Galen Savidge. Edited 4/13/2019.
+  * Created by Galen Savidge. Edited 5/12/2019.
   ******************************************************************************
   */
 

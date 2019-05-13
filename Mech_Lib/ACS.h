@@ -24,7 +24,7 @@
 
 
 /* Constants -----------------------------------------------------------------*/
-#define NUM_SOLAR_PANELS 6
+#define NUM_SOLAR_PANELS 6 /**< The number of faces containing solar panels (generally 5) */
 
  
 /* Datatypes -----------------------------------------------------------------*/
@@ -34,7 +34,10 @@ typedef enum {
 	SV_DARK
 }SV_Status;
 
-typedef struct {
+/** 
+ * @brief A struct including all of the data needed to run the ACS
+*/
+typedef struct { 
 	// Current time
 	double julian_date; /**< Julian date in fractional days */
 	float t; /**< Time in seconds since ACS startup */

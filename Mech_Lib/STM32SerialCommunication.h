@@ -1,12 +1,12 @@
 /**
   ******************************************************************************
-  * @file           : STM32SerialCommunication.h
-  * @brief          : Send and receive data over serial
+  * @file           STM32SerialCommunication.h
+  * @brief          A library to send and receive data from 42
   ******************************************************************************
-  ** This module handles UART communication with the flight simulation running 
-	* on a Linux PC/VM.
+  ** This module handles UART communication with 42 SlugSat (our customized 
+	* flight simulation).
   * 
-  * Created by Galen Savidge. Edited 4/13/2019.
+  * Created by Galen Savidge. Edited 5/12/2019.
   ******************************************************************************
   */
 
@@ -18,15 +18,14 @@
 
 /** 
  * @brief  Initializes serial communication from the ACS
- * @param  acs: a pointer to an existing Attitude Control System object
- * @param  huart: pointer to a UART handle defined in main.c
+ * @param  uart: pointer to a UART handle defined in main.c
  * @return None
 */
 void initializeACSSerial(UART_HandleTypeDef* uart);
 
 /** 
  * @brief  Handles I/O with 42. Should be called at the beginning of every loop.
- * @param  acs: a pointer to an existing Attitude Control System object
+ * @param  acs: ACSType with updated rw_PWM and tr_PWM
  * @return Updates mag_vector, gyro_vector, and solar_vector in acs
 */
 void syncWith42(ACSType* acs);
@@ -80,9 +79,8 @@ int STM32SerialReceiveFloats(UART_HandleTypeDef* huart, float* f, unsigned int n
 
 /** 
  * @brief  Prints str to 42 on the next call of syncWith42()
- * @param  acs: a pointer to an existing Attitude Control System object
- * @param  str: string to print
- * @return Updates printstring in acs
+ * @param  str: null terminated character array to print
+ * @return None
 */
 void printTo42(char* str);
 

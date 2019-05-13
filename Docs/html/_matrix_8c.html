@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ACS Source Code: C:/Users/galey/Documents/Mechanical/Mech_Lib/Matrix.c File Reference</title>
+<title>ACS Source Code: C:/Users/gsavidge/Documents/Mechanical/Mech_Lib/Matrix.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -93,7 +93,7 @@ $(document).ready(function(){initNavTree('_matrix_8c.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>: Source file for the Matrix module.  
+<p>A library of matrix and vector math functions.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;<a class="el" href="_matrix_8h_source.html">Matrix.h</a>&gt;</code><br />
 <code>#include &lt;stdlib.h&gt;</code><br />
@@ -112,7 +112,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a58370bcb5edab8381961163612808099"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates a new Matrix.  <a href="#a58370bcb5edab8381961163612808099">More...</a><br /></td></tr>
 <tr class="separator:a58370bcb5edab8381961163612808099"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9448d269574b8b8151fa3629d6b281e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_matrix_8c.html#a9448d269574b8b8151fa3629d6b281e5">matrixCopy</a> (<a class="el" href="struct___matrix.html">Matrix</a> m, <a class="el" href="struct___matrix.html">Matrix</a> copy)</td></tr>
-<tr class="memdesc:a9448d269574b8b8151fa3629d6b281e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies a Matrix to another allocated Matrix.  <a href="#a9448d269574b8b8151fa3629d6b281e5">More...</a><br /></td></tr>
+<tr class="memdesc:a9448d269574b8b8151fa3629d6b281e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies a Matrix to another Matrix.  <a href="#a9448d269574b8b8151fa3629d6b281e5">More...</a><br /></td></tr>
 <tr class="separator:a9448d269574b8b8151fa3629d6b281e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47fb362dae537114d079ec4fcc6045c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_matrix_8c.html#a47fb362dae537114d079ec4fcc6045c0">matrixCopyArray</a> (<a class="el" href="struct___matrix.html">Matrix</a> m, float **array)</td></tr>
 <tr class="memdesc:a47fb362dae537114d079ec4fcc6045c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the elements in a 2D array to a Matrix of the same dimensions.  <a href="#a47fb362dae537114d079ec4fcc6045c0">More...</a><br /></td></tr>
@@ -133,7 +133,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:ac10587f9cabe93c60f86e9b8f55fe1c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets an element in a Matrix.  <a href="#ac10587f9cabe93c60f86e9b8f55fe1c6">More...</a><br /></td></tr>
 <tr class="separator:ac10587f9cabe93c60f86e9b8f55fe1c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f77e6c78667ca88fec23f1c82c8c7fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_matrix_8c.html#a2f77e6c78667ca88fec23f1c82c8c7fa">matrixScale</a> (<a class="el" href="struct___matrix.html">Matrix</a> m, float x)</td></tr>
-<tr class="memdesc:a2f77e6c78667ca88fec23f1c82c8c7fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplies every element of a Matrix by x.  <a href="#a2f77e6c78667ca88fec23f1c82c8c7fa">More...</a><br /></td></tr>
+<tr class="memdesc:a2f77e6c78667ca88fec23f1c82c8c7fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplies every element of a Matrix by the scalar x.  <a href="#a2f77e6c78667ca88fec23f1c82c8c7fa">More...</a><br /></td></tr>
 <tr class="separator:a2f77e6c78667ca88fec23f1c82c8c7fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0bfa2a49919757b0983c335f47b90f66"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_matrix_8c.html#a0bfa2a49919757b0983c335f47b90f66">matrixAddScalar</a> (<a class="el" href="struct___matrix.html">Matrix</a> m, float x)</td></tr>
 <tr class="memdesc:a0bfa2a49919757b0983c335f47b90f66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds x to every element in a Matrix.  <a href="#a0bfa2a49919757b0983c335f47b90f66">More...</a><br /></td></tr>
@@ -142,10 +142,10 @@ Functions</h2></td></tr>
 <tr class="memdesc:a218330358f2769f7853cfd5be4ebcdfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds two Matrix objects.  <a href="#a218330358f2769f7853cfd5be4ebcdfb">More...</a><br /></td></tr>
 <tr class="separator:a218330358f2769f7853cfd5be4ebcdfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcdc572af07b955bddc7adb5b2951376"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_matrix_8c.html#adcdc572af07b955bddc7adb5b2951376">matrixSubtract</a> (<a class="el" href="struct___matrix.html">Matrix</a> m1, <a class="el" href="struct___matrix.html">Matrix</a> m2, <a class="el" href="struct___matrix.html">Matrix</a> diff)</td></tr>
-<tr class="memdesc:adcdc572af07b955bddc7adb5b2951376"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subtracts two Matrix objects.  <a href="#adcdc572af07b955bddc7adb5b2951376">More...</a><br /></td></tr>
+<tr class="memdesc:adcdc572af07b955bddc7adb5b2951376"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds two Matrix objects.  <a href="#adcdc572af07b955bddc7adb5b2951376">More...</a><br /></td></tr>
 <tr class="separator:adcdc572af07b955bddc7adb5b2951376"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fe149c4816a3af0af204f3dd1a99d81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_matrix_8c.html#a3fe149c4816a3af0af204f3dd1a99d81">matrixMult</a> (<a class="el" href="struct___matrix.html">Matrix</a> m1, <a class="el" href="struct___matrix.html">Matrix</a> m2, <a class="el" href="struct___matrix.html">Matrix</a> prod)</td></tr>
-<tr class="memdesc:a3fe149c4816a3af0af204f3dd1a99d81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplies two Matrix objects.  <a href="#a3fe149c4816a3af0af204f3dd1a99d81">More...</a><br /></td></tr>
+<tr class="memdesc:a3fe149c4816a3af0af204f3dd1a99d81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplies m1 by m2 using standard matrix multiplication.  <a href="#a3fe149c4816a3af0af204f3dd1a99d81">More...</a><br /></td></tr>
 <tr class="separator:a3fe149c4816a3af0af204f3dd1a99d81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac899ba4c5e2dcbff078782a8a7986b36"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_matrix_8c.html#ac899ba4c5e2dcbff078782a8a7986b36">matrixTranspose</a> (<a class="el" href="struct___matrix.html">Matrix</a> m, <a class="el" href="struct___matrix.html">Matrix</a> mt)</td></tr>
 <tr class="memdesc:ac899ba4c5e2dcbff078782a8a7986b36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies and transposes a Matrix.  <a href="#ac899ba4c5e2dcbff078782a8a7986b36">More...</a><br /></td></tr>
@@ -163,7 +163,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:ac4a56a9b59d561c204b4a03a1f30da01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the skew symmetric (cross product) matrix from a vector.  <a href="#ac4a56a9b59d561c204b4a03a1f30da01">More...</a><br /></td></tr>
 <tr class="separator:ac4a56a9b59d561c204b4a03a1f30da01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ca28faef9fd88a270a6f5dd02dbc10e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_matrix_8c.html#a4ca28faef9fd88a270a6f5dd02dbc10e">vectorCrossProduct</a> (<a class="el" href="struct___matrix.html">Matrix</a> v1, <a class="el" href="struct___matrix.html">Matrix</a> v2, <a class="el" href="struct___matrix.html">Matrix</a> v1xv2)</td></tr>
-<tr class="memdesc:a4ca28faef9fd88a270a6f5dd02dbc10e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the dot product of two column vectors.  <a href="#a4ca28faef9fd88a270a6f5dd02dbc10e">More...</a><br /></td></tr>
+<tr class="memdesc:a4ca28faef9fd88a270a6f5dd02dbc10e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the cross product of two column vectors.  <a href="#a4ca28faef9fd88a270a6f5dd02dbc10e">More...</a><br /></td></tr>
 <tr class="separator:a4ca28faef9fd88a270a6f5dd02dbc10e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6419564fb903fe3971e00d7ed0ce700c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_matrix_8c.html#a6419564fb903fe3971e00d7ed0ce700c">vectorDotProduct</a> (<a class="el" href="struct___matrix.html">Matrix</a> v1, <a class="el" href="struct___matrix.html">Matrix</a> v2)</td></tr>
 <tr class="memdesc:a6419564fb903fe3971e00d7ed0ce700c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the dot product of two column vectors.  <a href="#a6419564fb903fe3971e00d7ed0ce700c">More...</a><br /></td></tr>
@@ -174,42 +174,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ac3b3f616a9e9f75fe4cd3ee32f9b2245"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_matrix_8c.html#ac3b3f616a9e9f75fe4cd3ee32f9b2245">printMatrix</a> (<a class="el" href="struct___matrix.html">Matrix</a> m, char *string)</td></tr>
 <tr class="memdesc:ac3b3f616a9e9f75fe4cd3ee32f9b2245"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a Matrix to a string in a format suitable for printing over serial.  <a href="#ac3b3f616a9e9f75fe4cd3ee32f9b2245">More...</a><br /></td></tr>
 <tr class="separator:ac3b3f616a9e9f75fe4cd3ee32f9b2245"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d8a09b6767d880bac87ff258d263268"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_matrix_8c.html#a5d8a09b6767d880bac87ff258d263268">freeMatrix</a> (<a class="el" href="struct___matrix.html">Matrix</a> *mp)</td></tr>
-<tr class="memdesc:a5d8a09b6767d880bac87ff258d263268"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees a Matrix from memory.  <a href="#a5d8a09b6767d880bac87ff258d263268">More...</a><br /></td></tr>
-<tr class="separator:a5d8a09b6767d880bac87ff258d263268"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>: Source file for the Matrix module. </p>
-<p>This module contains matrix and vector math functions. Matrices contain r by c arrays of floats.</p>
-<p>Created by Galen Savidge. Edited 2/23/2019. </p>
+<div class="textblock"><p>A library of matrix and vector math functions. </p>
+<p>This module contains matrix and vector math functions. To use, first allocate Matrix objects by using <a class="el" href="_matrix_8c.html#a58370bcb5edab8381961163612808099" title="Allocates a new Matrix.">newMatrix()</a>, or another function that retuns a Matrix. Next, pass this Matrix into the other functions in the library. A Matrix is a pointer to an allocated struct stored on the heap. Matrices contain r by c arrays of floats.</p>
+<p>Created by Galen Savidge. Edited 5/12/2019. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a5d8a09b6767d880bac87ff258d263268"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d8a09b6767d880bac87ff258d263268">&#9670;&nbsp;</a></span>freeMatrix()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void freeMatrix </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="struct___matrix.html">Matrix</a> *&#160;</td>
-          <td class="paramname"><em>mp</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Frees a Matrix from memory. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">A</td><td>Matrix </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
-
-</div>
-</div>
 <a id="ab6065a8b3ea0d9d10bcacafbff82ebf7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab6065a8b3ea0d9d10bcacafbff82ebf7">&#9670;&nbsp;</a></span>make3x1Vector()</h2>
 
@@ -245,11 +215,13 @@ Functions</h2></td></tr>
 <p>Allocates a 3x1 column vector Matrix and populates it with x, y, and z. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Vector</td><td>components </td></tr>
+    <tr><td class="paramname">x</td><td>vector x component </td></tr>
+    <tr><td class="paramname">y</td><td>vector y component </td></tr>
+    <tr><td class="paramname">z</td><td>vector z component </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A newly allocated column vector Matrix </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A newly allocated column vector Matrix containing [x; y; z] </dd></dl>
 
 </div>
 </div>
@@ -288,11 +260,13 @@ Functions</h2></td></tr>
 <p>Adds two Matrix objects. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Two</td><td>Matrix objects to be added, a third allocated Matrix in which to store the result </td></tr>
+    <tr><td class="paramname">m1</td><td>first Matrix to be added </td></tr>
+    <tr><td class="paramname">m2</td><td>second Matrix to be added </td></tr>
+    <tr><td class="paramname">sum</td><td>initialized Matrix in which to store the result </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>sum now contains m1 + m2 </dd></dl>
 
 </div>
 </div>
@@ -325,7 +299,8 @@ Functions</h2></td></tr>
 <p>Adds x to every element in a Matrix. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">A</td><td>Matrix and a float x </td></tr>
+    <tr><td class="paramname">m</td><td>an initialized Matrix </td></tr>
+    <tr><td class="paramname">x</td><td>a scalar value </td></tr>
   </table>
   </dd>
 </dl>
@@ -359,14 +334,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Copies a Matrix to another allocated Matrix. </p>
+<p>Copies a Matrix to another Matrix. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Matrix</td><td>to be copied, Matrix to hold the copy </td></tr>
+    <tr><td class="paramname">m</td><td>Matrix to be copied </td></tr>
+    <tr><td class="paramname">copy</td><td>initialized Matrix with the same dimensions as m </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>copy is now a copy of m </dd></dl>
 
 </div>
 </div>
@@ -399,11 +375,12 @@ Functions</h2></td></tr>
 <p>Copies the elements in a 2D array to a Matrix of the same dimensions. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">A</td><td>Matrix, a 2D float array </td></tr>
+    <tr><td class="paramname">m</td><td>initialized Matrix </td></tr>
+    <tr><td class="paramname">array</td><td>a 2D array of floats with dimensions &gt;= m </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>m now holds the values from array </dd></dl>
 
 </div>
 </div>
@@ -436,11 +413,12 @@ Functions</h2></td></tr>
 <p>Checks if two Matrix objects are exactly equal. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Two</td><td>Matrix objects to be compared </td></tr>
+    <tr><td class="paramname">m1</td><td>first Matrix to be compared </td></tr>
+    <tr><td class="paramname">m2</td><td>second Matrix to be compared </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Zero if not equal, nonzero if equal </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Nonzero if m1 and m2 have the same dimensions and stored values, zero otherwise </dd></dl>
 
 </div>
 </div>
@@ -463,11 +441,11 @@ Functions</h2></td></tr>
 <p>Returns the number of columns in a Matrix. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">A</td><td>Matrix </td></tr>
+    <tr><td class="paramname">m</td><td>an initialized Matrix </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Integer number of columns </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The number of columns in m </dd></dl>
 
 </div>
 </div>
@@ -506,7 +484,9 @@ Functions</h2></td></tr>
 <p>Returns an element in a Matrix. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">A</td><td>Matrix, row of the element, column of the element (indexed starting at 1) </td></tr>
+    <tr><td class="paramname">m</td><td>an initialized Matrix </td></tr>
+    <tr><td class="paramname">r</td><td>row of the element (indexed at 1) </td></tr>
+    <tr><td class="paramname">c</td><td>column of the element (indexed at 1) </td></tr>
   </table>
   </dd>
 </dl>
@@ -533,11 +513,11 @@ Functions</h2></td></tr>
 <p>Returns the number of rows in a Matrix. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">A</td><td>Matrix </td></tr>
+    <tr><td class="paramname">m</td><td>an initialized Matrix </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Integer number of rows </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The number of rows in m </dd></dl>
 
 </div>
 </div>
@@ -573,14 +553,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Multiplies two Matrix objects. </p>
+<p>Multiplies m1 by m2 using standard matrix multiplication. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Two</td><td>Matrix objects to be multiplied, a third allocated Matrix in which to store the result </td></tr>
+    <tr><td class="paramname">m1</td><td>Matrix of size nxm </td></tr>
+    <tr><td class="paramname">m2</td><td>Matrix of size mxp </td></tr>
+    <tr><td class="paramname">prod</td><td>initialized Matrix in which to store the result </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>prod now contains m1*m2 </dd></dl>
 
 </div>
 </div>
@@ -610,10 +592,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Multiplies every element of a Matrix by x. </p>
+<p>Multiplies every element of a Matrix by the scalar x. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">A</td><td>Matrix and a float x </td></tr>
+    <tr><td class="paramname">m</td><td>an initialized Matrix </td></tr>
+    <tr><td class="paramname">x</td><td>a scalar value </td></tr>
   </table>
   </dd>
 </dl>
@@ -662,7 +645,10 @@ Functions</h2></td></tr>
 <p>Sets an element in a Matrix. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">A</td><td>Matrix, row of the element, column of the element (indexed starting at 1), float value for the element </td></tr>
+    <tr><td class="paramname">m</td><td>an initialized Matrix </td></tr>
+    <tr><td class="paramname">r</td><td>row of the element (indexed at 1) </td></tr>
+    <tr><td class="paramname">c</td><td>column of the element (indexed at 1) </td></tr>
+    <tr><td class="paramname">val</td><td>floating point value for the element </td></tr>
   </table>
   </dd>
 </dl>
@@ -702,14 +688,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Subtracts two Matrix objects. </p>
+<p>Adds two Matrix objects. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Two</td><td>Matrix objects to be subtracted, a third allocated Matrix in which to store the result </td></tr>
+    <tr><td class="paramname">m1</td><td>the minuend </td></tr>
+    <tr><td class="paramname">m2</td><td>the subtrahend </td></tr>
+    <tr><td class="paramname">sum</td><td>initialized Matrix in which to store the difference </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>sum now contains m1 - m2 </dd></dl>
 
 </div>
 </div>
@@ -742,11 +730,12 @@ Functions</h2></td></tr>
 <p>Copies and transposes a Matrix. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">A</td><td>Matrix, an allocated Matrix in which to store the transpose </td></tr>
+    <tr><td class="paramname">m</td><td>Matrix to be transposed </td></tr>
+    <tr><td class="paramname">mt</td><td>initialized Matrix in which to store the result </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>mt is the transpose of m </dd></dl>
 
 </div>
 </div>
@@ -779,7 +768,8 @@ Functions</h2></td></tr>
 <p>Allocates a new Matrix. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Number</td><td>of rows and columns </td></tr>
+    <tr><td class="paramname">r</td><td>number of rows </td></tr>
+    <tr><td class="paramname">c</td><td>number of columns </td></tr>
   </table>
   </dd>
 </dl>
@@ -816,11 +806,12 @@ Functions</h2></td></tr>
 <p>Prints a Matrix to a string in a format suitable for printing over serial. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">A</td><td>Matrix and a char pointer with enough room to hold the printed Matrix </td></tr>
+    <tr><td class="paramname">m</td><td>an initialized Matrix with r row and c columns </td></tr>
+    <tr><td class="paramname">string</td><td>a char array of size at least (20*r*c + 3) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>string contains a printed version of m </dd></dl>
 
 </div>
 </div>
@@ -901,15 +892,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Calculates the dot product of two column vectors. </p>
+<p>Calculates the cross product of two column vectors. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">v1</td><td>&amp; v2: Two column vector Matrix objects with the same dimensions </td></tr>
-    <tr><td class="paramname">v1xv2</td><td>An allocated column vector Matrix to hold the result </td></tr>
+    <tr><td class="paramname">v1</td><td>an nx1 column vector Matrix </td></tr>
+    <tr><td class="paramname">v2</td><td>an nx1 column vector Matrix </td></tr>
+    <tr><td class="paramname">v1xv2</td><td>An allocated nx1 Matrix to hold the result </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>v1xv2 contains the cross product v1 x v2 </dd></dl>
 
 </div>
 </div>
@@ -942,7 +934,8 @@ Functions</h2></td></tr>
 <p>Calculates the dot product of two column vectors. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Two</td><td>column vector Matrices with the same dimensions </td></tr>
+    <tr><td class="paramname">v1</td><td>an nx1 column vector Matrix </td></tr>
+    <tr><td class="paramname">v2</td><td>an nx1 column vector Matrix </td></tr>
   </table>
   </dd>
 </dl>
@@ -969,7 +962,7 @@ Functions</h2></td></tr>
 <p>Calculates the norm of a vector. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">A</td><td>column vector Matrix </td></tr>
+    <tr><td class="paramname">v</td><td>a column vector Matrix </td></tr>
   </table>
   </dd>
 </dl>
@@ -1006,11 +999,12 @@ Functions</h2></td></tr>
 <p>Creates the skew symmetric (cross product) matrix from a vector. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">A</td><td>3x1 column vector Matrix, an allocated 3x3 Matrix in which to store the result </td></tr>
+    <tr><td class="paramname">v</td><td>a 3x1 column vector Matrix </td></tr>
+    <tr><td class="paramname">vcross</td><td>an initialized 3x3 Matrix </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>vcross is now the skew symmetric matrix of v </dd></dl>
 
 </div>
 </div>
@@ -1056,11 +1050,13 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">v</td><td>an allocated 3x1 Matrix </td></tr>
-    <tr><td class="paramname">x,y,z</td><td>vector components </td></tr>
+    <tr><td class="paramname">x</td><td>vector x component </td></tr>
+    <tr><td class="paramname">y</td><td>vector y component </td></tr>
+    <tr><td class="paramname">z</td><td>vector z component </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>v now contains [x; y; z] </dd></dl>
 
 </div>
 </div>

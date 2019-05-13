@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ACS Source Code: C:/Users/galey/Documents/Mechanical/Mech_Lib/ReferenceFrames.c File Reference</title>
+<title>ACS Source Code: C:/Users/gsavidge/Documents/Mechanical/Mech_Lib/ReferenceFrames.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -93,7 +93,7 @@ $(document).ready(function(){initNavTree('_reference_frames_8c.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>: Contains functions to translate between reference frames.  
+<p>Contains functions to translate between reference frames.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="_reference_frames_8h_source.html">ReferenceFrames.h</a>&quot;</code><br />
 <code>#include &lt;math.h&gt;</code><br />
@@ -110,6 +110,7 @@ Functions</h2></td></tr>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>getGMSTDegrees</b> (double JD)</td></tr>
 <tr class="separator:abdaf8a766e1bd2a6c7d4c05f4fcac88d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad810fd5bc0fcf16966ed6c0ba2420a5b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_reference_frames_8c.html#ad810fd5bc0fcf16966ed6c0ba2420a5b">makeDCM_zyx</a> (<a class="el" href="struct___matrix.html">Matrix</a> R, float yaw, float pitch, float roll)</td></tr>
+<tr class="memdesc:ad810fd5bc0fcf16966ed6c0ba2420a5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes a DCM with intrinsic zyx rotations as defined by yaw, pitch, roll.  <a href="#ad810fd5bc0fcf16966ed6c0ba2420a5b">More...</a><br /></td></tr>
 <tr class="separator:ad810fd5bc0fcf16966ed6c0ba2420a5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad05396fc4343e314a56ae160f6f526bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_reference_frames_8c.html#ad05396fc4343e314a56ae160f6f526bf">J2000_2_ecliptic</a> (<a class="el" href="struct___matrix.html">Matrix</a> v_j2000, <a class="el" href="struct___matrix.html">Matrix</a> v_ecliptic)</td></tr>
 <tr class="memdesc:ad05396fc4343e314a56ae160f6f526bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts vectors in the J2000 frame to the ecliptic ECI frame.  <a href="#ad05396fc4343e314a56ae160f6f526bf">More...</a><br /></td></tr>
@@ -122,8 +123,8 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>getGMSTDegrees</b> (
 <tr class="separator:a8a8f67366e55b9d6d15e3c2f3f5cd33c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>: Contains functions to translate between reference frames. </p>
-<p>Created by Galen Savidge. Edited 5/2/2019. </p>
+<div class="textblock"><p>Contains functions to translate between reference frames. </p>
+<p>Created by Galen Savidge. Edited 5/12/2019. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ad05396fc4343e314a56ae160f6f526bf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad05396fc4343e314a56ae160f6f526bf">&#9670;&nbsp;</a></span>J2000_2_ecliptic()</h2>
@@ -257,9 +258,14 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>getGMSTDegrees</b> (
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Makes a DCM with intrinsic zyx rotations as defined by yaw, pitch, roll. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Euler</td><td>angles </td></tr>
+    <tr><td class="paramname">R</td><td>an allocated 3x3 Matrix </td></tr>
+    <tr><td class="paramname">yaw</td><td>yaw in radians </td></tr>
+    <tr><td class="paramname">pitch</td><td>pitch in radians </td></tr>
+    <tr><td class="paramname">roll</td><td>roll in radians </td></tr>
   </table>
   </dd>
 </dl>
