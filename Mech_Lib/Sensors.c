@@ -1,4 +1,4 @@
-/**
+/*
   ******************************************************************************
   * @file           Sensors.c
   * @brief          Contains functions to read from the physical sensors on the satellite

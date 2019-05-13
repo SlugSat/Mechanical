@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['w_5frw',['w_rw',['../struct_a_c_s_type.html#a880b6eef6382841a030de56f08f7c234',1,'ACSType']]]
+  ['t',['t',['../struct_a_c_s_type.html#afea36502e9d227ff62c5fb2719a246f2',1,'ACSType']]],
+  ['tr_5fpwm',['tr_PWM',['../struct_a_c_s_type.html#a479836cb6277d49ac363e5aef596c7db',1,'ACSType']]]
 ];

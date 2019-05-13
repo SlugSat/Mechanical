@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['solar_5fvector',['solar_vector',['../struct_a_c_s_type.html#a2565c37ca09278f1f6e2405328e94bc8',1,'ACSType']]],
-  ['sun_5fstatus',['sun_status',['../struct_a_c_s_type.html#a08e060b8d3806d1da157f82ff6ef89c0',1,'ACSType']]],
-  ['sv_5finertial',['sv_inertial',['../struct_a_c_s_type.html#af56596ec9fe0cf9632dd40932883191e',1,'ACSType']]],
-  ['sv_5fraw',['sv_raw',['../struct_a_c_s_type.html#af83838a9c78e0c708fc7ce4b95e4609d',1,'ACSType']]]
+  ['r',['R',['../struct_a_c_s_type.html#a72851c393b49a2b488e51a678b90135b',1,'ACSType::R()'],['../struct___matrix.html#acab531abaa74a7e664e3986f2522b33a',1,'_Matrix::r()']]],
+  ['rt',['Rt',['../struct_a_c_s_type.html#a9b4fd46706c2ce0ad8a2df8038ac915e',1,'ACSType']]],
+  ['rw_5fpwm',['rw_PWM',['../struct_a_c_s_type.html#abadd729b1d9de2b8414c7949637aac27',1,'ACSType']]]
 ];

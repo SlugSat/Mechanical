@@ -1,10 +1,8 @@
 var searchData=
 [
-  ['packetprotocol_2ec',['PacketProtocol.c',['../_packet_protocol_8c.html',1,'']]],
-  ['packetprotocol_2eh',['PacketProtocol.h',['../_packet_protocol_8h.html',1,'']]],
-  ['packettofloats',['packetToFloats',['../_packet_protocol_8c.html#ab96a1915824174b721ba0b03421252ac',1,'packetToFloats(float *f, uint8_t *p, unsigned int n):&#160;PacketProtocol.c'],['../_packet_protocol_8h.html#ab96a1915824174b721ba0b03421252ac',1,'packetToFloats(float *f, uint8_t *p, unsigned int n):&#160;PacketProtocol.c']]],
-  ['pointing_5ferr',['pointing_err',['../struct_a_c_s_type.html#a4c6fe6211cef14e0d66f51e5aff2c485',1,'ACSType']]],
-  ['printmatrix',['printMatrix',['../_matrix_8c.html#ac3b3f616a9e9f75fe4cd3ee32f9b2245',1,'printMatrix(Matrix m, char *string):&#160;Matrix.c'],['../_matrix_8h.html#ac3b3f616a9e9f75fe4cd3ee32f9b2245',1,'printMatrix(Matrix m, char *string):&#160;Matrix.c']]],
-  ['printsolarvector',['printSolarVector',['../_solar_vectors_8h.html#a66eaa48b5366941a66a00639fd0b7a5e',1,'SolarVectors.c']]],
-  ['printto42',['printTo42',['../_s_t_m32_serial_communication_8c.html#a822aae6b64d253b9a112dcb649ee547d',1,'printTo42(char *str):&#160;STM32SerialCommunication.c'],['../_s_t_m32_serial_communication_8h.html#a822aae6b64d253b9a112dcb649ee547d',1,'printTo42(char *str):&#160;STM32SerialCommunication.c']]]
+  ['n_5ferr',['n_err',['../struct_a_c_s_type.html#af580c1b977603405c4a17645652865fc',1,'ACSType']]],
+  ['ned_5f2_5fj2000',['NED_2_J2000',['../_reference_frames_8h.html#a8a8f67366e55b9d6d15e3c2f3f5cd33c',1,'ReferenceFrames.c']]],
+  ['newmatrix',['newMatrix',['../_matrix_8h.html#a58370bcb5edab8381961163612808099',1,'Matrix.c']]],
+  ['newmovingavgfilter',['newMovingAvgFilter',['../_digital_filters_8h.html#a8ef38f79b0e457d8293ad5ecb350bd88',1,'DigitalFilters.c']]],
+  ['num_5fsolar_5fpanels',['NUM_SOLAR_PANELS',['../_a_c_s_8h.html#a52a9e7d7904f66b47bd531471dc30c4d',1,'ACS.h']]]
 ];

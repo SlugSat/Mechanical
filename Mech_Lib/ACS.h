@@ -5,7 +5,7 @@
   ******************************************************************************
     ** The ACS struct includes all the data needed to run the ACS. One struct 
 	* should be created when the ACS starts. A pointer to the struct should 
-	* then be passed to other ACS functions as appropriate.
+	* then be passed to other ACS functions.
 	* 
 	* Created by Galen Savidge. Edited 5/11/2019.
   ******************************************************************************
@@ -63,7 +63,9 @@ typedef struct {
 	
 	// Craft position in different frames
 	Matrix craft_j2000; /**< Craft position relative to Earth (J2000, km) */
-	float longitude, latitude, altitude; /**< In degrees, degrees, and km */
+	float longitude; /**< In degrees */
+	float latitude; /**< In degrees east of the prime meridian, in range [0.0, 360.0) */
+	float altitude; /**< In km */
 	
 	// Feedback control error vectors (body frame)
 	Matrix z_err; /**< Nadir pointing error vector, found by comparing zhat_B and craft_inertial (body frame) */

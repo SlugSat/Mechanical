@@ -1,9 +1,9 @@
-/**
+/*
   ******************************************************************************
   * @file           SolarVectors.h
   * @brief          Reads the solar panels to find solar vectors
   ******************************************************************************
-  ** This module contains functions for finding and printing solar vectors from
+  * This module contains functions for finding and printing solar vectors from
   * solar panel current measurements.
   *
   * Created by Galen Savidge. Edited 5/12/2019.

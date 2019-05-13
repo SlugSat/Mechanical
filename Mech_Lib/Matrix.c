@@ -1,15 +1,15 @@
-/**
+/*
   ******************************************************************************
   * @file           Matrix.c
   * @brief          A library of matrix and vector math functions
   ******************************************************************************
-  ** This module contains matrix and vector math functions. To use, first 
-	* allocate  Matrix objects by using newMatrix(), or another function that 
-	* retuns a Matrix. Next, pass this Matrix into the other functions in the 
-	* library. A Matrix is a pointer to an allocated struct stored on the heap. 
-	* Matrices contain r by c arrays of floats.
-	*
-	* Created by Galen Savidge. Edited 5/12/2019.
+  * This module contains matrix and vector math functions. To use, first 
+  * allocate  Matrix objects by using newMatrix(), or another function that 
+  * retuns a Matrix. Next, pass this Matrix into the other functions in the 
+  * library. A Matrix is a pointer to an allocated struct stored on the heap. 
+  * Matrices contain r by c arrays of floats.
+  *
+  * Created by Galen Savidge. Edited 5/12/2019.
   ******************************************************************************
   */
 

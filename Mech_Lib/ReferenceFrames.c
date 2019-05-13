@@ -1,11 +1,9 @@
-/**
+/*
   ******************************************************************************
   * @file           ReferenceFrames.c
   * @brief          Contains functions to translate between reference frames.
   ******************************************************************************
-  ** 
-	* 
-	* Created by Galen Savidge. Edited 5/12/2019.
+  * Created by Galen Savidge. Edited 5/12/2019.
   ******************************************************************************
   */
 

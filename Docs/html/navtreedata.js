@@ -23,7 +23,8 @@ for the JavaScript code in this file
 */
 var NAVTREE =
 [
-  [ "ACS Source Code", "index.html", [
+  [ "SlugSat ACS", "index.html", [
+    [ "Keil uVision Projects", "projects.html", null ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
@@ -45,8 +46,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"_a_c_s_8c.html",
-"struct_a_c_s_type.html#a511e2e3264766d560a8f6cb81ac45fc9"
+"_a_c_s_8h.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

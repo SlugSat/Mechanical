@@ -1,14 +1,14 @@
 /**
   ******************************************************************************
   * @file           FeedbackControl.h
-  * @brief          Contains implementations for the feedback control states in the ACS
+  * @brief          Contains implementations of the feedback control states in the ACS
   ******************************************************************************
   ** Controller implementations are in OrientationController.c and
   * StabilizationController.c. A call of findErrorVectors() is required before 
   * either runOrientationController() or runStabilizationController() for the 
   * ACS to work correctly.
   * 
-  * Created by Galen Savidge. Edited 4/21/2019.
+  * Created by Galen Savidge. Edited 5/13/2019.
   ******************************************************************************
   */
 
