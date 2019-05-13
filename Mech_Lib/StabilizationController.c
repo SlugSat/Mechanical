@@ -32,9 +32,6 @@
 void torque2wdot(ACSType* acs, Matrix torque_vector, Matrix wdot_vector);
 
 
-
-
-
 void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 
 	static int init_run = 0;
@@ -74,13 +71,11 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 		//Determine available torque from torque rods
 		matrixMult(acs->J_rw,acs->w_rw, h_rw); //Reaction wheel momentum
 		float normMom = vectorNorm(h_rw);  //Find the Norm
-		if (normMom != 0)
-		{
+		if (normMom != 0){
 			matrixScale(h_rw, 1/normMom); // Normalize h_rw
 			vectorCrossProduct(h_rw, acs->mag_vector, m); // Dipole moment
 			matrixScale(m, 1000); // Scale dipole by 1000
-			//m = 1000 * vectorRcross(h_rw/normMom, acs->mag_vector);  //Dipole moment
-
+			
 			//Ensure dipole moment stays within bounds
 			for(i=0;i<3;i++){
 				if(matrixGetElement(m,i,1) > MAXDIP){
@@ -90,24 +85,28 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 					matrixSet(m, i, 1, -MAXDIP);
 				}
 			}
+			
 			//Torque rod torque
 			vectorCrossProduct(m, acs->mag_vector, trTorque);
 		
 			//Check reaction wheels angular velocity
-			for(i = 1; i <= 3; i++)
-			{
+			for(i = 1; i <= 3; i++){				
 				//Turn on torque rods when reaction wheels are greater than 1000 RPM
 				if(fabs(matrixGetElement(acs->w_rw, i, 1)) > 100)
 				{
+				//Set minimum trTorque to 30 microNm to minimie power consumption
+					if((matrixGetElement(trTorque, i, 1)) > 30e-6){
+						
 					matrixSet(trTorque, i, 1, matrixGetElement(trTorque, i, 1) );
 				}
+			}
 				else
 				{
 					matrixSet(trTorque, i, 1, 0);
 				}
 			}
 		}
-		
+	
 		else
 		{
 			vectorSetXYZ(m, 0, 0, 0);
