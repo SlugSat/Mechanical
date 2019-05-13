@@ -43,7 +43,7 @@
 #define SUN_ANGLE_LOW_THRESHOLD 30
 
 
-#define INERTIAL_UPDATE_RATE 10 							// Seconds between intertial vector updates
+#define INERTIAL_UPDATE_RATE 1 								// Seconds between intertial vector updates
 
 
 typedef enum {

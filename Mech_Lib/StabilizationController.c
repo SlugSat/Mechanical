@@ -71,7 +71,7 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 		matrixScale(D, KD_T/acs->dt);
 		
 		// Sum the P, I, and D components
-		matrixAdd(P, I, controller_torque);
+		matrixAdd(P, torque_integrator, controller_torque);
 		matrixAdd(controller_torque, D, controller_torque);
 		
 		// ***** WDOT CONTROLLER *****

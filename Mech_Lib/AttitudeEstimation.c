@@ -125,20 +125,23 @@ void integrateDCM(ACSType* acs, float Kp_mag, float Ki_mag, float Kp_sv, float K
 	float norm_sv = vectorNorm(acs->solar_vector);
 	float norm_mi = vectorNorm(acs->mag_inertial);
 	float norm_svi = vectorNorm(acs->sv_inertial);
-
-	if(norm_mag == 0 || norm_sv == 0 || norm_mi == 0 || norm_svi == 0) {
-		// Need better error handling
-		return;
-	}
 	
 	matrixCopy(acs->mag_vector, mag_normalized);
 	matrixCopy(acs->solar_vector, sv_normalized);
 	matrixCopy(acs->mag_inertial, mi_normalized);
 	matrixCopy(acs->sv_inertial, svi_normalized);
-	matrixScale(mag_normalized, 1.0/norm_mag);
-	matrixScale(sv_normalized, 1.0/norm_sv);
-	matrixScale(mi_normalized, 1.0/norm_mi);
-	matrixScale(svi_normalized, 1.0/norm_svi);
+	if(norm_mag != 0) {
+		matrixScale(mag_normalized, 1.0/norm_mag);
+	}
+	if(norm_sv != 0) {
+		matrixScale(sv_normalized, 1.0/norm_sv);
+	}
+	if(norm_mi != 0) {
+		matrixScale(mi_normalized, 1.0/norm_mi);
+	}
+	if(norm_svi != 0) {
+		matrixScale(svi_normalized, 1.0/norm_svi);
+	}
 	
 	// ***** FIND ERROR FROM MAG *****
 	matrixMult(acs->Rt, mi_normalized, mag_i_body); // Translate mag to body
