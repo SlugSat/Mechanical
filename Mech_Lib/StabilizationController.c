@@ -95,11 +95,11 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 				if(fabs(matrixGetElement(acs->w_rw, i, 1)) > 100)
 				{
 				//Set minimum trTorque to 30 microNm to minimie power consumption
-					if((matrixGetElement(trTorque, i, 1)) > 30e-6){
+					//if((matrixGetElement(trTorque, i, 1)) > 30e-6){
 						
 					matrixSet(trTorque, i, 1, matrixGetElement(trTorque, i, 1) );
 				}
-			}
+			
 				else
 				{
 					matrixSet(trTorque, i, 1, 0);
