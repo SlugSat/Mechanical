@@ -24,6 +24,8 @@ for the JavaScript code in this file
 var NAVTREE =
 [
   [ "SlugSat ACS", "index.html", [
+    [ "Get Started", "get_started.html", null ],
+    [ "Matlab ACS Simulation", "matlab_sim.html", null ],
     [ "Keil uVision Projects", "projects.html", null ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],

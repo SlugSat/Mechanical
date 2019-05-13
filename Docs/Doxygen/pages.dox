@@ -10,6 +10,23 @@
 */
 
 /*!
+	\page get_started Get Started
+	## Installing Keil Tools
+	Put a link to the appropriate document here.
+	
+	## Running Matlab
+	Include either instructions or a link.
+	
+	## Running 42
+	Include either instructions or a link.
+*/
+
+/*! 
+	\page matlab_sim Matlab ACS Simulation
+	This page is a placeholder for now.
+*/
+
+/*!
 	\page projects Keil uVision Projects
 	This page contains a list of projects and describes their function. SOPs should be linked here.
 	

@@ -4,6 +4,7 @@ var searchData=
   ['mag_5fvector',['mag_vector',['../struct_a_c_s_type.html#a4b82b0a178354dcc8761b1bc5d9e3e90',1,'ACSType']]],
   ['make3x1vector',['make3x1Vector',['../_matrix_8h.html#ab6065a8b3ea0d9d10bcacafbff82ebf7',1,'Matrix.c']]],
   ['makedcm_5fzyx',['makeDCM_zyx',['../_reference_frames_8h.html#ad810fd5bc0fcf16966ed6c0ba2420a5b',1,'ReferenceFrames.c']]],
+  ['matlab_20acs_20simulation',['Matlab ACS Simulation',['../matlab_sim.html',1,'']]],
   ['matrix_2eh',['Matrix.h',['../_matrix_8h.html',1,'']]],
   ['matrixadd',['matrixAdd',['../_matrix_8h.html#a218330358f2769f7853cfd5be4ebcdfb',1,'Matrix.c']]],
   ['matrixaddscalar',['matrixAddScalar',['../_matrix_8h.html#a0bfa2a49919757b0983c335f47b90f66',1,'Matrix.c']]],
