@@ -17,6 +17,8 @@
 #include <math.h>
 
 
+//Torque rod
+#define MAXDIP 2.0
 // CONSTANTS
 #define DIV_ROOT2 ((float)0.70710678118)
 
@@ -29,6 +31,7 @@
 
 // Torque rod moment
 #define MAX_MOMENT 2.0
+
 
 
 // PRIVATE FUNCTIONS

@@ -14,7 +14,7 @@ A = eye(3); % 3x3 reaction wheel identity matrix
 Jw = rwInertiaMatrix(); % 3x3 reaction wheel inertia matrix.
 
 
-torque = -A\((Jsc*wdot)+(cross(w,A*Jw*wRW+Jsc*w)));
+torque = -A\((Jsc*wdot)+(cross(w, A*Jw*wRW+Jsc*w)));
 
 wRW_dot = Jw\torque;
 

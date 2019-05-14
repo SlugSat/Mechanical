@@ -116,6 +116,7 @@ void readSensorsFromSerial(ACSType* acs) {
 	
 	// Get sensor vectors
 	vectorCopyArray(acs->mag_vector, sensor_data, 3);
+	matrixScale(acs->mag_vector, 1e-6); // Convert uT to T
 	vectorCopyArray(acs->gyro_vector, sensor_data + 3, 3);
 	vectorCopyArray(acs->solar_vector, sensor_data + 6, 3);
 	

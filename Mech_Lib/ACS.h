@@ -49,7 +49,7 @@ typedef struct {
 	
 	// Sensor vectors (body frame)
 	Matrix gyro_vector; /**< Reading from the gyroscope (body frame, rad/s) */
-	Matrix mag_vector; /**< Reading from the magnetometer (body frame, uT)*/
+	Matrix mag_vector; /**< Reading from the magnetometer (body frame, T)*/
 	Matrix solar_vector; /**< Solar vector determined from the solar panels (body frame, normalized) */
 	
 	// Attitude estimation vectors

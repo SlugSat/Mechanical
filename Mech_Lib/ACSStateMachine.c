@@ -44,6 +44,7 @@
 #define INERTIAL_UPDATE_RATE 1 								// Seconds between intertial vector updates
 
 
+
 typedef enum {
 	DEFAULT = 0,
 	WAIT_FOR_ENABLE,
