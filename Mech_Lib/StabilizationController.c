@@ -71,6 +71,7 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 		//Determine available torque from torque rods
 		matrixMult(acs->J_rw,acs->w_rw, h_rw); //Reaction wheel momentum
 		float normMom = vectorNorm(h_rw);  //Find the Norm
+		
 		if (normMom != 0){
 			matrixScale(h_rw, 1/normMom); // Normalize h_rw
 			vectorCrossProduct(h_rw, acs->mag_vector, m); // Dipole moment
@@ -95,9 +96,9 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 				if(fabs(matrixGetElement(acs->w_rw, i, 1)) > 100)
 				{
 				//Set minimum trTorque to 30 microNm to minimie power consumption
-					//if((matrixGetElement(trTorque, i, 1)) > 30e-6){
-						
-					matrixSet(trTorque, i, 1, matrixGetElement(trTorque, i, 1) );
+					if((matrixGetElement(trTorque, i, 1)) > 30e-6){
+						matrixSet(trTorque, i, 1, matrixGetElement(trTorque, i, 1) );
+					}
 				}
 			
 				else
