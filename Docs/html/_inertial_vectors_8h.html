@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ACS Source Code: C:/Users/galey/Documents/Mechanical/Mech_Lib/InertialVectors.h File Reference</title>
+<title>SlugSat ACS: C:/Users/gsavidge/Documents/Mechanical/Mech_Lib/InertialVectors.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,8 +29,10 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">ACS Source Code
+   <div id="projectname">SlugSat ACS
+   &#160;<span id="projectnumber">0.1.0</span>
    </div>
+   <div id="projectbrief">This repository contains source code for the Attitude Control System (ACS) onboard SlugSat.</div>
   </td>
  </tr>
  </tbody>
@@ -92,7 +94,7 @@ $(document).ready(function(){initNavTree('_inertial_vectors_8h.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>: Contains functions to find sun and magnetic field inertial vectors  
+<p>Contains functions to find sun and magnetic field inertial vectors.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;<a class="el" href="_a_c_s_8h_source.html">ACS.h</a>&gt;</code><br />
 </div>
@@ -104,11 +106,12 @@ Functions</h2></td></tr>
 <tr class="memdesc:a95b2b0bb7d3d728f8a56ff4e47ed0fb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the Earth to sun inertial vector using the current Julian date.  <a href="#a95b2b0bb7d3d728f8a56ff4e47ed0fb3">More...</a><br /></td></tr>
 <tr class="separator:a95b2b0bb7d3d728f8a56ff4e47ed0fb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9bebb3912845c95e905ba04e51527483"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_inertial_vectors_8h.html#a9bebb3912845c95e905ba04e51527483">findMagInertial</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs)</td></tr>
+<tr class="memdesc:a9bebb3912845c95e905ba04e51527483"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses <a class="el" href="struct_i_g_r_f.html">IGRF</a> to find the Earth's magnetic field at the craft's position.  <a href="#a9bebb3912845c95e905ba04e51527483">More...</a><br /></td></tr>
 <tr class="separator:a9bebb3912845c95e905ba04e51527483"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>: Contains functions to find sun and magnetic field inertial vectors </p>
-<p>Created by Galen Savidge. Edited 5/4/2019. </p>
+<div class="textblock"><p>Contains functions to find sun and magnetic field inertial vectors. </p>
+<p>Created by Galen Savidge. Edited 5/12/2019. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a9bebb3912845c95e905ba04e51527483"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9bebb3912845c95e905ba04e51527483">&#9670;&nbsp;</a></span>findMagInertial()</h2>
@@ -125,13 +128,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Uses <a class="el" href="struct_i_g_r_f.html">IGRF</a> to find the Earth's magnetic field at the craft's position. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">acs</td><td>a pointer to an existing Attitude Control System object </td></tr>
+    <tr><td class="paramname">acs</td><td><a class="el" href="struct_a_c_s_type.html" title="A struct including all of the data needed to run the ACS.">ACSType</a> with updated: julian_date, longitude, latitude, altitude, craft_j2000 </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Updates acs-&gt;sv_inertial </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Updates acs-&gt;mag_inertial </dd></dl>
 
 </div>
 </div>
@@ -154,7 +159,7 @@ Functions</h2></td></tr>
 <p>Finds the Earth to sun inertial vector using the current Julian date. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">acs</td><td>a pointer to an existing Attitude Control System object </td></tr>
+    <tr><td class="paramname">acs</td><td><a class="el" href="struct_a_c_s_type.html" title="A struct including all of the data needed to run the ACS.">ACSType</a> with updated julian_date </td></tr>
   </table>
   </dd>
 </dl>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ACS Source Code: C:/Users/galey/Documents/Mechanical/Mech_Lib/PacketProtocol.h File Reference</title>
+<title>SlugSat ACS: C:/Users/gsavidge/Documents/Mechanical/Mech_Lib/PacketProtocol.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,8 +29,10 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">ACS Source Code
+   <div id="projectname">SlugSat ACS
+   &#160;<span id="projectnumber">0.1.0</span>
    </div>
+   <div id="projectbrief">This repository contains source code for the Attitude Control System (ACS) onboard SlugSat.</div>
   </td>
  </tr>
  </tbody>
@@ -87,14 +89,13 @@ $(document).ready(function(){initNavTree('_packet_protocol_8h.html','');});
 <div class="header">
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
-<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">PacketProtocol.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>: Source file for the PacketProtocol module.  
+<p>Makes packets to send to 42 and decodes packets from 42.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
 </div>
@@ -112,15 +113,6 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>HANDSHAKE_BYTE</b>&#160;&#160;&#160;0xA5</td></tr>
 <tr class="separator:aa22dac7b28411a3a8bdcdb306e352d31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:afff1737b43ebc30e138ec9a1fb7cf73c"><td class="memItemLeft" align="right" valign="top"><a id="afff1737b43ebc30e138ec9a1fb7cf73c"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>ControlPacketType</b> { <b>SERIAL_ENABLE</b>, 
-<b>START</b>, 
-<b>ACK</b>, 
-<b>NONE</b>
- }</td></tr>
-<tr class="separator:afff1737b43ebc30e138ec9a1fb7cf73c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ab46bd48a54ff720ea657960a4ae1d2a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_packet_protocol_8h.html#ab46bd48a54ff720ea657960a4ae1d2a6">floatsToPacket</a> (float *f, uint8_t *p, unsigned int n)</td></tr>
@@ -129,20 +121,10 @@ Functions</h2></td></tr>
 <tr class="memitem:ab96a1915824174b721ba0b03421252ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_packet_protocol_8h.html#ab96a1915824174b721ba0b03421252ac">packetToFloats</a> (float *f, uint8_t *p, unsigned int n)</td></tr>
 <tr class="memdesc:ab96a1915824174b721ba0b03421252ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads n floats from a packet of size n*4 bytes.  <a href="#ab96a1915824174b721ba0b03421252ac">More...</a><br /></td></tr>
 <tr class="separator:ab96a1915824174b721ba0b03421252ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a095ad1e03e3fa106ec33af1e092661d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_packet_protocol_8h.html#a095ad1e03e3fa106ec33af1e092661d3">makeControlPacket</a> (uint8_t *p, ControlPacketType type)</td></tr>
-<tr class="memdesc:a095ad1e03e3fa106ec33af1e092661d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes a control packet in packet array p.  <a href="#a095ad1e03e3fa106ec33af1e092661d3">More...</a><br /></td></tr>
-<tr class="separator:a095ad1e03e3fa106ec33af1e092661d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa941a3f021502c97d498ed13c4ff972b"><td class="memItemLeft" align="right" valign="top">ControlPacketType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_packet_protocol_8h.html#aa941a3f021502c97d498ed13c4ff972b">isControlPacket</a> (uint8_t *p)</td></tr>
-<tr class="memdesc:aa941a3f021502c97d498ed13c4ff972b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if p contains a control packet.  <a href="#aa941a3f021502c97d498ed13c4ff972b">More...</a><br /></td></tr>
-<tr class="separator:aa941a3f021502c97d498ed13c4ff972b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>: Source file for the PacketProtocol module. </p>
-<p>: Header for the PacketProtocol module.</p>
-<p>Use this module to create packets to send to and from the flat-sat over serial.</p>
-<p>Created by Galen Savidge. Edited 4/13/2019.</p>
-<p>Use this module to create packets to send to and from the flat-sat over serial.</p>
-<p>Created by Galen Savidge. Edited 3/6/2019. </p>
+<div class="textblock"><p>Makes packets to send to 42 and decodes packets from 42. </p>
+<p>Created by Galen Savidge. Edited 5/12/2019. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ab46bd48a54ff720ea657960a4ae1d2a6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab46bd48a54ff720ea657960a4ae1d2a6">&#9670;&nbsp;</a></span>floatsToPacket()</h2>
@@ -185,72 +167,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
-
-</div>
-</div>
-<a id="aa941a3f021502c97d498ed13c4ff972b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa941a3f021502c97d498ed13c4ff972b">&#9670;&nbsp;</a></span>isControlPacket()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">ControlPacketType isControlPacket </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>p</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Checks if p contains a control packet. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">p</td><td>received packet of size 4 </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>NONE if p is not a control packet, otherwise the packet type </dd></dl>
-
-</div>
-</div>
-<a id="a095ad1e03e3fa106ec33af1e092661d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a095ad1e03e3fa106ec33af1e092661d3">&#9670;&nbsp;</a></span>makeControlPacket()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void makeControlPacket </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>p</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ControlPacketType&#160;</td>
-          <td class="paramname"><em>type</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Makes a control packet in packet array p. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">p</td><td>byte array of size 4 to contain the packet </td></tr>
-    <tr><td class="paramname">type</td><td>type of control packet to make </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>p is a packet containing n values from f </dd></dl>
 
 </div>
 </div>
@@ -295,7 +212,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>f contains n values from p </dd></dl>
 
 </div>
 </div>

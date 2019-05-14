@@ -1,16 +1,17 @@
 /**
   ******************************************************************************
-  * @file           : StabilizationController.c
-  * @brief          : Implementation for the stabilzation state of the ACS
+  * @file           StabilizationController.c
+  * @brief          Implementation for the stabilzation state of the ACS
   ******************************************************************************
-  * 
+  * This controller includes momentum dumping and an integrator to remove steady
+	* state bias.
 	* 
 	* Created by Galen Savidge. Edited 4/21/2019.
   ******************************************************************************
   */
 
 #include "FeedbackControl.h"
-
+#include <STM32SerialCommunication.h>
 
 // Angular speed portion
 #define K_WDOT -0.3
@@ -24,7 +25,8 @@
 #define KD_T (K_T*8)
 
 //Torque rod
-#define MAXDIP 2
+#define MAXDIP 2.0
+
 /**
  * Convert torque into an angular acceleration based on the craft's physical
  * system. CURRENTLY ASSUMES A IS I3.
@@ -60,6 +62,7 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 	if(first_step) {
 		vectorSetXYZ(torque_integrator, 0, 0, 0);
 		vectorSetXYZ(wdot_desired, 0, 0, 0);
+		vectorSetXYZ(acs->tr_PWM, 0, 0, 0);
 	}
 	else {
 
@@ -69,20 +72,24 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 		int i;
 
 		//Determine available torque from torque rods
-		matrixMult(acs->J_rw,acs->w_rw, h_rw); //Reaction wheel momentum
+		matrixMult(acs->J_rw, acs->w_rw, h_rw); //Reaction wheel momentum
 		float normMom = vectorNorm(h_rw);  //Find the Norm
 		
 		if (normMom != 0){
-			matrixScale(h_rw, 1/normMom); // Normalize h_rw
+			matrixScale(h_rw, 1.0/normMom); // Normalize h_rw
 			vectorCrossProduct(h_rw, acs->mag_vector, m); // Dipole moment
 			matrixScale(m, 1000); // Scale dipole by 1000
 			
+			char str[100];
+			printMatrix(m, str);
+			printTo42(str);
+			
 			//Ensure dipole moment stays within bounds
 			for(i=0;i<3;i++){
-				if(matrixGetElement(m,i,1) > MAXDIP){
+				if(matrixGetElement(m, i, 1) > MAXDIP){
 					matrixSet(m, i, 1, MAXDIP);
 				}
-				else if (matrixGetElement(m,i,1) < -MAXDIP){
+				else if (matrixGetElement(m, i, 1) < -MAXDIP){
 					matrixSet(m, i, 1, -MAXDIP);
 				}
 			}
@@ -93,15 +100,7 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 			//Check reaction wheels angular velocity
 			for(i = 1; i <= 3; i++){				
 				//Turn on torque rods when reaction wheels are greater than 1000 RPM
-				if(fabs(matrixGetElement(acs->w_rw, i, 1)) > 100)
-				{
-				//Set minimum trTorque to 30 microNm to minimie power consumption
-					if((matrixGetElement(trTorque, i, 1)) > 30e-6){
-						matrixSet(trTorque, i, 1, matrixGetElement(trTorque, i, 1) );
-					}
-				}
-			
-				else
+				if(fabs(matrixGetElement(acs->w_rw, i, 1)) < 100 || matrixGetElement(trTorque, i, 1) < 30e-6)
 				{
 					matrixSet(trTorque, i, 1, 0);
 				}
@@ -136,7 +135,7 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 		matrixScale(D, KD_T/acs->dt);
 		
 		// Sum the P, I, and D components
-		matrixAdd(torque_integrator, P, controller_torque);
+		matrixAdd(P, torque_integrator, controller_torque);
 		matrixAdd(controller_torque, D, controller_torque);
 		
 		//Add Torque rod torque

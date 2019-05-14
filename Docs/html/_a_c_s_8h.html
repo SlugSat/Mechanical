@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ACS Source Code: C:/Users/galey/Documents/Mechanical/Mech_Lib/ACS.h File Reference</title>
+<title>SlugSat ACS: C:/Users/gsavidge/Documents/Mechanical/Mech_Lib/ACS.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,8 +29,10 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">ACS Source Code
+   <div id="projectname">SlugSat ACS
+   &#160;<span id="projectnumber">0.1.0</span>
    </div>
+   <div id="projectbrief">This repository contains source code for the Attitude Control System (ACS) onboard SlugSat.</div>
   </td>
  </tr>
  </tbody>
@@ -95,7 +97,7 @@ $(document).ready(function(){initNavTree('_a_c_s_8h.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>: Header file for the Attitude Control System (ACS).  
+<p>Contains the Attitude Control System (ACS) struct.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;<a class="el" href="_matrix_8h_source.html">Matrix.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="_digital_filters_8h_source.html">DigitalFilters.h</a>&gt;</code><br />
@@ -109,16 +111,13 @@ $(document).ready(function(){initNavTree('_a_c_s_8h.html','');});
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_c_s_type.html">ACSType</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A struct including all of the data needed to run the ACS.  <a href="struct_a_c_s_type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a52a9e7d7904f66b47bd531471dc30c4d"><td class="memItemLeft" align="right" valign="top"><a id="a52a9e7d7904f66b47bd531471dc30c4d"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUM_SOLAR_PANELS</b>&#160;&#160;&#160;6</td></tr>
+<tr class="memitem:a52a9e7d7904f66b47bd531471dc30c4d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_c_s_8h.html#a52a9e7d7904f66b47bd531471dc30c4d">NUM_SOLAR_PANELS</a>&#160;&#160;&#160;6</td></tr>
 <tr class="separator:a52a9e7d7904f66b47bd531471dc30c4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a844863df70a1327ae031ccc3e6560095"><td class="memItemLeft" align="right" valign="top"><a id="a844863df70a1327ae031ccc3e6560095"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_MOMENT</b>&#160;&#160;&#160;2.0</td></tr>
-<tr class="separator:a844863df70a1327ae031ccc3e6560095"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -133,20 +132,28 @@ Functions</h2></td></tr>
 <tr class="memitem:a7d4a74e5fab5e091bab15dfefc8400e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_c_s_8h.html#a7d4a74e5fab5e091bab15dfefc8400e3">initializeACS</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs)</td></tr>
 <tr class="memdesc:a7d4a74e5fab5e091bab15dfefc8400e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes all the fields in the given ACS struct.  <a href="#a7d4a74e5fab5e091bab15dfefc8400e3">More...</a><br /></td></tr>
 <tr class="separator:a7d4a74e5fab5e091bab15dfefc8400e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23b8c90f719c7f419e93d52afa22b3f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_c_s_8h.html#a23b8c90f719c7f419e93d52afa22b3f8">initializeACSSerial</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs, UART_HandleTypeDef *huart)</td></tr>
-<tr class="memdesc:a23b8c90f719c7f419e93d52afa22b3f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes serial communication from the ACS.  <a href="#a23b8c90f719c7f419e93d52afa22b3f8">More...</a><br /></td></tr>
-<tr class="separator:a23b8c90f719c7f419e93d52afa22b3f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad072f619e7cd898708cb18f8046dddf4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_c_s_8h.html#ad072f619e7cd898708cb18f8046dddf4">readSensorsFromSerial</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs)</td></tr>
-<tr class="memdesc:ad072f619e7cd898708cb18f8046dddf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads sensor data from serial and updates acs.  <a href="#ad072f619e7cd898708cb18f8046dddf4">More...</a><br /></td></tr>
-<tr class="separator:ad072f619e7cd898708cb18f8046dddf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abddb75ac826a5945edf2bd9d9e936aaf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_c_s_8h.html#abddb75ac826a5945edf2bd9d9e936aaf">sendActuatorsToSerial</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs)</td></tr>
-<tr class="memdesc:abddb75ac826a5945edf2bd9d9e936aaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends actuator PWMs from acs over serial.  <a href="#abddb75ac826a5945edf2bd9d9e936aaf">More...</a><br /></td></tr>
-<tr class="separator:abddb75ac826a5945edf2bd9d9e936aaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>: Header file for the Attitude Control System (ACS). </p>
-<p>Created by Galen Savidge. Edited 4/21/2019. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
+<div class="textblock"><p>Contains the Attitude Control System (ACS) struct. </p>
+<p>The ACS struct includes all the data needed to run the ACS. One struct should be created when the ACS starts. A pointer to the struct should then be passed to other ACS functions.</p>
+<p>Created by Galen Savidge. Edited 5/11/2019. </p>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a52a9e7d7904f66b47bd531471dc30c4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52a9e7d7904f66b47bd531471dc30c4d">&#9670;&nbsp;</a></span>NUM_SOLAR_PANELS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NUM_SOLAR_PANELS&#160;&#160;&#160;6</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The number of faces containing solar panels (generally 5) </p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
 <a id="a7d4a74e5fab5e091bab15dfefc8400e3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7d4a74e5fab5e091bab15dfefc8400e3">&#9670;&nbsp;</a></span>initializeACS()</h2>
 
@@ -164,98 +171,6 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Initializes all the fields in the given ACS struct. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">acs</td><td>a pointer to an existing Attitude Control System object </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
-
-</div>
-</div>
-<a id="a23b8c90f719c7f419e93d52afa22b3f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a23b8c90f719c7f419e93d52afa22b3f8">&#9670;&nbsp;</a></span>initializeACSSerial()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void initializeACSSerial </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_a_c_s_type.html">ACSType</a> *&#160;</td>
-          <td class="paramname"><em>acs</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">UART_HandleTypeDef *&#160;</td>
-          <td class="paramname"><em>huart</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Initializes serial communication from the ACS. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">acs</td><td>a pointer to an existing Attitude Control System object </td></tr>
-    <tr><td class="paramname">huart</td><td>pointer to a UART handle defined in main.c </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
-
-</div>
-</div>
-<a id="ad072f619e7cd898708cb18f8046dddf4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad072f619e7cd898708cb18f8046dddf4">&#9670;&nbsp;</a></span>readSensorsFromSerial()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void readSensorsFromSerial </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_a_c_s_type.html">ACSType</a> *&#160;</td>
-          <td class="paramname"><em>acs</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Reads sensor data from serial and updates acs. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">acs</td><td>a pointer to an existing Attitude Control System object </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Updates mag_vector, gyro_vector, and solar_vector in acs </dd></dl>
-
-</div>
-</div>
-<a id="abddb75ac826a5945edf2bd9d9e936aaf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abddb75ac826a5945edf2bd9d9e936aaf">&#9670;&nbsp;</a></span>sendActuatorsToSerial()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void sendActuatorsToSerial </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_a_c_s_type.html">ACSType</a> *&#160;</td>
-          <td class="paramname"><em>acs</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sends actuator PWMs from acs over serial. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">acs</td><td>a pointer to an existing Attitude Control System object </td></tr>

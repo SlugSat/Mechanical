@@ -1,9 +1,13 @@
 /**
   ******************************************************************************
-  * @file           : ACS.h
-  * @brief          : Header file for the Attitude Control System (ACS).
+  * @file           ACS.h
+  * @brief          Contains the Attitude Control System (ACS) struct
   ******************************************************************************
-	* Created by Galen Savidge. Edited 4/21/2019.
+    ** The ACS struct includes all the data needed to run the ACS. One struct 
+	* should be created when the ACS starts. A pointer to the struct should 
+	* then be passed to other ACS functions.
+	* 
+	* Created by Galen Savidge. Edited 5/11/2019.
   ******************************************************************************
   */
 
@@ -20,7 +24,7 @@
 
 
 /* Constants -----------------------------------------------------------------*/
-#define NUM_SOLAR_PANELS 6
+#define NUM_SOLAR_PANELS 6 /**< The number of faces containing solar panels (generally 5) */
 
  
 /* Datatypes -----------------------------------------------------------------*/
@@ -30,64 +34,67 @@ typedef enum {
 	SV_DARK
 }SV_Status;
 
-typedef struct {
+/** 
+ * @brief A struct including all of the data needed to run the ACS
+*/
+typedef struct { 
 	// Current time
-	double julian_date;
-	float t; // In seconds
-	float dt;
+	double julian_date; /**< Julian date in fractional days */
+	float t; /**< Time in seconds since ACS startup */
+	float dt; /**< Time in seconds since last ACS update */
 	
 	// Craft DCM
-	Matrix R;
-	Matrix Rt;
+	Matrix R; /**< Craft DCM (body to ecliptic) */
+	Matrix Rt; /**< Transpose of R */
 	
 	// Sensor vectors (body frame)
-	Matrix gyro_vector;
-	Matrix mag_vector;
-	Matrix solar_vector;
+	Matrix gyro_vector; /**< Reading from the gyroscope (body frame, rad/s) */
+	Matrix mag_vector; /**< Reading from the magnetometer (body frame, T)*/
+	Matrix solar_vector; /**< Solar vector determined from the solar panels (body frame, normalized) */
 	
 	// Attitude estimation vectors
-	Matrix gyro_bias;
-	float gyro_bias_dot_norm;
+	Matrix gyro_bias; /**< Current estimated gyro bias, updated by updateAttitudeEstimate() */
+	float gyro_bias_dot_norm; /**< Time derivative of ||gyro bias|| */
 	
 	// Inertial vectors (ecliptic frame)
-	Matrix sv_inertial; // Found using the Julian date
-	Matrix mag_inertial; // From IGRF
-	Matrix craft_inertial; // Normalized
+	Matrix sv_inertial; /**< Vector from the craft pointing at the Sun (ecliptic frame) */
+	Matrix mag_inertial; /**< Earth's magnetic field from IGRF (ecliptic frame) */
+	Matrix craft_inertial; /**< Craft position relative to Earth (ecliptic frame, normalized) */
 	
 	// Craft position in different frames
-	Matrix craft_j2000; // From SGP4 or 42
-	float longitude, latitude, altitude; // In degrees, degrees, meters wrt prime meridian
+	Matrix craft_j2000; /**< Craft position relative to Earth (J2000, km) */
+	float longitude; /**< In degrees */
+	float latitude; /**< In degrees east of the prime meridian, in range [0.0, 360.0) */
+	float altitude; /**< In km */
 	
 	// Feedback control error vectors (body frame)
-	Matrix z_err;
-	Matrix n_err;
-	Matrix err; // err = z_err + n_err
+	Matrix z_err; /**< Nadir pointing error vector, found by comparing zhat_B and craft_inertial (body frame) */
+	Matrix n_err; /**< Error used to rotate the craft relative to the Sun */
+	Matrix err; /**< Always equals the sum z_err + n_err */
 	
 	// Error scalars (degrees)
-	float pointing_err;
+	float pointing_err; /**< Scalar error between zhat_B and craft_inertial (degrees) */
+	float zb_sun_angle; /**< Angle between zhat_B and sv_inertial (degrees) */
 	
 	// Sensor hardware
 	MovingAvgFilter mag_filter;
 	MovingAvgFilter sv_filter;
-	uint32_t sv_raw[NUM_SOLAR_PANELS]; // For DMA to use
+	uint32_t sv_raw[NUM_SOLAR_PANELS]; /**< This array is used by DMA when reading ADC values */
 	
 	// Solar vector status
-	SV_Status sun_status;
+	SV_Status sun_status; /**< Current Sun status (see SV_Status) */
 	
 	// Satellite dynamic system
-	Matrix w_rw; // Reaction wheel speed vector (body frame)
-	Matrix J_rw; // Reaction wheel inertia matrix
-	Matrix J_rw_inv; // Inverse of J_rw
-	Matrix A_rw; // Reaction wheel projection onto body axes
-	Matrix J_body; // Craft inertia matrix
-	Matrix J_body_inv; // Inverse of J_body
+	Matrix w_rw; /**< Reaction wheel speed vector (body frame, rad/s) */ 
+	Matrix J_rw; /**< Reaction wheel inertia matrix (3x3) */
+	Matrix J_rw_inv; /**< Inverse of J_rw (3x3) */
+	Matrix A_rw; /**< Reaction wheel projection onto body axes, currently I3 */
+	Matrix J_body; /**< Craft inertia matrix (3x3) */
+	Matrix J_body_inv; /**< Inverse of J_body (3x3) */
 	
 	// Actuator PWMs
-	Matrix rw_PWM;
-	Matrix tr_PWM;
-	
-	// UART handle
-	UART_HandleTypeDef* huart;
+	Matrix rw_PWM; /**< Reaction wheel PWMs (3x1) */
+	Matrix tr_PWM; /**< Torque rod PWMs (3x1) */
 }ACSType;
 
 
@@ -99,29 +106,5 @@ typedef struct {
  * @return None
 */
 void initializeACS(ACSType* acs);
-
-/* Serial Communication Functions ---------------------------------------------*/
-
-/** 
- * @brief  Initializes serial communication from the ACS
- * @param  acs: a pointer to an existing Attitude Control System object
- * @param  huart: pointer to a UART handle defined in main.c
- * @return None
-*/
-void initializeACSSerial(ACSType* acs, UART_HandleTypeDef* huart);
-
-/** 
- * @brief  Reads sensor data from serial and updates acs
- * @param  acs: a pointer to an existing Attitude Control System object
- * @return Updates mag_vector, gyro_vector, and solar_vector in acs
-*/
-void readSensorsFromSerial(ACSType* acs);
-
-/** 
- * @brief  Sends actuator PWMs from acs over serial
- * @param  acs: a pointer to an existing Attitude Control System object
- * @return None
-*/
-void sendActuatorsToSerial(ACSType* acs);
 
 #endif

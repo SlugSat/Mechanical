@@ -1,12 +1,12 @@
-/**
+/*
   ******************************************************************************
-  * @file           : STM32SerialCommunication.h
-  * @brief          : Send and receive data over serial
+  * @file           STM32SerialCommunication.c
+  * @brief          A library to send and receive data from 42
   ******************************************************************************
-  ** This module handles UART communication with the flight simulation running 
-	* on a Linux PC/VM.
+  * This module handles UART communication with 42 SlugSat (our customized 
+  * flight simulation).
   * 
-  * Created by Galen Savidge. Edited 4/13/2019.
+  * Created by Galen Savidge. Edited 5/12/2019.
   ******************************************************************************
   */
 
@@ -18,6 +18,15 @@
 #define BAUD 115200
 #define UART_TIMEOUT 20
 #define HANDSHAKE_TIMEOUT 30
+
+#define RECEIVED_FLOATS 18
+#define SENT_FLOATS 6
+
+
+// Module level variables
+static UART_HandleTypeDef* huart;
+static char printstring[1000];
+
 
 // Private functions
 void receivePacket(UART_HandleTypeDef* huart, uint8_t* packet, unsigned int bytes) {
@@ -84,4 +93,70 @@ int STM32SerialReceiveFloats(UART_HandleTypeDef* huart, float* f, unsigned int n
 	}
 	
 	return err;
+}
+
+void initializeACSSerial(UART_HandleTypeDef* uart) {
+	huart = uart;
+}
+
+void syncWith42(ACSType* acs) {
+	STM32SerialHandshake(huart);
+	readSensorsFromSerial(acs);
+	sendActuatorsToSerial(acs);
+	STM32SerialSendString(huart, printstring);
+	printstring[0] = '\0'; // Clear printstring
+}
+
+void readSensorsFromSerial(ACSType* acs) {
+	// Read floats from UART
+	float sensor_data[RECEIVED_FLOATS];
+	if(STM32SerialReceiveFloats(huart, sensor_data, RECEIVED_FLOATS) != HAL_OK) {
+		return;
+	}
+	
+	// Get sensor vectors
+	vectorCopyArray(acs->mag_vector, sensor_data, 3);
+	matrixScale(acs->mag_vector, 1e-6); // Convert uT to T
+	vectorCopyArray(acs->gyro_vector, sensor_data + 3, 3);
+	vectorCopyArray(acs->solar_vector, sensor_data + 6, 3);
+	
+	// Check for invalid solar vector
+	if(vectorNorm(acs->solar_vector) == 0) {
+		acs->sun_status = SV_DARK;
+		vectorSetXYZ(acs->solar_vector, 1, 0, 0); // Set to x+ to avoid divide by 0 errors
+	}
+	else {
+		acs->sun_status = SV_FOUND;
+	}
+	
+	// Get position in Ecliptic ECI frame
+	vectorCopyArray(acs->craft_j2000, sensor_data + 9, 3);
+	J2000_2_ecliptic(acs->craft_j2000, acs->craft_inertial);
+	float c_I_norm = vectorNorm(acs->craft_inertial);
+	if(c_I_norm != 0) {
+		matrixScale(acs->craft_inertial, 1.0/c_I_norm); // Normalize c_I
+	}
+	
+	// Get reaction wheel speeds
+	vectorCopyArray(acs->w_rw, sensor_data + 12, 3);
+	
+	// Get current time
+	acs->julian_date = (double)sensor_data[15] + (double)sensor_data[16]; // Reconstruct Julian date
+	float new_t = sensor_data[17];
+	acs->dt = new_t - acs->t;
+	acs->t = new_t;
+}
+
+
+void sendActuatorsToSerial(ACSType* acs) {
+	// Packet: {rw_x, rw_y, rw_z, tr_x, tr_y, tr_z}
+	float actuator_data[SENT_FLOATS] =
+		{ matrixGetElement(acs->rw_PWM, 1, 1), matrixGetElement(acs->rw_PWM, 2, 1), matrixGetElement(acs->rw_PWM, 3, 1),
+			matrixGetElement(acs->tr_PWM, 1, 1), matrixGetElement(acs->tr_PWM, 2, 1), matrixGetElement(acs->tr_PWM, 3, 1) };
+	
+		STM32SerialSendFloats(huart, actuator_data, SENT_FLOATS);
+}
+
+void printTo42(char* str) {
+	strcat(printstring, str);
 }

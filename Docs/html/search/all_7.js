@@ -1,6 +1,9 @@
 var searchData=
 [
-  ['ned_5f2_5fj2000',['NED_2_J2000',['../_reference_frames_8c.html#a8a8f67366e55b9d6d15e3c2f3f5cd33c',1,'NED_2_J2000(Matrix v_ned, Matrix c_j2000, double JD, Matrix v_j2000):&#160;ReferenceFrames.c'],['../_reference_frames_8h.html#a8a8f67366e55b9d6d15e3c2f3f5cd33c',1,'NED_2_J2000(Matrix v_ned, Matrix c_j2000, double JD, Matrix v_j2000):&#160;ReferenceFrames.c']]],
-  ['newmatrix',['newMatrix',['../_matrix_8c.html#a58370bcb5edab8381961163612808099',1,'newMatrix(int r, int c):&#160;Matrix.c'],['../_matrix_8h.html#a58370bcb5edab8381961163612808099',1,'newMatrix(int r, int c):&#160;Matrix.c']]],
-  ['newmovingavgfilter',['newMovingAvgFilter',['../_digital_filters_8h.html#a8ef38f79b0e457d8293ad5ecb350bd88',1,'DigitalFilters.c']]]
+  ['igrf',['IGRF',['../struct_i_g_r_f.html',1,'']]],
+  ['inertialvectors_2eh',['InertialVectors.h',['../_inertial_vectors_8h.html',1,'']]],
+  ['initializeacs',['initializeACS',['../_a_c_s_8h.html#a7d4a74e5fab5e091bab15dfefc8400e3',1,'ACS.c']]],
+  ['initializeacsserial',['initializeACSSerial',['../_s_t_m32_serial_communication_8h.html#ada2e5bf03fac6669fcb8dd37890f57a6',1,'STM32SerialCommunication.c']]],
+  ['initializedcm',['initializeDCM',['../_attitude_estimation_8h.html#add41af68c335ef202f04c3c055ae5972',1,'AttitudeEstimation.c']]],
+  ['initializesensors',['initializeSensors',['../_sensors_8h.html#a12eb9cee0bd52f1a3183f01a7ff952fe',1,'Sensors.c']]]
 ];

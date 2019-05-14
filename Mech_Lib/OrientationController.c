@@ -1,18 +1,18 @@
 /**
   ******************************************************************************
-  * @file           : OrientationController.c
-  * @brief          : Implementation for the reorientation state of the ACS
+  * @file           OrientationController.c
+  * @brief          Implementation for the reorientation state of the ACS
   ******************************************************************************
   **
 	* 
-	* Created by Galen Savidge. Edited 4/21/2019.
+	* Created by Galen Savidge. Edited 5/12/2019.
   ******************************************************************************
   */
 
 #include "FeedbackControl.h"
-#include <string.h>
 
-// Angular speed portion
+
+// Feedback constants
 #define K 1
 #define KP (K*0.05)
 #define KD (K*0.1)

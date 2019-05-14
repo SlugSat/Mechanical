@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ACS Source Code: C:/Users/galey/Documents/Mechanical/Mech_Lib/AttitudeEstimation.h File Reference</title>
+<title>SlugSat ACS: C:/Users/gsavidge/Documents/Mechanical/Mech_Lib/AttitudeEstimation.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,8 +29,10 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">ACS Source Code
+   <div id="projectname">SlugSat ACS
+   &#160;<span id="projectnumber">0.1.0</span>
    </div>
+   <div id="projectbrief">This repository contains source code for the Attitude Control System (ACS) onboard SlugSat.</div>
   </td>
  </tr>
  </tbody>
@@ -92,7 +94,7 @@ $(document).ready(function(){initNavTree('_attitude_estimation_8h.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>: Header for the AttitudEstimation module.  
+<p>Sensor fusion and attitude determination.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="_a_c_s_8h_source.html">ACS.h</a>&quot;</code><br />
 </div>
@@ -107,13 +109,13 @@ Functions</h2></td></tr>
 <tr class="memdesc:a5aec64402f3df1a6482b514b354f46b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the craft attitude estimate using sensor data in acs.  <a href="#a5aec64402f3df1a6482b514b354f46b0">More...</a><br /></td></tr>
 <tr class="separator:a5aec64402f3df1a6482b514b354f46b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade543c963382408c5820da341714c3fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_attitude_estimation_8h.html#ade543c963382408c5820da341714c3fc">findEulerAngles</a> (<a class="el" href="struct___matrix.html">Matrix</a> R, float *yaw_pitch_roll)</td></tr>
-<tr class="memdesc:ade543c963382408c5820da341714c3fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs closed loop integration on the given DCM using the Rexp form.  <a href="#ade543c963382408c5820da341714c3fc">More...</a><br /></td></tr>
+<tr class="memdesc:ade543c963382408c5820da341714c3fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds intrinsic zyx Euler angles in inertial frame from a body-&gt;inertial DCM.  <a href="#ade543c963382408c5820da341714c3fc">More...</a><br /></td></tr>
 <tr class="separator:ade543c963382408c5820da341714c3fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>: Header for the AttitudEstimation module. </p>
-<p>This module contains the code to run closed loop integration of the gyro using feedback from the magnetometer and solar vector.</p>
-<p>Created by Galen Savidge. Edited 3/6/2019. </p>
+<div class="textblock"><p>Sensor fusion and attitude determination. </p>
+<p>This module contains the code to run closed loop gyro integration using feedback from the magnetometer and solar vector. Call initalizeACS() in <a class="el" href="_a_c_s_8h.html" title="Contains the Attitude Control System (ACS) struct.">ACS.h</a> to initialize an Attitude Control System struct, then pass it into <a class="el" href="_attitude_estimation_8h.html#a5aec64402f3df1a6482b514b354f46b0" title="Updates the craft attitude estimate using sensor data in acs.">updateAttitudeEstimate()</a> every loop to get the craft's Direction Consine Matrix (DCM).</p>
+<p>Created by Galen Savidge. Edited 5/12/2019. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ade543c963382408c5820da341714c3fc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ade543c963382408c5820da341714c3fc">&#9670;&nbsp;</a></span>findEulerAngles()</h2>
@@ -141,15 +143,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Performs closed loop integration on the given DCM using the Rexp form. </p>
+<p>Finds intrinsic zyx Euler angles in inertial frame from a body-&gt;inertial DCM. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">R</td><td>the DCM (initialize to I3 before first use) </td></tr>
+    <tr><td class="paramname">R</td><td>the DCM </td></tr>
     <tr><td class="paramname">yaw_pitch_roll</td><td>pointer to float[3] which hold yaw (0) pitch (1) and roll (2) after the function returns </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Updates contents of yaw_pitch_roll </dd></dl>
 
 </div>
 </div>
@@ -188,7 +190,7 @@ Functions</h2></td></tr>
 <p>Allocates and initializes a 3x3 DCM Matrix. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Euler</td><td>angles for the initial DCM </td></tr>
+    <tr><td class="paramname">Initial</td><td>Euler angles for the DCM </td></tr>
   </table>
   </dd>
 </dl>
@@ -215,12 +217,11 @@ Functions</h2></td></tr>
 <p>Updates the craft attitude estimate using sensor data in acs. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">acs</td><td>an initialized ACS struct which has up-to-date sensor data </td></tr>
-    <tr><td class="paramname">dt</td><td>time in seconds since last call of this function </td></tr>
+    <tr><td class="paramname">acs</td><td><a class="el" href="struct_a_c_s_type.html" title="A struct including all of the data needed to run the ACS.">ACSType</a> with updated: mag_vector, solar_vector, gyro_vector, mag_inertial, sv_inertial, dt </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Updates: R, Rt, gyro_bias, gyro_bias_dot_norm </dd></dl>
 
 </div>
 </div>

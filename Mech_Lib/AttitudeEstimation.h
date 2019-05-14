@@ -1,12 +1,15 @@
 /**
   ******************************************************************************
-  * @file           : AttitudeEstimation.h
-  * @brief          : Header for the AttitudEstimation module.
+  * @file           AttitudeEstimation.h
+  * @brief          Sensor fusion and attitude determination
   ******************************************************************************
-  ** This module contains the code to run closed loop integration of the gyro
-	* using feedback from the magnetometer and solar vector.
-	* 
-	* Created by Galen Savidge. Edited 3/6/2019.
+  ** This module contains the code to run closed loop gyro integration using
+  * feedback from the magnetometer and solar vector. Call initalizeACS() in 
+  * ACS.h to initialize an Attitude Control System struct, then pass it into
+  * updateAttitudeEstimate() every loop to get the craft's Direction Consine
+  * Matrix (DCM).
+  * 
+  * Created by Galen Savidge. Edited 5/12/2019.
   ******************************************************************************
   */
 
@@ -21,7 +24,7 @@
 
 /** 
  * @brief  Allocates and initializes a 3x3 DCM Matrix
- * @param  Euler angles for the initial DCM
+ * @param  Initial Euler angles for the DCM
  * @return The new DCM Matrix
 */
 Matrix initializeDCM(float yaw, float pitch, float roll);
@@ -31,17 +34,16 @@ Matrix initializeDCM(float yaw, float pitch, float roll);
 
 /** 
  * @brief  Updates the craft attitude estimate using sensor data in acs
- * @param  acs: an initialized ACS struct which has up-to-date sensor data
- * @param  dt: time in seconds since last call of this function
- * @return None
+ * @param  acs: ACSType with updated: mag_vector, solar_vector, gyro_vector, mag_inertial, sv_inertial, dt
+ * @return Updates: R, Rt, gyro_bias, gyro_bias_dot_norm
 */
 void updateAttitudeEstimate(ACSType* acs);
 
 /** 
- * @brief  Performs closed loop integration on the given DCM using the Rexp form
- * @param  R: the DCM (initialize to I3 before first use)
+ * @brief  Finds intrinsic zyx Euler angles in inertial frame from a body->inertial DCM
+ * @param  R: the DCM
  * @param  yaw_pitch_roll: pointer to float[3] which hold yaw (0) pitch (1) and roll (2) after the function returns
- * @return None
+ * @return Updates contents of yaw_pitch_roll
 */
 void findEulerAngles(Matrix R, float* yaw_pitch_roll);
 

@@ -1,11 +1,11 @@
 /**
   ******************************************************************************
-  * @file           : ReferenceFrames.h
-  * @brief          : Contains functions to translate between reference frames.
+  * @file           ReferenceFrames.h
+  * @brief          Contains functions to translate between reference frames.
   ******************************************************************************
   ** 
 	* 
-	* Created by Galen Savidge. Edited 5/2/2019.
+	* Created by Galen Savidge. Edited 5/12/2019.
   ******************************************************************************
   */
 
@@ -23,8 +23,11 @@
 
 /* Public Functions ----------------------------------------------------------*/
 /** 
- * @brief  
- * @param  Euler angles
+ * @brief  Makes a DCM with intrinsic zyx rotations as defined by yaw, pitch, roll
+ * @param  R: an allocated 3x3 Matrix
+ * @param  yaw: yaw in radians
+ * @param  pitch: pitch in radians
+ * @param  roll: roll in radians
  * @return R contains the DCM
 */
 void makeDCM_zyx(Matrix R, float yaw, float pitch, float roll);

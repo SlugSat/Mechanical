@@ -23,16 +23,24 @@ for the JavaScript code in this file
 */
 var NAVTREE =
 [
-  [ "ACS Source Code", "index.html", [
+  [ "SlugSat ACS", "index.html", [
+    [ "Get Started", "get_started.html", null ],
+    [ "Matlab ACS Simulation", "matlab_sim.html", null ],
+    [ "Keil uVision Projects", "projects.html", null ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
-      [ "Data Structure Index", "classes.html", null ]
+      [ "Data Structure Index", "classes.html", null ],
+      [ "Data Fields", "functions.html", [
+        [ "All", "functions.html", null ],
+        [ "Variables", "functions_vars.html", null ]
+      ] ]
     ] ],
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ],
       [ "Globals", "globals.html", [
         [ "All", "globals.html", null ],
-        [ "Functions", "globals_func.html", null ]
+        [ "Functions", "globals_func.html", null ],
+        [ "Macros", "globals_defs.html", null ]
       ] ]
     ] ]
   ] ]
@@ -40,8 +48,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"_a_c_s_8c.html",
-"struct_a_c_s_type.html#ae1e2a82621824ccb4bc27eb3dc76c924"
+"_a_c_s_8h.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

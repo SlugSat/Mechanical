@@ -7,8 +7,8 @@ var struct_a_c_s_type =
     [ "dt", "struct_a_c_s_type.html#a778e38aa889751afffa2dea6b803e67a", null ],
     [ "err", "struct_a_c_s_type.html#a1dbe9014e616749d7c55f3ba4cbbff65", null ],
     [ "gyro_bias", "struct_a_c_s_type.html#a4041a720dac4049e6c883ed9b0d654ba", null ],
+    [ "gyro_bias_dot_norm", "struct_a_c_s_type.html#ad98a2f8a4a88a5e48b648bf1d56494cc", null ],
     [ "gyro_vector", "struct_a_c_s_type.html#a6db622f43cefd0fe0f05ddbb5553ce71", null ],
-    [ "huart", "struct_a_c_s_type.html#a1ed7dab212fde0a3a4600d33399c67b6", null ],
     [ "J_body", "struct_a_c_s_type.html#ae9005a98c5e356c3c718057fb431215a", null ],
     [ "J_body_inv", "struct_a_c_s_type.html#a347bdaa887a9c2a386f0785e238f1823", null ],
     [ "J_rw", "struct_a_c_s_type.html#ae3e39e9013f49cf0f58982ab30dff4e5", null ],
@@ -20,6 +20,7 @@ var struct_a_c_s_type =
     [ "mag_inertial", "struct_a_c_s_type.html#a3b8cd1112080cab70c421f3147c4610a", null ],
     [ "mag_vector", "struct_a_c_s_type.html#a4b82b0a178354dcc8761b1bc5d9e3e90", null ],
     [ "n_err", "struct_a_c_s_type.html#af580c1b977603405c4a17645652865fc", null ],
+    [ "pointing_err", "struct_a_c_s_type.html#a4c6fe6211cef14e0d66f51e5aff2c485", null ],
     [ "R", "struct_a_c_s_type.html#a72851c393b49a2b488e51a678b90135b", null ],
     [ "Rt", "struct_a_c_s_type.html#a9b4fd46706c2ce0ad8a2df8038ac915e", null ],
     [ "rw_PWM", "struct_a_c_s_type.html#abadd729b1d9de2b8414c7949637aac27", null ],
@@ -31,5 +32,6 @@ var struct_a_c_s_type =
     [ "t", "struct_a_c_s_type.html#afea36502e9d227ff62c5fb2719a246f2", null ],
     [ "tr_PWM", "struct_a_c_s_type.html#a479836cb6277d49ac363e5aef596c7db", null ],
     [ "w_rw", "struct_a_c_s_type.html#a880b6eef6382841a030de56f08f7c234", null ],
-    [ "z_err", "struct_a_c_s_type.html#a36a617bb19a1c9a4cc9397c8c7775b6c", null ]
+    [ "z_err", "struct_a_c_s_type.html#a36a617bb19a1c9a4cc9397c8c7775b6c", null ],
+    [ "zb_sun_angle", "struct_a_c_s_type.html#acb3d9d99bee55edb832182dae3b2d7fd", null ]
 ];

@@ -1,5 +1,10 @@
 var searchData=
 [
-  ['j2000_5f2_5fecliptic',['J2000_2_ecliptic',['../_reference_frames_8c.html#ad05396fc4343e314a56ae160f6f526bf',1,'J2000_2_ecliptic(Matrix v_j2000, Matrix v_ecliptic):&#160;ReferenceFrames.c'],['../_reference_frames_8h.html#ad05396fc4343e314a56ae160f6f526bf',1,'J2000_2_ecliptic(Matrix v_j2000, Matrix v_ecliptic):&#160;ReferenceFrames.c']]],
-  ['j2000_5f2_5flonglatalt',['J2000_2_LongLatAlt',['../_reference_frames_8c.html#a38b7b208edf749de266f264e570fe511',1,'J2000_2_LongLatAlt(Matrix v_j2000, double JD, float *lng, float *lat, float *alt):&#160;ReferenceFrames.c'],['../_reference_frames_8h.html#a38b7b208edf749de266f264e570fe511',1,'J2000_2_LongLatAlt(Matrix v_j2000, double JD, float *lng, float *lat, float *alt):&#160;ReferenceFrames.c']]]
+  ['feedbackcontrol_2eh',['FeedbackControl.h',['../_feedback_control_8h.html',1,'']]],
+  ['finderrorvectors',['findErrorVectors',['../_feedback_control_8h.html#a061127a629c487f3bc31574e39e3d684',1,'FeedbackControl.c']]],
+  ['findeulerangles',['findEulerAngles',['../_attitude_estimation_8h.html#ade543c963382408c5820da341714c3fc',1,'AttitudeEstimation.c']]],
+  ['findmaginertial',['findMagInertial',['../_inertial_vectors_8h.html#a9bebb3912845c95e905ba04e51527483',1,'InertialVectors.c']]],
+  ['findsolarvector',['findSolarVector',['../_solar_vectors_8h.html#ad340c5d51e50e8cd1c46bbf70ff0650d',1,'SolarVectors.c']]],
+  ['findsuninertial',['findSunInertial',['../_inertial_vectors_8h.html#a95b2b0bb7d3d728f8a56ff4e47ed0fb3',1,'InertialVectors.c']]],
+  ['floatstopacket',['floatsToPacket',['../_packet_protocol_8h.html#ab46bd48a54ff720ea657960a4ae1d2a6',1,'PacketProtocol.c']]]
 ];

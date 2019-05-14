@@ -1,13 +1,14 @@
 /**
   ******************************************************************************
-  * @file           : FeedbackControl.c
-  * @brief          : Contains implementations for the feedback control states in the ACS
+  * @file           FeedbackControl.h
+  * @brief          Contains implementations for the feedback control states in the ACS
   ******************************************************************************
-  ** 
-	* As of now these functions change actuator outputs inside of the function
-	* itself but that is subject to change.
-	* 
-	* Created by Galen Savidge. Edited 4/21/2019.
+  ** Controller implementations are in OrientationController.c and
+  * StabilizationController.c. A call of findErrorVectors() is required before 
+  * either runOrientationController() or runStabilizationController() for the 
+  * ACS to work correctly.
+  * 
+  * Created by Galen Savidge. Edited 4/21/2019.
   ******************************************************************************
   */
 
@@ -39,7 +40,7 @@ float sign(float x);
 // PUBLIC FUNCTIONS
 void findErrorVectors(ACSType* acs) {
 	static int init_run = 0;
-	static Matrix zhat_B, craft_B, n_I, n_B, corner_B;
+	static Matrix zhat_B, craft_B, n_I, n_B, corner_B, sv_B;
 	
 	if(init_run == 0) {
 		zhat_B = make3x1Vector(0, 0, 1);
@@ -47,6 +48,7 @@ void findErrorVectors(ACSType* acs) {
 		n_I = newMatrix(3, 1);
 		n_B = newMatrix(3, 1);
 		corner_B = newMatrix(3, 1);
+		sv_B = newMatrix(3, 1);
 		init_run = 1;
 	}
 	
@@ -59,7 +61,9 @@ void findErrorVectors(ACSType* acs) {
 	// Find the unit vector normal to the plane containing the Earth, craft, and Sun
 	vectorCrossProduct(acs->craft_inertial, acs->sv_inertial, n_I);
 	float n_I_norm = vectorNorm(n_I);
-	matrixScale(n_I, 1.0/n_I_norm);
+	if(n_I_norm != 0) {
+		matrixScale(n_I, 1.0/n_I_norm);
+	}
 	matrixMult(acs->Rt, n_I, n_B); // Translate to body frame
 	
 	// Make corner_B vector point to the edge closest to n_B (roughly)
@@ -76,6 +80,10 @@ void findErrorVectors(ACSType* acs) {
 	
 	// Find scalar pointing error (used for state transitions)
 	acs->pointing_err = acos(vectorDotProduct(zhat_B, craft_B))*180/PI;
+	
+	// Find angle between zhat_B and sun
+	matrixMult(acs->Rt, acs->sv_inertial, sv_B);
+	acs->zb_sun_angle = acos(vectorDotProduct(zhat_B, sv_B))*180/PI;
 }
 
 

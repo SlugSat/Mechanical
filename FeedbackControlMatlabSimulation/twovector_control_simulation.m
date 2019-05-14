@@ -4,20 +4,19 @@
 % interial frame.
 %
 % Created by Galen Savidge, 2/23/2019
-% Edited by Galen Savidge, 4/12/2019
+% Edited by Galen Savidge, 5/12/2019
 
 
 clear all
 clc
 close all
 
-%Bdot
-bold = [0;0;0];
+% ---------- Settings ----------
 
 % SIMULATION SETTINGS
-simulation_time = 100000; % Amount of time to be simulated (seconds)
+simulation_time = 600; % Amount of time to be simulated (seconds)
 dt = 1; % Time between steps (seconds)
-draw_cube = 0;
+draw_cube = 0; % Set to 1 to render the cube and quiver plot
 orbit_time = 5400; % Craft orbital period (seconds); 0 for static position
 R = rotx(60)*roty(-160)*rotz(150); % Initial craft DCM
 w = [0; 0; 0]; % Initial angular velocity
@@ -36,10 +35,12 @@ if use_42_disturbance == 0
 end
 
 % GIF SETTINGS
-make_gif = 0;
+make_gif = 0; % Set to 1 to output into the file names set below
 cube_filename = 'cube.gif';
 quiver_filename = 'quiver.gif';
-gif_timescale = 20;
+gif_timescale = 20; % Speed multiplier (e.g. 10 -> gif is at 10x speed)
+
+% ---------- End settings ----------
 
 % SIMULATION SETUP
 num_steps = simulation_time/dt;
@@ -54,6 +55,9 @@ s_I = [0;-1;0]; % Position of the sun wrt to inertial
 
 % Initialize last error for derivative
 last_err = error_twovector(R, c_I, s_I);
+
+% Initialize bdot
+bold = [0;0;0];
 
 % Set up cube and quiver plots
 if draw_cube
@@ -72,7 +76,7 @@ if draw_cube
     v5 = [-1*xwidth/2;   -1*ywidth/2;     -1*zwidth/2];
     v6 = [xwidth/2;      -1*ywidth/2;     -1*zwidth/2];
     v7 = [xwidth/2;      ywidth/2;        -1*zwidth/2];
-    v8 = [-1*xwidth/2;   ywidth/2;        -1*zwidth/2];git 
+    v8 = [-1*xwidth/2;   ywidth/2;        -1*zwidth/2];
 
     % Initialize quiver plot
     figure(1)
@@ -106,20 +110,19 @@ if make_gif == 1
     frame_time = dt/gif_timescale;
 end
 
-% Initialize error history
+% Initialize history
+t_hist = zeros(num_steps, 1);
 err_hist = zeros(num_steps, 3);
 pwm_hist = zeros(num_steps, 3);
-t_hist = zeros(num_steps, 1);
 w_hist = zeros(num_steps, 3);
 w_rwhist = zeros(num_steps, 3);
-torque_trhist= zeros(num_steps, 3);
-mag_bodyhist= zeros(num_steps, 3);
-mhist= zeros(num_steps, 3);
-trPWM_hist = zeros(num_steps, 3);
+torque_trhist = zeros(num_steps, 3);
+mag_bodyhist = zeros(num_steps, 3);
+mhist = zeros(num_steps, 3);
+bdot_hist = zeros(num_steps, 3);
 
 transition_times = [];
 
-bdot_hist= zeros(num_steps, 3);
 
 % RUN SIMULATION
 for i=1:num_steps    
@@ -139,9 +142,9 @@ for i=1:num_steps
             acs_state = 1;
             initial_step = 1;
             transition_times = [transition_times t];
-            if draw_cube
-                pause
-            end
+%             if draw_cube
+%                 pause
+%             end
         else
             controller_wdot = largeErrorController(w, z_err, dt, initial_step);
             torque_tr = [0; 0; 0];
@@ -152,14 +155,14 @@ for i=1:num_steps
             acs_state = 0;
             initial_step = 1;
             transition_times = [transition_times t];
-            if draw_cube
-                pause
-            end
+%             if draw_cube
+%                 pause
+%             end
         else
-            %Bang Bang bdot for momentum dumping
+            % Bang Bang bdot for momentum dumping
             bdot = bdotControl(w, mag_body, bold);
             bdot_hist(i,:) = bdot;
-            %Stabilization control
+            % Stabilization control
             [m , controller_wdot, torque_tr] = stabilizationController(w, w_rw, err, dt, mag_body, initial_step);
             initial_step = 0;
             mhist(i,:) = m;
@@ -318,11 +321,11 @@ set(gcf,'Color','w');
 legend('x', 'y', 'z')
 movegui(5,'north');
 
-% % Plot transition times on the plots
-% if ~isempty(transition_times)
-%     for i = 3:5
-%         figure(i)
-%         hold on
-%         vline(transition_times)
-%     end
-% end
+% Plot transition times on the plots
+if ~isempty(transition_times)
+    for i = 3:6
+        figure(i)
+        hold on
+        vline(transition_times)
+    end
+end

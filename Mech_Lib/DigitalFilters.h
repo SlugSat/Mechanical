@@ -1,11 +1,14 @@
 /**
   ******************************************************************************
-  * @file           : DigitalFilters.h
-  * @brief          : Header for the DigitalFilters module.
+  * @file           DigitalFilters.h
+  * @brief          Filter sensor data
   ******************************************************************************
-  ** Use this module to digitally filter sensor data.
-	*
-	* Created by Galen Savidge. Edited 3/4/2019.
+  ** Currently includes a moving average filter datatype, which runs a variable 
+  * length digital moving average filter on a configurable number of sensor 
+  * readings. Use newMovingAvgFilter() to allocate a MovingAvgFilter and then 
+  * pass it to runMovingAvgFilter() each loop to filter sensor data.
+  *
+  * Created by Galen Savidge. Edited 5/12/2019.
   ******************************************************************************
   */
 
@@ -32,4 +35,4 @@ MovingAvgFilter newMovingAvgFilter(char num_sensors, char num_readings);
 */
 void runMovingAvgFilter(MovingAvgFilter f, float* new_readings);
 
-#endif
+#endif /* DIGITALFILTERS_H */

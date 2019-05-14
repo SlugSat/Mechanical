@@ -1,11 +1,9 @@
-/**
+/*
   ******************************************************************************
   * @file           ACSStateMachine.c
   * @brief          Runs the logic for the ACS
   ******************************************************************************
-  * 
-	* 
-	* Created by Galen Savidge. Edited 5/9/2019.
+  * Created by Galen Savidge. Edited 5/11/2019.
   ******************************************************************************
   */
 
@@ -14,10 +12,19 @@
 
 // ACS modules
 #include <ACS.h>
-#include <STM32SerialCommunication.h>
 #include <InertialVectors.h>
 #include <AttitudeEstimation.h>
 #include <FeedbackControl.h>
+
+// 42
+#ifdef ENABLE_42
+#include <STM32SerialCommunication.h>
+#endif
+
+// FRAM
+#ifdef ENABLE_FRAM
+#include <SPI_FRAM.h>
+#endif
 
 // Standard libraries
 #include <math.h>
@@ -26,13 +33,16 @@
 // Thresholds used for state machine transitions
 #define DETUMBLE_LOW_THRESHOLD 0.00872665			// 0.5 deg/s in rad/s
 #define DETUBMLE_HIGH_THRESHOLD 0.05
-#define STABLE_ATTITUDE_LOW_THRESHOLD 0.02 	// Rad/s^2; will have to be updated for real sensors
-#define STABLE_ATTITUDE_HIGH_THRESHOLD 0.10
-#define POINT_ERROR_HIGH_THRESHOLD 20					// Degrees
+#define STABLE_ATTITUDE_LOW_THRESHOLD 0.02		// Rad/s^2; will have to be updated for real sensors
+#define STABLE_ATTITUDE_HIGH_THRESHOLD 0.08
+#define POINT_ERROR_HIGH_THRESHOLD 15					// Degrees
 #define POINT_ERROR_LOW_THRESHOLD 10
+#define SUN_ANGLE_HIGH_THRESHOLD 40						// Degrees
+#define SUN_ANGLE_LOW_THRESHOLD 30
 
 
-#define INERTIAL_UPDATE_RATE 2 							// Seconds between intertial vector updates
+#define INERTIAL_UPDATE_RATE 1 								// Seconds between intertial vector updates
+
 
 
 typedef enum {
@@ -56,13 +66,33 @@ char state_names[][30] = {
 };
 
 
-void runACS(UART_HandleTypeDef* huart) {
+// Serial device handles
+#ifdef ENABLE_42
+static UART_HandleTypeDef* huart;
+
+void setUartHandle(UART_HandleTypeDef* uart) {
+	huart = uart;
+}
+#endif
+
+#ifdef ENABLE_FRAM
+static SPI_HandleTypeDef* hspi;
+
+void setSpiHandle(SPI_HandleTypeDef* spi) {
+	hspi = spi;
+}
+#endif
+
+
+void runACS(void) {
 	/***** INITIALIZE ACS *****/
 	ACSType acs;
 	initializeACS(&acs);
-	initializeACSSerial(&acs, huart); // Only necessary to communicate with 42
+	#ifdef ENABLE_42
+	initializeACSSerial(huart);
+	#endif
 	
-	ACSState state = DEFAULT;
+	ACSState state = WAIT_FOR_ATTITUDE;
 	int first_step = 1;
 	float last_inertial_update_time = -INFINITY;	// In seconds
 	
@@ -74,20 +104,23 @@ void runACS(UART_HandleTypeDef* huart) {
 	char prnt[300]; // String buffer to print to 42
 	
   while (1) {
-		// Print to terminal
-		sprintf(prnt, "State -- %s\nPointing error: %6.2f [deg]\nCraft rotational rate: %6.2f [deg/s]\nGyro bias dot: %6.2f [rad/s^2]", 
-				state_names[state], acs.pointing_err, 180*gyro_vector_norm/PI, acs.gyro_bias_dot_norm);
-		
-		
+		#ifdef ENABLE_42
 		/***** READ/WRITE TO 42 *****/
-		STM32SerialHandshake(huart);
-		readSensorsFromSerial(&acs);
-		sendActuatorsToSerial(&acs);
-		STM32SerialSendString(huart, prnt);
+		syncWith42(&acs);
+		#endif
 		
+		
+		#ifdef ENABLE_FRAM
+		/***** READ/WRITE TO FRAM *****/
+		
+		#endif
 		
 		/***** RUN ACS SUBROUTINES *****/
 		// Read solar vectors here to get sun state
+		
+		// Update ACS fields
+		J2000_2_LongLatAlt(acs.craft_j2000, acs.julian_date, &acs.longitude, &acs.latitude, &acs.altitude);
+		
 		
 		if(state == DETUMBLE) {
 			// Read gyro here
@@ -131,10 +164,19 @@ void runACS(UART_HandleTypeDef* huart) {
 			first_step = 0;
 		}
 		
+		#ifdef ENABLE_42
+		// Print to 42 terminal
+		sprintf(prnt, "State -- %s\nPointing error: %6.2f [deg]\nCraft rotational rate: %6.2f [deg/s]\nGyro bias dot: %6.2f [rad/s^2]", 
+				state_names[state], acs.pointing_err, 180*gyro_vector_norm/PI, acs.gyro_bias_dot_norm);
+		printTo42(prnt);
+		
+		sprintf(prnt, "\nAngle to sun: %6.2f [deg]", acs.zb_sun_angle);
+		printTo42(prnt);
+		#endif
 		
 		/***** RUN STATE MACHINE *****/
-		/**
-		 * See ACS State Machine (figure x, page x of the Year 3 Sping Report).
+		/*
+		 * See the ACS State Machine (figure x, page x of the Year 3 Sping Report).
 		 *
 		 * State transition checks at the top of the code have low priority,
 		 * checks at the bottom have high priority.
@@ -182,7 +224,7 @@ void runACS(UART_HandleTypeDef* huart) {
 				break;
 				
 			case STABILIZE_NO_SUN:
-				if(acs.sun_status != SV_DARK) {
+				if(acs.sun_status != SV_DARK && acs.zb_sun_angle > SUN_ANGLE_HIGH_THRESHOLD) {
 					next_state = STABILIZE;
 				}
 				break;
@@ -195,7 +237,7 @@ void runACS(UART_HandleTypeDef* huart) {
 		
 		// Reverse state transitions
 		if(state >= STABILIZE) {
-			if(acs.sun_status == SV_DARK) { // In eclipse
+			if(acs.sun_status == SV_DARK || acs.zb_sun_angle < SUN_ANGLE_LOW_THRESHOLD) { // In eclipse or right under the sun
 				next_state = STABILIZE_NO_SUN;
 			}
 		}
