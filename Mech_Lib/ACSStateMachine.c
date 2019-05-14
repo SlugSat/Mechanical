@@ -44,17 +44,6 @@
 #define INERTIAL_UPDATE_RATE 1 								// Seconds between intertial vector updates
 
 
-
-typedef enum {
-	DEFAULT = 0,
-	WAIT_FOR_ENABLE,
-	DETUMBLE,
-	WAIT_FOR_ATTITUDE,
-	REORIENT,
-	STABILIZE_NO_SUN,
-	STABILIZE
-}ACSState;
-
 char state_names[][30] = {
 		"Default", 
 		"Wait for Enable", 
@@ -109,11 +98,6 @@ void runACS(void) {
 		syncWith42(&acs);
 		#endif
 		
-		
-		#ifdef ENABLE_FRAM
-		/***** READ/WRITE TO FRAM *****/
-		
-		#endif
 		
 		/***** RUN ACS SUBROUTINES *****/
 		// Read solar vectors here to get sun state
@@ -327,5 +311,16 @@ void runACS(void) {
 				break;
 			}
 		}
+		
+		
+		#ifdef ENABLE_FRAM
+		/***** READ/WRITE TO FRAM *****/
+		SPI_FRAM_Write(hspi, SPI_LAT_ADDR, (uint8_t*)&acs.latitude, 4);
+		SPI_FRAM_Write(hspi, SPI_LONG_ADDR, (uint8_t*)&acs.longitude, 4);
+		SPI_FRAM_Write(hspi, SPI_ALT_ADDR, (uint8_t*)&acs.altitude, 4);
+		SPI_FRAM_Write(hspi, SPI_TIME_ADDR, (uint8_t*)&acs.julian_date, 8);
+		SPI_FRAM_Write(hspi, SPI_SOLAR_VECTOR_ADDR, (uint8_t*)&acs.sun_status, 1);
+		SPI_FRAM_Write(hspi, SPI_MECH_STATE_ADDR, (uint8_t*)&state, 1);
+		#endif
 	}
 }

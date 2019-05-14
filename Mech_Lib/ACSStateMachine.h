@@ -16,6 +16,17 @@
 #include <main.h>
 
 
+typedef enum {
+	DEFAULT = 0,
+	WAIT_FOR_ENABLE,
+	DETUMBLE,
+	WAIT_FOR_ATTITUDE,
+	REORIENT,
+	STABILIZE_NO_SUN,
+	STABILIZE
+}ACSState;
+
+
 #ifdef ENABLE_42
 /**
  * @brief  Sets the UART handle used to communicate with 42
