@@ -20,7 +20,7 @@ Kp_wdot = K_wdot*0.006;
 Kd_wdot = K_wdot*0.4;
 
 % Torque portion
-K_t = 0.0005;
+K_t = 5e-4;
 Kp_t = K_t*1.5;
 Ki_t = K_t*0.05;
 Kd_t = K_t*8;
@@ -47,8 +47,10 @@ else
          torque_tr(i) = 0;
      end
     end
-    %Calculate reaction wheel torque    
+    %Calculate reaction wheel torque
+    P = Kp_t*err;
     torque_integrator = torque_integrator + Ki_t*err*dt;
+    controller_torque = Kp_t*err + torque_integrator;
     controller_torque = Kp_t*err + torque_integrator + (Kd_t*(err - last_err)/dt) + torque_tr; % Subtract torque rod torque
     %Calculate wdot desired
     wdot_desired = (Kp_wdot*err + Kd_wdot*(err - last_err)/dt);

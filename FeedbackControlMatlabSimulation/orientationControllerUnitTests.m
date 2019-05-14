@@ -54,6 +54,7 @@ wdot_desired = largeErrorController(w, z_err, dt, 0)
 
 % Stabilization Controller Test With Momentum Dumping
 % Test 1
+dt = 1;
 w =  [-0.000823412819641066; 0.000823855246784669; 4.35504321779471e-06];
 err = [0.007725642184553; 0.008020302029273; 0.000736637852137372];
 w_rw = [-99.9985371159399; 48.2929441678575; -100.039367809058];
