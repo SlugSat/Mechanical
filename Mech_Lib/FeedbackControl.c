@@ -14,6 +14,7 @@
 
 // HEADER FILE
 #include <FeedbackControl.h>
+#include <math.h>
 
 
 //Torque rod

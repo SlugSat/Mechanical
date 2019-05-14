@@ -11,7 +11,7 @@
   */
 
 #include "FeedbackControl.h"
-#include <STM32SerialCommunication.h>
+#include <math.h>
 
 // Angular speed portion
 #define K_WDOT -0.3
@@ -79,10 +79,6 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 			matrixScale(h_rw, 1.0/normMom); // Normalize h_rw
 			vectorCrossProduct(h_rw, acs->mag_vector, m); // Dipole moment
 			matrixScale(m, 1000); // Scale dipole by 1000
-			
-			char str[100];
-			printMatrix(m, str);
-			printTo42(str);
 			
 			//Ensure dipole moment stays within bounds
 			for(i=0;i<3;i++){
