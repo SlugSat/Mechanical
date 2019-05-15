@@ -63,8 +63,8 @@ typedef struct {
 	
 	// Craft position in different frames
 	Matrix craft_j2000; /**< Craft position relative to Earth (J2000, km) */
-	float longitude; /**< In degrees */
-	float latitude; /**< In degrees east of the prime meridian, in range [0.0, 360.0) */
+	float longitude; /**< In degrees east of the prime meridian, in range [0.0, 360.0) */
+	float latitude; /**< In degrees north of the equator */
 	float altitude; /**< In km */
 	
 	// Feedback control error vectors (body frame)
