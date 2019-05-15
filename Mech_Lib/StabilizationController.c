@@ -20,7 +20,7 @@
 
 // Torque portion
 #define K_T 5e-4
-#define KP_T (K_T*1.5)
+#define KP_T (K_T*2)
 #define KI_T (K_T*0.05)
 #define KD_T (K_T*8)
 
@@ -94,25 +94,25 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 			vectorCrossProduct(m, acs->mag_vector, trTorque);
 		
 			//Check reaction wheels angular velocity
-			for(i = 1; i <= 3; i++){				
+			/*for(i = 1; i <= 3; i++){				
 				//Turn on torque rods when reaction wheels are greater than 1000 RPM
-				if(fabs(matrixGetElement(acs->w_rw, i, 1)) < 100 || matrixGetElement(trTorque, i, 1) < 30e-6)
+				if(fabs(matrixGetElement(acs->w_rw, i, 1)) < 100) // || matrixGetElement(trTorque, i, 1) < 1e-6)
 				{
 					matrixSet(trTorque, i, 1, 0);
 				}
-			}
+			}*/
+			
+			// ***** FIND PWM FOR EACH TORQUE ROD *****
+			//vectorCrossProduct(acs->mag_vector, trTorque, m);
+			matrixCopy(m, acs->tr_PWM); 
+			matrixScale(acs->tr_PWM, 100.0/MAXDIP);	//Scale to PWM
 		}
 	
 		else
 		{
-			vectorSetXYZ(m, 0, 0, 0);
+			vectorSetXYZ(acs->tr_PWM, 0, 0, 0);
 			vectorSetXYZ(trTorque, 0, 0, 0);
 		}
-		
-		
-		// ***** FIND PWM FOR EACH TORQUE ROD *****
-		matrixCopy(m, acs->tr_PWM); 
-		matrixScale(acs->tr_PWM, 100.0/MAXDIP);	//Scale to PWM
 		
 
 		// ***** TORQUE CONTROLLER *****
