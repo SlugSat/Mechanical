@@ -25,11 +25,6 @@
 #define KD_T (K_T*8)
 
 
-// Torque rod
-#define MAXDIP 2.0
-
-
-
 /**
  * Convert torque into an angular acceleration based on the craft's physical
  * system. CURRENTLY ASSUMES A IS I3.
@@ -88,11 +83,11 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 			
 			//Ensure dipole moment stays within bounds
 			for(i=1;i<=3;i++){
-				if(matrixGetElement(m, i, 1) > MAXDIP){
-					matrixSet(m, i, 1, MAXDIP);
+				if(matrixGetElement(m, i, 1) > TR_MAXDIP){
+					matrixSet(m, i, 1, TR_MAXDIP);
 				}
-				else if (matrixGetElement(m, i, 1) < -MAXDIP){
-					matrixSet(m, i, 1, -MAXDIP);
+				else if (matrixGetElement(m, i, 1) < -TR_MAXDIP){
+					matrixSet(m, i, 1, -TR_MAXDIP);
 				}
 			}
 			
@@ -111,7 +106,7 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 			// ***** FIND PWM FOR EACH TORQUE ROD *****
 			//vectorCrossProduct(acs->mag_vector, trTorque, m);
 			matrixCopy(m, acs->tr_PWM); 
-			matrixScale(acs->tr_PWM, 100.0/MAXDIP);	//Scale to PWM
+			matrixScale(acs->tr_PWM, 100.0/TR_MAXDIP);	//Scale to PWM
 		}
 	
 		else

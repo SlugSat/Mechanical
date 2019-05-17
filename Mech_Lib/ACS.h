@@ -26,8 +26,9 @@
 /* Constants -----------------------------------------------------------------*/
 #define NUM_SOLAR_PANELS 6 /**< The number of faces containing solar panels (generally 5) */
 #define RW_BASE_SPEED 524.0 /**< Steady state reaction wheel speed (rad/s) */
+#define TR_MAXDIP 1.5 /**< Torque rod max dipole moment */
 
- 
+
 /* Datatypes -----------------------------------------------------------------*/
 
 /**
