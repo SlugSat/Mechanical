@@ -7,7 +7,7 @@
 	* should be created when the ACS starts. A pointer to the struct should 
 	* then be passed to other ACS functions.
 	* 
-	* Created by Galen Savidge. Edited 5/11/2019.
+	* Created by Galen Savidge. Edited 5/16/2019.
   ******************************************************************************
   */
 
@@ -25,6 +25,7 @@
 
 /* Constants -----------------------------------------------------------------*/
 #define NUM_SOLAR_PANELS 6 /**< The number of faces containing solar panels (generally 5) */
+#define RW_BASE_SPEED 524.0 /**< Steady state reaction wheel speed (rad/s) */
 
  
 /* Datatypes -----------------------------------------------------------------*/
