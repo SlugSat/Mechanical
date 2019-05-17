@@ -92,15 +92,15 @@ typedef struct {
 	
 	// Satellite dynamic system
 	Matrix w_rw; /**< Reaction wheel speed vector (body frame, rad/s) */ 
-	Matrix J_rw; /**< Reaction wheel inertia matrix (3x3) */
-	Matrix J_rw_inv; /**< Inverse of J_rw (3x3) */
+	Matrix J_rw; /**< Reaction wheel inertia matrix (3x3, kg*m^2) */
+	Matrix J_rw_inv; /**< Inverse of J_rw (3x3, 1/(kg*m^2)) */
 	Matrix A_rw; /**< Reaction wheel projection onto body axes, currently I3 */
-	Matrix J_body; /**< Craft inertia matrix (3x3) */
-	Matrix J_body_inv; /**< Inverse of J_body (3x3) */
+	Matrix J_body; /**< Craft inertia matrix (3x3, kg*m^2) */
+	Matrix J_body_inv; /**< Inverse of J_body (3x3, 1/(kg*m^2)) */
 	
 	// Actuator PWMs
-	Matrix rw_PWM; /**< Reaction wheel PWMs (3x1) */
-	Matrix tr_PWM; /**< Torque rod PWMs (3x1) */
+	Matrix rw_PWM; /**< Reaction wheel PWMs (3x1, signed percent duty cycle) */
+	Matrix tr_PWM; /**< Torque rod PWMs (3x1, signed percent duty cycle) */
 }ACSType;
 
 
@@ -113,4 +113,4 @@ typedef struct {
 */
 void initializeACS(ACSType* acs);
 
-#endif
+#endif /* ACS_H */
