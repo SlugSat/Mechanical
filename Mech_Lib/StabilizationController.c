@@ -13,19 +13,22 @@
 #include "FeedbackControl.h"
 #include <math.h>
 
-// Angular speed portion
+// Angular speed controller portion
 #define K_WDOT -0.3
 #define KP_WDOT (K_WDOT*0.006)
 #define KD_WDOT (K_WDOT*0.4)
 
-// Torque portion
+// Torque controller portion
 #define K_T 5e-4
 #define KP_T (K_T*2)
 #define KI_T (K_T*0.05)
 #define KD_T (K_T*8)
 
-//Torque rod
-#define MAXDIP 1.5
+
+// Torque rod
+#define MAXDIP 2.0
+
+
 
 /**
  * Convert torque into an angular acceleration based on the craft's physical
@@ -38,7 +41,7 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 
 	static int init_run = 0;
 	static Matrix torque_integrator, last_err, P, I, D, controller_torque, controller_wdot, 
-		wdot_desired, h_rw, m, trTorque;
+		wdot_desired, w_rw_biased, h_rw, m, trTorque;
 	
 	if(init_run == 0) {
 		controller_torque = newMatrix(3, 1);
@@ -49,6 +52,7 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 		D = newMatrix(3, 1);
 		controller_wdot = newMatrix(3, 1);
 		wdot_desired = newMatrix(3, 1);
+		w_rw_biased = newMatrix(3, 1);
 		h_rw = newMatrix(3, 1);
 		m = newMatrix(3, 1);
 		trTorque = newMatrix(3,1);
@@ -72,7 +76,9 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 		int i;
 
 		//Determine available torque from torque rods
-		matrixMult(acs->J_rw, acs->w_rw, h_rw); //Reaction wheel momentum
+		matrixCopy(acs->w_rw, w_rw_biased);
+		matrixAddScalar(w_rw_biased, -RW_BASE_SPEED); // Subtract base speed from each element in w_rw
+		matrixMult(acs->J_rw, w_rw_biased, h_rw); //Reaction wheel momentum
 		float normMom = vectorNorm(h_rw);  //Find the Norm
 		
 		if (normMom != 0){
