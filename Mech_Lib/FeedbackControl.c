@@ -18,7 +18,7 @@
 
 
 //Torque rod
-#define MAXDIP 2.0
+#define MAXDIP 1.5
 // CONSTANTS
 #define DIV_ROOT2 ((float)0.70710678118)
 
@@ -110,7 +110,7 @@ void runBdotController(ACSType* acs) {
 	// ***** FIND PWM FOR EACH TORQUE ROD *****
 	float bdot_norm = vectorNorm(bdot);
 	if(bdot_norm == 0) return;
-	matrixScale(bdot, -100.0/bdot_norm);
+	matrixScale(bdot, -100/(MAXDIP*bdot_norm) );
 	matrixCopy (bdot, acs->tr_PWM);
 	
 	return;

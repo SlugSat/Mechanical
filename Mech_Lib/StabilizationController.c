@@ -25,7 +25,7 @@
 #define KD_T (K_T*8)
 
 //Torque rod
-#define MAXDIP 2.0
+#define MAXDIP 1.5
 
 /**
  * Convert torque into an angular acceleration based on the craft's physical
@@ -81,7 +81,7 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 			matrixScale(m, 1000); // Scale dipole by 1000
 			
 			//Ensure dipole moment stays within bounds
-			for(i=0;i<3;i++){
+			for(i=1;i<=3;i++){
 				if(matrixGetElement(m, i, 1) > MAXDIP){
 					matrixSet(m, i, 1, MAXDIP);
 				}
