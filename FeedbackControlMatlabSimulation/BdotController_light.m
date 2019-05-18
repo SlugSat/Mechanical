@@ -1,19 +1,16 @@
-%%Bdot control test
+% Light version of the Bdot control simulation. Outputs angular velocity
+% plots
 clear all
 close all
 clc
 
-%Orbital parameters
-
-mmax=2; %Maximum magnetic moment (A*m^2)
+%Max dipole moment of torque rod(A*m^2)
+mmax=2;
 
 %Inertial body
 J = diag([0.60579, 0.01330, 0.59753]);
-%J = diag([0.3, 0.3, 0.3]);
 
-%Initialize
-bold = [0;0;0];
-
+%Simulation parameters
 simulation_time = 800;% Amount of time to be simulated (seconds)
 dt = 0.5; % Time between steps (seconds)
 numSteps = simulation_time/dt;
@@ -29,7 +26,7 @@ bdot_hist = zeros(numSteps, 3);
 b_hist = zeros(numSteps, 3);
 w_hist = zeros(numSteps, 3);
 wdot_hist = zeros(numSteps, 3);
-brot1_hist= zeros(numSteps, 3);
+bold = [0;0;0];
 
 % Disturbance torque vector in inertial frame
 disturbance_mag = 60e-6; % In Nm (orbital disturbance = ~60 uNm)
@@ -47,25 +44,18 @@ for i=1:numSteps
     %Earth's magnetic field 
     b = R * magField(t); %Magnetic field vector in body frame   
     
-
     %Rotational rate of B
     brot1 = ((b-bold))/dt; %Rotational rate of B
     brot = cross(bold, b);
     bold = b; %Saves last value
-    
-     
+  
     %Analytic solution, rotational rate of the magnetic field minus
     %rotational rate of the satellite
     bdot = cross((brot-w), b); %Analytic bdot
      
-    % Feedback controller 
-   
+    % Feedback controller    
     %Bang-Bang Bdot
-    %m = -mmax * sign(bdot);
     m = -mmax *(bdot/norm(bdot));
-
-    %Option 2: Using gain calculated from attitude
-    %m=getMC1(kw/norm(b)^2,bdot1,mmax);
     
     % Simulate the craft's kinematics      
 	wdot = J \ (cross(m,b)- cross(w,J*w) + (R'*disttorq)); %derivative of w
@@ -86,10 +76,7 @@ for i=1:numSteps
     bdot_hist(i,:)= bdot;
     b_hist(i,:)= b;
     brot_hist(i,:)= brot;
-    
-   
-    
-     
+      
    
 end
 

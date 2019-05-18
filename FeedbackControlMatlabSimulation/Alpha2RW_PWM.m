@@ -1,6 +1,5 @@
 function [wRW_new, PWM] = Alpha2RW_PWM(w,wdot,wRW,dt)
-% Converts 
-
+% Converts reaction wheel parameters to PMW
 Vrail = 8; % Rail voltage
 
 %motor constants
@@ -12,7 +11,6 @@ R = 92.7; % Ohms
 Jsc = bodyInertiaMatrix(3,.3,.1,.1); % predetermined 3U cubesat values
 A = eye(3); % 3x3 reaction wheel identity matrix
 Jw = rwInertiaMatrix(); % 3x3 reaction wheel inertia matrix.
-
 
 torque = -A\((Jsc*wdot)+(cross(w, A*Jw*wRW+Jsc*w)));
 

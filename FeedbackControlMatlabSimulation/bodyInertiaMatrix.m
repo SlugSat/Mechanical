@@ -11,7 +11,6 @@ h = hieght;
 l = length;
 w = width;
 
-
 out = [m/12*(l^2+h^2)      0            0;
          0           m/12*(w^2+h^2)     0;
          0                 0       m/12*(l^2+w^2)];
