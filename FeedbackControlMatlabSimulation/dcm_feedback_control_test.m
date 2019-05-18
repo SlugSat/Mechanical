@@ -3,7 +3,6 @@
 %
 % Created by Galen Savidge, 2/23/2019
 
-
 clear all
 close all
 
@@ -12,6 +11,7 @@ Kp = 0.1;
 Ki = 0;
 Kd = 0.2;
 
+%Craft parameters
 R = eye(3); % DCM
 w = [0; 0; 0]; % Angular velocity vector
 wdot_i = [0; 0; 0]; % Integrator
@@ -25,6 +25,7 @@ xhat_I_des = xhat_I_des/norm(xhat_I_des);
 
 last_err = rcross(R'*xhat_I_des)*xhat_B;
 
+%Graphical parameters
 figure(2)
 [sX,sY,sZ]=sphere(30);
 surf(sX,sY,sZ,'FaceAlpha',.1,'EdgeColor','none');
@@ -32,12 +33,11 @@ axis equal;
 xlabel('x')
 ylabel('y')
 zlabel('z')
-hold on
-    
-quiver3([0,0,0],[0,0,0],[0,0,0],[xhat_I_des(1),0,0],[xhat_I_des(2),0,0],[xhat_I_des(3),0,0])
-    
+hold on    
+quiver3([0,0,0],[0,0,0],[0,0,0],[xhat_I_des(1),0,0],[xhat_I_des(2),0,0],[xhat_I_des(3),0,0])    
 
 i = 0; % Iteration
+
 while 1
     % Find error
     xhat_I = R*xhat_B;
@@ -54,12 +54,7 @@ while 1
     
     t = t + dt;
     i = i + 1;
-    
-    %xerr(i) = err(1);
-    %yerr(i) = err(2);
-    %zerr(i) = err(3);
-    %time(i) = t;
-    
+       
     % Plot things
     figure(1)
     hold on

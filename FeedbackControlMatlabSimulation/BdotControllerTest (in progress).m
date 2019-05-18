@@ -1,20 +1,28 @@
-%%Bdot control test
+%Test script for detumbling controller. Drives the angular velocity to zero
+%using a Bdot controller. Ouputs quiver plot showing the angular velocity
+%and plots showing the error and PWM usage  
 clear all
 close all
 clc
 
-%Torque rod
+%Torque rod parameters
 mmax=2.0; %Maximum magnetic moment (A*m^2)
 
 %Inertial body frame
 J = diag([0.33,0.37,0.35]);
 
-%Initialize
-bold = [0;0;0];
+% Inertial vectors
+c_I = [0;1;0]; %position of the craft wrt to inertial
+s_I = [1;0;0]; %position of the sun wrt to inertial
+
+%Craft initial parameters
+R = rotx(90)*roty(160)*rotz(-30); % Initial craft DCM
+w = [0.08; -0.08; 0.07]; % Angular velocity vector
+bdot_i = [0; 0; 0]; % Integrator                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+t = 0; % Current time
 
 set(gcf,'Color','w');
 
-%Rotate a 10x10x20 cube centered at (0,0,0) with a rotation matrix
 %Define cube dimensions
 xwidth = .20;
 ywidth = .10; 
@@ -32,18 +40,10 @@ v6 = [xwidth/2;      -1*ywidth/2;     -1*zwidth/2];
 v7 = [xwidth/2;      ywidth/2;        -1*zwidth/2];
 v8 = [-1*xwidth/2;   ywidth/2;        -1*zwidth/2];
 
+%Simulation parameters
 simulation_time = 1000;% Amount of time to be simulated (seconds)
 dt = 0.5; % Time between steps (seconds)
 numSteps = simulation_time/dt;
-
-% Inertial vectors
-c_I = [0;1;0]; %position of the craft wrt to inertial
-s_I = [1;0;0]; %position of the sun wrt to inertial
-
-R = rotx(90)*roty(160)*rotz(-30); % Initial craft DCM
-w = [0.08; -0.08; 0.07]; % Angular velocity vector
-bdot_i = [0; 0; 0]; % Integrator                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-t = 0; % Current time
 
 % Disturbance torque vector in inertial frame
 disturbance_mag = 60e-6; % In Nm (orbital disturbance = ~60 uNm)
@@ -53,7 +53,6 @@ disttorq = disturbance_vec;
 
 % Initialize last error for derivative
 last_err = error_twovector(R, c_I, s_I);
-% last_err = error_deltaR(R, c_I, s_I);
 
 % Initialize quiver plot
 figure(1)
@@ -77,16 +76,15 @@ yhat_I = R_BI_des*[0;1.25;0];
 zhat_I = R_BI_des*[0;0;1.25];
 quiver3([0,0,0],[0,0,0],[0,0,0],[xhat_I(1),yhat_I(1),zhat_I(1)],[xhat_I(2),yhat_I(2),zhat_I(2)],[xhat_I(3),yhat_I(3),zhat_I(3)])
 
-% Initialize error history
+% Initialize history
 err_hist = zeros(numSteps, 3);
-%pwm_hist = zeros(numSteps, 3);
 t_hist = zeros(numSteps, 1);
 Mcmd_hist = zeros(numSteps, 3);
 bdot_hist = zeros(numSteps, 3);
 b_hist = zeros(numSteps, 3);
 w_hist = zeros(numSteps, 3);
 wdot_hist = zeros(numSteps, 3);
-
+bold = [0;0;0];
 
 for i=1:numSteps
     %Update inertial vectors
@@ -95,8 +93,7 @@ for i=1:numSteps
     
     % % Find error
     err = error_twovector(R, c_I, s_I);
-    % % err = error_deltaR(R, c_I, s_I);
-    err_hist(i,:) = err;
+   err_hist(i,:) = err;
 	
     %Earth's magnetic field
     b = R * magField(t); %Magnetic field vector in body frame   
@@ -109,13 +106,9 @@ for i=1:numSteps
     %rotational rate of the satellite
     bdot = cross( (brot - w), b); %Analytic bdot
     
-    % Feedback controller    
-    %Bang-Bang Bdot
+    % Feedback controller (Bdot)
     m = -mmax * sign(bdot);
-    
-    %Option 2: Using gain calculated from attitude
-    %m=getMC1(kw/norm(b)^2,bdot1,mmax);
-	      
+   	      
     % Simulate the craft's kinematics
 	wdot = J \ ( ( disttorq - cross(m,b)) - cross(w, J*w) ); %derivative of w  
 	w = w + wdot*dt; %Integrate wdot to get angular velocity

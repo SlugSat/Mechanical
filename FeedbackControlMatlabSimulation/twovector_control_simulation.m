@@ -6,12 +6,9 @@
 % Created by Galen Savidge, 2/23/2019
 % Edited by Galen Savidge, 5/12/2019
 
-
 clear all
 clc
 close all
-
-% ---------- Settings ----------
 
 % SIMULATION SETTINGS
 simulation_time = 600; % Amount of time to be simulated (seconds)
