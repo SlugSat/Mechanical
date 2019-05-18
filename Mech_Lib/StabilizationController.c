@@ -70,19 +70,19 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 		//Variables
 		int i;
 
-		//Determine available torque from torque rods
+		// Determine available torque from torque rods
 		matrixCopy(acs->w_rw, w_rw_biased);
 		matrixAddScalar(w_rw_biased, -RW_BASE_SPEED); // Subtract base speed from each element in w_rw
-		matrixMult(acs->J_rw, w_rw_biased, h_rw); //Reaction wheel momentum
-		float normMom = vectorNorm(h_rw);  //Find the Norm
+		matrixMult(acs->J_rw, w_rw_biased, h_rw); // Reaction wheel momentum
+		float normMom = vectorNorm(h_rw);  // Find the Norm
 		
 		if (normMom != 0){
 			matrixScale(h_rw, 1.0/normMom); // Normalize h_rw
 			vectorCrossProduct(h_rw, acs->mag_vector, m); // Dipole moment
 			matrixScale(m, 1000); // Scale dipole by 1000
 			
-			//Ensure dipole moment stays within bounds
-			for(i=1;i<=3;i++){
+			// Ensure dipole moment stays within bounds
+			for(i = 1;i <= 3;i++){
 				if(matrixGetElement(m, i, 1) > TR_MAXDIP){
 					matrixSet(m, i, 1, TR_MAXDIP);
 				}
@@ -91,7 +91,7 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 				}
 			}
 			
-			//Torque rod torque
+			// Torque rod torque
 			vectorCrossProduct(m, acs->mag_vector, trTorque);
 		
 			//Check reaction wheels angular velocity

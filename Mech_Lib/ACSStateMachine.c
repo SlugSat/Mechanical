@@ -288,7 +288,7 @@ void runACS(void) {
 			
 			case DETUMBLE:
 				// Set reaction wheels to default state
-				vectorSetXYZ(acs.rw_PWM, 50, 50, 50);
+				//vectorSetXYZ(acs.rw_PWM, 50, 50, 50);
 				break;
 				
 			case WAIT_FOR_ATTITUDE:
@@ -315,12 +315,12 @@ void runACS(void) {
 		
 		#ifdef ENABLE_FRAM
 		/***** READ/WRITE TO FRAM *****/
-		SPI_FRAM_Write(hspi, SPI_LAT_ADDR, (uint8_t*)&acs.latitude, 4);
-		SPI_FRAM_Write(hspi, SPI_LONG_ADDR, (uint8_t*)&acs.longitude, 4);
-		SPI_FRAM_Write(hspi, SPI_ALT_ADDR, (uint8_t*)&acs.altitude, 4);
-		SPI_FRAM_Write(hspi, SPI_TIME_ADDR, (uint8_t*)&acs.julian_date, 8);
-		SPI_FRAM_Write(hspi, SPI_SOLAR_VECTOR_ADDR, (uint8_t*)&acs.sun_status, 1);
-		SPI_FRAM_Write(hspi, SPI_MECH_STATE_ADDR, (uint8_t*)&state, 1);
+		SPI_FRAM_Write(hspi, SPI_FRAM_LATITUDE_ADDR, (uint8_t*)&acs.latitude, 4, 0);
+		SPI_FRAM_Write(hspi, SPI_FRAM_LONGITUDE_ADDR, (uint8_t*)&acs.longitude, 4, 0);
+		SPI_FRAM_Write(hspi, SPI_FRAM_ALTITUDE_ADDR, (uint8_t*)&acs.altitude, 4, 0);
+		SPI_FRAM_Write(hspi, SPI_FRAM_TIME_ADDR, (uint8_t*)&acs.julian_date, 8, 0);
+		SPI_FRAM_Write(hspi, SPI_FRAM_SOLAR_VECTOR_ADDR, (uint8_t*)&acs.sun_status, 1, 0);
+		SPI_FRAM_Write(hspi, SPI_FRAM_MECH_STATE_ADDR, (uint8_t*)&state, 1, 0);
 		#endif
 	}
 }
