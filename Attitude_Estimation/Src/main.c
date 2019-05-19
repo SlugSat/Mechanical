@@ -32,7 +32,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define PRINT_COMPUTATION_TIME
+// #define PRINT_COMPUTATION_TIME
 // #define PRINT_EULER_ANGLES
 // #define PRINT_SENSOR_VECTORS
 #define PRINT_DCM

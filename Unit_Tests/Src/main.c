@@ -23,6 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <STM32SerialCommunication.h>
 #include <AttitudeEstimation.h>
 #include <FeedbackControl.h>
 #include <string.h>
@@ -97,12 +98,197 @@ int main(void)
 	sprintf(transmit, "ACS UNIT TEST PROGRAM\r\nBy Mechanical team\r\n\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
 	
+	
+	// ***** MATRIX UNIT TESTS *****
+	sprintf(transmit, "--------------------\r\n");	
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	
+	// Test matrixEquals()
+	Matrix m = initializeDCM(0, 0, 0);
+	
+	if(matrixEquals(m, m)) {
+		sprintf(transmit, "matrixEquals() PASSED\r\n");
+	}
+	else {
+		sprintf(transmit, "matrixEquals() FAILED\r\n");	
+	}
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	
+	sprintf(transmit, "--------------------\r\n");	
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	
+	// Test matrixCopyArray()
+	sprintf(transmit, "Testing matrixCopyArray()\r\n");	
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	Matrix m1 = newMatrix(3, 3);
+	Matrix m2 = newMatrix(3, 3);
+	{
+		float row1[] = {1, 2, 3};
+		float row2[] = {4, 5, 6};
+		float row3[] = {7, 8, 9};
+		float* array[] = {row1, row2, row3};
+		matrixCopyArray(m1, array);
+		printMatrix(m1, transmit);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	}
+	
+	sprintf(transmit, "--------------------\r\n");	
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	
+	// Test matrixAdd() in place
+	{
+		matrixAdd(m1, m1, m1);
+		float row1[] = {2, 4, 6};
+		float row2[] = {8, 10, 12};
+		float row3[] = {14, 16, 18};
+		float* array[] = {row1, row2, row3};
+		matrixCopyArray(m2, array);
+		printMatrix(m1, transmit);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+		if(matrixEquals(m1, m2)) {
+			sprintf(transmit, "matrixAdd() in place PASSED\r\n");
+		}
+		else {
+			sprintf(transmit, "matrixAdd() in place FAILED\r\n");
+		}
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	}
+	
+	sprintf(transmit, "--------------------\r\n");	
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	
+	// Test matrixMult()
+	{
+		matrixMult(m2, m2, m1);
+		printMatrix(m1, transmit);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+		float row1[] = {120, 144, 168};
+		float row2[] = {264, 324, 384};
+		float row3[] = {408, 504, 600};
+		float* array[] = {row1, row2, row3};
+		matrixCopyArray(m2, array);
+		if(matrixEquals(m1, m2)) {
+			sprintf(transmit, "matrixMult() PASSED\r\n");
+		}
+		else {
+			sprintf(transmit, "matrixMult() FAILED\r\n");
+		}
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	}
+	
+	sprintf(transmit, "--------------------\r\n");	
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	
+	// Test matrixTranspose()
+	{
+		float row1[] = {1, 2, 3};
+		float row2[] = {4, 5, 6};
+		float row3[] = {7, 8, 9};
+		float* array[] = {row1, row2, row3};
+		matrixCopyArray(m1, array);
+		matrixTranspose(m1, m2);
+		printMatrix(m2, transmit);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	}
+	{
+		float row1[] = {1, 4, 7};
+		float row2[] = {2, 5, 8};
+		float row3[] = {3, 6, 9};
+		float* array[] = {row1, row2, row3};
+		matrixCopyArray(m1, array);
+		if(matrixEquals(m1, m2)) {
+			sprintf(transmit, "matrixTranspose() PASSED\r\n");
+		}
+		else {
+			sprintf(transmit, "matrixTranspose() FAILED\r\n");
+		}
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	}
+	
+	sprintf(transmit, "--------------------\r\n");	
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	
+	// Test matrixScale()
+	matrixScale(m1, 2);
+	printMatrix(m1, transmit);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	{
+		float row1[] = {2, 8, 14};
+		float row2[] = {4, 10, 16};
+		float row3[] = {6, 12, 18};
+		float* array[] = {row1, row2, row3};
+		matrixCopyArray(m2, array);
+		if(matrixEquals(m1, m2)) {
+			sprintf(transmit, "matrixScale() PASSED\r\n");
+		}
+		else {
+			sprintf(transmit, "matrixScale() FAILED\r\n");
+		}
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	}
+	
+	sprintf(transmit, "--------------------\r\n");	
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	
+	// Test vectorRcross()
+	Matrix v = make3x1Vector(1, 3, 5);
+	{
+		vectorRcross(v, m1);
+		printMatrix(m1, transmit);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	}
+	{
+		float row1[] = {0, -5, 3};
+		float row2[] = {5, 0, -1};
+		float row3[] = {-3, 1, 0};
+		float* array[] = {row1, row2, row3};
+		matrixCopyArray(m2, array);
+		if(matrixEquals(m1, m2)) {
+			sprintf(transmit, "vectorRcross() PASSED\r\n");
+		}
+		else {
+			sprintf(transmit, "vectorRcross() FAILED\r\n");
+		}
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	}
+	
+	sprintf(transmit, "--------------------\r\n");	
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	
+	// Test vectorNorm()
+	float vnorm = vectorNorm(v);
+	sprintf(transmit, "%f\r\n", vnorm);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	if(vnorm != 5.9160797831f) {
+		sprintf(transmit, "vectorNorm() FAILED\r\n");
+	}
+	else {
+		sprintf(transmit, "vectorNorm() PASSED\r\n");
+	}
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	
+	sprintf(transmit, "--------------------\r\n");	
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	
+	// Test vectorDotProduct()
+	float vdotv = vectorDotProduct(v, v);
+	sprintf(transmit, "%f\r\n", vdotv);
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	if(vdotv != 35) {
+		sprintf(transmit, "vectorDotProduct() FAILED\r\n");
+	}
+	else {
+		sprintf(transmit, "vectorDotProduct() PASSED\r\n");
+	}
+	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+	
+	
 	// Initialize ACS struct
 	sprintf(transmit, "Initializing ACS struct... ");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
 	ACSType acs;
 	initializeACS(&acs);
-	initializeACSSerial(&acs, &huart2);
+	initializeACSSerial(&huart2);
 	
 	sprintf(transmit, "Initialization done!\r\n\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
@@ -294,7 +480,7 @@ int main(void)
 	sprintf(transmit, "----- TEST 1 -----\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
 	
-	runStabilizationController(&acs, 1);
+	runStabilizationController(&acs, acs.err, 1);
 	
 	sprintf(transmit, "Reaction wheel PWM\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
@@ -305,7 +491,7 @@ int main(void)
 	sprintf(transmit, "----- TEST 2 -----\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
 	
-	runStabilizationController(&acs, 0);
+	runStabilizationController(&acs, acs.err, 0);
 	
 	sprintf(transmit, "Reaction wheel PWM\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
@@ -318,7 +504,7 @@ int main(void)
 	vectorSetXYZ(acs.gyro_vector, 0.08, 0, -0.025);
 	vectorSetXYZ(acs.w_rw, 110, 20, -45);
 	
-	runStabilizationController(&acs, 0);
+	runStabilizationController(&acs, acs.err, 0);
 	
 	sprintf(transmit, "Reaction wheel PWM\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 100);
