@@ -2,11 +2,18 @@
 /**
   ******************************************************************************
   * @file           : main.c
-  * @brief          : ACS state machine main file
+  * @brief          : Main program body
   ******************************************************************************
-  ** This file contains the ACS flight software used on SlugSat's flat-sat. This
-	* program is designed to run in conjunction with SlugSat's 42 simulation to 
-	* show the behavior of the full ACS.
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
   ******************************************************************************
   */
 /* USER CODE END Header */
@@ -16,19 +23,16 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-// ACS modules
 #include <ACSStateMachine.h>
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-	
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
 
 /* USER CODE END PD */
 
@@ -87,21 +91,17 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-	
+
 	setUartHandle(&huart2);
-	runACS();
-	
+	runACS(); // This will never return
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		
-	}
   /* USER CODE END 3 */
 }
 
@@ -188,18 +188,6 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
-//void LoadProcessor(uint8_t time_ms)
-//{
-//	uint16_t init_time = TIM2->CNT;
-//	uint16_t delay_time_10us = time_ms*100;
-//	
-//	v = (float)rand()/(float)rand();
-//	
-//	while((uint16_t)(TIM2->CNT - init_time) < delay_time_10us) {
-//		v = v*(float)rand()/(float)rand();
-//	}
-//}
 
 /* USER CODE END 4 */
 

@@ -3,8 +3,8 @@
  * Auto generated Run-Time-Environment Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'State_Machine' 
- * Target:  'State_Machine' 
+ * Project: 'ACS_42Only' 
+ * Target:  'ACS_42Only' 
  */
 
 #ifndef RTE_COMPONENTS_H
