@@ -4,35 +4,15 @@
   * @file           : main.c
   * @brief          : Main program body
   ******************************************************************************
-  ** This notice applies to any and all portions of this file
-  * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
-  * inserted by the user or by software development tools
-  * are owned by their respective copyright owners.
+  * @attention
   *
-  * COPYRIGHT(c) 2019 STMicroelectronics
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
   *
-  * Redistribution and use in source and binary forms, with or without modification,
-  * are permitted provided that the following conditions are met:
-  *   1. Redistributions of source code must retain the above copyright notice,
-  *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
-  *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
-  *      may be used to endorse or promote products derived from this software
-  *      without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
   *
   ******************************************************************************
   */
@@ -58,6 +38,11 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define PRINT_YPR // Prints estimated yaw/pitch/roll in degrees
+#define PRINT_GYRO_BIAS // Prints gyro bias vector in rad/s
+#define PRINT_RX_DATA // Prints sensor vectors read from 42
+#define PRINT_INERTIALS // Prints calculated inertial vectors (ecliptic frame)
+#define PRINT_ERR // Prints calculated error vectors
 
 /* USER CODE END PD */
 
@@ -116,15 +101,13 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-	
+
 	ACSType acs;
 	initializeACS(&acs);
-	initializeACSSerial(&acs, &huart2);
+	initializeACSSerial(&huart2);
 	
 	vectorSetXYZ(acs.tr_PWM, 0, 0, 0);
 	vectorSetXYZ(acs.rw_PWM, 0, 10, 0);
-	
-	int first_step = 1;
 	
   /* USER CODE END 2 */
 
@@ -136,45 +119,54 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		/***** 42 I/0 *****/
-		STM32SerialHandshake(&huart2);
-		readSensorsFromSerial(&acs);
-		sendActuatorsToSerial(&acs);
-		
-		char gyrobias[100];
-		printMatrix(acs.gyro_bias, gyrobias);
-		
-		char s1[100];
-		char s2[100];
-		
-		float ypr[3];
-		findEulerAngles(acs.R, ypr);
-		
-		char string[300];
-		printMatrix(acs.solar_vector, s1);
-		printMatrix(acs.mag_vector, s2);
-		sprintf(string, "Solar vector:\n%s\nMag vector:\n%s\nJulian date: %15.7f", s1, s2, acs.julian_date);
-//		printMatrix(acs.mag_inertial, s1);
-//		printMatrix(acs.sv_inertial, s2);
-		//sprintf(string, "Mag inertial:\n%s\nSV inertial:\n%s", s1, s2);
-		//sprintf(string, "Yaw\tPitch\tRoll\n%6.2f\t%6.2f\t%6.2f\nGyro bias:\n%s", 180*ypr[0]/PI, 180*ypr[1]/PI, 180*ypr[2]/PI, gyrobias);
-		
-//		printMatrix(acs.z_err, s1);
-//		printMatrix(acs.n_err, s2);
-//		sprintf(string, "Z error:\n%s\nN error:\n%s", s1, s2);
-		
-		STM32SerialSendString(&huart2, string);
+		syncWith42(&acs);
 		
 		
 		/***** ATTITUDE DETERMINATION *****/
 		findMagInertial(&acs);
 		findSunInertial(&acs);
 		updateAttitudeEstimate(&acs);
-		
-		
-		/***** FEEDBACK CONTROL *****/
 		findErrorVectors(&acs);
-		//runOrientationController(&acs, first_step);
-		first_step = 0;
+		
+		
+		/***** PRINTING *****/
+		char s1[100];
+		char s2[100];
+		char string[300];
+		
+		#ifdef PRINT_YPR
+		float ypr[3];
+		findEulerAngles(acs.R, ypr);
+		sprintf(string, "Yaw\tPitch\tRoll\n%6.2f\t%6.2f\t%6.2f\n", 180*ypr[0]/PI, 180*ypr[1]/PI, 180*ypr[2]/PI);
+		printTo42(string);
+		#endif
+		
+		#ifdef PRINT_GYRO_BIAS
+		printMatrix(acs.gyro_bias, s1);
+		sprintf(string, "\nGyro bias:\n%s\n", s1);
+		printTo42(string);
+		#endif
+		
+		#ifdef PRINT_RX_DATA
+		printMatrix(acs.solar_vector, s1);
+		printMatrix(acs.mag_vector, s2);
+		sprintf(string, "Solar vector:\n%s\nMag vector:\n%s\nJulian date: %15.7f\n", s1, s2, acs.julian_date);
+		printTo42(string);
+		#endif
+		
+		#ifdef PRINT_INERTIALS
+		printMatrix(acs.mag_inertial, s1);
+		printMatrix(acs.sv_inertial, s2);
+		sprintf(string, "Mag inertial:\n%s\nSV inertial:\n%s\n", s1, s2);
+		printTo42(string);
+		#endif
+		
+		#ifdef PRINT_ERR
+		printMatrix(acs.z_err, s1);
+		printMatrix(acs.n_err, s2);
+		sprintf(string, "Z error:\n%s\nN error:\n%s\n", s1, s2);
+		printTo42(string);
+		#endif
   }
   /* USER CODE END 3 */
 }

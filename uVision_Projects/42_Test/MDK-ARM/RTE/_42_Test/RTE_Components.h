@@ -3,8 +3,8 @@
  * Auto generated Run-Time-Environment Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'STM32_Serial_Test' 
- * Target:  'STM32_Serial_Test' 
+ * Project: '42_Test' 
+ * Target:  '42_Test' 
  */
 
 #ifndef RTE_COMPONENTS_H
