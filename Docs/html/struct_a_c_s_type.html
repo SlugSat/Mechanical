@@ -153,7 +153,7 @@ Data Fields</h2></td></tr>
 <tr class="separator:ae1e2a82621824ccb4bc27eb3dc76c924"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af83838a9c78e0c708fc7ce4b95e4609d"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_c_s_type.html#af83838a9c78e0c708fc7ce4b95e4609d">sv_raw</a> [<a class="el" href="_a_c_s_8h.html#a52a9e7d7904f66b47bd531471dc30c4d">NUM_SOLAR_PANELS</a>]</td></tr>
 <tr class="separator:af83838a9c78e0c708fc7ce4b95e4609d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08e060b8d3806d1da157f82ff6ef89c0"><td class="memItemLeft" align="right" valign="top">SV_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_c_s_type.html#a08e060b8d3806d1da157f82ff6ef89c0">sun_status</a></td></tr>
+<tr class="memitem:a08e060b8d3806d1da157f82ff6ef89c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_a_c_s_8h.html#a335b63dc6b9199e754e97a333ed294ea">SV_Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_c_s_type.html#a08e060b8d3806d1da157f82ff6ef89c0">sun_status</a></td></tr>
 <tr class="separator:a08e060b8d3806d1da157f82ff6ef89c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a880b6eef6382841a030de56f08f7c234"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct___matrix.html">Matrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_c_s_type.html#a880b6eef6382841a030de56f08f7c234">w_rw</a></td></tr>
 <tr class="separator:a880b6eef6382841a030de56f08f7c234"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -321,7 +321,7 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Craft inertia matrix (3x3) </p>
+<p>Craft inertia matrix (3x3, kg*m^2) </p>
 
 </div>
 </div>
@@ -336,7 +336,7 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Inverse of J_body (3x3) </p>
+<p>Inverse of J_body (3x3, 1/(kg*m^2)) </p>
 
 </div>
 </div>
@@ -351,7 +351,7 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Reaction wheel inertia matrix (3x3) </p>
+<p>Reaction wheel inertia matrix (3x3, kg*m^2) </p>
 
 </div>
 </div>
@@ -366,7 +366,7 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Inverse of J_rw (3x3) </p>
+<p>Inverse of J_rw (3x3, 1/(kg*m^2)) </p>
 
 </div>
 </div>
@@ -516,7 +516,7 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Reaction wheel PWMs (3x1) </p>
+<p>Reaction wheel PWMs (3x1, signed percent duty cycle) </p>
 
 </div>
 </div>
@@ -542,7 +542,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">SV_Status sun_status</td>
+          <td class="memname"><a class="el" href="_a_c_s_8h.html#a335b63dc6b9199e754e97a333ed294ea">SV_Status</a> sun_status</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -606,7 +606,7 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Torque rod PWMs (3x1) </p>
+<p>Torque rod PWMs (3x1, signed percent duty cycle) </p>
 
 </div>
 </div>

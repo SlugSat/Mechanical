@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SlugSat ACS: Get Started</title>
+<title>SlugSat ACS: Attiude Determination Testing</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -68,7 +68,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('get_started.html','');});
+$(document).ready(function(){initNavTree('attitude_determination.html','');});
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -88,17 +88,23 @@ $(document).ready(function(){initNavTree('get_started.html','');});
 
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Get Started </div>  </div>
+<div class="title">Attiude Determination Testing </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h2>Installing Keil Tools</h2>
-<p>Put a link to the appropriate document here.</p>
-<h2>Operating Procedures</h2>
-<ul>
-<li><a class="el" href="matlab_sim.html">ACS Matlab Simulation</a></li>
-<li><a class="el" href="attitude_determination.html">Sensor Test Fixture &amp; Attitude Determination Test</a></li>
-<li><a class="el" href="flatsat_acs.html">Flat-sat ACS &amp; SlugSat 42</a> </li>
-</ul>
+<div class="textblock"><h2>Setup &amp; Operation</h2>
+<ol type="1">
+<li>Set the lamp on the desk about 6' away from the bird box. Make sure the lamp is at about the same height as the center of the gimbal and nothing is blocking the light shining on the 2U chassis.</li>
+<li>Optionally, connect the Helmholtz coil to the power supply and turn configure the power supply to output about 3.3V. The current flowing should be about 1A.</li>
+<li>Rotate the gimbal so that the 2U's Z+ face is up and its X+ face is pointing towards the lamp.</li>
+<li>Connect the microcontroller in the middle of the 2U chassis in the sensor test fixture to a PC over USB.</li>
+<li>Open the Attitude_Estimation project and make sure PRINT_DCM is the only thing defined on lines 35-38 of main.c. Compile the project and program the microcontroller.</li>
+<li>Open display_attitude.m in Matlab and run it.</li>
+<li>Verify that the gimbal is rotated correctly (see step 3), and then reset the microcontroller. Matlab should render the estimated attitude.</li>
+</ol>
+<h2>Measuring Euler Angles</h2>
+<p>The light marks on the base of the Helmholtz coil are meant to help measure yaw and calibrate angle of incidence. The gimbal should be placed such that its front legs are on top of the large 45 degree marks on the base (equadistant from the 1" foamcore piece at the front of the Helmholtz coil base). The lamp should be moved so that the shadow from the foamcore piece points at the center of the gimbal base. Yaw can then be measured by comparing the position of the mid-sized gimbal ring to the lines on the base using a ruler or other right angled straight edge. Pitch and roll can be measured using a protractor. These measurement methods are painstaking and not very reliable, so a better method will likely have to be developed.</p>
+<h2>Tips &amp; Tricks</h2>
+<p>Tighten the nuts on the gimbal joints if more friction is desired. </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->

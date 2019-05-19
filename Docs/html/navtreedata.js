@@ -24,6 +24,8 @@ for the JavaScript code in this file
 var NAVTREE =
 [
   [ "SlugSat ACS", "index.html", [
+    [ "Attiude Determination Testing", "attitude_determination.html", null ],
+    [ "Flat-sat ACS Flight Software & SlugSat 42", "flatsat_acs.html", null ],
     [ "Get Started", "get_started.html", null ],
     [ "Matlab ACS Simulation", "matlab_sim.html", null ],
     [ "Keil uVision Projects", "projects.html", null ],
@@ -40,6 +42,8 @@ var NAVTREE =
       [ "Globals", "globals.html", [
         [ "All", "globals.html", null ],
         [ "Functions", "globals_func.html", null ],
+        [ "Enumerations", "globals_enum.html", null ],
+        [ "Enumerator", "globals_eval.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
     ] ]

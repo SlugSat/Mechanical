@@ -5,5 +5,6 @@ var searchData=
   ['acsstatemachine_2eh',['ACSStateMachine.h',['../_a_c_s_state_machine_8h.html',1,'']]],
   ['acstype',['ACSType',['../struct_a_c_s_type.html',1,'']]],
   ['altitude',['altitude',['../struct_a_c_s_type.html#a0e13a4b4ae0cefdac2a413284239caa6',1,'ACSType']]],
+  ['attiude_20determination_20testing',['Attiude Determination Testing',['../attitude_determination.html',1,'']]],
   ['attitudeestimation_2eh',['AttitudeEstimation.h',['../_attitude_estimation_8h.html',1,'']]]
 ];

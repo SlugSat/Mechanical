@@ -13,7 +13,11 @@ var searchData=
   ['stm32serialsendfloats',['STM32SerialSendFloats',['../_s_t_m32_serial_communication_8h.html#aa2a2960d426562d89c6d7bd507cdeef4',1,'STM32SerialCommunication.c']]],
   ['stm32serialsendstring',['STM32SerialSendString',['../_s_t_m32_serial_communication_8h.html#ab0db882d01f9a8d3fc767b7443effbff',1,'STM32SerialCommunication.c']]],
   ['sun_5fstatus',['sun_status',['../struct_a_c_s_type.html#a08e060b8d3806d1da157f82ff6ef89c0',1,'ACSType']]],
+  ['sv_5fdark',['SV_DARK',['../_a_c_s_8h.html#a335b63dc6b9199e754e97a333ed294eaa79e48c3fa5e3f7603a7a6dfd8e169959',1,'ACS.h']]],
+  ['sv_5ffound',['SV_FOUND',['../_a_c_s_8h.html#a335b63dc6b9199e754e97a333ed294eaacad4e2e78111261540c23d2e73dd96b4',1,'ACS.h']]],
   ['sv_5finertial',['sv_inertial',['../struct_a_c_s_type.html#af56596ec9fe0cf9632dd40932883191e',1,'ACSType']]],
+  ['sv_5fnotfound',['SV_NOTFOUND',['../_a_c_s_8h.html#a335b63dc6b9199e754e97a333ed294eaa2854080e7692ee141adb2c55a88805d0',1,'ACS.h']]],
   ['sv_5fraw',['sv_raw',['../struct_a_c_s_type.html#af83838a9c78e0c708fc7ce4b95e4609d',1,'ACSType']]],
+  ['sv_5fstatus',['SV_Status',['../_a_c_s_8h.html#a335b63dc6b9199e754e97a333ed294ea',1,'ACS.h']]],
   ['syncwith42',['syncWith42',['../_s_t_m32_serial_communication_8h.html#a033eff7bc0e28e99f5898e1cc9866f9f',1,'STM32SerialCommunication.c']]]
 ];

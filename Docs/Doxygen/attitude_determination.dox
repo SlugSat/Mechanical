@@ -1,0 +1,20 @@
+/*! 
+\page attitude_determination Attiude Determination Testing
+
+
+## Setup & Operation
+1. Set the lamp on the desk about 6' away from the bird box. Make sure the lamp is at about the same height as the center of the gimbal and nothing is blocking the light shining on the 2U chassis.
+2. Optionally, connect the Helmholtz coil to the power supply and turn configure the power supply to output about 3.3V. The current flowing should be about 1A.
+3. Rotate the gimbal so that the 2U's Z+ face is up and its X+ face is pointing towards the lamp.
+4. Connect the microcontroller in the middle of the 2U chassis in the sensor test fixture to a PC over USB.
+5. Open the Attitude_Estimation project and make sure PRINT_DCM is the only thing defined on lines 35-38 of main.c. Compile the project and program the microcontroller.
+6. Open display_attitude.m in Matlab and run it.
+7. Verify that the gimbal is rotated correctly (see step 3), and then reset the microcontroller. Matlab should render the estimated attitude.
+
+## Measuring Euler Angles
+The light marks on the base of the Helmholtz coil are meant to help measure yaw and calibrate angle of incidence. The gimbal should be placed such that its front legs are on top of the large 45 degree marks on the base (equadistant from the 1" foamcore piece at the front of the Helmholtz coil base). The lamp should be moved so that the shadow from the foamcore piece points at the center of the gimbal base. Yaw can then be measured by comparing the position of the mid-sized gimbal ring to the lines on the base using a ruler or other right angled straight edge. Pitch and roll can be measured using a protractor. These measurement methods are painstaking and not very reliable, so a better method will likely have to be developed.
+
+## Tips & Tricks
+Tighten the nuts on the gimbal joints if more friction is desired.
+
+*/

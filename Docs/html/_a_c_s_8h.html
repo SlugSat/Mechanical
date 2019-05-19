@@ -118,13 +118,18 @@ Data Structures</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:a52a9e7d7904f66b47bd531471dc30c4d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_c_s_8h.html#a52a9e7d7904f66b47bd531471dc30c4d">NUM_SOLAR_PANELS</a>&#160;&#160;&#160;6</td></tr>
 <tr class="separator:a52a9e7d7904f66b47bd531471dc30c4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f925062b75f6935d64c7d53b5df0028"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_c_s_8h.html#a8f925062b75f6935d64c7d53b5df0028">RW_BASE_SPEED</a>&#160;&#160;&#160;0.0</td></tr>
+<tr class="separator:a8f925062b75f6935d64c7d53b5df0028"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89f9988c2fe9ddc0b00d848a1100fe11"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_c_s_8h.html#a89f9988c2fe9ddc0b00d848a1100fe11">TR_MAXDIP</a>&#160;&#160;&#160;2.0</td></tr>
+<tr class="separator:a89f9988c2fe9ddc0b00d848a1100fe11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a335b63dc6b9199e754e97a333ed294ea"><td class="memItemLeft" align="right" valign="top"><a id="a335b63dc6b9199e754e97a333ed294ea"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>SV_Status</b> { <b>SV_FOUND</b>, 
-<b>SV_NOTFOUND</b>, 
-<b>SV_DARK</b>
+<tr class="memitem:a335b63dc6b9199e754e97a333ed294ea"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_c_s_8h.html#a335b63dc6b9199e754e97a333ed294ea">SV_Status</a> { <a class="el" href="_a_c_s_8h.html#a335b63dc6b9199e754e97a333ed294eaacad4e2e78111261540c23d2e73dd96b4">SV_FOUND</a>, 
+<a class="el" href="_a_c_s_8h.html#a335b63dc6b9199e754e97a333ed294eaa2854080e7692ee141adb2c55a88805d0">SV_NOTFOUND</a>, 
+<a class="el" href="_a_c_s_8h.html#a335b63dc6b9199e754e97a333ed294eaa79e48c3fa5e3f7603a7a6dfd8e169959">SV_DARK</a>
  }</td></tr>
+<tr class="memdesc:a335b63dc6b9199e754e97a333ed294ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum for the state of the craft's solar panels and calculated solar vector.  <a href="_a_c_s_8h.html#a335b63dc6b9199e754e97a333ed294ea">More...</a><br /></td></tr>
 <tr class="separator:a335b63dc6b9199e754e97a333ed294ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -136,7 +141,7 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains the Attitude Control System (ACS) struct. </p>
 <p>The ACS struct includes all the data needed to run the ACS. One struct should be created when the ACS starts. A pointer to the struct should then be passed to other ACS functions.</p>
-<p>Created by Galen Savidge. Edited 5/11/2019. </p>
+<p>Created by Galen Savidge. Edited 5/16/2019. </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a52a9e7d7904f66b47bd531471dc30c4d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a52a9e7d7904f66b47bd531471dc30c4d">&#9670;&nbsp;</a></span>NUM_SOLAR_PANELS</h2>
@@ -150,6 +155,61 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>The number of faces containing solar panels (generally 5) </p>
+
+</div>
+</div>
+<a id="a8f925062b75f6935d64c7d53b5df0028"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f925062b75f6935d64c7d53b5df0028">&#9670;&nbsp;</a></span>RW_BASE_SPEED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define RW_BASE_SPEED&#160;&#160;&#160;0.0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Steady state reaction wheel speed (rad/s) </p>
+
+</div>
+</div>
+<a id="a89f9988c2fe9ddc0b00d848a1100fe11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89f9988c2fe9ddc0b00d848a1100fe11">&#9670;&nbsp;</a></span>TR_MAXDIP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TR_MAXDIP&#160;&#160;&#160;2.0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Torque rod max dipole moment </p>
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a335b63dc6b9199e754e97a333ed294ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a335b63dc6b9199e754e97a333ed294ea">&#9670;&nbsp;</a></span>SV_Status</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="_a_c_s_8h.html#a335b63dc6b9199e754e97a333ed294ea">SV_Status</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>An enum for the state of the craft's solar panels and calculated solar vector. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a335b63dc6b9199e754e97a333ed294eaacad4e2e78111261540c23d2e73dd96b4"></a>SV_FOUND&#160;</td><td class="fielddoc"><p>Solar vector is reliable </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a335b63dc6b9199e754e97a333ed294eaa2854080e7692ee141adb2c55a88805d0"></a>SV_NOTFOUND&#160;</td><td class="fielddoc"><p>Craft is in the sun but solar vector is unreliable </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a335b63dc6b9199e754e97a333ed294eaa79e48c3fa5e3f7603a7a6dfd8e169959"></a>SV_DARK&#160;</td><td class="fielddoc"><p>Craft is in eclipse </p>
+</td></tr>
+</table>
 
 </div>
 </div>
