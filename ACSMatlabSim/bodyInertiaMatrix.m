@@ -1,5 +1,6 @@
 function out = bodyInertiaMatrix(mass,hieght,length,width)
 % InertiaMatrix will return a 3x3 inertia matrix for a rectangular prism
+
 % Inputs:
 %   mass = mass of prism in kg
 %   height = hieght of prism in meters

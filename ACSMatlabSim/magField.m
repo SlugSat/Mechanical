@@ -1,26 +1,8 @@
-%% Magnetic Field Model (Tilted dipole)
-%Beta1 + wot = angle between the vernal equinox and the instantaneous line
-%of intersection of the equatorial plane with the geomagnetic equator
-%with Beta1 being its initial value.
-%Reference: https://www.aero.iitb.ac.in/~hbhablani/Papers_for_Homepage/JGCD_1995_NovDec_MagControllers.pdf
-
-%Orbital Parameters
-
-% rc = Orbit Radius (km)
-% Torb = Orbital period% 
-% Mt = Magnetic moment earth (T*km^3)% 
-% wo = orbital speed% 
-% t = time% 
-% wot = true anomoly measured from the ascending node line% 
-% In = Inclination angle (radians)% 
-% Gta = Geomagnetic tilt angle (radians)% 
-% Beta1 = Initial value% 
-% kmg = Mt/rc^3 %Dipole magnitude
-
-
 function b=magField(t)
-%Inputs
-%t: time
+% Outputs magnetic field vector given orbital position, based on tilted
+% dipole model. Currently based on an ISS orbit.
+% Inputs:
+%   t: time
 
 
 %Orbital parameters
@@ -51,4 +33,6 @@ end
 b=kmg*[sinepsm*cos(wot-nim);-cosepsm;2*sinepsm*sin(wot-nim)];
 end
 
+
+%Reference: https://www.aero.iitb.ac.in/~hbhablani/Papers_for_Homepage/JGCD_1995_NovDec_MagControllers.pdf
 

@@ -3,7 +3,6 @@ function [m, newTorque] = momentum_dump(w_rw, mag_body)
 % Inputs: all 3x1 vectors
 %   w_rw = angular velocity of the reaction wheels
 %   mag_body = magnetic field in the body frame
-%   bdot = bang bang analytical bdot (bdotControl function)
 % Output: 3x1 vector
 %   newTorque = torque capable of being exerted by torque rods
 %*************************************************************************
