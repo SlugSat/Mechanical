@@ -88,7 +88,7 @@ void runACS(void) {
 	
 	// Variables to hold values that are important for state transitions
 	uint8_t acs_enable = 1;			// Temporary bool
-	float gyro_vector_norm;			// Rad/s
+	float gyro_vector_norm = 0;		// Rad/s
 	float attitude_est_stable_counter = 0;
 	
   while (1) {
