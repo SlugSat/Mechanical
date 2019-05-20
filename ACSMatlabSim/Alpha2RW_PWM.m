@@ -1,6 +1,5 @@
 function [wRW_new, PWM] = Alpha2RW_PWM(w,wdot,wRW,dt)
 % Converts reaction wheel parameters to PMW
-
 % Inputs:
     %w :   Craft's angular velocity
     %wdot: Derivative term

@@ -3,6 +3,8 @@ function b=magField(t)
 % dipole model. Currently based on an ISS orbit.
 % Inputs:
 %   t: time
+%Outputs:
+%   b= magnetic field vector at location in space
 
 
 %Orbital parameters

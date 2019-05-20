@@ -1,14 +1,12 @@
 function m = bdotControl(w, b, bold, mmax)
 % Calculates analytical Bdot from change in magnetic field
-
 % Inputs:
-%   w = craft's angular velocity
-%   b = magnetic field in body frame
-%   bold = old mag field
-%   mmax= maximum dipole moments
-
+    %w: craft's angular velocity
+    %b: magnetic field in body frame
+    %bold: old mag field
+    %mmax: maximum dipole moments
 % Outputs:
-%   m = bdot
+    %m: bdot
 
 %Max dipole moment
 mmax = 2.0;

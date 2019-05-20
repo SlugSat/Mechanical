@@ -8,6 +8,10 @@ function [z_err, n_err] = error_twovector(R_BI, c_I, s_I)
 %       Earth in the inertial frame.
 %   s_I = a 3x1 vector representing the position of the sun from the Earth
 %       in the inertial frame.
+%   R_BI: Inerial rotation matrix
+%Outputs:
+%   z_err:
+%   n_err:
 
 zhat_B = [0; 0; 1];
 xhat_B = [1; 0; 0];
