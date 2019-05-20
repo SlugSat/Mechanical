@@ -79,6 +79,7 @@ void runACS(void) {
 	initializeACS(&acs);
 	#ifdef ENABLE_42
 	initializeACSSerial(huart);
+	char prnt[300]; // String buffer to print to 42
 	#endif
 	
 	ACSState state = WAIT_FOR_ATTITUDE;
@@ -89,8 +90,6 @@ void runACS(void) {
 	uint8_t acs_enable = 1;			// Temporary bool
 	float gyro_vector_norm;			// Rad/s
 	float attitude_est_stable_counter = 0;
-	
-	char prnt[300]; // String buffer to print to 42
 	
   while (1) {
 		#ifdef ENABLE_42
