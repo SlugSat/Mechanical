@@ -1,5 +1,5 @@
 # Feedback Control Simulation
-Description goes here.
+This library includes functions to simulate attitude control. 
 
 ## Running the Simulation
 See [here](https://slugsat.github.io/Mechanical/Docs/html/matlab_sim.html)
@@ -8,5 +8,11 @@ See [here](https://slugsat.github.io/Mechanical/Docs/html/matlab_sim.html)
 3. Run the file.
 
 ## Important Files
+Feedback control simulation:
 - twovector_control_simulation.m: main file for the feedback control simulation.
-- BdotController_light.m: main file for the b-dot controller simulation.
+- BdotControllerTest.m: main file for the b-dot controller simulation.
+- BdotController_light.m: light version of BdotControllerTest (No quiver graphs)
+
+Feedback control functions:
+LargeErrorController.m : Feedback control for large errors
+StabilizationController.m: Feedback controller for small errors
