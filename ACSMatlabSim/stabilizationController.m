@@ -6,7 +6,6 @@ function [m,wdot_desired, torque_tr] = stabilizationController(w, w_rw, err, dt,
 %   err: Error between craft rotation and desired rotation
 %   dt: Time since last step (seconds)
 %   mag_body: Magnetic field in body frame
-%   bdot: bang bang bdot
 %   first_step: 1 on the first step that the controller is called on,
 %   otherwise 0
 % Outputs:
