@@ -1,6 +1,13 @@
 function error = error_deltaR(R_BI,c_I,s_I)
-%error_3_axis returns the error vector
-%   Detailed explanation goes here
+%Returns error between current and desires body inertial vectors
+%Inputs:
+%   c_I: a 3x1 vector representing the position of the craft from the earth
+%       in the inertial frame.
+%   s_I: a 3x1 vector representing the position of the sun from the earth in
+%       inertial frame.
+%   R_BI: Inerial rotation matrix
+%Outputs:
+%   error: error between current and desired inertial vectors.
 
 R_BI_des = desiredRotation(c_I, s_I);
 
