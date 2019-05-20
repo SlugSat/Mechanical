@@ -14,5 +14,5 @@ Feedback control simulation:
 - BdotController_light.m: light version of BdotControllerTest (No quiver graphs)
 
 Feedback control functions:
-LargeErrorController.m : Feedback control for large errors
-StabilizationController.m: Feedback controller for small errors
+- LargeErrorController.m : Feedback control for large errors
+- StabilizationController.m: Feedback controller for small errors
