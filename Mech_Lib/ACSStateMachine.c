@@ -32,7 +32,7 @@
 
 // Thresholds used for state machine transitions
 #define DETUMBLE_LOW_THRESHOLD 0.00872665			// 0.5 deg/s in rad/s
-#define DETUBMLE_HIGH_THRESHOLD 0.05
+#define DETUBMLE_HIGH_THRESHOLD 0.0349066			// 2.0 deg/s in rad/s
 #define STABLE_ATTITUDE_LOW_THRESHOLD 0.02		// Rad/s^2; will have to be updated for real sensors
 #define STABLE_ATTITUDE_HIGH_THRESHOLD 0.08
 #define POINT_ERROR_HIGH_THRESHOLD 15					// Degrees

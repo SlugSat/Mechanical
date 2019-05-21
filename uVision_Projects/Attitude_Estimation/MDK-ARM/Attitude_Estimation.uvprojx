@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;..\..\..\Mech_Lib</IncludePath>
+              <IncludePath>../Inc;   ../Drivers/STM32F1xx_HAL_Driver/Inc;   ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;   ../Drivers/CMSIS/Device/ST/STM32F1xx/Include;   ../Drivers/CMSIS/Include;   ..\..\..\Mech_Lib</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -392,16 +392,6 @@
         <Group>
           <GroupName>Lib</GroupName>
           <Files>
-            <File>
-              <FileName>BNO055_IMU.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\Mech_Lib\BNO055_IMU.c</FilePath>
-            </File>
-            <File>
-              <FileName>BNO055_IMU.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\..\Mech_Lib\BNO055_IMU.h</FilePath>
-            </File>
             <File>
               <FileName>Matrix.c</FileName>
               <FileType>1</FileType>
@@ -472,6 +462,16 @@
               <FileType>5</FileType>
               <FilePath>..\..\..\Mech_Lib\ReferenceFrames.h</FilePath>
             </File>
+            <File>
+              <FileName>UM7_Functions.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\Mech_Lib\UM7_Functions.c</FilePath>
+            </File>
+            <File>
+              <FileName>UM7_reg.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\Mech_Lib\UM7_reg.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -513,9 +513,14 @@
               <FilePath>../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc_ex.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f1xx_hal_i2c.c</FileName>
+              <FileName>stm32f1xx_hal_spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.c</FilePath>
+              <FilePath>../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_spi_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi_ex.c</FilePath>
             </File>
             <File>
               <FileName>stm32f1xx_hal_tim.c</FileName>

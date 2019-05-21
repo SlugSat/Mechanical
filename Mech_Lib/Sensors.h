@@ -25,7 +25,7 @@
  * @param  acs: a pointer to an existing Attitude Control System object
  * @return None
 */
-void initializeSensors(ACSType* acs, I2C_HandleTypeDef* hi2c, ADC_HandleTypeDef* hadc);
+void initializeSensors(ACSType* acs, SPI_HandleTypeDef* hspi, ADC_HandleTypeDef* hadc);
 
 
 /** 
@@ -34,7 +34,7 @@ void initializeSensors(ACSType* acs, I2C_HandleTypeDef* hi2c, ADC_HandleTypeDef*
  * @param  hi2c: i2c handle for the IMU
  * @return Updates gyro_vector, mag_vector, solar_vector, and sun_status in acs
 */
-void readSensors(ACSType* acs, I2C_HandleTypeDef* hi2c);
+void readSensors(ACSType* acs, SPI_HandleTypeDef* hspi);
 
 
 #endif /* SENSORS_H */
