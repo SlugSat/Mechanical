@@ -102,8 +102,9 @@ int main(void)
 
   // Set global handles to allow the ACS to access them
   setUartHandle(&huart2);
-  //setSpiHandle(&hspi1);
-
+#ifdef ENABLE_FRAM
+  setSpiHandle(&hspi1);
+#endif
   // Run the ACS main loop
   runACS();
 
