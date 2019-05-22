@@ -91,7 +91,23 @@ $(document).ready(function(){initNavTree('matlab_sim.html','');});
 <div class="title">Matlab ACS Simulation </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>This page is a placeholder for now. </p>
+<div class="textblock"><p>This library includes functions to simulate attitude control.</p>
+<h2>Running the Simulation</h2>
+<ol type="1">
+<li>Open <b>twovector_control_simulation.m</b>.</li>
+<li>If desired, change the settings on lines 13-35.</li>
+<li>Run the file.</li>
+</ol>
+<h2>Important Files</h2>
+<p>Feedback control simulation:</p><ul>
+<li>twovector_control_simulation.m: main file for the feedback control simulation.</li>
+<li>BdotControllerTest.m: main file for the b-dot controller simulation.</li>
+<li>BdotController_light.m: light version of BdotControllerTest (No quiver graphs)</li>
+</ul>
+<p>Feedback control functions:</p><ul>
+<li>LargeErrorController.m : Feedback control for large errors</li>
+<li>StabilizationController.m: Feedback controller for small errors </li>
+</ul>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
