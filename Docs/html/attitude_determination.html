@@ -91,7 +91,11 @@ $(document).ready(function(){initNavTree('attitude_determination.html','');});
 <div class="title">Attiude Determination Testing </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h2>Setup &amp; Operation</h2>
+<div class="textblock"><h2>Sensor Test Fixture</h2>
+<p>The test fixture is used to prototype and test the accuracy of SlugSat's solar vector determination and overall attitude determination algorithms. The fixture hardware is a combination of four parts: an internal 2U chassis, a 3-axis gimbal, a Helmholtz coil, a dark box known within our team as the "bird box." The 2U chassis fits inside the gimbal to form the gimbal assembly. This assembly sits within the Helmholtz coil, which in turn sits inside of the bird box. The Helmholtz coil is used to adjust the magnetic field inside of the test fixture, while a lamp is used in conjunction with the bird box to simulate light from the Sun. The hardware is meant to be used with embedded software designed to run on the fixture's microcontroller (a NUCLEO-F103RB) and in parallel with data analysis software on the adjacent workstation.</p>
+<img src="../assets/birdbox_inside_labeled.jpg" style="max-width:45%" alt="" class="inline"/>
+ <img src="../assets/birdbox_workstation_labeled.jpg" style="max-width:45%" alt="" class="inline"/>
+ <h2>Setup &amp; Operation</h2>
 <ol type="1">
 <li>Set the lamp on the desk about 6' away from the bird box. Make sure the lamp is at about the same height as the center of the gimbal and nothing is blocking the light shining on the 2U chassis.</li>
 <li>Optionally, connect the Helmholtz coil to the power supply and turn configure the power supply to output about 3.3V. The current flowing should be about 1A.</li>
