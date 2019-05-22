@@ -15,7 +15,7 @@ Date: 4/29/2019
  *		JD 			- Julian Date
  *		longitude 	- in degrees
  *		latitude 	- in degrees
- *		altitude 	- in km
+ *		altitude 	- in m 
  * @return
  *		mag_NED		- Mag field vector with North, East, Down components in nT 
  */
