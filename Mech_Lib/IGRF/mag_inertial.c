@@ -1,15 +1,20 @@
-/*
-Author: Gabriel Barbosa
-
-Reference: All functions are pulled from geomag70.c found here:
-	https://www.ngdc.noaa.gov/IAGA/vmod/igrf.html
-	
-Date: 4/29/2019
+/**
+	******************************************************************
+	*@file 			mag_inertial.c
+	*@brief 		Calculates inertial magnetic field from IGRF12 model
+	******************************************************************
+	*Author: Gabriel Barbosa
+	*
+	*Reference: All functions are pulled from geomag70.c found here:
+	*https://www.ngdc.noaa.gov/IAGA/vmod/igrf.html
+	*
+	*Date: 4/29/2019
+	******************************************************************
 */
 
 /*********INCLUDES**********/
 #include "mag_inertial.h"
-#include "IGRF12.h"
+#include "IGRFCOF.h"
 #include <stdio.h>
 #include <stdlib.h>            
 #include <string.h>
@@ -109,9 +114,9 @@ int extrapsh(IGRF* igrf,double date)
 	int ii;
 	float factor;
 	
-	int nmax1 = 13; //number of Orders in 2015 model
-	int nmax2 = 8;  //number of Degres in 2105 model
-	float dte1 = 2015;
+	char nmax1 = num_order; //number of Orders in 2015 model
+	char nmax2 = num_deg;  //number of Degres in 2105 model
+	float dte1 = minyear;
 	
 	factor = date - dte1;
 	k = nmax2 * (nmax2 + 2);
