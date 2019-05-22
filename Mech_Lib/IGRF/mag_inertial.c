@@ -52,7 +52,7 @@ typedef struct
 
 /*********PRIVATE FUNCTIONS**********/
 int extrapsh(IGRF* igrf,double date);
-void shva13(IGRF* igrf, double lat, double lon, double alt, int nmax);
+void shva13(IGRF* igrf, float lat, float lon, float alt, int nmax);
 void dihf (IGRF* igrf);
 double JD_2_decdate(double JD);
 
@@ -107,11 +107,11 @@ int extrapsh(IGRF* igrf,double date)
 	int nmax;
 	int k, l;
 	int ii;
-	double factor;
+	float factor;
 	
 	int nmax1 = 13; //number of Orders in 2015 model
 	int nmax2 = 8;  //number of Degres in 2105 model
-	double dte1 = 2015;
+	float dte1 = 2015;
 	
 	factor = date - dte1;
 	k = nmax2 * (nmax2 + 2);
@@ -147,20 +147,20 @@ output:
 		
 */
 
-void shva13(IGRF* igrf, double lat, double lon, double alt, int nmax)
+void shva13(IGRF* igrf, float lat, float lon, float alt, int nmax)
 {
-	double argument;
-	double slat, clat;//sin(lat) and cos(lat)
-	double sd, cd;
-	double sl[14];
-	double cl[14];
-	double p[119];
- 	double q[119];
-	double ratio;
-	double power;
-	double rr;
-	double fn, fm;
-	double aa, bb, cc;
+	float argument;
+	float slat, clat;//sin(lat) and cos(lat)
+	float sd, cd;
+	float sl[14];
+	float cl[14];
+	float p[119];
+ 	float q[119];
+	float ratio;
+	float power;
+	float rr;
+	float fn, fm;
+	float aa, bb, cc;
 	int ii,j,k,l,m,n;
 	int npq;
 	
@@ -300,10 +300,10 @@ NOTE: MAY NEED TO UPDATE SO THAT VALUES GOES INTO ACS STRUCT
 void dihf (IGRF* igrf)
 {
 	int j;
-	double sn;
-	double h2;
-	double hpx;
-	double argument, argument2;
+	float sn;
+	float h2;
+	float hpx;
+	float argument, argument2;
 
 	sn = 0.0001;
 
