@@ -2,11 +2,14 @@ function plot_3D_prism(v1, v2, v3, v4, v5, v6,v7, v8, R, alphaVal, color)
 
 % Author: Natalie King (narking) 
 % Plots and rotates a rectangular prism from 8 vertices
-% R -- the rotation matrix
-%      if R == 0, no rotation is applied
-% alpha -- the transparency value 
-%          0 (fully transparent) to 1 (fully opaque)
-% color -- color value or matrix
+% Inputs:
+%   v1-v8:  8 vertics (points in space) for a cube vn = (Xn, Yn, Zn)
+%   R:      the rotation matrix
+%               if R == 0, no rotation is applied
+%   alpha:  the transparency value 
+%               0 (fully transparent) to 1 (fully opaque)
+%   color:  color value or matrix
+%**************************************************************************
 
 if (R == 0) 
     % Fill all 6 faces

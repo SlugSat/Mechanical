@@ -5,6 +5,8 @@
 %
 % Created by Galen Savidge, 2/23/2019
 % Edited by Galen Savidge, 5/12/2019
+% Edited by Gabriel Barbosa
+%**************************************************************************
 
 clear all
 clc
@@ -172,7 +174,7 @@ for i=1:num_steps
     % Find PWM as a function of angular rates of the satellite, reaction
     % wheels, desired angular acceleration, and dt
     w_rw_old = w_rw;
-    [w_rw, pwm] = Alpha2RW_PWM(w, controller_wdot, w_rw, dt);
+    [w_rw, pwm] = wdot2RW_PWM(w, controller_wdot, w_rw, dt);
     pwm_hist(i,:) = pwm;
    
     
@@ -181,7 +183,7 @@ for i=1:num_steps
     if use_42_disturbance
         disturbance_vec = envtorque(floor(t)+1)';
     end
-    torque = rwInertiaMatrix()*w_rw_dot + R'*disturbance_vec -torque_tr; % Add torque rod torque here
+    torque = rwInertia*w_rw_dot + R'*disturbance_vec -torque_tr; % Add torque rod torque here
     
     torque_trhist(i,:) = torque_tr;
     

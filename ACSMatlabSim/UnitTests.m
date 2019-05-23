@@ -1,4 +1,14 @@
+% @file: UnitTests.m
+% @brief: provides unit tests for the follwoing functions
+%   - error_twovetor()
+%   - largeErrorController()
+%   - Alpha2RW_PWM()
+%   - stabilizationController() with/without momentum dumping
+%**************************************************************************
+
 clear all
+close all
+clc
 
 R_BI = [6.6341e-01  1.0504e-01  7.4084e-01
         3.8302e-01  8.0287e-01  -4.5683e-01
@@ -53,6 +63,8 @@ wdot_desired = largeErrorController(w, z_err, dt, 0)
 
 
 % Stabilization Controller Test With Momentum Dumping
+%
+% Checks the torque rod and reaction wheel pwm
 % Test 1
 dt = 1;
 w =  [-0.000823412819641066; 0.000823855246784669; 4.35504321779471e-06];

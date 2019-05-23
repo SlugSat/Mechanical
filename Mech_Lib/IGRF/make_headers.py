@@ -12,7 +12,7 @@ def isFloat(string):
         return False
 
 # Get user input
-filename = input("Enter the name of the IGRF model: ")
+filename = input("Enter the name of the IGRF model file: ")
 while not os.path.isfile(filename):
     print("File not found!")
     filename = input("Enter the name of the IGRF model: ")

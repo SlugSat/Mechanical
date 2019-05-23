@@ -27,6 +27,7 @@ function hhh=vline(x,in1,in2)
 % By Brandon Kuczenski for Kensington Labs.
 % brandon_kuczenski@kensingtonlabs.com
 % 8 November 2001
+%**************************************************************************
 if length(x)>1  % vector input
     for I=1:length(x)
         switch nargin

@@ -1,5 +1,5 @@
 function wdot_desired = largeErrorController(w, err, dt, first_step)
-% Feedback controller for large errors
+% Feedback controller for large errors i.e. >20 degrees
 % Inputs:
 %   w: Craft angular velocity vector (rad/s)
 %   w_rw: Reaction wheel angular velocity vector (rad/s)
@@ -8,6 +8,9 @@ function wdot_desired = largeErrorController(w, err, dt, first_step)
 %   dt: Time since last step (seconds)
 %   first_step: 1 on the first step that the controller is called on,
 %   otherwise 0
+% Output:
+%   wdot_desired: the desired angular acceleration
+%**************************************************************************
 
 % Feedback constants
 K = 1;

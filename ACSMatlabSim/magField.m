@@ -1,10 +1,11 @@
-function b=magField(t)
+function b = magField(t)
 % Outputs magnetic field vector given orbital position, based on tilted
 % dipole model. Currently based on an ISS orbit.
 % Inputs:
 %   t: time
 %Outputs:
-%   b= magnetic field vector at location in space
+%   b: magnetic field vector at location in space(T)
+%**************************************************************************
 
 
 %Orbital parameters
