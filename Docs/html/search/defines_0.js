@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['num_5fsolar_5fpanels',['NUM_SOLAR_PANELS',['../_a_c_s_8h.html#a52a9e7d7904f66b47bd531471dc30c4d',1,'ACS.h']]]
+  ['maxread',['MAXREAD',['../mag__inertial_8c.html#a0a96ed90b52a4806349046c542f11297',1,'mag_inertial.c']]]
 ];

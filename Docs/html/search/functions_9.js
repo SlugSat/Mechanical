@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['updateattitudeestimate',['updateAttitudeEstimate',['../_attitude_estimation_8h.html#a5aec64402f3df1a6482b514b354f46b0',1,'AttitudeEstimation.c']]]
+  ['torque2wdot',['torque2wdot',['../_stabilization_controller_8c.html#a1de9230226c0e44b83be8cc202f82875',1,'StabilizationController.c']]]
 ];

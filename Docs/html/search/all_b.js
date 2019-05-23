@@ -1,6 +1,8 @@
 var searchData=
 [
   ['mag_5finertial',['mag_inertial',['../struct_a_c_s_type.html#a3b8cd1112080cab70c421f3147c4610a',1,'ACSType']]],
+  ['mag_5finertial_2ec',['mag_inertial.c',['../mag__inertial_8c.html',1,'']]],
+  ['mag_5finertial_2eh',['mag_inertial.h',['../mag__inertial_8h.html',1,'']]],
   ['mag_5fvector',['mag_vector',['../struct_a_c_s_type.html#a4b82b0a178354dcc8761b1bc5d9e3e90',1,'ACSType']]],
   ['make3x1vector',['make3x1Vector',['../_matrix_8h.html#ab6065a8b3ea0d9d10bcacafbff82ebf7',1,'Matrix.c']]],
   ['makedcm_5fzyx',['makeDCM_zyx',['../_reference_frames_8h.html#ad810fd5bc0fcf16966ed6c0ba2420a5b',1,'ReferenceFrames.c']]],
@@ -18,5 +20,6 @@ var searchData=
   ['matrixscale',['matrixScale',['../_matrix_8h.html#a2f77e6c78667ca88fec23f1c82c8c7fa',1,'Matrix.c']]],
   ['matrixset',['matrixSet',['../_matrix_8h.html#ac10587f9cabe93c60f86e9b8f55fe1c6',1,'Matrix.c']]],
   ['matrixsubtract',['matrixSubtract',['../_matrix_8h.html#adcdc572af07b955bddc7adb5b2951376',1,'Matrix.c']]],
-  ['matrixtranspose',['matrixTranspose',['../_matrix_8h.html#ac899ba4c5e2dcbff078782a8a7986b36',1,'Matrix.c']]]
+  ['matrixtranspose',['matrixTranspose',['../_matrix_8h.html#ac899ba4c5e2dcbff078782a8a7986b36',1,'Matrix.c']]],
+  ['maxread',['MAXREAD',['../mag__inertial_8c.html#a0a96ed90b52a4806349046c542f11297',1,'mag_inertial.c']]]
 ];

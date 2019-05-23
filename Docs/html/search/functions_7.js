@@ -1,11 +1,10 @@
 var searchData=
 [
-  ['sendactuatorstoserial',['sendActuatorsToSerial',['../_s_t_m32_serial_communication_8h.html#abddb75ac826a5945edf2bd9d9e936aaf',1,'STM32SerialCommunication.c']]],
-  ['setspihandle',['setSpiHandle',['../_a_c_s_state_machine_8h.html#aab4bf2646d5fa50b15643cdf6d1338da',1,'ACSStateMachine.c']]],
-  ['setuarthandle',['setUartHandle',['../_a_c_s_state_machine_8h.html#af493e1e0197f128de043ff6d3062f77c',1,'ACSStateMachine.c']]],
-  ['stm32serialhandshake',['STM32SerialHandshake',['../_s_t_m32_serial_communication_8h.html#ab6100f2f60bcdce42fbdf84f725c492a',1,'STM32SerialCommunication.c']]],
-  ['stm32serialreceivefloats',['STM32SerialReceiveFloats',['../_s_t_m32_serial_communication_8h.html#a0915517c1034bd40430b88a147d30776',1,'STM32SerialCommunication.c']]],
-  ['stm32serialsendfloats',['STM32SerialSendFloats',['../_s_t_m32_serial_communication_8h.html#aa2a2960d426562d89c6d7bd507cdeef4',1,'STM32SerialCommunication.c']]],
-  ['stm32serialsendstring',['STM32SerialSendString',['../_s_t_m32_serial_communication_8h.html#ab0db882d01f9a8d3fc767b7443effbff',1,'STM32SerialCommunication.c']]],
-  ['syncwith42',['syncWith42',['../_s_t_m32_serial_communication_8h.html#a033eff7bc0e28e99f5898e1cc9866f9f',1,'STM32SerialCommunication.c']]]
+  ['readsensors',['readSensors',['../_sensors_8h.html#ad0150d4dfa3bc3847664a94cc6987229',1,'Sensors.c']]],
+  ['readsensorsfromserial',['readSensorsFromSerial',['../_s_t_m32_serial_communication_8h.html#ad072f619e7cd898708cb18f8046dddf4',1,'STM32SerialCommunication.c']]],
+  ['runacs',['runACS',['../_a_c_s_state_machine_8h.html#a17ce655d7656c8625b8eaee880b4c04b',1,'ACSStateMachine.c']]],
+  ['runbdotcontroller',['runBdotController',['../_feedback_control_8h.html#aa55908d5fa5b58816b0d5ba386fe1954',1,'FeedbackControl.c']]],
+  ['runmovingavgfilter',['runMovingAvgFilter',['../_digital_filters_8h.html#a7e8cbba6d231e26a3c97dcd5b4daf474',1,'DigitalFilters.c']]],
+  ['runorientationcontroller',['runOrientationController',['../_feedback_control_8h.html#ad350e4cca0fbe67125ed1ad51ad185fb',1,'runOrientationController(ACSType *acs, int first_step):&#160;OrientationController.c'],['../_orientation_controller_8c.html#ad350e4cca0fbe67125ed1ad51ad185fb',1,'runOrientationController(ACSType *acs, int first_step):&#160;OrientationController.c']]],
+  ['runstabilizationcontroller',['runStabilizationController',['../_feedback_control_8h.html#ad05f96d934d3de9d9fda2a8f1702bc83',1,'runStabilizationController(ACSType *acs, Matrix err, int first_step):&#160;StabilizationController.c'],['../_stabilization_controller_8c.html#ad05f96d934d3de9d9fda2a8f1702bc83',1,'runStabilizationController(ACSType *acs, Matrix err, int first_step):&#160;StabilizationController.c']]]
 ];
