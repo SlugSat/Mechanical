@@ -35,7 +35,7 @@
  * @brief An enum for the state of the craft's solar panels and calculated solar vector
  */
 typedef enum {
-	SV_FOUND, /**< Solar vector is reliable */
+	SV_FOUND = 0, /**< Solar vector is reliable */
 	SV_NOTFOUND, /**< Craft is in the sun but solar vector is unreliable */
 	SV_DARK /**< Craft is in eclipse */
 }SV_Status;

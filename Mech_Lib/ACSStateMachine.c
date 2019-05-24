@@ -33,16 +33,20 @@
 // Thresholds used for state machine transitions
 #define DETUMBLE_LOW_THRESHOLD 0.00872665			// 0.5 deg/s in rad/s
 #define DETUBMLE_HIGH_THRESHOLD 0.05
-#define STABLE_ATTITUDE_LOW_THRESHOLD 0.02		// Rad/s^2; will have to be updated for real sensors
-#define STABLE_ATTITUDE_HIGH_THRESHOLD 0.08
+#define STABLE_ATTITUDE_LOW_THRESHOLD 2e-5		// Rad/s^2; will have to be updated for real sensors
+#define STABLE_ATTITUDE_HIGH_THRESHOLD 4e-5
 #define POINT_ERROR_HIGH_THRESHOLD 15					// Degrees
 #define POINT_ERROR_LOW_THRESHOLD 10
-#define SUN_ANGLE_HIGH_THRESHOLD 40						// Degrees
+#define SUN_ANGLE_HIGH_THRESHOLD 35						// Degrees
 #define SUN_ANGLE_LOW_THRESHOLD 30
 
 
 #define INERTIAL_UPDATE_RATE 1 								// Seconds between intertial vector updates
 
+
+// Serial device handles
+#ifdef ENABLE_42
+static UART_HandleTypeDef* huart;
 
 char state_names[][30] = {
 		"Default", 
@@ -54,10 +58,11 @@ char state_names[][30] = {
 		"Stabilize"
 };
 
-
-// Serial device handles
-#ifdef ENABLE_42
-static UART_HandleTypeDef* huart;
+char sun_status_names[][20] = {
+	"SV Found",
+	"SV Invalid",
+	"Eclipse"
+};
 
 void setUartHandle(UART_HandleTypeDef* uart) {
 	huart = uart;
@@ -83,7 +88,7 @@ void runACS(void) {
 	#endif
 	
 	ACSState state = WAIT_FOR_ATTITUDE;
-	int first_step = 1;
+	int first_step = 1, reset_integrator = 1;
 	float last_inertial_update_time = -INFINITY;	// In seconds
 	
 	// Variables to hold values that are important for state transitions
@@ -136,21 +141,23 @@ void runACS(void) {
 		if(state == STABILIZE_NO_SUN) {
 			// Run momentum dumping
 			findErrorVectors(&acs);
-			runStabilizationController(&acs, acs.z_err, first_step);
+			runStabilizationController(&acs, acs.z_err, first_step, reset_integrator);
 			first_step = 0;
+			reset_integrator = 0;
 		}
 		
 		if(state == STABILIZE) {
 			// Run momentum dumping
 			findErrorVectors(&acs);
-			runStabilizationController(&acs, acs.err, first_step);
+			runStabilizationController(&acs, acs.err, first_step, reset_integrator);
 			first_step = 0;
+			reset_integrator = 0;
 		}
 		
 		#ifdef ENABLE_42
 		// Print to 42 terminal
-		sprintf(prnt, "State -- %s\nPointing error: %6.2f [deg]\nCraft rotational rate: %6.2f [deg/s]\nGyro bias dot: %6.2f [rad/s^2]", 
-				state_names[state], acs.pointing_err, 180*gyro_vector_norm/PI, acs.gyro_bias_dot_norm);
+		sprintf(prnt, "State -- %s\nPointing error: %6.2f [deg]\nCraft rotational rate: %6.2f [deg/s]\nSun status -- %s\nGyro bias dot: %8.6f [rad/s^2]", 
+				state_names[state], acs.pointing_err, 180*gyro_vector_norm/PI, sun_status_names[acs.sun_status], acs.gyro_bias_dot_norm);
 		printTo42(prnt);
 		
 		sprintf(prnt, "\nAngle to sun: %6.2f [deg]", acs.zb_sun_angle);
@@ -187,7 +194,7 @@ void runACS(void) {
 				
 			case WAIT_FOR_ATTITUDE:
 				// Count iterations where attitude is stable
-				if(acs.gyro_bias_dot_norm < STABLE_ATTITUDE_LOW_THRESHOLD) {
+				if(acs.gyro_bias_dot_norm < STABLE_ATTITUDE_LOW_THRESHOLD && acs.sun_status == SV_FOUND) {
 					attitude_est_stable_counter++;
 				}
 				else {
@@ -203,6 +210,7 @@ void runACS(void) {
 			case REORIENT:
 				if(acs.pointing_err < POINT_ERROR_LOW_THRESHOLD) {
 					next_state = STABILIZE_NO_SUN;
+					reset_integrator = 1;
 				}
 				break;
 				
@@ -235,6 +243,8 @@ void runACS(void) {
 			if(acs.gyro_bias_dot_norm > STABLE_ATTITUDE_HIGH_THRESHOLD) { // Attitude estimate is no longer accurate
 				next_state = WAIT_FOR_ATTITUDE;
 			}
+			
+			// Add check for 
 		}
 		
 		if(state >= WAIT_FOR_ATTITUDE) {

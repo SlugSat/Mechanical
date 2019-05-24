@@ -32,7 +32,7 @@
 void torque2wdot(ACSType* acs, Matrix torque_vector, Matrix wdot_vector);
 
 
-void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
+void runStabilizationController(ACSType* acs, Matrix err, int init_error, int reset_integrator) {
 
 	static int init_run = 0;
 	static Matrix torque_integrator, last_err, P, I, D, controller_torque, controller_wdot, 
@@ -58,13 +58,15 @@ void runStabilizationController(ACSType* acs, Matrix err, int first_step) {
 		return;
 	}
 	
-	if(first_step) {
+	if(reset_integrator) {
 		vectorSetXYZ(torque_integrator, 0, 0, 0);
+	}
+	
+	if(init_error) {
 		vectorSetXYZ(wdot_desired, 0, 0, 0);
 		vectorSetXYZ(acs->tr_PWM, 0, 0, 0);
 	}
 	else {
-
 
 		// ***** MOMENTUM DUMPING *****
 		//Variables

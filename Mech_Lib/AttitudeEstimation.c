@@ -21,9 +21,9 @@
 
 // CONSTANTS
 #define KP_MAG_BASE 0.1 //1.0
-#define KI_MAG_BASE 0.03 //0.3
-#define KP_SV_BASE 0.2 //1.0
-#define KI_SV_BASE 0.06 //0.3
+#define KI_MAG_BASE 0.003 //0.3
+#define KP_SV_BASE 0.1 //1.0
+#define KI_SV_BASE 0.003 //0.3
 
 
 // HELPER FUNCTIONS
@@ -73,16 +73,17 @@ void updateAttitudeEstimate(ACSType* acs) {
 	
 	float Kp_mag, Ki_mag, Kp_sv, Ki_sv;
 	
-	Kp_mag = KP_MAG_BASE;
-	Ki_mag = KI_MAG_BASE;
-	
 	if(acs->sun_status == SV_FOUND) {
 		Kp_sv = KP_SV_BASE;
 		Ki_sv = KI_SV_BASE;
+		Kp_mag = KP_MAG_BASE;
+		Ki_mag = KI_MAG_BASE;
 	}
 	else {
 		Kp_sv = 0;
 		Ki_sv = 0;
+		Ki_mag = 0;
+		Kp_mag = 0;
 	}
 	
 	integrateDCM(acs, Kp_mag, Ki_mag, Kp_sv, Ki_sv, acs->dt);

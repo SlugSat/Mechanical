@@ -48,10 +48,11 @@ void runOrientationController(ACSType* acs, int first_step);
  * @brief  Runs the feedback controller used to stabilize the craft when error is low
  * @param  acs: a pointer to an existing Attitude Control System object
  * @param  err: generally either acs.z_err or acs.err
- * @param  first_step: 1 right after state transitions, 0 otherwise
+ * @param  init_error: 1 right after state transitions, 0 otherwise
+ * @param  reset_integrator: 1 after this function has not been called for a while, 0 otherwise
  * @return Updates acs->rw_PWM
  */
-void runStabilizationController(ACSType* acs, Matrix err, int first_step);
+void runStabilizationController(ACSType* acs, Matrix err, int init_error, int reset_integrator);
 
 /**
  * @brief  Finds reaction wheel PWM to achieve a desired craft wdot

@@ -17,7 +17,7 @@
 
 #define BAUD 115200
 #define UART_TIMEOUT 20
-#define HANDSHAKE_TIMEOUT 30
+#define HANDSHAKE_TIMEOUT 20
 
 #define RECEIVED_FLOATS 18
 #define SENT_FLOATS 6
@@ -60,11 +60,6 @@ void STM32SerialHandshake(UART_HandleTypeDef* huart) {
 
 
 HAL_StatusTypeDef STM32SerialSendFloats(UART_HandleTypeDef* huart, float* f, unsigned int n) {
-	// Send start packet
-//	uint8_t start_packet[CONTROL_PACKET_SIZE];
-//	makeControlPacket(start_packet, START);
-//	HAL_UART_Transmit(huart, start_packet, CONTROL_PACKET_SIZE, UART_TIMEOUT);
-	
 	// Create data packet
 	uint8_t data_packet[BYTES_PER_FLOAT*n];
 	floatsToPacket(f, data_packet, n);
@@ -123,8 +118,10 @@ void readSensorsFromSerial(ACSType* acs) {
 	// Check for invalid solar vector
 	if(vectorNorm(acs->solar_vector) == 0) {
 		acs->sun_status = SV_DARK;
-		vectorSetXYZ(acs->solar_vector, 1, 0, 0); // Set to x+ to avoid divide by 0 errors
 	}
+	//else if(matrixGetElement(acs->solar_vector, 3, 1) == 0) {
+	//	acs->sun_status = SV_NOTFOUND;
+	//}
 	else {
 		acs->sun_status = SV_FOUND;
 	}
