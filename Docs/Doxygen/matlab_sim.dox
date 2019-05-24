@@ -3,10 +3,32 @@
 
 This library includes functions to simulate attitude control. 
 
-## Running the Simulation
+## Running ACS Simulation
 1. Open **twovector_control_simulation.m**.
-2. If desired, change the settings on lines 13-35.
+2. If desired, change the following settings.
+	a. Simulation time .....................................(line 16)
+	b. Enable quiver/cube drawing ..........................(line 18)
+	c. Orbital Period ......................................(line 19)
+	d. Initial craft rotation ..............................(line 20)
+	e. Initial body angular velocity .......................(line 21)
+	f. Initial reaction wheel angular velocity .............(line 22)
+	g. Enable disturbance model from 42 ....................(line 28)
+	h. Make gif if drawcube is enabled .....................(line 37)
 3. Run the file.
+
+## Running B-Dot Controller
+1. Open **BdotController.m**.
+2. If desired, change the following settings.
+	a. Simulation time .....................................(line 16)
+	b. Initial craft rotation ..............................(line 19)
+	c. Initial body angular rotation .......................(line 20)
+	d. Magnetic orbital disturbance ........................(line 34)
+3. Run the file.
+
+## Running Unit Tests
+1. Open **UnitTests.m**.
+2. Run the file.
+3. Compare output to the microcontroller output.
 
 ## Important Files
 Feedback control simulation:
