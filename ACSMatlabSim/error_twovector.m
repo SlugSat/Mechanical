@@ -1,18 +1,21 @@
-function [z_err, n_err] = error_twovector(R_BI, c_I, s_I)
-% Error determination function using two vectors
-% Instead of using a desired DCM, this function finds error as a sum of 
-% error between craft inertial and desired craft inertial vectors, and 
-% error between sun inertial and desired sun inertial vectors.
-% Inputs:
-%   c_I = a 3x1 vector representing the position of the craft from the 
-%       Earth in the inertial frame.
-%   s_I = a 3x1 vector representing the position of the sun from the Earth
-%       in the inertial frame.
-%   R_BI: Inerial rotation matrix
-%Outputs:
-%   z_err: error of the Z body and craft inertial
-%   n_err: error of corner of satellite to sun
+%> @brief Error determination function using two vectors
+%> Instead of using a desired DCM, this function finds error as a sum of 
+%> error between craft inertial and desired craft inertial vectors, and 
+%> error between sun inertial and desired sun inertial vectors.
+%>
+%> Inputs:
+%> @param  c_I: a 3x1 vector representing the position of the craft from the 
+%>       Earth in the inertial frame.
+%> @param  s_I: a 3x1 vector representing the position of the sun from the Earth
+%>       in the inertial frame.
+%>   R_BI: Inerial rotation matrix
+%
+%> Outputs:
+%> @retval  z_err: error of the Z body and craft inertial
+%> @retval  n_err: error of corner of satellite to sun
 %**************************************************************************
+
+function [z_err, n_err] = error_twovector(R_BI, c_I, s_I)
 
 zhat_B = [0; 0; 1];
 xhat_B = [1; 0; 0];

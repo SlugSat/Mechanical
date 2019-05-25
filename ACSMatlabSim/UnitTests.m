@@ -1,9 +1,9 @@
-% @file: UnitTests.m
-% @brief: provides unit tests for the follwoing functions
-%   - error_twovetor()
-%   - largeErrorController()
-%   - Alpha2RW_PWM()
-%   - stabilizationController() with/without momentum dumping
+%> @file: UnitTests.m
+%> @brief: provides unit tests for the follwoing functions
+%>   - error_twovetor()
+%>   - largeErrorController()
+%>   - Alpha2RW_PWM()
+%>   - stabilizationController() with/without momentum dumping
 %**************************************************************************
 
 clear all

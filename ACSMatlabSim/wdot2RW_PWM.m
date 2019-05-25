@@ -1,16 +1,17 @@
-function [wRW_new, PWM] = wdot2RW_PWM(w,wdot,wRW,dt)
-% Converts reaction wheel parameters to PMW
-%
-% Inputs:
-%   w :   Craft's angular velocity (rad/s)
-%   wdot: Derivative term
-%   wRW:  Reaction wheel angular velocity (rad/s)
-%   dt:   Time step
-%
-% Outputs:
-%   wRW_new: new reaction wheel angular velocity (rad/s)
-%   PWM: Corresponding pulse width modulation signal
+%> @brief Converts reaction wheel parameters to PMW
+%>
+%> Inputs:
+%> @param  w :   Craft's angular velocity (rad/s)
+%> @param  wdot: Derivative term
+%> @param  wRW:  Reaction wheel angular velocity (rad/s)
+%> @param  dt:   Time step
+%>
+%> Outputs:
+%> @retval  wRW_new: new reaction wheel angular velocity (rad/s)
+%> @retval  PWM: Corresponding pulse width modulation signal
 %**************************************************************************
+
+function [wRW_new, PWM] = wdot2RW_PWM(w,wdot,wRW,dt)
     
 %Max voltage
 Vrail = 8; % Rail voltage

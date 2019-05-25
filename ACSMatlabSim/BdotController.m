@@ -1,6 +1,6 @@
-% @file: BdotController_light.m
-% @brief: Light version of the Bdot control simulation. Outputs angular 
-%           velocity plott on each axis
+%> @file: BdotController_light.m
+%> @brief: Light version of the Bdot control simulation. Outputs angular 
+%>           velocity plott on each axis
 %**************************************************************************
 clear all
 close all
