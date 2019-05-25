@@ -33,11 +33,11 @@
 // Thresholds used for state machine transitions
 #define DETUMBLE_LOW_THRESHOLD 0.00872665			// 0.5 deg/s in rad/s
 #define DETUBMLE_HIGH_THRESHOLD 0.05
-#define STABLE_ATTITUDE_LOW_THRESHOLD 2e-5		// Rad/s^2; will have to be updated for real sensors
-#define STABLE_ATTITUDE_HIGH_THRESHOLD 4e-5
-#define POINT_ERROR_HIGH_THRESHOLD 15					// Degrees
-#define POINT_ERROR_LOW_THRESHOLD 10
-#define SUN_ANGLE_HIGH_THRESHOLD 35						// Degrees
+#define STABLE_ATTITUDE_LOW_THRESHOLD 4e-5		// Rad/s^2; will have to be updated for real sensors
+#define STABLE_ATTITUDE_HIGH_THRESHOLD 1e-4
+#define POINT_ERROR_HIGH_THRESHOLD 12					// Degrees
+#define POINT_ERROR_LOW_THRESHOLD 7
+#define SUN_ANGLE_HIGH_THRESHOLD 32						// Degrees
 #define SUN_ANGLE_LOW_THRESHOLD 30
 
 
@@ -93,7 +93,7 @@ void runACS(void) {
 	
 	// Variables to hold values that are important for state transitions
 	uint8_t acs_enable = 1;			// Temporary bool
-	float gyro_vector_norm = 0;		// Rad/s
+	float w_norm = 0;		// Rad/s
 	float attitude_est_stable_counter = 0;
 	
   while (1) {
@@ -108,7 +108,7 @@ void runACS(void) {
 		
 		// Update ACS fields
 		J2000_2_LongLatAlt(acs.craft_j2000, acs.julian_date, &acs.longitude, &acs.latitude, &acs.altitude);
-		
+		matrixSubtract(acs.gyro_vector, acs.gyro_bias, acs.w);
 		
 		if(state == DETUMBLE) {
 			// Read gyro here
@@ -157,7 +157,7 @@ void runACS(void) {
 		#ifdef ENABLE_42
 		// Print to 42 terminal
 		sprintf(prnt, "State -- %s\nPointing error: %6.2f [deg]\nCraft rotational rate: %6.2f [deg/s]\nSun status -- %s\nGyro bias dot: %8.6f [rad/s^2]", 
-				state_names[state], acs.pointing_err, 180*gyro_vector_norm/PI, sun_status_names[acs.sun_status], acs.gyro_bias_dot_norm);
+				state_names[state], acs.pointing_err, 180*w_norm/PI, sun_status_names[acs.sun_status], acs.gyro_bias_dot_norm);
 		printTo42(prnt);
 		
 		sprintf(prnt, "\nAngle to sun: %6.2f [deg]", acs.zb_sun_angle);
@@ -173,7 +173,7 @@ void runACS(void) {
 		 */
 		ACSState next_state = state;
 		
-		gyro_vector_norm = vectorNorm(acs.gyro_vector);
+		w_norm = vectorNorm(acs.w);
 		
 		// Check forward state transitions
 		switch(state) {
@@ -187,7 +187,7 @@ void runACS(void) {
 				break;
 			
 			case DETUMBLE:
-				if(gyro_vector_norm < DETUMBLE_LOW_THRESHOLD) {
+				if(w_norm < DETUMBLE_LOW_THRESHOLD) {
 					next_state = WAIT_FOR_ATTITUDE;
 				}
 				break;
@@ -248,7 +248,7 @@ void runACS(void) {
 		}
 		
 		if(state >= WAIT_FOR_ATTITUDE) {
-			if(gyro_vector_norm > DETUBMLE_HIGH_THRESHOLD) { // We are tumbling again
+			if(w_norm > DETUBMLE_HIGH_THRESHOLD) { // We are tumbling again
 				next_state = DETUMBLE;
 			}
 		}
@@ -302,6 +302,8 @@ void runACS(void) {
 				
 			case WAIT_FOR_ATTITUDE:
 				attitude_est_stable_counter = 0;
+				vectorSetXYZ(acs.rw_PWM, 0, 0, 0);
+				vectorSetXYZ(acs.tr_PWM, 0, 0, 0);
 				break;
 				
 			case REORIENT:

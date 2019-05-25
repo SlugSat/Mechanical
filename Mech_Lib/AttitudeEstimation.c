@@ -20,9 +20,9 @@
 
 
 // CONSTANTS
-#define KP_MAG_BASE 0.1 //1.0
+#define KP_MAG_BASE 0.2 //1.0
 #define KI_MAG_BASE 0.003 //0.3
-#define KP_SV_BASE 0.1 //1.0
+#define KP_SV_BASE 0.2 //1.0
 #define KI_SV_BASE 0.003 //0.3
 
 
@@ -157,7 +157,7 @@ void integrateDCM(ACSType* acs, float Kp_mag, float Ki_mag, float Kp_sv, float K
 	matrixScale(sverr_x_Kp, Kp_sv); // Kp_sv * mag_err
 	
 	// ***** ADD FEEDBACK TO GYRO *****
-	matrixSubtract(acs->gyro_vector, acs->gyro_bias, gyro_with_bias);
+	matrixCopy(acs->w, gyro_with_bias);
 	matrixAdd(gyro_with_bias, merr_x_Kp, gyro_with_bias); // Add mag err*Kp
 	matrixAdd(gyro_with_bias, sverr_x_Kp, gyro_with_bias); // Add sv err*Kp
 	

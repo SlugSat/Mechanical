@@ -81,7 +81,8 @@ void initializeACS(ACSType* acs) {
 	acs->mag_vector = newMatrix(3, 1);
 	acs->solar_vector = newMatrix(3, 1);
 	
-	acs->gyro_bias = newMatrix(3, 1);
+	acs->gyro_bias = make3x1Vector(0, 0, 0);
+	acs->w = newMatrix(3, 1);
 	
 	acs->sv_inertial = newMatrix(3, 1);
 	acs->mag_inertial = newMatrix(3, 1);

@@ -17,7 +17,7 @@
 #define KP (K*0.05)
 #define KD (K*0.1)
 
-#define ORIENTATION_W_MAG -0.00872665 // 0.5 deg/s in rad/s
+#define ORIENTATION_W_MAG -0.01308997 // 0.75 deg/s in rad/s
 
 
 void runOrientationController(ACSType* acs, int first_step) {
@@ -41,7 +41,7 @@ void runOrientationController(ACSType* acs, int first_step) {
 	matrixCopy(acs->z_err, w_err);
 	float z_err_norm = vectorNorm(w_err);
 	matrixScale(w_err, ORIENTATION_W_MAG/z_err_norm);
-	matrixSubtract(acs->gyro_vector, w_err, w_err); // w_err = w - (-0.017*z_err/norm(z_err))
+	matrixSubtract(acs->w, w_err, w_err); // w_err = w - (-0.017*z_err/norm(z_err))
 	
 	if(first_step) {
 		vectorSetXYZ(wdot_desired, 0, 0, 0);

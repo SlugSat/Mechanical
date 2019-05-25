@@ -60,6 +60,7 @@ typedef struct {
 	
 	// Attitude estimation vectors
 	Matrix gyro_bias; /**< Current estimated gyro bias, updated by updateAttitudeEstimate() */
+	Matrix w; /**< Craft angular velocity w = gyro_vector - gyro_bias */
 	float gyro_bias_dot_norm; /**< Time derivative of ||gyro bias|| */
 	
 	// Inertial vectors (ecliptic frame)
