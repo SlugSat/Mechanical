@@ -1,11 +1,11 @@
-% Test script for 3-axis feedback control. Drives the Z+ unit vector in
-% the body frame to c_I, the craft position vector in the inertial frame.
-% Also drives a corner of the craft to s_I, the sun position in the
-% interial frame.
+%> @file twovector_control_simulation.m
+%> @brief Test script for 3-axis feedback control. Drives the Z+ unit vector in
+%> the body frame to c_I, the craft position vector in the inertial frame.
+%> Also drives a corner of the craft to s_I, the sun position in the
+%> interial frame.
 %
-% Created by Galen Savidge, 2/23/2019
-% Edited by Galen Savidge, 5/12/2019
-% Edited by Gabriel Barbosa
+%> Created by Galen Savidge, 2/23/2019
+%> Edited by Gabriel Barbosa
 %**************************************************************************
 
 clear all

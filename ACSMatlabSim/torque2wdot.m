@@ -1,11 +1,15 @@
-function wdot = torque2wdot(w,w_rw,t)
-% Inputs
-%   w:      angular velocity of craft
-%   w_rw:   current reaction wheel angular rates
-%   t:      torque acting on craft
-% Outputs
-%   wdot:   time derivative of angular velocity of craft
+%> @brief Converts torque on the craft into the angular acceleration
+%>
+%> Inputs
+%> @param  w:      angular velocity of craft
+%> @param  w_rw:   current reaction wheel angular rates
+%> @param  t:      torque acting on craft
+%>
+%> Outputs
+%> @retval  wdot:   time derivative of angular velocity of craft
 %**************************************************************************
+
+function wdot = torque2wdot(w,w_rw,t)
 
 Jsc = bodyInertia; % predetermined 3U cubesat values
 A = [1 0 0; 0 1 0; 0 0 1]; % 3x3 reaction wheel identity matrix

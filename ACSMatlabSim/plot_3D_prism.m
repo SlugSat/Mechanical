@@ -1,17 +1,18 @@
-function plot_3D_prism(v1, v2, v3, v4, v5, v6,v7, v8, R, alphaVal, color)
-
-% Author: Natalie King (narking) 
-% Plots and rotates a rectangular prism from 8 vertices
-% Inputs:
-%   v1-v8:  8 vertics (points in space) for a cube vn = (Xn, Yn, Zn)
-%   R:      the rotation matrix
-%               if R == 0, no rotation is applied
-%   alpha:  the transparency value 
-%               0 (fully transparent) to 1 (fully opaque)
-%   color:  color value or matrix
+%> @brief Plots and rotates a rectangular prism from 8 vertices
+%> Author: Natalie King (narking)
+%>
+%> Inputs:
+%> @param  v1-v8:  8 vertics (points in space) for a cube vn = (Xn, Yn, Zn)
+%> @param  R:      the rotation matrix
+%>               if R == 0, no rotation is applied
+%> @param  alpha:  the transparency value 
+%>               0 (fully transparent) to 1 (fully opaque)
+%> @param  color:  color value or matrix
 %**************************************************************************
 
-if (R == 0) 
+iffunction plot_3D_prism(v1, v2, v3, v4, v5, v6,v7, v8, R, alphaVal, color)
+
+ (R == 0) 
     % Fill all 6 faces
     r1=fill3([v1(1) v2(1) v3(1) v4(1)],[v1(2) v2(2) v3(2) v4(2)],[v1(3) v2(3) v3(3) v4(3)] ,color,'facealpha',0.6); %1 2 3 4
     r2=fill3([v1(1) v2(1) v7(1) v8(1)],[v1(2) v2(2) v7(2) v8(2)],[v1(3) v2(3) v7(3) v8(3)] ,color,'facealpha',0.6); %1 2 7 8

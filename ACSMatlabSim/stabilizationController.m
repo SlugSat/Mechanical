@@ -1,18 +1,21 @@
-function [m,wdot_desired, torque_tr] = stabilizationController(w, w_rw, err, dt, mag_body, first_step)
-% Feedback controller for small errors
-% Inputs:
-%   w:          Craft angular velocity vector (rad/s)
-%   w_rw:       Reaction wheel angular velocity vector (rad/s)
-%   err:        Error between craft rotation and desired rotation
-%   dt:         Time since last step (seconds)
-%   mag_body:   Magnetic field in body frame
-%   first_step: 1 on the first step that the controller is called on,
-%   otherwise   0
-% Outputs:
-%   wdot_desired:   Desired change in angular velocity
-%   torque_tr:      torque to be exerted by torque rods when dumping 
-%                   momentum
+%> @brief Feedback controller for small errors
+%>
+%> Inputs:
+%> @param  w:          Craft angular velocity vector (rad/s)
+%> @param  w_rw:       Reaction wheel angular velocity vector (rad/s)
+%> @param  err:        Error between craft rotation and desired rotation
+%> @param  dt:         Time since last step (seconds)
+%> @param  mag_body:   Magnetic field in body frame
+%> @param  first_step: 1 on the first step that the controller is called on,
+%>                     otherwise   0
+%>
+%> Outputs:
+%> @retval  wdot_desired:   Desired change in angular velocity
+%> @retval  torque_tr:      torque to be exerted by torque rods when dumping 
+%>                          momentum
 %**************************************************************************
+
+function [m,wdot_desired, torque_tr] = stabilizationController(w, w_rw, err, dt, mag_body, first_step)
 
 % Feedback constants
 % Angular speed portion
