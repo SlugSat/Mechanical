@@ -128,17 +128,17 @@ Macros</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:a1de9230226c0e44b83be8cc202f82875"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_stabilization_controller_8c.html#a1de9230226c0e44b83be8cc202f82875">torque2wdot</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs, <a class="el" href="struct___matrix.html">Matrix</a> torque_vector, <a class="el" href="struct___matrix.html">Matrix</a> wdot_vector)</td></tr>
 <tr class="separator:a1de9230226c0e44b83be8cc202f82875"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad05f96d934d3de9d9fda2a8f1702bc83"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_stabilization_controller_8c.html#ad05f96d934d3de9d9fda2a8f1702bc83">runStabilizationController</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs, <a class="el" href="struct___matrix.html">Matrix</a> err, int first_step)</td></tr>
-<tr class="memdesc:ad05f96d934d3de9d9fda2a8f1702bc83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the feedback controller used to stabilize the craft when error is low.  <a href="#ad05f96d934d3de9d9fda2a8f1702bc83">More...</a><br /></td></tr>
-<tr class="separator:ad05f96d934d3de9d9fda2a8f1702bc83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba10c00b0a1f2282cc8186afb8e7fc0a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_stabilization_controller_8c.html#aba10c00b0a1f2282cc8186afb8e7fc0a">runStabilizationController</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs, <a class="el" href="struct___matrix.html">Matrix</a> err, int init_error, int reset_integrator)</td></tr>
+<tr class="memdesc:aba10c00b0a1f2282cc8186afb8e7fc0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the feedback controller used to stabilize the craft when error is low.  <a href="#aba10c00b0a1f2282cc8186afb8e7fc0a">More...</a><br /></td></tr>
+<tr class="separator:aba10c00b0a1f2282cc8186afb8e7fc0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation for the stabilzation state of the ACS. </p>
 <p>This controller includes momentum dumping and an integrator to remove steady state bias.</p>
 <p>Created by Galen Savidge. Edited 4/21/2019. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="ad05f96d934d3de9d9fda2a8f1702bc83"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad05f96d934d3de9d9fda2a8f1702bc83">&#9670;&nbsp;</a></span>runStabilizationController()</h2>
+<a id="aba10c00b0a1f2282cc8186afb8e7fc0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba10c00b0a1f2282cc8186afb8e7fc0a">&#9670;&nbsp;</a></span>runStabilizationController()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -159,7 +159,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>first_step</em>&#160;</td>
+          <td class="paramname"><em>init_error</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>reset_integrator</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -174,7 +180,8 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">acs</td><td>a pointer to an existing Attitude Control System object </td></tr>
     <tr><td class="paramname">err</td><td>generally either acs.z_err or acs.err </td></tr>
-    <tr><td class="paramname">first_step</td><td>1 right after state transitions, 0 otherwise </td></tr>
+    <tr><td class="paramname">init_error</td><td>1 right after state transitions, 0 otherwise </td></tr>
+    <tr><td class="paramname">reset_integrator</td><td>1 after this function has not been called for a while, 0 otherwise </td></tr>
   </table>
   </dd>
 </dl>

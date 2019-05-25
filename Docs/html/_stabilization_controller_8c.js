@@ -7,6 +7,6 @@ var _stabilization_controller_8c =
     [ "KI_T", "_stabilization_controller_8c.html#aea2f7c177110238da2ec63911f22071b", null ],
     [ "KP_T", "_stabilization_controller_8c.html#a7d4067464d76313301a22c609d41168b", null ],
     [ "KP_WDOT", "_stabilization_controller_8c.html#afa026c221a8a0a6e6474ffa7c4e602c4", null ],
-    [ "runStabilizationController", "_stabilization_controller_8c.html#ad05f96d934d3de9d9fda2a8f1702bc83", null ],
+    [ "runStabilizationController", "_stabilization_controller_8c.html#aba10c00b0a1f2282cc8186afb8e7fc0a", null ],
     [ "torque2wdot", "_stabilization_controller_8c.html#a1de9230226c0e44b83be8cc202f82875", null ]
 ];
