@@ -15,6 +15,10 @@
 
 #include <main.h>
 
+#ifdef ENABLE_ACTUATORS
+#include <Actuator_Lib.h>
+#endif
+
 
 typedef enum {
 	DEFAULT = 0,

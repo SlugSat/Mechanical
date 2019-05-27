@@ -154,6 +154,15 @@ void runACS(void) {
 			reset_integrator = 0;
 		}
 		
+
+		/***** SET ACTUATOR OUTPUTS *****/
+		#ifdef ENABLE_ACTUATORS
+		rw_set_speed(fabs(matrixGetElement(acs.rw_PWM, 1, 1)));
+		sprintf(prnt, "RW speed: %f\n", fabs(matrixGetElement(acs.rw_PWM, 1, 1)));
+		printTo42(prnt);
+		#endif
+
+
 		#ifdef ENABLE_42
 		// Print to 42 terminal
 		sprintf(prnt, "State -- %s\nPointing error: %6.2f [deg]\nCraft rotational rate: %6.2f [deg/s]\nSun status -- %s\nGyro bias dot: %8.6f [rad/s^2]", 

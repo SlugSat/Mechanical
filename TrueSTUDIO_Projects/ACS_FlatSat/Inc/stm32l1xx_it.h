@@ -1,9 +1,8 @@
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file           : main.h
-  * @brief          : Header for main.c file.
-  *                   This file contains the common defines of the application.
+  * @file    stm32l1xx_it.h
+  * @brief   This file contains the headers of the interrupt handlers.
   ******************************************************************************
   * @attention
   *
@@ -15,20 +14,17 @@
   * License. You may obtain a copy of the License at:
   *                        opensource.org/licenses/BSD-3-Clause
   *
-  ******************************************************************************
+ ******************************************************************************
   */
 /* USER CODE END Header */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __MAIN_H
-#define __MAIN_H
+#ifndef __STM32L1xx_IT_H
+#define __STM32L1xx_IT_H
 
 #ifdef __cplusplus
-extern "C" {
-#endif
-
-/* Includes ------------------------------------------------------------------*/
-#include "stm32l1xx_hal.h"
+ extern "C" {
+#endif 
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -47,43 +43,27 @@ extern "C" {
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
-#define ENABLE_42
-#define ENABLE_FRAM
-#define ENABLE_ACTUATORS
+
 /* USER CODE END EM */
 
-void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
-
 /* Exported functions prototypes ---------------------------------------------*/
-void Error_Handler(void);
-
+void NMI_Handler(void);
+void HardFault_Handler(void);
+void MemManage_Handler(void);
+void BusFault_Handler(void);
+void UsageFault_Handler(void);
+void SVC_Handler(void);
+void DebugMon_Handler(void);
+void PendSV_Handler(void);
+void SysTick_Handler(void);
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */
-
-/* Private defines -----------------------------------------------------------*/
-#define SPI_FRAM_IN2_Pin GPIO_PIN_10
-#define SPI_FRAM_IN2_GPIO_Port GPIOB
-#define HALL_EFFECT_IN_Pin GPIO_PIN_12
-#define HALL_EFFECT_IN_GPIO_Port GPIOB
-#define RW_PWM_Pin GPIO_PIN_13
-#define RW_PWM_GPIO_Port GPIOB
-#define TR_PWM_Pin GPIO_PIN_14
-#define TR_PWM_GPIO_Port GPIOB
-#define SPI_FRAM_IN1_Pin GPIO_PIN_8
-#define SPI_FRAM_IN1_GPIO_Port GPIOA
-#define SPI_FRAM_LOCK_Pin GPIO_PIN_9
-#define SPI_FRAM_LOCK_GPIO_Port GPIOA
-#define SPI_FRAM_CS_Pin GPIO_PIN_6
-#define SPI_FRAM_CS_GPIO_Port GPIOB
-/* USER CODE BEGIN Private defines */
-
-/* USER CODE END Private defines */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __MAIN_H */
+#endif /* __STM32L1xx_IT_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
