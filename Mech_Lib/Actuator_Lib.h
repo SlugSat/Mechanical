@@ -3,7 +3,7 @@
   * @file           Actuator_Lib.h
   * @brief
   ******************************************************************************
-  * Created by Alex Martinez. Edited 5/26/2019.
+  * Created by Alex Martinez. Edited 5/27/2019.
   ******************************************************************************
   */
 
@@ -20,9 +20,10 @@
  * @brief  Sets up timers for PWM generation and reaction wheel speed measurement
  * @param  htim_pwm: Handle to the PWM timer, which should be running at 4 MHz
  * @param  htim_rpm: Handle to the RPM timer
+ * @param  DIRECTION_Pin: Forward/Reverse Pin, which should be a GPIOC
  * @return None
 */
-void initActuators(TIM_HandleTypeDef *htim_pwm, TIM_HandleTypeDef *htim_rpm);
+void initActuators(TIM_HandleTypeDef *htim_pwm, TIM_HandleTypeDef *htim_rpm, volatile uint32_t DIRECTION_Pin);
 
 void rw_get_speed (float *speed);
 
