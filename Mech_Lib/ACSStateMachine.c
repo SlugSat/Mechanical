@@ -93,7 +93,7 @@ void runACS(void) {
 	
 	// Variables to hold values that are important for state transitions
 	uint8_t acs_enable = 1;			// Temporary bool
-	float w_norm = 0;		// Rad/s
+	float gyro_norm = 0, w_norm = 0;		// Rad/s
 	float attitude_est_stable_counter = 0;
 	
   while (1) {
@@ -159,17 +159,7 @@ void runACS(void) {
 		#ifdef ENABLE_ACTUATORS
 		rw_set_speed(fabs(matrixGetElement(acs.rw_PWM, 1, 1)));
 		#endif
-
-
-		#ifdef ENABLE_42
-		// Print to 42 terminal
-		sprintf(prnt, "State -- %s\nPointing error: %6.2f [deg]\nCraft rotational rate: %6.2f [deg/s]\nSun status -- %s\nGyro bias dot: %8.6f [rad/s^2]", 
-				state_names[state], acs.pointing_err, 180*w_norm/PI, sun_status_names[acs.sun_status], acs.gyro_bias_dot_norm);
-		printTo42(prnt);
 		
-		sprintf(prnt, "\nAngle to sun: %6.2f [deg]", acs.zb_sun_angle);
-		printTo42(prnt);
-		#endif
 		
 		/***** RUN STATE MACHINE *****/
 		/*
@@ -180,6 +170,7 @@ void runACS(void) {
 		 */
 		ACSState next_state = state;
 		
+		gyro_norm = vectorNorm(acs.gyro_vector);
 		w_norm = vectorNorm(acs.w);
 		
 		// Check forward state transitions
@@ -194,7 +185,7 @@ void runACS(void) {
 				break;
 			
 			case DETUMBLE:
-				if(w_norm < DETUMBLE_LOW_THRESHOLD) {
+				if(gyro_norm < DETUMBLE_LOW_THRESHOLD) {
 					next_state = WAIT_FOR_ATTITUDE;
 				}
 				break;
@@ -339,6 +330,27 @@ void runACS(void) {
 		SPI_FRAM_Write(hspi, SPI_FRAM_TIME_ADDR, (uint8_t*)&acs.julian_date, 8, 0);
 		SPI_FRAM_Write(hspi, SPI_FRAM_SOLAR_VECTOR_ADDR, (uint8_t*)&acs.sun_status, 1, 0);
 		SPI_FRAM_Write(hspi, SPI_FRAM_MECH_STATE_ADDR, (uint8_t*)&state, 1, 0);
+		#endif
+		
+		
+		#ifdef ENABLE_42
+		// ***** PRINT TO 42 TERMINAL *****/
+		sprintf(prnt, "State -- %s\n", state_names[state]);
+		printTo42(prnt);
+		
+		if(state == DETUMBLE) {
+			sprintf(prnt, "Gyro reading: %6.2f [deg/s]\nGyro w/ bias: %6.2f [deg/s]\n", 
+				180*gyro_norm/PI, 180*w_norm/PI);
+			printTo42(prnt);
+		}
+		else if(state == WAIT_FOR_ATTITUDE || state == REORIENT || state == STABILIZE_NO_SUN || state == STABILIZE) {
+			sprintf(prnt, "Pointing error: %6.2f [deg]\nCraft rotational rate: %6.2f [deg/s]\nSun status -- %s\nGyro bias dot: %8.6f [rad/s^2]", 
+					acs.pointing_err, 180*w_norm/PI, sun_status_names[acs.sun_status], acs.gyro_bias_dot_norm);
+			printTo42(prnt);
+			
+			sprintf(prnt, "\nAngle to sun: %6.2f [deg]", acs.zb_sun_angle);
+			printTo42(prnt);
+		}
 		#endif
 	}
 }
