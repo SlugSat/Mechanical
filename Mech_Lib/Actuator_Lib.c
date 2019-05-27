@@ -3,36 +3,36 @@
 #define N_SAMPLES 100.0
 #define TIM_RPM_CLK 500000.0
 
-static TIM_HandleTypeDef *htim_rpm, *htim_pwm;
+static TIM_HandleTypeDef *ht_rpm, *ht_pwm;
 static uint16_t time_val;
 static uint8_t IC_flag = 0;
 
 static float avg_speed = 0;
 
-void rw_init(TIM_HandleTypeDef *htim_pulse, TIM_HandleTypeDef *htim_speed)
+void initActuators(TIM_HandleTypeDef *htim_pwm, TIM_HandleTypeDef *htim_rpm)
 {
 	// initialize local module level timer handlers
-	htim_rpm = htim_speed; // timer handler for rpm calc
-	htim_pwm = htim_pulse; // timer handler for pwm output
+	ht_rpm = htim_rpm; // timer handler for rpm calc
+	ht_pwm = htim_pwm; // timer handler for pwm output
 	
 	// start timer for PWM
-	HAL_TIM_Base_Start(htim_pwm);
+	HAL_TIM_Base_Start(ht_pwm);
 	
 	// start interrupt handler
-	HAL_TIM_Base_Start_IT(htim_rpm);
-	HAL_TIM_IC_Start_IT(htim_rpm, TIM_CHANNEL_1);
+	HAL_TIM_Base_Start_IT(ht_rpm);
+	HAL_TIM_IC_Start_IT(ht_rpm, TIM_CHANNEL_1);
 	
 	// set PWM signal frequency
-	PWM_Set_Frequency(htim_pwm, 100);
+	PWM_Set_Frequency(ht_pwm, 100);
 	
 	// starts PWM signal generation
-	if (HAL_TIM_PWM_Start(htim_pwm, TIM_CHANNEL_1) != HAL_OK) {
+	if (HAL_TIM_PWM_Start(ht_pwm, TIM_CHANNEL_1) != HAL_OK) {
 		HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
 	}
 	
 	// start timer for RPM calculations
-	htim_rpm->Instance->CCER |= 1;
-	HAL_TIM_Base_Start(htim_rpm);
+	ht_rpm->Instance->CCER |= 1;
+	HAL_TIM_Base_Start(ht_rpm);
 }
 
 void rw_get_speed (float *speed)
@@ -59,7 +59,7 @@ void rw_get_speed (float *speed)
 void rw_set_speed (float percent_speed)
 {
 	// set duty cycle accordingly
-	PWM_Set_Duty_Cycle(htim_pwm, percent_speed, TIM_CHANNEL_1);
+	PWM_Set_Duty_Cycle(ht_pwm, percent_speed, RW_PWM_CHANNEL);
 }
 
 void HAL_TIM_IC_CaptureCallback (TIM_HandleTypeDef *htim) {

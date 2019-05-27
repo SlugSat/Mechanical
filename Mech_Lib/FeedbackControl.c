@@ -26,6 +26,8 @@
 #define KT 0.00713 // Nm/A
 #define KE 0.00713332454 // V/rad/s
 #define R 92.7 // Ohms
+#define C0 19e-6 // Static friction torque (Nm)
+#define CV 20.94e-9 // Dynamic friction torque (Nm/rad/s)
 
 // Torque rod moment
 #define MAX_MOMENT 2.0
@@ -117,7 +119,7 @@ void runBdotController(ACSType* acs) {
 
 void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired) {
 	static int init_run = 0;
-	static Matrix torque, p, p_rw, wxp, Jxwdot, w_rw_new;
+	static Matrix torque, p, p_rw, wxp, Jxwdot, w_rw_new, fr_torque;
 	
 	if(init_run == 0) {
 		torque = newMatrix(3, 1);
@@ -126,6 +128,7 @@ void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired) {
 		wxp = newMatrix(3, 1);
 		Jxwdot = newMatrix(3, 1);
 		w_rw_new = newMatrix(3, 1);
+		fr_torque = newMatrix(3, 1);
 		init_run = 1;
 	}
 	
@@ -139,12 +142,19 @@ void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired) {
 	matrixMult(acs->J_body, wdot_desired, Jxwdot);
 	matrixAdd(Jxwdot, wxp, torque); // wxp = (J_B*wdot) + w x (w*J_B + J_rw*w_rw)
 	matrixScale(torque, -1);
-	
+
 	// Find desired rw_wdot
 	matrixMult(acs->J_rw_inv, torque, w_rw_new); // w_rw_new = J_rw_inv*torque
 	matrixScale(w_rw_new, acs->dt); // w_rw_new = J_rw_inv*torque*dt
 	matrixAdd(w_rw_new, acs->w_rw, w_rw_new); // w_rw_new = w_rw + J_rw_inv*torque*dt
 	
+	// Add torque to account for motor friction
+	for(int i = 1;i <= 3;i++) {
+		float fr_mag = C0 + CV*fabsf(matrixGetElement(acs->w_rw, i, 1));
+		matrixSet(fr_torque, i, 1, sign(matrixGetElement(w_rw_new, i, 1))*fr_mag);
+	}
+	matrixAdd(torque, fr_torque, torque);
+
 	// Find PWM
 	matrixScale(w_rw_new, KE);
 	matrixScale(torque, R/KT);

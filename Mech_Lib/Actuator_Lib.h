@@ -1,12 +1,28 @@
+/*
+  ******************************************************************************
+  * @file           Actuator_Lib.h
+  * @brief
+  ******************************************************************************
+  * Created by Alex Martinez. Edited 5/26/2019.
+  ******************************************************************************
+  */
+
 #ifndef ACTUATOR_LIB_H
 #define ACTUATOR_LIB_H
 
 #include "main.h"
 #include "PWM_Library.h"
 
+#define RW_PWM_CHANNEL TIM_CHANNEL_1
+#define TR_PWM_CHANNEL TIM_CHANNEL_2
 
-void rw_init(TIM_HandleTypeDef *htim_pulse, 	// PWM timer
-						 TIM_HandleTypeDef *htim_speed);	// RPM timer
+/**
+ * @brief  Sets up timers for PWM generation and reaction wheel speed measurement
+ * @param  htim_pwm: Handle to the PWM timer, which should be running at 4 MHz
+ * @param  htim_rpm: Handle to the RPM timer
+ * @return None
+*/
+void initActuators(TIM_HandleTypeDef *htim_pwm, TIM_HandleTypeDef *htim_rpm);
 
 void rw_get_speed (float *speed);
 
@@ -14,4 +30,4 @@ void rw_set_speed (float percent_speed);
 
 void rw_get_accel(float *accel);
 
-#endif
+#endif /* ACTUATOR_LIB_H */

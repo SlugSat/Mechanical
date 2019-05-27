@@ -104,7 +104,7 @@ int main(void)
   MX_TIM10_Init();
   /* USER CODE BEGIN 2 */
 
-  rw_init(&htim9, &htim10);
+  initActuators(&htim9, &htim10);
 
   setUartHandle(&huart2);
   setSpiHandle(&hspi1);

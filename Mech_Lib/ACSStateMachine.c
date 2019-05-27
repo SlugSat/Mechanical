@@ -158,8 +158,6 @@ void runACS(void) {
 		/***** SET ACTUATOR OUTPUTS *****/
 		#ifdef ENABLE_ACTUATORS
 		rw_set_speed(fabs(matrixGetElement(acs.rw_PWM, 1, 1)));
-		sprintf(prnt, "RW speed: %f\n", fabs(matrixGetElement(acs.rw_PWM, 1, 1)));
-		printTo42(prnt);
 		#endif
 
 
