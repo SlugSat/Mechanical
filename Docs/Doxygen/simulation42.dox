@@ -1,5 +1,5 @@
 /*! 
-\page flatsat_acs 42 Simulation
+\page simulation42 42 Simulation
 
 ACS simulation intro and description here
 
@@ -34,5 +34,8 @@ SlugSat's customized 42 includes the ability to connect to and sync with an STM3
 3. Open a project in the Mechanical repository. The projects **42_Test**, **ACS_42Only**, and **ACS_FlatSat** all interface with 42. Build the project and load it onto the microcontroller.
 4. Connect the microcontroller to the VM using the Devices menu in VirtualBox and reset the microcontroller.
 5. Run 42 (step 4 in the section above).
+
+## Using 42
+
 
 */
