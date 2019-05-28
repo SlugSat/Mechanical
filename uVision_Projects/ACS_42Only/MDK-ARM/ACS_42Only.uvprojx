@@ -492,16 +492,16 @@
               <FileType>5</FileType>
               <FilePath>..\..\..\Mech_Lib\STM32SerialCommunication.h</FilePath>
             </File>
+            <File>
+              <FileName>ACSEnums.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\Mech_Lib\ACSEnums.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>IGRF</GroupName>
           <Files>
-            <File>
-              <FileName>IGRF12.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\..\Mech_Lib\IGRF\IGRF12.h</FilePath>
-            </File>
             <File>
               <FileName>mag_inertial.c</FileName>
               <FileType>1</FileType>
@@ -511,6 +511,11 @@
               <FileName>mag_inertial.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\..\Mech_Lib\IGRF\mag_inertial.h</FilePath>
+            </File>
+            <File>
+              <FileName>IGRFCOF.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\Mech_Lib\IGRF\IGRFCOF.h</FilePath>
             </File>
           </Files>
         </Group>
