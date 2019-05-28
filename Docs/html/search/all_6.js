@@ -1,8 +1,11 @@
 var searchData=
 [
-  ['get_5fmag_5finertial',['get_mag_inertial',['../mag__inertial_8c.html#aaf0a014347b68559956dd346c756b808',1,'get_mag_inertial(double JD, float longitude, float latitude, float altitude, Matrix mag_NED):&#160;mag_inertial.c'],['../mag__inertial_8h.html#aaf0a014347b68559956dd346c756b808',1,'get_mag_inertial(double JD, float longitude, float latitude, float altitude, Matrix mag_NED):&#160;mag_inertial.c']]],
-  ['get_20started',['Get Started',['../get_started.html',1,'']]],
-  ['gyro_5fbias',['gyro_bias',['../struct_a_c_s_type.html#a4041a720dac4049e6c883ed9b0d654ba',1,'ACSType']]],
-  ['gyro_5fbias_5fdot_5fnorm',['gyro_bias_dot_norm',['../struct_a_c_s_type.html#ad98a2f8a4a88a5e48b648bf1d56494cc',1,'ACSType']]],
-  ['gyro_5fvector',['gyro_vector',['../struct_a_c_s_type.html#a6db622f43cefd0fe0f05ddbb5553ce71',1,'ACSType']]]
+  ['feedbackcontrol_2eh',['FeedbackControl.h',['../_feedback_control_8h.html',1,'']]],
+  ['finderrorvectors',['findErrorVectors',['../_feedback_control_8h.html#a061127a629c487f3bc31574e39e3d684',1,'FeedbackControl.c']]],
+  ['findeulerangles',['findEulerAngles',['../_attitude_estimation_8h.html#ade543c963382408c5820da341714c3fc',1,'AttitudeEstimation.c']]],
+  ['findmaginertial',['findMagInertial',['../_inertial_vectors_8h.html#a9bebb3912845c95e905ba04e51527483',1,'InertialVectors.c']]],
+  ['findsolarvector',['findSolarVector',['../_solar_vectors_8h.html#ad340c5d51e50e8cd1c46bbf70ff0650d',1,'SolarVectors.c']]],
+  ['findsuninertial',['findSunInertial',['../_inertial_vectors_8h.html#a95b2b0bb7d3d728f8a56ff4e47ed0fb3',1,'InertialVectors.c']]],
+  ['floatstopacket',['floatsToPacket',['../_packet_protocol_8h.html#ab46bd48a54ff720ea657960a4ae1d2a6',1,'PacketProtocol.c']]],
+  ['feedback_20control_20simulation',['Feedback Control Simulation',['../md__r_e_a_d_m_e.html',1,'']]]
 ];

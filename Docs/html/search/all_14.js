@@ -1,5 +1,9 @@
 var searchData=
 [
-  ['w_5frw',['w_rw',['../struct_a_c_s_type.html#a880b6eef6382841a030de56f08f7c234',1,'ACSType']]],
-  ['wdot2rw_5fpwm',['wdot2rw_pwm',['../_feedback_control_8h.html#a6663ec72a8ac78e77f38251b5a11c9e0',1,'FeedbackControl.c']]]
+  ['vectorcopyarray',['vectorCopyArray',['../_matrix_8h.html#ae100eb741f25dc8e74394428aa66023d',1,'Matrix.c']]],
+  ['vectorcrossproduct',['vectorCrossProduct',['../_matrix_8h.html#a4ca28faef9fd88a270a6f5dd02dbc10e',1,'Matrix.c']]],
+  ['vectordotproduct',['vectorDotProduct',['../_matrix_8h.html#a6419564fb903fe3971e00d7ed0ce700c',1,'Matrix.c']]],
+  ['vectornorm',['vectorNorm',['../_matrix_8h.html#a779b4f4ea2c53c8fd76c474c20abdba1',1,'Matrix.c']]],
+  ['vectorrcross',['vectorRcross',['../_matrix_8h.html#ac4a56a9b59d561c204b4a03a1f30da01',1,'Matrix.c']]],
+  ['vectorsetxyz',['vectorSetXYZ',['../_matrix_8h.html#afc1c9f32532202a53a4ebc66cefc28c1',1,'Matrix.c']]]
 ];

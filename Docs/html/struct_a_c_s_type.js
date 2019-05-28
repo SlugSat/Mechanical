@@ -31,6 +31,7 @@ var struct_a_c_s_type =
     [ "sv_raw", "struct_a_c_s_type.html#af83838a9c78e0c708fc7ce4b95e4609d", null ],
     [ "t", "struct_a_c_s_type.html#afea36502e9d227ff62c5fb2719a246f2", null ],
     [ "tr_PWM", "struct_a_c_s_type.html#a479836cb6277d49ac363e5aef596c7db", null ],
+    [ "w", "struct_a_c_s_type.html#ab0527ea981446a30d020fe3df4193f2f", null ],
     [ "w_rw", "struct_a_c_s_type.html#a880b6eef6382841a030de56f08f7c234", null ],
     [ "z_err", "struct_a_c_s_type.html#a36a617bb19a1c9a4cc9397c8c7775b6c", null ],
     [ "zb_sun_angle", "struct_a_c_s_type.html#acb3d9d99bee55edb832182dae3b2d7fd", null ]

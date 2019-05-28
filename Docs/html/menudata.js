@@ -24,10 +24,10 @@ for the JavaScript code in this file
 var menudata={children:[
 {text:"Main Page",url:"index.html"},
 {text:"Related Pages",url:"pages.html"},
-{text:"Data Structures",url:"annotated.html",children:[
-{text:"Data Structures",url:"annotated.html"},
-{text:"Data Structure Index",url:"classes.html"},
-{text:"Data Fields",url:"functions.html",children:[
+{text:"Classes",url:"annotated.html",children:[
+{text:"Class List",url:"annotated.html"},
+{text:"Class Index",url:"classes.html"},
+{text:"Class Members",url:"functions.html",children:[
 {text:"All",url:"functions.html",children:[
 {text:"a",url:"functions.html#index_a"},
 {text:"c",url:"functions.html#index_c"},
@@ -62,8 +62,9 @@ var menudata={children:[
 {text:"z",url:"functions_vars.html#index_z"}]}]}]},
 {text:"Files",url:"files.html",children:[
 {text:"File List",url:"files.html"},
-{text:"Globals",url:"globals.html",children:[
+{text:"File Members",url:"globals.html",children:[
 {text:"All",url:"globals.html",children:[
+{text:"a",url:"globals.html#index_a"},
 {text:"f",url:"globals.html#index_f"},
 {text:"g",url:"globals.html#index_g"},
 {text:"i",url:"globals.html#index_i"},

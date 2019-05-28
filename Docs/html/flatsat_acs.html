@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SlugSat ACS: Flat-sat ACS Flight Software &amp; SlugSat 42</title>
+<title>SlugSat ACS: 42 Simulation</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -88,11 +88,35 @@ $(document).ready(function(){initNavTree('flatsat_acs.html','');});
 
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Flat-sat ACS Flight Software &amp; SlugSat 42 </div>  </div>
+<div class="title">42 Simulation </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>This page is a placeholder for now.</p>
-<p>Edited 5/22/2019. </p>
+<div class="textblock"><p>ACS simulation intro and description here</p>
+<h2>42 Setup</h2>
+<p>SlugSat’s customized version of the 42 simulation runs natively on an Ubuntu virtual machine. SlugSat's Team Drive contains a VM with both Mechanical team git repositories initialized and 42 and its dependencies preinstalled. To run the simulation, the user must download and run the VM, pull the latest version of the simulation code to the 42 source folder, and compile and run the simulation from the command line. The steps to do this are as follows:</p>
+<ol type="1">
+<li>Download the virtual machine <a href="https://drive.google.com/file/d/1Uc_Aiz-8tsvCL0Jx_9ZfMtskhNvRVah5/view">here</a>, extract it, and start it using VirtualBox. Login info for the user account in the VM is in login.txt in the zip.</li>
+<li><p class="startli">In the VM, navigate to Desktop/42-source in a terminal, and run the commands: </p><pre class="fragment"> $ git fetch --all
+ $ git reset --hard origin/master
+</pre><p class="startli">This will pull any changed files from SlugSat's <a href="https://github.com/SlugSat/Simulation42">42 source code repository</a>.</p>
+</li>
+<li>To compile 42, use the commands: <pre class="fragment"> $ sudo make clean
+ $ make
+</pre></li>
+<li><p class="startli">Run the simulation with the command: </p><pre class="fragment"> $ sudo ./42
+</pre><p class="startli">Note that superuser is only required to connect to the flat-sat over USB serial, but the simulation will not run without it.</p>
+</li>
+</ol>
+<p>If the flat-sat ACS board (or another STM32 board running a version of the ACS) is not connected, the simulation will run but will not output any torque to the simulated craft’s actuators. To control the craft, the simulation needs to be connected to the ACS software running on an STM32 board.</p>
+<h2>Connecting 42 to the ACS</h2>
+<p>SlugSat's customized 42 includes the ability to connect to and sync with an STM32 board running SlugSat’s ACS flight software. To run 42 in conjunction with the ACS flight software:</p>
+<ol type="1">
+<li>Set up the 42 simulation using steps 1-3 in the section above.</li>
+<li>Clone the <a href="https://github.com/SlugSat/Mechanical">Mechanical GitHub repository</a> onto a Windows PC. Follow the instructions here&lt;needs link&gt; to set up the software required to program STM32 Nucleo boards.</li>
+<li>Open a project in the Mechanical repository. The projects <b>42_Test</b>, <b>ACS_42Only</b>, and <b>ACS_FlatSat</b> all interface with 42. Build the project and load it onto the microcontroller.</li>
+<li>Connect the microcontroller to the VM using the Devices menu in VirtualBox and reset the microcontroller.</li>
+<li>Run 42 (step 4 in the section above). </li>
+</ol>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
