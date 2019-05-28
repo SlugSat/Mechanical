@@ -40,9 +40,9 @@
 #define SUN_ANGLE_HIGH_THRESHOLD 32						// Degrees
 #define SUN_ANGLE_LOW_THRESHOLD 30
 
-
 #define INERTIAL_UPDATE_RATE 1 								// Seconds between intertial vector updates
 
+#define RPM_2_RADS 0.104719755				// Conversion between RPM and rad/s
 
 // Serial device handles
 #ifdef ENABLE_42
@@ -95,8 +95,11 @@ void runACS(void) {
 	uint8_t acs_enable = 1;			// Temporary bool
 	float gyro_norm = 0, w_norm = 0;		// Rad/s
 	float attitude_est_stable_counter = 0;
+	#ifdef ENABLE_ACTUATORS
+	float rw_speed = 0;	// Speed of the reaction wheel prototype, rad/s
+	#endif
 	
-  while (1) {
+	while (1) {
 		#ifdef ENABLE_42
 		/***** READ/WRITE TO 42 *****/
 		syncWith42(&acs);
@@ -104,6 +107,12 @@ void runACS(void) {
 		
 		
 		/***** RUN ACS SUBROUTINES *****/
+		// Read reaction wheel speeds
+		#ifdef ENABLE_ACTUATORS
+		rw_get_speed(&rw_speed);
+		rw_speed = RPM_2_RADS*rw_speed;
+		#endif
+
 		// Read solar vectors here to get sun state
 		
 		// Update ACS fields
@@ -157,7 +166,7 @@ void runACS(void) {
 
 		/***** SET ACTUATOR OUTPUTS *****/
 		#ifdef ENABLE_ACTUATORS
-		rw_set_speed(fabs(matrixGetElement(acs.rw_PWM, 1, 1)));
+		rw_set_speed(matrixGetElement(acs.rw_PWM, 1, 1));
 		#endif
 		
 		
@@ -344,13 +353,18 @@ void runACS(void) {
 			printTo42(prnt);
 		}
 		else if(state == WAIT_FOR_ATTITUDE || state == REORIENT || state == STABILIZE_NO_SUN || state == STABILIZE) {
-			sprintf(prnt, "Pointing error: %6.2f [deg]\nCraft rotational rate: %6.2f [deg/s]\nSun status -- %s\nGyro bias dot: %8.6f [rad/s^2]", 
+			sprintf(prnt, "Pointing error: %6.2f [deg]\nCraft rotational rate: %6.2f [deg/s]\nSun status -- %s\nGyro bias dot: %8.6f [rad/s^2]\n",
 					acs.pointing_err, 180*w_norm/PI, sun_status_names[acs.sun_status], acs.gyro_bias_dot_norm);
 			printTo42(prnt);
 			
-			sprintf(prnt, "\nAngle to sun: %6.2f [deg]", acs.zb_sun_angle);
+			sprintf(prnt, "Angle to sun: %6.2f [deg]\n", acs.zb_sun_angle);
 			printTo42(prnt);
 		}
+
+		#ifdef ENABLE_ACTUATORS
+		sprintf(prnt, "RW speed: %5.2f [rad/s]", rw_speed);
+		printTo42(prnt);
+		#endif
 		#endif
 	}
 }

@@ -3,8 +3,6 @@
 
 #include "main.h"
 
-#define CLOCK_FREQ 4000000 // Frequency of Timer 4
-
 
 //======================================================================
 // Sets duty cycle for PWM signal assuming clock frequency is 1 MHz

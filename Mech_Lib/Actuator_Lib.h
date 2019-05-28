@@ -20,7 +20,7 @@
  * @brief  Sets up timers for PWM generation and reaction wheel speed measurement
  * @param  htim_pwm: Handle to the PWM timer, which should be running at 4 MHz
  * @param  htim_rpm: Handle to the RPM timer
- * @param  DIRECTION_Pin: Forward/Reverse Pin, which should be a GPIOC
+ * @param  DIRECTION_Pin: Forward/Reverse Pin, which should be a GPIOB
  * @return None
 */
 void initActuators(TIM_HandleTypeDef *htim_pwm, TIM_HandleTypeDef *htim_rpm, volatile uint32_t DIRECTION_Pin);
