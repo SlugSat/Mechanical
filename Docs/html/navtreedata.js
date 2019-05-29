@@ -29,7 +29,6 @@ var NAVTREE =
     [ "Matlab ACS Simulation", "matlab_sim.html", null ],
     [ "42 Simulation", "simulation42.html", null ],
     [ "Keil uVision Projects", "projects.html", null ],
-    [ "Feedback Control Simulation", "md__r_e_a_d_m_e.html", null ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],

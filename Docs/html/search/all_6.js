@@ -6,6 +6,5 @@ var searchData=
   ['findmaginertial',['findMagInertial',['../_inertial_vectors_8h.html#a9bebb3912845c95e905ba04e51527483',1,'InertialVectors.c']]],
   ['findsolarvector',['findSolarVector',['../_solar_vectors_8h.html#ad340c5d51e50e8cd1c46bbf70ff0650d',1,'SolarVectors.c']]],
   ['findsuninertial',['findSunInertial',['../_inertial_vectors_8h.html#a95b2b0bb7d3d728f8a56ff4e47ed0fb3',1,'InertialVectors.c']]],
-  ['floatstopacket',['floatsToPacket',['../_packet_protocol_8h.html#ab46bd48a54ff720ea657960a4ae1d2a6',1,'PacketProtocol.c']]],
-  ['feedback_20control_20simulation',['Feedback Control Simulation',['../md__r_e_a_d_m_e.html',1,'']]]
+  ['floatstopacket',['floatsToPacket',['../_packet_protocol_8h.html#ab46bd48a54ff720ea657960a4ae1d2a6',1,'PacketProtocol.c']]]
 ];
