@@ -29,9 +29,6 @@
 #define C0 19e-6 // Static friction torque (Nm)
 #define CV 20.94e-9 // Dynamic friction torque (Nm/rad/s)
 
-// Torque rod moment
-#define MAX_MOMENT 2.0
-
 
 
 // PRIVATE FUNCTIONS
