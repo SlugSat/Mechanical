@@ -9,7 +9,7 @@ Put a link to the appropriate document here.
 ## Operating Procedures
 - \ref matlab_sim "ACS Matlab Simulation"
 - \ref attitude_determination "Sensor Test Fixture & Attitude Determination Test"
-- \ref flatsat_acs "Flat-sat ACS & SlugSat 42"
+- \ref simulation42 "42 Simulation & ACS Flat-Sat"
 
 
 */

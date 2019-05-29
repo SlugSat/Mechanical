@@ -68,7 +68,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('flatsat_acs.html','');});
+$(document).ready(function(){initNavTree('simulation42.html','');});
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -91,11 +91,12 @@ $(document).ready(function(){initNavTree('flatsat_acs.html','');});
 <div class="title">42 Simulation </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>ACS simulation intro and description here</p>
-<h2>42 Setup</h2>
-<p>SlugSat’s customized version of the 42 simulation runs natively on an Ubuntu virtual machine. SlugSat's Team Drive contains a VM with both Mechanical team git repositories initialized and 42 and its dependencies preinstalled. To run the simulation, the user must download and run the VM, pull the latest version of the simulation code to the 42 source folder, and compile and run the simulation from the command line. The steps to do this are as follows:</p>
+<div class="textblock"><p>"42" is an open-source flight simulation created by engineers at NASA's Goddard Space Flight Center. The SlugSat Mechanical team uses a modified verion of 42 to run hardware-in-the-loop simulations of the Attitude Control System (ACS). Using the instructions below, 42 can be set up to run alongside the flat-sat or other standalone ACS test programs.</p>
+<img src="../assets/42-banner.jpg" style="display: block; margin-left: auto; margin-right: auto; width:45%" alt="" class="inline"/>
+ <h2>42 Setup</h2>
+<p>SlugSat’s customized version of 42 runs natively on an Ubuntu virtual machine. SlugSat's Team Drive contains a VM with both Mechanical team git repositories initialized and 42 and its dependencies preinstalled. To run the simulation, the user must download and run the VM, pull the latest version of the simulation code to the 42 source folder, and compile and run the simulation from the command line. The steps to do this are as follows:</p>
 <ol type="1">
-<li>Download the virtual machine <a href="https://drive.google.com/file/d/1Uc_Aiz-8tsvCL0Jx_9ZfMtskhNvRVah5/view">here</a>, extract it, and start it using VirtualBox. Login info for the user account in the VM is in login.txt in the zip.</li>
+<li>Download the virtual machine <a href="https://drive.google.com/file/d/1Uc_Aiz-8tsvCL0Jx_9ZfMtskhNvRVah5/view">here</a>, extract it, and start it using VirtualBox. Login info for the user account in the VM is in login.txt in the zip file.</li>
 <li><p class="startli">In the VM, navigate to Desktop/42-source in a terminal, and run the commands: </p><pre class="fragment"> $ git fetch --all
  $ git reset --hard origin/master
 </pre><p class="startli">This will pull any changed files from SlugSat's <a href="https://github.com/SlugSat/Simulation42">42 source code repository</a>.</p>
@@ -107,16 +108,37 @@ $(document).ready(function(){initNavTree('flatsat_acs.html','');});
 </pre><p class="startli">Note that superuser is only required to connect to the flat-sat over USB serial, but the simulation will not run without it.</p>
 </li>
 </ol>
-<p>If the flat-sat ACS board (or another STM32 board running a version of the ACS) is not connected, the simulation will run but will not output any torque to the simulated craft’s actuators. To control the craft, the simulation needs to be connected to the ACS software running on an STM32 board.</p>
+<p>If the flat-sat ACS board (or another STM32 board running a version of the ACS) is not connected, the simulation will run but will not apply any torque to the simulated craft. To control the craft, the simulation must be connected to the ACS software running on an STM32 board.</p>
 <h2>Connecting 42 to the ACS</h2>
-<p>SlugSat's customized 42 includes the ability to connect to and sync with an STM32 board running SlugSat’s ACS flight software. To run 42 in conjunction with the ACS flight software:</p>
+<p>SlugSat's customized 42 includes the ability to connect to and sync with an STM32 board running SlugSat’s ACS flight software. To run 42 in conjunction with the ACS:</p>
 <ol type="1">
 <li>Set up the 42 simulation using steps 1-3 in the section above.</li>
-<li>Clone the <a href="https://github.com/SlugSat/Mechanical">Mechanical GitHub repository</a> onto a Windows PC. Follow the instructions here&lt;needs link&gt; to set up the software required to program STM32 Nucleo boards.</li>
+<li>Clone the <a href="https://github.com/SlugSat/Mechanical">Mechanical GitHub repository</a> onto a Windows PC. Follow the instructions here &lt;needs link&gt;=""&gt; to set up the software required to program STM32 Nucleo boards.</li>
 <li>Open a project in the Mechanical repository. The projects <b>42_Test</b>, <b>ACS_42Only</b>, and <b>ACS_FlatSat</b> all interface with 42. Build the project and load it onto the microcontroller.</li>
 <li>Connect the microcontroller to the VM using the Devices menu in VirtualBox and reset the microcontroller.</li>
-<li>Run 42 (step 4 in the section above). </li>
+<li>Run 42 (step 4 in the section above).</li>
 </ol>
+<p>Each time 42 is restarted the microcontroller should also be reset to clear the current ACS state.</p>
+<h2>42 Configuration</h2>
+<p>The following files in the <b>InOut</b> folder can be edited to change the behavior of the simulation:</p>
+<ul>
+<li><b>Inp_Sim.txt</b> is the configuration file for the overall simulation.</li>
+<li><b>SC_SlugSat.txt</b> contains craft initial conditions (rotation and angular speed), physical characteristics (mass and inertia), sensor model configurations (sun sensors, magnetometer, and gyroscope), and actuator model configurations (reaction wheel inertia and torque rod saturation).<ul>
+<li>Inertia is the only reaction wheel parameter in this file which affects SlugSat's model for motor dynamics. The other parameters are defined in <b>42fsw.c</b>.</li>
+<li>Torque rod saturation can be set to anything above the actual saturation point of the torque rods. This will not affect the model of the torque rods.</li>
+<li>The file still includes sections for other unused hardware components (thrusters, star trackers, etc). These do not affect the behavior of the simulation.</li>
+</ul>
+</li>
+<li><b>Orb_EOS.txt</b> defines the orbit used by SlugSat. Keplerian elements can be input on lines 15-19. The configured orbit is currently based on orbital elements from the ISS from April 2019.</li>
+<li><b>Inp_Cmd.txt</b> is currently unused. The contents of this file affect what is printed on simulation startup but nothing else.</li>
+</ul>
+<h2>Output Files</h2>
+<p>On each new run 42 creates a folder beginning with <b>42run_</b>. This folder is populated with files that log pointing accuracy, power, reaction wheel speed, and state transitions during current run of 42.</p>
+<h2>Source Files</h2>
+<p>All customized files in SlugSat's version of 42 are stored in the <a href="https://github.com/SlugSat/Simulation42">Simulation42 GitHub repository</a>. Other 42 source files are unchanged from the base 42 source (which can be downloaded <a href="https://drive.google.com/file/d/1HdiX4nZJacuZJcseDHefzC3z_tQcJrkr/view">here</a>).</p><ul>
+<li><b>42fsw.c</b> contains the function <b>SlugSatFSW</b>, which has the majority of SlugSat's custom code. This is where data is synced with the flat-sat. The function also includes custom actuator models and handles data processing, terimal display, and file output.</li>
+<li><b>SerialCommunication.c/h</b> &amp; <b>PacketProtocol.c/h</b> are custom C libraries used to communicate with the flat-sat. </li>
+</ul>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
