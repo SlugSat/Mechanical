@@ -88,9 +88,8 @@ $(document).ready(function(){initNavTree('_a_c_s_8h.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Structures</a> &#124;
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#define-members">Macros</a> &#124;
-<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">ACS.h File Reference</div>  </div>
@@ -99,7 +98,8 @@ $(document).ready(function(){initNavTree('_a_c_s_8h.html','');});
 
 <p>Contains the Attitude Control System (ACS) struct.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;<a class="el" href="_matrix_8h_source.html">Matrix.h</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="_a_c_s_enums_8h_source.html">ACSEnums.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="_matrix_8h_source.html">Matrix.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="_digital_filters_8h_source.html">DigitalFilters.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="_reference_frames_8h_source.html">ReferenceFrames.h</a>&gt;</code><br />
 <code>#include &lt;main.h&gt;</code><br />
@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('_a_c_s_8h.html','');});
 <p><a href="_a_c_s_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Data Structures</h2></td></tr>
+Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_c_s_type.html">ACSType</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A struct including all of the data needed to run the ACS.  <a href="struct_a_c_s_type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -122,15 +122,6 @@ Macros</h2></td></tr>
 <tr class="separator:a8f925062b75f6935d64c7d53b5df0028"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89f9988c2fe9ddc0b00d848a1100fe11"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_c_s_8h.html#a89f9988c2fe9ddc0b00d848a1100fe11">TR_MAXDIP</a>&#160;&#160;&#160;2.0</td></tr>
 <tr class="separator:a89f9988c2fe9ddc0b00d848a1100fe11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:a335b63dc6b9199e754e97a333ed294ea"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_c_s_8h.html#a335b63dc6b9199e754e97a333ed294ea">SV_Status</a> { <a class="el" href="_a_c_s_8h.html#a335b63dc6b9199e754e97a333ed294eaacad4e2e78111261540c23d2e73dd96b4">SV_FOUND</a> = 0, 
-<a class="el" href="_a_c_s_8h.html#a335b63dc6b9199e754e97a333ed294eaa2854080e7692ee141adb2c55a88805d0">SV_NOTFOUND</a>, 
-<a class="el" href="_a_c_s_8h.html#a335b63dc6b9199e754e97a333ed294eaa79e48c3fa5e3f7603a7a6dfd8e169959">SV_DARK</a>
- }</td></tr>
-<tr class="memdesc:a335b63dc6b9199e754e97a333ed294ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum for the state of the craft's solar panels and calculated solar vector.  <a href="_a_c_s_8h.html#a335b63dc6b9199e754e97a333ed294ea">More...</a><br /></td></tr>
-<tr class="separator:a335b63dc6b9199e754e97a333ed294ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -185,31 +176,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Torque rod max dipole moment </p>
-
-</div>
-</div>
-<h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="a335b63dc6b9199e754e97a333ed294ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a335b63dc6b9199e754e97a333ed294ea">&#9670;&nbsp;</a></span>SV_Status</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="_a_c_s_8h.html#a335b63dc6b9199e754e97a333ed294ea">SV_Status</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>An enum for the state of the craft's solar panels and calculated solar vector. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a335b63dc6b9199e754e97a333ed294eaacad4e2e78111261540c23d2e73dd96b4"></a>SV_FOUND&#160;</td><td class="fielddoc"><p>Solar vector is reliable </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a335b63dc6b9199e754e97a333ed294eaa2854080e7692ee141adb2c55a88805d0"></a>SV_NOTFOUND&#160;</td><td class="fielddoc"><p>Craft is in the sun but solar vector is unreliable </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a335b63dc6b9199e754e97a333ed294eaa79e48c3fa5e3f7603a7a6dfd8e169959"></a>SV_DARK&#160;</td><td class="fielddoc"><p>Craft is in eclipse </p>
-</td></tr>
-</table>
 
 </div>
 </div>

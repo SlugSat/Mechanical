@@ -5,27 +5,22 @@
   ******************************************************************************
   **
   * 
-  * Created by Galen Savidge. Edited 5/11/2019.
+  * Created by Galen Savidge. Edited 5/27/2019.
   ******************************************************************************
   */
 
 #ifndef ACSSTATEMACHINE_H
 #define ACSSTATEMACHINE_H
 
-
+/* Includes ------------------------------------------------------------------*/
 #include <main.h>
 
+#ifdef ENABLE_ACTUATORS
+#include <Actuator_Lib.h>
+#endif
 
-typedef enum {
-	DEFAULT = 0,
-	WAIT_FOR_ENABLE,
-	DETUMBLE,
-	WAIT_FOR_ATTITUDE,
-	REORIENT,
-	STABILIZE_NO_SUN,
-	STABILIZE
-}ACSState;
 
+/* Public Functions -----------------------------------------------------------*/
 
 #ifdef ENABLE_42
 /**
@@ -35,6 +30,7 @@ typedef enum {
 */
 void setUartHandle(UART_HandleTypeDef* uart);
 #endif
+
 #ifdef ENABLE_FRAM
 /**
  * @brief  Sets the SPI handle used to communicate with FRAM

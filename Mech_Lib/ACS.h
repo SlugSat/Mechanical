@@ -15,6 +15,7 @@
 #define ACS_H
 
 /* Includes ------------------------------------------------------------------*/
+#include <ACSEnums.h>
 #include <Matrix.h>
 #include <DigitalFilters.h>
 #include <ReferenceFrames.h>
@@ -30,15 +31,6 @@
 
 
 /* Datatypes -----------------------------------------------------------------*/
-
-/**
- * @brief An enum for the state of the craft's solar panels and calculated solar vector
- */
-typedef enum {
-	SV_FOUND = 0, /**< Solar vector is reliable */
-	SV_NOTFOUND, /**< Craft is in the sun but solar vector is unreliable */
-	SV_DARK /**< Craft is in eclipse */
-}SV_Status;
 
 /** 
  * @brief A struct including all of the data needed to run the ACS
@@ -60,6 +52,7 @@ typedef struct {
 	
 	// Attitude estimation vectors
 	Matrix gyro_bias; /**< Current estimated gyro bias, updated by updateAttitudeEstimate() */
+	Matrix w; /**< Craft angular velocity w = gyro_vector - gyro_bias */
 	float gyro_bias_dot_norm; /**< Time derivative of ||gyro bias|| */
 	
 	// Inertial vectors (ecliptic frame)

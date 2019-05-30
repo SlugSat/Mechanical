@@ -3,16 +3,14 @@
 
 #include "main.h"
 
-#define CLOCK_FREQ 1000000 // Frequency of Timer 4
-
 
 //======================================================================
 // Sets duty cycle for PWM signal assuming clock frequency is 1 MHz
 // (note: the duty cycle is in percent so the range is 0-100
 //======================================================================
-void PWM_Set_Duty_Cycle(TIM_HandleTypeDef *htim, // timer handler
+void PWM_Set_Duty_Cycle(TIM_HandleTypeDef *htim, 	// timer handler
 												float duty_cycle,		 			// percent duty cycle
-												uint32_t channel);				 // pwm generation channel
+												uint32_t channel);				// pwm generation channel
 
 //======================================================================
 // Sets frequency for all PWM signals. frequency is in Hz

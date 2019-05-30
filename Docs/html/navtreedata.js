@@ -25,21 +25,21 @@ var NAVTREE =
 [
   [ "SlugSat ACS", "index.html", [
     [ "Attiude Determination Testing", "attitude_determination.html", null ],
-    [ "Flat-sat ACS Flight Software & SlugSat 42", "flatsat_acs.html", null ],
     [ "Get Started", "get_started.html", null ],
     [ "Matlab ACS Simulation", "matlab_sim.html", null ],
+    [ "42 Simulation", "simulation42.html", null ],
     [ "Keil uVision Projects", "projects.html", null ],
-    [ "Data Structures", "annotated.html", [
-      [ "Data Structures", "annotated.html", "annotated_dup" ],
-      [ "Data Structure Index", "classes.html", null ],
-      [ "Data Fields", "functions.html", [
+    [ "Classes", "annotated.html", [
+      [ "Class List", "annotated.html", "annotated_dup" ],
+      [ "Class Index", "classes.html", null ],
+      [ "Class Members", "functions.html", [
         [ "All", "functions.html", null ],
         [ "Variables", "functions_vars.html", null ]
       ] ]
     ] ],
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ],
-      [ "Globals", "globals.html", [
+      [ "File Members", "globals.html", [
         [ "All", "globals.html", null ],
         [ "Functions", "globals_func.html", null ],
         [ "Enumerations", "globals_enum.html", null ],

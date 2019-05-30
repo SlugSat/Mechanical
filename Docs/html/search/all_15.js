@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['z_5ferr',['z_err',['../struct_a_c_s_type.html#a36a617bb19a1c9a4cc9397c8c7775b6c',1,'ACSType']]],
-  ['zb_5fsun_5fangle',['zb_sun_angle',['../struct_a_c_s_type.html#acb3d9d99bee55edb832182dae3b2d7fd',1,'ACSType']]]
+  ['w',['w',['../struct_a_c_s_type.html#ab0527ea981446a30d020fe3df4193f2f',1,'ACSType']]],
+  ['w_5frw',['w_rw',['../struct_a_c_s_type.html#a880b6eef6382841a030de56f08f7c234',1,'ACSType']]],
+  ['wdot2rw_5fpwm',['wdot2rw_pwm',['../_feedback_control_8h.html#a6663ec72a8ac78e77f38251b5a11c9e0',1,'FeedbackControl.c']]]
 ];

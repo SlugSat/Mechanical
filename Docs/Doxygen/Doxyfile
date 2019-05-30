@@ -864,7 +864,7 @@ FILE_PATTERNS          = *.c \
                          *.php5 \
                          *.phtml \
                          *.inc \
-                         *.m=./DoxygenMatlab/m2cpp.pl \
+                         *.m=m2cpp.pl \
                          *.markdown \
                          *.md \
                          *.mm \
