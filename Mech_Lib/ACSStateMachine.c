@@ -309,7 +309,10 @@ void runACS(void) {
 				
 			case WAIT_FOR_ATTITUDE:
 				attitude_est_stable_counter = 0;
-				vectorSetXYZ(acs.rw_PWM, 0, 0, 0);
+				vectorSetXYZ(acs.rw_PWM, 100, 100, 100);
+				acs.rw_brake[0] = 1;
+				acs.rw_brake[1] = 1;
+				acs.rw_brake[2] = 1;
 				vectorSetXYZ(acs.tr_PWM, 0, 0, 0);
 				break;
 				

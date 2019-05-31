@@ -21,14 +21,14 @@
 // CONSTANTS
 #define DIV_ROOT2 ((float)0.70710678118)
 
-#define V_RAIL 8.0 // Volts
+#define V_RAIL 8.0f // Volts
 
 // Reaction wheel motor constants
-#define KT 0.00713 // Nm/A
-#define KE 0.00713332454 // V/rad/s
-#define R 92.7 // Ohms
-#define C0 19e-6 // Static friction torque (Nm)
-#define CV 20.94e-9 // Dynamic friction torque (Nm/rad/s)
+#define KT 0.00713f // Nm/A
+#define KE 0.00713332454f // V/rad/s
+#define R 92.7f // Ohms
+#define C0 19e-6f // Static friction torque (Nm)
+#define CV 20.94e-9f // Dynamic friction torque (Nm/rad/s)
 
 
 
@@ -70,7 +70,7 @@ void findErrorVectors(ACSType* acs) {
 	
 	// Take cross product to find error
 	vectorCrossProduct(n_B, corner_B, acs->n_err);
-	matrixScale(acs->n_err, 0.5);
+	matrixScale(acs->n_err, 0.5f);
 	
 	
 	// Sum Z and N error to find total error
@@ -165,11 +165,16 @@ void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired) {
 		float w = matrixGetElement(acs->w_rw, i, 1);
 		
 		if(sign(v) == sign(txRdKT)) {
-			matrixSet(acs->rw_PWM, i, 1, v*100.0/V_RAIL); // PWM = (w*Ke + t*R/Kt)*100.0/V_rail
+			matrixSet(acs->rw_PWM, i, 1, v*100.0f/V_RAIL); // PWM = (w*Ke + t*R/Kt)*100.0/V_rail
 			acs->rw_brake[i-1] = 0; // Disable brake
 		}
 		else {
-			matrixSet(acs->rw_PWM, i, 1, -100.0*txRdKT/(KE*w)); // PWM = -100*t*R/(Ke*Kt*w)
+			if(w == 0.0) {
+				matrixSet(acs->rw_PWM, i, 1, 100.0f);
+			}
+			else {
+				matrixSet(acs->rw_PWM, i, 1, fabsf(100.0f*txRdKT/(KE*w))); // PWM = -100*t*R/(Ke*Kt*w)
+			}
 			acs->rw_brake[i-1] = 1; // Enable brake
 		}
 	}
