@@ -1,16 +1,22 @@
 #include "Actuator_Lib.h"
 
 #define N_SAMPLES 100.0
-#define TIM_RPM_CLK 4e6
+#define RPM_CLOCK_FREQ 1e6 // In Hz
+#define PI 3.1415926535
+
+#define BRAKE_ENABLE GPIO_PIN_RESET
+#define BRAKE_DISABLE GPIO_PIN_SET
 
 static TIM_HandleTypeDef *ht_rpm, *ht_pwm;
-static volatile uint32_t FWD_REV_Pin;
+static uint32_t FWD_REV_Pin, BRAKE_Pin;
+static GPIO_TypeDef *FWD_REV_Port, *BRAKE_Port;
 static uint16_t time_val;
 static uint8_t IC_flag = 0;
 
 static float avg_speed = 0;
 
-void initActuators(TIM_HandleTypeDef *htim_pwm, TIM_HandleTypeDef *htim_rpm, volatile uint32_t DIRECTION_Pin)
+void initActuators(TIM_HandleTypeDef *htim_pwm, TIM_HandleTypeDef *htim_rpm, 
+	uint32_t rw_fwd_rev_pin, GPIO_TypeDef* rw_fwd_rev_port, uint32_t rw_brake_pin, GPIO_TypeDef* rw_brake_port)
 {
     // initialize local module level timer handlers
     ht_rpm = htim_rpm; // timer handler for rpm calc
@@ -33,29 +39,37 @@ void initActuators(TIM_HandleTypeDef *htim_pwm, TIM_HandleTypeDef *htim_rpm, vol
     ht_rpm->Instance->CCER |= 1;
     HAL_TIM_Base_Start(ht_rpm);
 
-    // save FWD_REV_Pin
-    FWD_REV_Pin = DIRECTION_Pin;
+    // save pins
+    FWD_REV_Pin = rw_fwd_rev_pin;
+		FWD_REV_Port = rw_fwd_rev_port;
+		BRAKE_Pin = rw_brake_pin;
+		BRAKE_Port = rw_brake_port;
 }
 
 void rw_get_speed (float *speed)
 {
-    /* CODE TO CALCULATE RPM USING XOR OF 3 HALL EFF SENSORS
+  /* CODE TO CALCULATE RPM USING XOR OF 3 HALL EFF SENSORS */
 	// local variable to store pulse time
 	float xor_pulse_time;
 
 	// time for rotation (us) assuming pulses are equidistant
 	xor_pulse_time = 6.0 * time_val;        // time to rotate in us
 	xor_pulse_time = xor_pulse_time         // (us/rev)
-					 * (1.0/TIM_RPM_CLK)    // (s/us)
+					 * (1.0/RPM_CLOCK_FREQ)    // (s/us)
 					 * (1.0/60);            // (min/s)
 
 	// calculate speed (RPM)
-	*speed = (1.0/xor_pulse_time);*/
+	*speed = (1.0/xor_pulse_time);
 
 	// calculate speed (RPM)
-	*speed = time_val               // (us/rev)
-			 * (1.0/TIM_RPM_CLK)    // (s/us)
-			 * (1.0/60);            // (min/s)
+	/*float time = time_val           // (ticks)
+			 * (1.0/RPM_CLOCK_FREQ); 		// (s/tick)
+	
+	if (!time_val) {
+			*speed = 0;
+	} else {
+			*speed = 2*PI/time;
+	}*/
 
 	// calculate average speed (moving average)
 	avg_speed -= avg_speed/N_SAMPLES;
@@ -64,18 +78,23 @@ void rw_get_speed (float *speed)
 	*speed = avg_speed;
 }
 
-void rw_set_speed (float percent_speed)
-{
-    // check direction
-    if (percent_speed > 0) {
-        HAL_GPIO_WritePin(GPIOB, FWD_REV_Pin, GPIO_PIN_RESET);
-    } else {
-        percent_speed *= -1;
-        HAL_GPIO_WritePin(GPIOB, FWD_REV_Pin, GPIO_PIN_SET);
-    }
+void rw_set_speed(float pwm, uint8_t brake) {
+	if(brake) {
+		HAL_GPIO_WritePin(BRAKE_Port, BRAKE_Pin, BRAKE_ENABLE);
+	}
+	else {
+		HAL_GPIO_WritePin(BRAKE_Port, BRAKE_Pin, BRAKE_DISABLE);
+		// check direction
+		if (pwm > 0) {
+				HAL_GPIO_WritePin(FWD_REV_Port, FWD_REV_Pin, GPIO_PIN_RESET);
+		} else {
+				pwm *= -1;
+				HAL_GPIO_WritePin(FWD_REV_Port, FWD_REV_Pin, GPIO_PIN_SET);
+		}
+	}
 
-    // set duty cycle accordingly
-    PWM_Set_Duty_Cycle(ht_pwm, percent_speed, RW_PWM_CHANNEL);
+	// set duty cycle accordingly
+	PWM_Set_Duty_Cycle(ht_pwm, pwm, RW_PWM_CHANNEL);
 }
 
 void HAL_TIM_IC_CaptureCallback (TIM_HandleTypeDef *htim) {

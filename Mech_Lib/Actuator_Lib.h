@@ -20,14 +20,15 @@
  * @brief  Sets up timers for PWM generation and reaction wheel speed measurement
  * @param  htim_pwm: Handle to the PWM timer, which should be running at 4 MHz
  * @param  htim_rpm: Handle to the RPM timer
- * @param  DIRECTION_Pin: Forward/Reverse Pin, which should be a GPIOB
+ * @param  DIRECTION_Pin: Forward/Reverse Pin
  * @return None
 */
-void initActuators(TIM_HandleTypeDef *htim_pwm, TIM_HandleTypeDef *htim_rpm, volatile uint32_t DIRECTION_Pin);
+void initActuators(TIM_HandleTypeDef *htim_pwm, TIM_HandleTypeDef *htim_rpm, 
+	uint32_t rw_fwd_rev_pin, GPIO_TypeDef* rw_fwd_rev_port, uint32_t rw_brake_pin, GPIO_TypeDef* rw_brake_port);
 
-void rw_get_speed (float *speed);
+void rw_get_speed(float *speed);
 
-void rw_set_speed (float percent_speed);
+void rw_set_speed(float pwm, uint8_t brake);
 
 void rw_get_accel(float *accel);
 
