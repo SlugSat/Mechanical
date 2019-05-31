@@ -71,6 +71,8 @@ Matrix makeJbodyInv(void) {
 // Public functions
 void initializeACS(ACSType* acs) {
 	acs->t = 0;
+	acs->pointing_err = 0;
+	acs->zb_sun_angle = 0;
 	
 	// Allocate Matrix structs
 	acs->R = initializeDCM(0, 0, 0);

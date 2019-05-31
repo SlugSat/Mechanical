@@ -309,8 +309,10 @@ void runACS(void) {
 				break;
 			
 			case DETUMBLE:
-				// Set reaction wheels to default state
-				//vectorSetXYZ(acs.rw_PWM, 50, 50, 50);
+				vectorSetXYZ(acs.rw_PWM, 100, 100, 100);
+				acs.rw_brake[0] = 1;
+				acs.rw_brake[1] = 1;
+				acs.rw_brake[2] = 1;
 				break;
 				
 			case WAIT_FOR_ATTITUDE:
