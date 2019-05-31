@@ -101,5 +101,8 @@ void initializeACS(ACSType* acs) {
 	acs->J_body_inv = makeJbodyInv();
 	
 	acs->rw_PWM = newMatrix(3, 1);
+	for(int i = 0;i < 3;i++) {
+		acs->rw_brake[i] = 0;
+	}
 	acs->tr_PWM = newMatrix(3, 1);
 }

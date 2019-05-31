@@ -15,6 +15,7 @@
 // HEADER FILE
 #include <FeedbackControl.h>
 #include <math.h>
+#include <STM32SerialCommunication.h>
 
 
 // CONSTANTS
@@ -116,7 +117,7 @@ void runBdotController(ACSType* acs) {
 
 void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired) {
 	static int init_run = 0;
-	static Matrix torque, p, p_rw, wxp, Jxwdot, w_rw_new, fr_torque;
+	static Matrix torque, p, p_rw, wxp, Jxwdot, w_rw_new, fr_torque, rw_volts;
 	
 	if(init_run == 0) {
 		torque = newMatrix(3, 1);
@@ -126,6 +127,7 @@ void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired) {
 		Jxwdot = newMatrix(3, 1);
 		w_rw_new = newMatrix(3, 1);
 		fr_torque = newMatrix(3, 1);
+		rw_volts = newMatrix(3, 1);
 		init_run = 1;
 	}
 	
@@ -155,8 +157,22 @@ void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired) {
 	// Find PWM
 	matrixScale(w_rw_new, KE);
 	matrixScale(torque, R/KT);
-	matrixAdd(w_rw_new, torque, acs->rw_PWM);
-	matrixScale(acs->rw_PWM, 100.0/(V_RAIL));
+	matrixAdd(w_rw_new, torque, rw_volts);
+	
+	for(int i = 1;i <= 3;i++) {
+		float v = matrixGetElement(rw_volts, i, 1);
+		float txRdKT = matrixGetElement(torque, i, 1); // t*R/Kt
+		float w = matrixGetElement(acs->w_rw, i, 1);
+		
+		if(sign(v) == sign(txRdKT)) {
+			matrixSet(acs->rw_PWM, i, 1, v*100.0/V_RAIL); // PWM = (w*Ke + t*R/Kt)*100.0/V_rail
+			acs->rw_brake[i-1] = 0; // Disable brake
+		}
+		else {
+			matrixSet(acs->rw_PWM, i, 1, -100.0*txRdKT/(KE*w)); // PWM = -100*t*R/(Ke*Kt*w)
+			acs->rw_brake[i-1] = 1; // Enable brake
+		}
+	}
 }
 
 

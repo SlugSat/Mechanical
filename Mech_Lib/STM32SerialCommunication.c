@@ -20,7 +20,7 @@
 #define HANDSHAKE_TIMEOUT 20
 
 #define RECEIVED_FLOATS 18
-#define SENT_FLOATS 6
+#define SENT_FLOATS 9
 
 
 // Module level variables
@@ -149,6 +149,7 @@ void sendActuatorsToSerial(ACSType* acs) {
 	// Packet: {rw_x, rw_y, rw_z, tr_x, tr_y, tr_z}
 	float actuator_data[SENT_FLOATS] =
 		{ matrixGetElement(acs->rw_PWM, 1, 1), matrixGetElement(acs->rw_PWM, 2, 1), matrixGetElement(acs->rw_PWM, 3, 1),
+			(float)acs->rw_brake[0], (float)acs->rw_brake[1], (float)acs->rw_brake[2],
 			matrixGetElement(acs->tr_PWM, 1, 1), matrixGetElement(acs->tr_PWM, 2, 1), matrixGetElement(acs->tr_PWM, 3, 1) };
 	
 		STM32SerialSendFloats(huart, actuator_data, SENT_FLOATS);

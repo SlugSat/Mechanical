@@ -93,6 +93,7 @@ typedef struct {
 	
 	// Actuator PWMs
 	Matrix rw_PWM; /**< Reaction wheel PWMs (3x1, signed percent duty cycle) */
+	uint8_t rw_brake[3]; /**< Reaction wheel brake pin values (boolean) */
 	Matrix tr_PWM; /**< Torque rod PWMs (3x1, signed percent duty cycle) */
 }ACSType;
 
