@@ -36,8 +36,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-//#define COMMAND_LINE
-#define MATLAB
+#define COMMAND_LINE
+//#define MATLAB
 
 /* USER CODE END PD */
 

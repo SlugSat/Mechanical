@@ -1,6 +1,6 @@
-% 
+% Automates motor friction testing using RW_Demo
 %
-% Created by Galen Savidge, 3/17/2019
+% Created by Galen Savidge, 5/30/2019
 
 clc
 clear all
