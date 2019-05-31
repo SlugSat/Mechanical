@@ -104,10 +104,15 @@ int main(void)
   MX_TIM10_Init();
   /* USER CODE BEGIN 2 */
 
-  initActuators(&htim9, &htim10, RW_FWD_REV_Pin);
-
+  #ifdef ENABLE_ACTUATORS
+  initActuators(&htim9, &htim10, RW_FWD_REV_Pin, RW_FWD_REV_GPIO_Port, RW_BRAKE_Pin, RW_BRAKE_GPIO_Port);
+  #endif
+  #ifdef ENABLE_42
   setUartHandle(&huart2);
+  #endif
+  #ifdef ENABLE_FRAM
   setSpiHandle(&hspi1);
+  #endif
   runACS();
 
   /* USER CODE END 2 */
@@ -358,9 +363,13 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOC_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, RW_FWD_REV_Pin|SPI_FRAM_CS_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(RW_BRAKE_GPIO_Port, RW_BRAKE_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(SPI_FRAM_LOCK_GPIO_Port, SPI_FRAM_LOCK_Pin, GPIO_PIN_RESET);
@@ -377,6 +386,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : RW_BRAKE_Pin */
+  GPIO_InitStruct.Pin = RW_BRAKE_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(RW_BRAKE_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : SPI_FRAM_IN1_Pin */
   GPIO_InitStruct.Pin = SPI_FRAM_IN1_Pin;

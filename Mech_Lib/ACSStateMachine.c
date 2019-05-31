@@ -82,10 +82,6 @@ void runACS(void) {
 	/***** INITIALIZE ACS *****/
 	ACSType acs;
 	initializeACS(&acs);
-	#ifdef ENABLE_42
-	initializeACSSerial(huart);
-	char prnt[300]; // String buffer to print to 42
-	#endif
 	
 	ACSState state = WAIT_FOR_ATTITUDE;
 	int first_step = 1, reset_integrator = 1;
@@ -95,6 +91,16 @@ void runACS(void) {
 	uint8_t acs_enable = 1;			// Temporary bool
 	float gyro_norm = 0, w_norm = 0;		// Rad/s
 	float attitude_est_stable_counter = 0;
+
+	#ifdef ENABLE_42
+	initializeACSSerial(huart);
+	char prnt[300]; // String buffer to print to 42
+	#endif
+
+	#ifdef ENABLE_FRAM
+	SPI_FRAM_Init(hspi);
+	#endif
+
 	#ifdef ENABLE_ACTUATORS
 	float rw_speed = 0;	// Speed of the reaction wheel prototype, rad/s
 	#endif
@@ -166,7 +172,7 @@ void runACS(void) {
 
 		/***** SET ACTUATOR OUTPUTS *****/
 		#ifdef ENABLE_ACTUATORS
-		rw_set_speed(matrixGetElement(acs.rw_PWM, 1, 1));
+		rw_set_speed(matrixGetElement(acs.rw_PWM, 1, 1), acs.rw_brake[0]);
 		#endif
 		
 		
