@@ -1,7 +1,7 @@
 #include "Actuator_Lib.h"
 
-#define N_SAMPLES 100.0
-#define RPM_CLOCK_FREQ 1e6 // In Hz
+#define N_SAMPLES 20.0
+#define RPM_CLOCK_FREQ 5e5 // In Hz
 #define PI 3.1415926535
 
 #define BRAKE_ENABLE GPIO_PIN_RESET
@@ -53,13 +53,18 @@ void rw_get_speed (float *speed)
 	float xor_pulse_time;
 
 	// time for rotation (us) assuming pulses are equidistant
-	xor_pulse_time = 6.0 * time_val;        // time to rotate in us
-	xor_pulse_time = xor_pulse_time         // (us/rev)
-					 * (1.0/RPM_CLOCK_FREQ)    // (s/us)
-					 * (1.0/60);            // (min/s)
+	if(time_val != 0) {
+		xor_pulse_time = 6.0 * time_val;        // time to rotate in us
+		xor_pulse_time = xor_pulse_time         // (us/rev)
+						 * (1.0/RPM_CLOCK_FREQ)    // (s/us)
+						 * (1.0/60);            // (min/s)
 
-	// calculate speed (RPM)
-	*speed = (1.0/xor_pulse_time);
+		// calculate speed (RPM)
+		*speed = (1.0/xor_pulse_time);
+	}
+	else {
+		*speed = 0;
+	}
 
 	// calculate speed (RPM)
 	/*float time = time_val           // (ticks)

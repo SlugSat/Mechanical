@@ -36,8 +36,10 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define COMMAND_LINE
-//#define MATLAB
+//#define COMMAND_LINE
+#define MATLAB
+
+#define RPM2RADPS 0.10472f
 
 /* USER CODE END PD */
 
@@ -167,7 +169,7 @@ int main(void)
 		#endif
 		
 		#ifdef MATLAB
-		sprintf(send, "%.2f\n", measured_speed);
+		sprintf(send, "%.2f\n", RPM2RADPS*measured_speed);
 		HAL_UART_Transmit(&huart2, (uint8_t*)send, strlen(send), 50);
 		#endif
 		

@@ -10,7 +10,7 @@ clear all
 close all
 
 % SETTINGS
-steps = 5; % How many steps to run for (each is 1 second)
+steps = 60; % How many steps to run for (each is 1 second)
 filename = 'rwSpeeds.csv';
 wheel = 0; % Which reaction wheel to use (0 -> X, 1 -> Y, 2 -> Z)
 
@@ -44,15 +44,19 @@ flushinput(s)
 
 measured_speeds = zeros(length(pwms), 1);
 
+% Stop reaction wheel
+fprintf(s, '%6.2fb\n', 100)
+
 % MAIN LOOP
 for i = t
     pwm = pwms(i)
+    b = brake(i)
     
     % Write PWM to microcontroller
-    if(brake)
+    if brake(i) == 1
         fprintf(s, '%6.2fb\n', pwms(i))
     else
-        fprintf(s, '%6.2f\n', pwms(i))
+        fprintf(s, '%6.2f\n', abs(pwms(i)))
     end
     
     % Read speed from microcontroller
@@ -64,14 +68,22 @@ for i = t
     pause(1)
 end
 
+% Stop reaction wheel
+fprintf(s, '%6.2fb\n', 100)
 
 % PLOT RESULTS
 figure(1)
 hold on
 grid on
-plot(t, theoretical_speeds)
+plot(t, abs(theoretical_speeds))
 plot(t, measured_speeds)
 title('Measured vs. Theoretical Motor Speeds')
 xlabel('Time (s)')
 ylabel('Speed (rad/s)')
 legend('Thoeretical', 'Measured')
+
+% Close all ports
+if ~isempty(instrfind)
+    fclose(instrfind);
+    delete(instrfind);
+end
