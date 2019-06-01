@@ -56,7 +56,7 @@ for i = t
     if brake(i) == 1
         fprintf(s, '%6.2fb\n', pwms(i))
     else
-        fprintf(s, '%6.2f\n', abs(pwms(i)))
+        fprintf(s, '%6.2f\n', pwms(i))
     end
     
     % Read speed from microcontroller

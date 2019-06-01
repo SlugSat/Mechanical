@@ -28,7 +28,7 @@
 #define KE 0.00713332454f // V/rad/s
 #define R 92.7f // Ohms
 #define C0 19e-6f // Static friction torque (Nm)
-#define CV 20.94e-9f // Dynamic friction torque (Nm/rad/s)
+#define CV 103e-9f // Dynamic friction torque (Nm/rad/s)
 
 
 

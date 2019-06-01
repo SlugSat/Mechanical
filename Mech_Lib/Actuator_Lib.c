@@ -1,4 +1,5 @@
 #include "Actuator_Lib.h"
+#include <math.h>
 
 #define N_SAMPLES 20.0
 #define RPM_CLOCK_FREQ 5e5 // In Hz
@@ -86,9 +87,20 @@ void rw_get_speed (float *speed)
 void rw_set_speed(float pwm, uint8_t brake) {
 	if(brake) {
 		HAL_GPIO_WritePin(BRAKE_Port, BRAKE_Pin, BRAKE_ENABLE);
+		
+		// Invert PWM
+//		if(pwm > 0) { 
+//			PWM_Set_Duty_Cycle(ht_pwm, 100.0 - pwm, RW_PWM_CHANNEL);
+//		}
+//		else {
+//			PWM_Set_Duty_Cycle(ht_pwm, -100.0 - pwm, RW_PWM_CHANNEL);
+//		}
+		
+		PWM_Set_Duty_Cycle(ht_pwm, fabsf(pwm), RW_PWM_CHANNEL);
 	}
 	else {
 		HAL_GPIO_WritePin(BRAKE_Port, BRAKE_Pin, BRAKE_DISABLE);
+		
 		// check direction
 		if (pwm > 0) {
 				HAL_GPIO_WritePin(FWD_REV_Port, FWD_REV_Pin, GPIO_PIN_RESET);
@@ -96,10 +108,9 @@ void rw_set_speed(float pwm, uint8_t brake) {
 				pwm *= -1;
 				HAL_GPIO_WritePin(FWD_REV_Port, FWD_REV_Pin, GPIO_PIN_SET);
 		}
+		
+		PWM_Set_Duty_Cycle(ht_pwm, pwm, RW_PWM_CHANNEL);
 	}
-
-	// set duty cycle accordingly
-	PWM_Set_Duty_Cycle(ht_pwm, pwm, RW_PWM_CHANNEL);
 }
 
 void HAL_TIM_IC_CaptureCallback (TIM_HandleTypeDef *htim) {
