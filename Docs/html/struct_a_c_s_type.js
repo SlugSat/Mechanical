@@ -23,6 +23,7 @@ var struct_a_c_s_type =
     [ "pointing_err", "struct_a_c_s_type.html#a4c6fe6211cef14e0d66f51e5aff2c485", null ],
     [ "R", "struct_a_c_s_type.html#a72851c393b49a2b488e51a678b90135b", null ],
     [ "Rt", "struct_a_c_s_type.html#a9b4fd46706c2ce0ad8a2df8038ac915e", null ],
+    [ "rw_brake", "struct_a_c_s_type.html#ac726d4bc06260ca304c5705412550d64", null ],
     [ "rw_PWM", "struct_a_c_s_type.html#abadd729b1d9de2b8414c7949637aac27", null ],
     [ "solar_vector", "struct_a_c_s_type.html#a2565c37ca09278f1f6e2405328e94bc8", null ],
     [ "sun_status", "struct_a_c_s_type.html#a08e060b8d3806d1da157f82ff6ef89c0", null ],
