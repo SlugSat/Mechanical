@@ -21,7 +21,10 @@
 // CONSTANTS
 #define DIV_ROOT2 ((float)0.70710678118)
 
-#define V_RAIL 8.0f // Volts
+#define RW_V_RAIL 8.0f // Volts
+
+#define TR_V_RAIL 3.3f // Volts
+#define TR_MAX_V 1.0f // Volts
 
 // Reaction wheel motor constants
 #define KT 0.00713f // Nm/A
@@ -108,7 +111,7 @@ void runBdotController(ACSType* acs) {
 	// ***** FIND PWM FOR EACH TORQUE ROD *****
 	float bdot_norm = vectorNorm(bdot);
 	if(bdot_norm == 0) return;
-	matrixScale(bdot, -100/(TR_MAXDIP*bdot_norm) );
+	matrixScale(bdot, (-100/bdot_norm)*(TR_MAX_V/TR_V_RAIL));
 	matrixCopy (bdot, acs->tr_PWM);
 	
 	return;
@@ -165,7 +168,7 @@ void wdot2rw_pwm(ACSType* acs, Matrix wdot_desired) {
 		float w = matrixGetElement(acs->w_rw, i, 1);
 		
 		if(sign(v) == sign(txRdKT)) {
-			matrixSet(acs->rw_PWM, i, 1, v*100.0f/V_RAIL); // PWM = (w*Ke + t*R/Kt)*100.0/V_rail
+			matrixSet(acs->rw_PWM, i, 1, v*100.0f/RW_V_RAIL); // PWM = (w*Ke + t*R/Kt)*100.0/V_rail
 			acs->rw_brake[i-1] = 0; // Disable brake
 		}
 		else {
