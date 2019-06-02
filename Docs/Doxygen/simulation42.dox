@@ -1,7 +1,7 @@
 /*! 
 \page simulation42 42 Simulation
 
-"42" is an open-source flight simulation created by engineers at NASA's Goddard Space Flight Center. The SlugSat Mechanical team uses a modified verion of 42 to run hardware-in-the-loop simulations of the Attitude Control System (ACS). Using the instructions below, 42 can be set up to run alongside the flat-sat or other standalone ACS test programs.
+"42" is an open-source flight simulation created by engineers at NASA's Goddard Space Flight Center. The SlugSat Mechanical team uses a modified version of 42 to run hardware-in-the-loop simulations of the Attitude Control System (ACS). Using the instructions below, 42 can be set up to run alongside the flat-sat or other standalone ACS test programs.
 
 <p float="centered">
 	<img src="../assets/42-banner.jpg" alt="" style="display: block; margin-left: auto; margin-right: auto; width:45%" />
