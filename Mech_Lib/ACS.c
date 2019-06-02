@@ -19,7 +19,7 @@
 
 // Reaction wheel properties
 #define RW_D 8700
-#define RW_R 0.0126
+#define RW_R 0.01257
 #define RW_H 0.004
 
 // Body inertia matrices
