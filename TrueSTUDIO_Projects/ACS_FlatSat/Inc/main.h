@@ -49,7 +49,7 @@ extern "C" {
 /* USER CODE BEGIN EM */
 #define ENABLE_42 // Enables 42 integration
 #define ENABLE_FRAM // Enables writing to shared FRAM
-//#define ENABLE_ACTUATORS // Enables code to control flat-sat prototype actuators
+#define ENABLE_ACTUATORS // Enables code to control flat-sat prototype actuators
 /* USER CODE END EM */
 
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
@@ -64,8 +64,6 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define SPI_FRAM_IN2_Pin GPIO_PIN_10
 #define SPI_FRAM_IN2_GPIO_Port GPIOB
-#define RW_FWD_REV_Pin GPIO_PIN_11
-#define RW_FWD_REV_GPIO_Port GPIOB
 #define HALL_EFFECT_IN_Pin GPIO_PIN_12
 #define HALL_EFFECT_IN_GPIO_Port GPIOB
 #define RW_PWM_Pin GPIO_PIN_13
@@ -78,6 +76,8 @@ void Error_Handler(void);
 #define SPI_FRAM_IN1_GPIO_Port GPIOA
 #define SPI_FRAM_LOCK_Pin GPIO_PIN_9
 #define SPI_FRAM_LOCK_GPIO_Port GPIOA
+#define RW_FWD_REV_Pin GPIO_PIN_4
+#define RW_FWD_REV_GPIO_Port GPIOB
 #define SPI_FRAM_CS_Pin GPIO_PIN_6
 #define SPI_FRAM_CS_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
