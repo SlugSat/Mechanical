@@ -10,8 +10,8 @@
 ## 42 Setup
 SlugSat’s customized version of 42 runs natively on an Ubuntu virtual machine. SlugSat's Team Drive contains a VM with both Mechanical team git repositories initialized and 42 and its dependencies preinstalled. To run the simulation, the user must download and run the VM, pull the latest version of the simulation code to the 42 source folder, and compile and run the simulation from the command line. The steps to do this are as follows:
 
-1. Download the virtual machine [here](https://drive.google.com/file/d/1Uc_Aiz-8tsvCL0Jx_9ZfMtskhNvRVah5/view), extract it, and start it using VirtualBox. Login info for the user account in the VM is in login.txt in the zip file.
-2. In the VM, navigate to Desktop/42-source in a terminal, and run the commands:
+1. Download the virtual machine **[here](https://drive.google.com/file/d/1Uc_Aiz-8tsvCL0Jx_9ZfMtskhNvRVah5/view)**, extract the zip, and start the VM using VirtualBox by opening "42 Simulation.vbox." Login info for the user account in the VM is in "login.txt."
+2. In the VM, navigate to Desktop/42-source in a terminal and run the commands:
 		
 		$ git fetch --all
 		$ git reset --hard origin/master
@@ -49,11 +49,11 @@ The following files in the **InOut** folder can be edited to change the behavior
 	- Inertia is the only reaction wheel parameter in this file which affects SlugSat's model for motor dynamics. The other parameters are defined in **42fsw.c**.
 	- Torque rod saturation can be set to anything above the actual saturation point of the torque rods. This will not affect the model of the torque rods.
 	- The file still includes sections for other unused hardware components (thrusters, star trackers, etc). These do not affect the behavior of the simulation.
-- **Orb_EOS.txt** defines the orbit used by SlugSat. Keplerian elements can be input on lines 15-19. The configured orbit is currently based on orbital elements from the ISS from April 2019.
+- **Orb_EOS.txt** defines the orbit used by SlugSat. Keplerian elements can be input on lines 15-19. Alternatively, Keplerian elements in TLE form can be read from an external file by changing lines 13, 23, and 24.
 - **Inp_Cmd.txt** is currently unused. The contents of this file affect what is printed on simulation startup but nothing else.
 
 ## Output Files
-On each new run 42 creates a folder beginning with **42run_**. This folder is populated with files that log pointing accuracy, power, reaction wheel speed, and state transitions during current run of 42.
+On each new run 42 creates a folder beginning with **42run_**. This folder is populated with files that log pointing accuracy, used and generated power, reaction wheel speed, and state transitions during current run of 42.
 
 ## Source Files
 All customized files in SlugSat's version of 42 are stored in the [Simulation42 GitHub repository](https://github.com/SlugSat/Simulation42). Other 42 source files are unchanged from the base 42 source (which can be downloaded [here](https://drive.google.com/file/d/1HdiX4nZJacuZJcseDHefzC3z_tQcJrkr/view)).

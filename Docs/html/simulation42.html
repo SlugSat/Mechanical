@@ -96,8 +96,8 @@ $(document).ready(function(){initNavTree('simulation42.html','');});
  <h2>42 Setup</h2>
 <p>SlugSat’s customized version of 42 runs natively on an Ubuntu virtual machine. SlugSat's Team Drive contains a VM with both Mechanical team git repositories initialized and 42 and its dependencies preinstalled. To run the simulation, the user must download and run the VM, pull the latest version of the simulation code to the 42 source folder, and compile and run the simulation from the command line. The steps to do this are as follows:</p>
 <ol type="1">
-<li>Download the virtual machine <a href="https://drive.google.com/file/d/1Uc_Aiz-8tsvCL0Jx_9ZfMtskhNvRVah5/view">here</a>, extract it, and start it using VirtualBox. Login info for the user account in the VM is in login.txt in the zip file.</li>
-<li><p class="startli">In the VM, navigate to Desktop/42-source in a terminal, and run the commands: </p><pre class="fragment"> $ git fetch --all
+<li>Download the virtual machine <b><a href="https://drive.google.com/file/d/1Uc_Aiz-8tsvCL0Jx_9ZfMtskhNvRVah5/view">here</a></b>, extract the zip, and start the VM using VirtualBox by opening "42 Simulation.vbox." Login info for the user account in the VM is in "login.txt."</li>
+<li><p class="startli">In the VM, navigate to Desktop/42-source in a terminal and run the commands: </p><pre class="fragment"> $ git fetch --all
  $ git reset --hard origin/master
 </pre><p class="startli">This will pull any changed files from SlugSat's <a href="https://github.com/SlugSat/Simulation42">42 source code repository</a>.</p>
 </li>
@@ -129,11 +129,11 @@ $(document).ready(function(){initNavTree('simulation42.html','');});
 <li>The file still includes sections for other unused hardware components (thrusters, star trackers, etc). These do not affect the behavior of the simulation.</li>
 </ul>
 </li>
-<li><b>Orb_EOS.txt</b> defines the orbit used by SlugSat. Keplerian elements can be input on lines 15-19. The configured orbit is currently based on orbital elements from the ISS from April 2019.</li>
+<li><b>Orb_EOS.txt</b> defines the orbit used by SlugSat. Keplerian elements can be input on lines 15-19. Alternatively, Keplerian elements in TLE form can be read from an external file by changing lines 13, 23, and 24.</li>
 <li><b>Inp_Cmd.txt</b> is currently unused. The contents of this file affect what is printed on simulation startup but nothing else.</li>
 </ul>
 <h2>Output Files</h2>
-<p>On each new run 42 creates a folder beginning with <b>42run_</b>. This folder is populated with files that log pointing accuracy, power, reaction wheel speed, and state transitions during current run of 42.</p>
+<p>On each new run 42 creates a folder beginning with <b>42run_</b>. This folder is populated with files that log pointing accuracy, used and generated power, reaction wheel speed, and state transitions during current run of 42.</p>
 <h2>Source Files</h2>
 <p>All customized files in SlugSat's version of 42 are stored in the <a href="https://github.com/SlugSat/Simulation42">Simulation42 GitHub repository</a>. Other 42 source files are unchanged from the base 42 source (which can be downloaded <a href="https://drive.google.com/file/d/1HdiX4nZJacuZJcseDHefzC3z_tQcJrkr/view">here</a>).</p><ul>
 <li><b>42fsw.c</b> contains the function <b>SlugSatFSW</b>, which has the majority of SlugSat's custom code. This is where data is synced with the flat-sat. The function also includes custom actuator models and handles data processing, terimal display, and file output.</li>
