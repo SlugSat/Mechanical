@@ -70,6 +70,8 @@ void setUartHandle(UART_HandleTypeDef* uart) {
 #endif
 
 #ifdef ENABLE_FRAM
+#define FRAM_TIMEOUT 100
+
 static SPI_HandleTypeDef* hspi;
 
 void setSpiHandle(SPI_HandleTypeDef* spi) {
@@ -344,12 +346,12 @@ void runACS(void) {
 		
 		#ifdef ENABLE_FRAM
 		/***** READ/WRITE TO FRAM *****/
-		SPI_FRAM_Write(hspi, SPI_FRAM_LATITUDE_ADDR, (uint8_t*)&acs.latitude, 4, 0);
-		SPI_FRAM_Write(hspi, SPI_FRAM_LONGITUDE_ADDR, (uint8_t*)&acs.longitude, 4, 0);
-		SPI_FRAM_Write(hspi, SPI_FRAM_ALTITUDE_ADDR, (uint8_t*)&acs.altitude, 4, 0);
-		SPI_FRAM_Write(hspi, SPI_FRAM_TIME_ADDR, (uint8_t*)&acs.julian_date, 8, 0);
-		SPI_FRAM_Write(hspi, SPI_FRAM_SOLAR_VECTOR_ADDR, (uint8_t*)&acs.sun_status, 1, 0);
-		SPI_FRAM_Write(hspi, SPI_FRAM_MECH_STATE_ADDR, (uint8_t*)&state, 1, 0);
+		SPI_FRAM_Write(hspi, SPI_FRAM_LATITUDE_ADDR, (uint8_t*)&acs.latitude, 4, 0, FRAM_TIMEOUT);
+		SPI_FRAM_Write(hspi, SPI_FRAM_LONGITUDE_ADDR, (uint8_t*)&acs.longitude, 4, 0, FRAM_TIMEOUT);
+		SPI_FRAM_Write(hspi, SPI_FRAM_ALTITUDE_ADDR, (uint8_t*)&acs.altitude, 4, 0, FRAM_TIMEOUT);
+		SPI_FRAM_Write(hspi, SPI_FRAM_TIME_ADDR, (uint8_t*)&acs.julian_date, 8, 0, FRAM_TIMEOUT);
+		SPI_FRAM_Write(hspi, SPI_FRAM_SOLAR_VECTOR_ADDR, (uint8_t*)&acs.sun_status, 1, 0, FRAM_TIMEOUT);
+		SPI_FRAM_Write(hspi, SPI_FRAM_MECH_STATE_ADDR, (uint8_t*)&state, 1, 0, FRAM_TIMEOUT);
 		#endif
 		
 		
