@@ -85,7 +85,7 @@ void runACS(void) {
 	ACSType acs;
 	initializeACS(&acs);
 	
-	ACSState state = WAIT_FOR_ATTITUDE;
+	ACSState state = WAIT_FOR_ENABLE;
 	int first_step = 1, reset_integrator = 1;
 	float last_inertial_update_time = -INFINITY;	// In seconds
 	
@@ -319,15 +319,12 @@ void runACS(void) {
 				
 			case WAIT_FOR_ATTITUDE:
 				attitude_est_stable_counter = 0;
-				vectorSetXYZ(acs.rw_PWM, 100, 100, 100);
-				acs.rw_brake[0] = 1;
-				acs.rw_brake[1] = 1;
-				acs.rw_brake[2] = 1;
 				vectorSetXYZ(acs.tr_PWM, 0, 0, 0);
 				break;
 				
 			case REORIENT:
 				first_step = 1;
+				reset_integrator = 1;
 				break;
 			
 			case STABILIZE_NO_SUN:
