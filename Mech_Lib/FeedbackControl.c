@@ -111,7 +111,7 @@ void runBdotController(ACSType* acs) {
 	// ***** FIND PWM FOR EACH TORQUE ROD *****
 	float bdot_norm = vectorNorm(bdot);
 	if(bdot_norm == 0) return;
-	matrixScale(bdot, (-100/bdot_norm)*(TR_MAX_V/TR_V_RAIL));
+	matrixScale(bdot, (-100/bdot_norm));	
 	matrixCopy (bdot, acs->tr_PWM);
 	
 	return;
