@@ -108,7 +108,7 @@ void runStabilizationController(ACSType* acs, Matrix err, int init_error, int re
 			// ***** FIND PWM FOR EACH TORQUE ROD *****
 			//vectorCrossProduct(acs->mag_vector, trTorque, m);
 			matrixCopy(m, acs->tr_PWM); 
-			matrixScale(acs->tr_PWM, 100.0/TR_MAXDIP);	//Scale to PWM
+			matrixScale(acs->tr_PWM, (100.0/TR_MAXDIP) *(TR_MAX_V/TR_V_RAIL));	//Scale to PWM
 		}
 	
 		else

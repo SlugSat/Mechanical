@@ -23,8 +23,6 @@
 
 #define RW_V_RAIL 8.0f // Volts
 
-#define TR_V_RAIL 3.3f // Volts
-#define TR_MAX_V 1.0f // Volts
 
 // Reaction wheel motor constants
 #define KT 0.00713f // Nm/A

@@ -18,6 +18,10 @@
 /* Includes ------------------------------------------------------------------*/
 #include <ACS.h>
 
+#define TR_V_RAIL 3.3f // Volts
+#define TR_MAX_V 1.0f // Volts
+#define TR_MAXDIP 0.5 /**< Torque rod max dipole moment (A*m^2) */
+
 
 /* Public Functions ----------------------------------------------------------*/
 
