@@ -111,9 +111,12 @@ int main(void)
 	
 	acs.gyro_vector = make3x1Vector(0.1, 0.1, 0.1);
 	acs.sv_inertial = make3x1Vector(1, 0, 0);
-	acs.mag_inertial = make3x1Vector(0, 0, -1);
+	acs.solar_vector = make3x1Vector(0, 0, 1);
+	acs.mag_inertial = make3x1Vector(0, 1, 0);
+	acs.mag_vector = make3x1Vector(1, 0, 0);
 	
 	acs.dt = 1;
+	acs.sun_status = SV_FOUND;
 	
   /* USER CODE END 2 */
 
@@ -121,6 +124,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+		matrixSubtract(acs.gyro_vector, acs.gyro_bias, acs.w);
 		updateAttitudeEstimate(&acs);
 		
 		// Print DCM every step
@@ -130,11 +134,13 @@ int main(void)
 		sprintf(transmit, "\r\n");
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
 		
+		/*
 		printMatrix(acs.gyro_bias, transmit);
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
 		
 		sprintf(transmit, "\r\n");
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+		*/
 		
 		HAL_Delay(500);
     /* USER CODE END WHILE */
