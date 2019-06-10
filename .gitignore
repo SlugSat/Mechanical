@@ -79,10 +79,6 @@
 *.l2p
 *.iex
 
-# Eclipse
-.project
-.cproject
-
 # TrueSTUDIO
 # Object files
 *.o

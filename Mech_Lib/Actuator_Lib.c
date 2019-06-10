@@ -9,15 +9,14 @@
 #define BRAKE_DISABLE GPIO_PIN_SET
 
 static TIM_HandleTypeDef *ht_rpm, *ht_pwm;
-static uint32_t FWD_REV_Pin, BRAKE_Pin;
-static GPIO_TypeDef *FWD_REV_Port, *BRAKE_Port;
+static uint32_t rw_FWD_REV_Pin, rw_BRAKE_Pin, tr_FWD_REV_Pin, tr_ENABLE_Pin;
+static GPIO_TypeDef *rw_FWD_REV_Port, *rw_BRAKE_Port, *tr_FWD_REV_Port, *tr_ENABLE_Port;
 static uint16_t time_val;
 static uint8_t IC_flag = 0;
 
 static float avg_speed = 0;
 
-void initActuators(TIM_HandleTypeDef *htim_pwm, TIM_HandleTypeDef *htim_rpm, 
-	uint32_t rw_fwd_rev_pin, GPIO_TypeDef* rw_fwd_rev_port, uint32_t rw_brake_pin, GPIO_TypeDef* rw_brake_port)
+void initActuators(TIM_HandleTypeDef *htim_pwm, TIM_HandleTypeDef *htim_rpm)
 {
     // initialize local module level timer handlers
     ht_rpm = htim_rpm; // timer handler for rpm calc
@@ -39,12 +38,20 @@ void initActuators(TIM_HandleTypeDef *htim_pwm, TIM_HandleTypeDef *htim_rpm,
     // start timer for RPM calculations
     ht_rpm->Instance->CCER |= 1;
     HAL_TIM_Base_Start(ht_rpm);
+}
 
-    // save pins
-    FWD_REV_Pin = rw_fwd_rev_pin;
-		FWD_REV_Port = rw_fwd_rev_port;
-		BRAKE_Pin = rw_brake_pin;
-		BRAKE_Port = rw_brake_port;
+void rw_init(uint32_t rw_fwd_rev_pin, GPIO_TypeDef* rw_fwd_rev_port, uint32_t rw_brake_pin, GPIO_TypeDef* rw_brake_port) {
+	rw_FWD_REV_Pin = rw_fwd_rev_pin;
+	rw_FWD_REV_Port = rw_fwd_rev_port;
+	rw_BRAKE_Pin = rw_brake_pin;
+	rw_BRAKE_Port = rw_brake_port;
+}
+
+void tr_init(uint32_t tr_fwd_rev_pin, GPIO_TypeDef* tr_fwd_rev_port, uint32_t tr_enable_pin, GPIO_TypeDef* tr_enable_port) {
+	tr_FWD_REV_Pin = tr_fwd_rev_pin;
+	tr_FWD_REV_Port = tr_fwd_rev_port;
+	tr_ENABLE_Pin = tr_enable_pin;
+	tr_ENABLE_Port = tr_enable_port;
 }
 
 void rw_get_speed (float *speed)
@@ -86,31 +93,44 @@ void rw_get_speed (float *speed)
 
 void rw_set_speed(float pwm, uint8_t brake) {
 	if(brake) {
-		HAL_GPIO_WritePin(BRAKE_Port, BRAKE_Pin, BRAKE_ENABLE);
-		
-		// Invert PWM
-//		if(pwm > 0) { 
-//			PWM_Set_Duty_Cycle(ht_pwm, 100.0 - pwm, RW_PWM_CHANNEL);
-//		}
-//		else {
-//			PWM_Set_Duty_Cycle(ht_pwm, -100.0 - pwm, RW_PWM_CHANNEL);
-//		}
+		HAL_GPIO_WritePin(rw_BRAKE_Port, rw_BRAKE_Pin, BRAKE_ENABLE);
 		
 		PWM_Set_Duty_Cycle(ht_pwm, fabsf(pwm), RW_PWM_CHANNEL);
 	}
 	else {
-		HAL_GPIO_WritePin(BRAKE_Port, BRAKE_Pin, BRAKE_DISABLE);
+		HAL_GPIO_WritePin(rw_BRAKE_Port, rw_BRAKE_Pin, BRAKE_DISABLE);
 		
 		// check direction
 		if (pwm > 0) {
-				HAL_GPIO_WritePin(FWD_REV_Port, FWD_REV_Pin, GPIO_PIN_RESET);
+				HAL_GPIO_WritePin(rw_FWD_REV_Port, rw_FWD_REV_Pin, GPIO_PIN_RESET);
 		} else {
 				pwm *= -1;
-				HAL_GPIO_WritePin(FWD_REV_Port, FWD_REV_Pin, GPIO_PIN_SET);
+				HAL_GPIO_WritePin(rw_FWD_REV_Port, rw_FWD_REV_Pin, GPIO_PIN_SET);
 		}
 		
 		PWM_Set_Duty_Cycle(ht_pwm, pwm, RW_PWM_CHANNEL);
 	}
+}
+
+void tr_set_speed(float pwm) {
+	// Enable
+	if(pwm == 0) {
+		HAL_GPIO_WritePin(tr_ENABLE_Port, tr_ENABLE_Pin, GPIO_PIN_RESET);
+	}
+	
+	// Direction
+	else {
+		// check direction
+		if (pwm > 0) {
+				HAL_GPIO_WritePin(tr_FWD_REV_Port, tr_FWD_REV_Pin, GPIO_PIN_SET);
+		} else {
+				pwm *= -1;
+				HAL_GPIO_WritePin(tr_FWD_REV_Port, tr_FWD_REV_Pin, GPIO_PIN_RESET);
+		}
+	}
+	
+	// Duty cycle
+	PWM_Set_Duty_Cycle(ht_pwm, pwm, TR_PWM_CHANNEL);
 }
 
 void HAL_TIM_IC_CaptureCallback (TIM_HandleTypeDef *htim) {
