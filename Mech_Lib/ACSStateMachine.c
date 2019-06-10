@@ -93,7 +93,8 @@ void runACS(void) {
 	uint8_t acs_enable = 1;			// Temporary bool
 	float gyro_norm = 0, w_norm = 0;		// Rad/s
 	float attitude_est_stable_counter = 0;
-
+	Matrix zero_vector = make3x1Vector(0, 0, 0);
+	
 	#ifdef ENABLE_42
 	initializeACSSerial(huart);
 	char prnt[300]; // String buffer to print to 42
@@ -146,6 +147,11 @@ void runACS(void) {
 			
 			// Run attitude estimation
 			updateAttitudeEstimate(&acs);
+		}
+		
+		if(state == WAIT_FOR_ATTITUDE) {
+			// Use reaction wheels to stabilize
+			wdot2rw_pwm(&acs, zero_vector);
 		}
 		
 		if(state == REORIENT) {
