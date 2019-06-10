@@ -116,6 +116,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
 		sprintf(send, "Enter a PWM from -100.00 to 100.00: ");
 		HAL_UART_Transmit(&huart2, (uint8_t*)send, strlen(send), 20);
 		
@@ -139,8 +141,6 @@ int main(void)
 		sprintf(send, "rw_pwm = %6.2f\n", rw_pwm);
 		HAL_UART_Transmit(&huart2, (uint8_t*)send, strlen(send), 20);
 		rw_set_speed(rw_pwm);
-		
-    /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
 }
@@ -283,7 +283,7 @@ static void MX_TIM10_Init(void)
   {
     Error_Handler();
   }
-  sConfigIC.ICPolarity = TIM_INPUTCHANNELPOLARITY_BOTHEDGE;
+  sConfigIC.ICPolarity = TIM_INPUTCHANNELPOLARITY_RISING;
   sConfigIC.ICSelection = TIM_ICSELECTION_DIRECTTI;
   sConfigIC.ICPrescaler = TIM_ICPSC_DIV1;
   sConfigIC.ICFilter = 0;
