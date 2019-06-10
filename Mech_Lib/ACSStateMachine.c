@@ -181,6 +181,7 @@ void runACS(void) {
 		/***** SET ACTUATOR OUTPUTS *****/
 		#ifdef ENABLE_ACTUATORS
 		rw_set_speed(matrixGetElement(acs.rw_PWM, 1, 1), acs.rw_brake[0]);
+		tr_set_speed(matrixGetElement(acs.tr_PWM, 1, 1));
 		#endif
 		
 		

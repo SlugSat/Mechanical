@@ -105,7 +105,9 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   #ifdef ENABLE_ACTUATORS
-  initActuators(&htim9, &htim10, RW_FWD_REV_Pin, RW_FWD_REV_GPIO_Port, RW_BRAKE_Pin, RW_BRAKE_GPIO_Port);
+  initActuators(&htim9, &htim10);
+  rw_init(RW_FWD_REV_Pin, RW_FWD_REV_GPIO_Port, RW_BRAKE_Pin, RW_BRAKE_GPIO_Port);
+  tr_init(TR_DIRECTION_Pin, TR_DIRECTION_GPIO_Port, TR_ENABLE_Pin, TR_ENABLE_GPIO_Port);
   #endif
   #ifdef ENABLE_42
   setUartHandle(&huart2);
@@ -366,13 +368,20 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOC_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, TR_ENABLE_Pin|TR_DIRECTION_Pin|RW_FWD_REV_Pin|SPI_FRAM_CS_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(RW_BRAKE_GPIO_Port, RW_BRAKE_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(SPI_FRAM_LOCK_GPIO_Port, SPI_FRAM_LOCK_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, RW_FWD_REV_Pin|SPI_FRAM_CS_Pin, GPIO_PIN_RESET);
+  /*Configure GPIO pins : TR_ENABLE_Pin TR_DIRECTION_Pin RW_FWD_REV_Pin SPI_FRAM_CS_Pin */
+  GPIO_InitStruct.Pin = TR_ENABLE_Pin|TR_DIRECTION_Pin|RW_FWD_REV_Pin|SPI_FRAM_CS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pin : SPI_FRAM_IN2_Pin */
   GPIO_InitStruct.Pin = SPI_FRAM_IN2_Pin;
@@ -399,13 +408,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(SPI_FRAM_LOCK_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : RW_FWD_REV_Pin SPI_FRAM_CS_Pin */
-  GPIO_InitStruct.Pin = RW_FWD_REV_Pin|SPI_FRAM_CS_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 }
 

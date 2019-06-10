@@ -62,6 +62,8 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define TR_ENABLE_Pin GPIO_PIN_1
+#define TR_ENABLE_GPIO_Port GPIOB
 #define SPI_FRAM_IN2_Pin GPIO_PIN_10
 #define SPI_FRAM_IN2_GPIO_Port GPIOB
 #define HALL_EFFECT_IN_Pin GPIO_PIN_12
@@ -70,6 +72,8 @@ void Error_Handler(void);
 #define RW_PWM_GPIO_Port GPIOB
 #define TR_PWM_Pin GPIO_PIN_14
 #define TR_PWM_GPIO_Port GPIOB
+#define TR_DIRECTION_Pin GPIO_PIN_15
+#define TR_DIRECTION_GPIO_Port GPIOB
 #define RW_BRAKE_Pin GPIO_PIN_7
 #define RW_BRAKE_GPIO_Port GPIOC
 #define SPI_FRAM_IN1_Pin GPIO_PIN_8
