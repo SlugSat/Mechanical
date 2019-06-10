@@ -10,7 +10,7 @@ clear all
 close all
 
 % SETTINGS
-steps = 60; % How many steps to run for (each is 1 second)
+steps = 180; % How many steps to run for (each is 1 second)
 filename = 'rwSpeeds.csv';
 wheel = 0; % Which reaction wheel to use (0 -> X, 1 -> Y, 2 -> Z)
 
@@ -19,8 +19,8 @@ M = csvread(filename, wheel+2, 0);
 
 % Find first line with a nonzero PWM
 start_line = 1;
-while M(start_line, wheel+4) == 0
-    start_line = start_line + 1;
+while M(start_line, wheel+7) == 1 || M(start_line, wheel+4) == 0
+    start_line = start_line + 1
 end
 
 % Separate 42 data into arrays
@@ -71,19 +71,25 @@ end
 % Stop reaction wheel
 fprintf(s, '%6.2fb\n', 100)
 
+% Close all ports
+if ~isempty(instrfind)
+    fclose(instrfind);
+    delete(instrfind);
+end
+
 % PLOT RESULTS
 figure(1)
 hold on
 grid on
-plot(t, abs(theoretical_speeds))
+theoretical_speeds = abs(theoretical_speeds);
+plot(t, theoretical_speeds)
 plot(t, measured_speeds)
 title('Measured vs. Theoretical Motor Speeds')
 xlabel('Time (s)')
 ylabel('Speed (rad/s)')
 legend('Thoeretical', 'Measured')
 
-% Close all ports
-if ~isempty(instrfind)
-    fclose(instrfind);
-    delete(instrfind);
-end
+% PRINT ERROR
+err = abs(theoretical_speeds - measured_speeds)./theoretical_speeds;
+mean_err = mean(err)
+max_err = max(err)

@@ -9,7 +9,7 @@ close all
 % SETTINGS
 pwm_step_size = 2;
 max_pwm = 60;
-wait_time = 3; % Time to wait for speed to stabilize (seconds)
+wait_time = 15; % Time to wait for speed to stabilize (seconds)
 v_rail = 8;
 K = 0.00713332454; % Motor constant (Kt = Ke)
 R = 92.7; % Ohms

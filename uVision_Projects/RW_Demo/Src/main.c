@@ -106,13 +106,14 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 	
-	char send[100];
+	char send[200];
 	char rec[100];
 	
 	float rw_pwm;
-	uint8_t rw_brake;
+	uint8_t rw_brake, send_speed;
 	
-	initActuators(&htim3, &htim4, RW_FWD_REV_Pin, RW_FWD_REV_GPIO_Port, RW_BRAKE_Pin, RW_BRAKE_GPIO_Port);
+	initActuators(&htim3, &htim4);
+	rw_init(RW_FWD_REV_Pin, RW_FWD_REV_GPIO_Port, RW_BRAKE_Pin, RW_BRAKE_GPIO_Port);
 	
 	float measured_speed = 0;
 	
@@ -120,19 +121,27 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+	#ifdef COMMAND_LINE
+	sprintf(send, "REACTION WHEEL TEST PROGRAM\nEnter PWMs from -100 to 100 and press ENTER\nAppend a 'b' at the end to enable brake, e.g. 50b\nPress 's' to read speed in RPM\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*)send, strlen(send), 200);
+	#endif
+		
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
 		#ifdef COMMAND_LINE
-		sprintf(send, "Enter a PWM from -100.00 to 100.00: ");
+		sprintf(send, "-> ");
 		HAL_UART_Transmit(&huart2, (uint8_t*)send, strlen(send), 40);
 		#endif
 		
 		int i = 0;
+		send_speed = 0;
 		while(1) {
-			if(HAL_UART_Receive(&huart2, (uint8_t*)&rec[i], 1, 100) == HAL_OK) {
+			rw_get_speed(&measured_speed);
+			
+			if(HAL_UART_Receive(&huart2, (uint8_t*)&rec[i], 1, 50) == HAL_OK) {
 				#ifdef COMMAND_LINE
 				HAL_UART_Transmit(&huart2, (uint8_t*)&rec[i], 1, 10);
 				#endif
@@ -151,11 +160,13 @@ int main(void)
 					}
 					break;
 				}
+				else if(rec[i] == 's') {
+					send_speed = 1;
+					break;
+				}
 				
 				i++;
 			}
-			
-			rw_get_speed(&measured_speed);
 		}
 		
 		
@@ -173,7 +184,13 @@ int main(void)
 		HAL_UART_Transmit(&huart2, (uint8_t*)send, strlen(send), 50);
 		#endif
 		
-		rw_set_speed(rw_pwm, rw_brake);
+		if(send_speed) {
+			sprintf(send, "%.2f [RPM]\n", measured_speed);
+			HAL_UART_Transmit(&huart2, (uint8_t*)send, strlen(send), 50);
+		}
+		else {
+			rw_set_speed(rw_pwm, rw_brake);
+		}
   }
   /* USER CODE END 3 */
 }
