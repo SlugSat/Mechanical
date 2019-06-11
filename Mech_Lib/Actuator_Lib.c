@@ -121,6 +121,8 @@ void tr_set_speed(float pwm) {
 	
 	// Direction
 	else {
+		HAL_GPIO_WritePin(tr_ENABLE_Port, tr_ENABLE_Pin, GPIO_PIN_SET);
+
 		// check direction
 		if (pwm > 0) {
 				HAL_GPIO_WritePin(tr_FWD_REV_Port, tr_FWD_REV_Pin, GPIO_PIN_SET);
