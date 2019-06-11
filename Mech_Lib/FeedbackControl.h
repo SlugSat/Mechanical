@@ -20,7 +20,7 @@
 
 #define TR_V_RAIL 3.3f /**< Torque rod rail voltage (V) */
 #define TR_MAX_V 1.0f /**< Torque rod voltage at max dipole moment (V) */
-#define TR_MAXDIP 0.5 /**< Torque rod max dipole moment (A*m^2) */
+#define TR_MAXDIP 0.2 /**< Torque rod max dipole moment (A*m^2) */
 
 
 /* Public Functions ----------------------------------------------------------*/
