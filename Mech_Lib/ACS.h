@@ -29,7 +29,6 @@
 #define RW_BASE_SPEED 0.0 /**< Steady state reaction wheel speed (rad/s) */
 
 
-
 /* Datatypes -----------------------------------------------------------------*/
 
 /** 

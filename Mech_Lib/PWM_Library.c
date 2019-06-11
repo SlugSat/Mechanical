@@ -1,6 +1,6 @@
 #include "PWM_Library.h"
 
-#define CLOCK_FREQ 4e6 // Frequency of Timer 4
+#define CLOCK_FREQ 1e6 // Frequency of Timer 4
 
 void PWM_Set_Duty_Cycle(TIM_HandleTypeDef *htim, float duty_cycle, uint32_t channel)
 {

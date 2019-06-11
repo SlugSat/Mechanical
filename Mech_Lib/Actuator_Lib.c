@@ -34,6 +34,7 @@ void initActuators(TIM_HandleTypeDef *htim_pwm, TIM_HandleTypeDef *htim_rpm)
     
     // starts PWM signal generation
     HAL_TIM_PWM_Start(ht_pwm, RW_PWM_CHANNEL);
+    HAL_TIM_PWM_Start(ht_pwm, TR_PWM_CHANNEL);
     
     // start timer for RPM calculations
     ht_rpm->Instance->CCER |= 1;
