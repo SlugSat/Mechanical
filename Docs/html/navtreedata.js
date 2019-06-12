@@ -28,6 +28,7 @@ var NAVTREE =
     [ "Get Started", "get_started.html", null ],
     [ "IGRF SOP", "igrf_sop.html", null ],
     [ "Matlab ACS Simulation", "matlab_sim.html", null ],
+    [ "Reaction Wheels", "reaction_wheels.html", null ],
     [ "42 Simulation", "simulation42.html", null ],
     [ "Keil uVision Projects", "projects.html", null ],
     [ "Classes", "annotated.html", [

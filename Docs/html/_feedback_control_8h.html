@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SlugSat ACS: C:/Users/gsavidge/Documents/Mechanical/Mech_Lib/FeedbackControl.h File Reference</title>
+<title>SlugSat ACS: C:/Users/lfrivera.ADCRM/Desktop/Mechanical/Mech_Lib/FeedbackControl.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -88,6 +88,7 @@ $(document).ready(function(){initNavTree('_feedback_control_8h.html','');});
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">FeedbackControl.h File Reference</div>  </div>
@@ -100,6 +101,15 @@ $(document).ready(function(){initNavTree('_feedback_control_8h.html','');});
 </div>
 <p><a href="_feedback_control_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:af0cdf26551b2932dfee23318711a8332"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_feedback_control_8h.html#af0cdf26551b2932dfee23318711a8332">TR_V_RAIL</a>&#160;&#160;&#160;3.3f</td></tr>
+<tr class="separator:af0cdf26551b2932dfee23318711a8332"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af834132ada65a6d0e340a0ecbc21ad1c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_feedback_control_8h.html#af834132ada65a6d0e340a0ecbc21ad1c">TR_MAX_V</a>&#160;&#160;&#160;1.0f</td></tr>
+<tr class="separator:af834132ada65a6d0e340a0ecbc21ad1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89f9988c2fe9ddc0b00d848a1100fe11"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_feedback_control_8h.html#a89f9988c2fe9ddc0b00d848a1100fe11">TR_MAXDIP</a>&#160;&#160;&#160;0.2</td></tr>
+<tr class="separator:a89f9988c2fe9ddc0b00d848a1100fe11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a061127a629c487f3bc31574e39e3d684"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_feedback_control_8h.html#a061127a629c487f3bc31574e39e3d684">findErrorVectors</a> (<a class="el" href="struct_a_c_s_type.html">ACSType</a> *acs)</td></tr>
@@ -125,7 +135,53 @@ Functions</h2></td></tr>
 <p>Created by Galen Savidge. Edited 4/21/2019.</p>
 <p>Controller implementations are in <a class="el" href="_orientation_controller_8c.html" title="Implementation for the reorientation state of the ACS.">OrientationController.c</a> and <a class="el" href="_stabilization_controller_8c.html" title="Implementation for the stabilzation state of the ACS.">StabilizationController.c</a>. A call of <a class="el" href="_feedback_control_8h.html#a061127a629c487f3bc31574e39e3d684" title="Uses the craft orientation and inertial vectors to find error.">findErrorVectors()</a> is required before either <a class="el" href="_feedback_control_8h.html#ad350e4cca0fbe67125ed1ad51ad185fb" title="Runs the feedback controller used to move the craft over large angles.">runOrientationController()</a> or <a class="el" href="_feedback_control_8h.html#aba10c00b0a1f2282cc8186afb8e7fc0a" title="Runs the feedback controller used to stabilize the craft when error is low.">runStabilizationController()</a> for the ACS to work correctly.</p>
 <p>Created by Galen Savidge. Edited 5/13/2019. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="af834132ada65a6d0e340a0ecbc21ad1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af834132ada65a6d0e340a0ecbc21ad1c">&#9670;&nbsp;</a></span>TR_MAX_V</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TR_MAX_V&#160;&#160;&#160;1.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Torque rod voltage at max dipole moment (V) </p>
+
+</div>
+</div>
+<a id="a89f9988c2fe9ddc0b00d848a1100fe11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89f9988c2fe9ddc0b00d848a1100fe11">&#9670;&nbsp;</a></span>TR_MAXDIP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TR_MAXDIP&#160;&#160;&#160;0.2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Torque rod max dipole moment (A*m^2) </p>
+
+</div>
+</div>
+<a id="af0cdf26551b2932dfee23318711a8332"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0cdf26551b2932dfee23318711a8332">&#9670;&nbsp;</a></span>TR_V_RAIL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TR_V_RAIL&#160;&#160;&#160;3.3f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Torque rod rail voltage (V) </p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
 <a id="a061127a629c487f3bc31574e39e3d684"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a061127a629c487f3bc31574e39e3d684">&#9670;&nbsp;</a></span>findErrorVectors()</h2>
 
