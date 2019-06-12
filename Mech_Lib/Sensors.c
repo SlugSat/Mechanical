@@ -48,6 +48,7 @@ void readSensors(ACSType* acs, I2C_HandleTypeDef* hi2c) {
 	// Read gyro and transform into a column vector Matrix
 	get_gyr_data(hi2c, gyro_data);
 	vectorCopyArray(acs->gyro_vector, gyro_data, 3);
+	matrixSubtract(acs->gyro_vector, acs->gyro_bias, acs->w);
 	
 	// Read magnetometer, iterate moving average filter, transform into a vector Matrix
 	get_mag_data_corrected(hi2c, mag_data);

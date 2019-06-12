@@ -136,8 +136,6 @@ int main(void)
 	matrixCopy(acs.mag_vector, acs.mag_inertial);
 	matrixCopy(acs.solar_vector, acs.sv_inertial); // NEEDS FIXING FOR CASE WHEN SOLAR VECTORS IS NOT FOUND ON STARTUP
 	
-	float dt; // In seconds
-	
 	sprintf(transmit, "Finished init\r\n");
 	HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
 	
@@ -181,6 +179,10 @@ int main(void)
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
 		printMatrix(acs.solar_vector, transmit);
 		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 200);
+		
+		// Print dt
+		sprintf(transmit, "dt: %6.2f\r\n", acs.dt);
+		HAL_UART_Transmit(&huart2, (uint8_t*)transmit, strlen(transmit), 20);
 		#endif
 		
 		#ifdef PRINT_COMPUTATION_TIME
