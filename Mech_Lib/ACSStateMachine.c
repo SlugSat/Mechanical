@@ -93,7 +93,8 @@ void runACS(void) {
 	uint8_t acs_enable = 1;			// Temporary bool
 	float gyro_norm = 0, w_norm = 0;		// Rad/s
 	float attitude_est_stable_counter = 0;
-	Matrix zero_vector = make3x1Vector(0, 0, 0);
+
+	//Matrix zero_vector = make3x1Vector(0, 0, 0);
 	
 	#ifdef ENABLE_42
 	initializeACSSerial(huart);
@@ -151,7 +152,7 @@ void runACS(void) {
 		
 		if(state == WAIT_FOR_ATTITUDE) {
 			// Use reaction wheels to stabilize
-			wdot2rw_pwm(&acs, zero_vector);
+			//wdot2rw_pwm(&acs, zero_vector);
 		}
 		
 		if(state == REORIENT) {
@@ -326,6 +327,10 @@ void runACS(void) {
 				
 			case WAIT_FOR_ATTITUDE:
 				attitude_est_stable_counter = 0;
+				vectorSetXYZ(acs.rw_PWM, 0, 0, 0);
+				acs.rw_brake[0] = 0;
+				acs.rw_brake[1] = 0;
+				acs.rw_brake[2] = 0;
 				vectorSetXYZ(acs.tr_PWM, 0, 0, 0);
 				break;
 				
