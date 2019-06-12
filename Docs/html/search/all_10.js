@@ -1,6 +1,7 @@
 var searchData=
 [
   ['r',['R',['../struct_a_c_s_type.html#a72851c393b49a2b488e51a678b90135b',1,'ACSType::R()'],['../struct___matrix.html#acab531abaa74a7e664e3986f2522b33a',1,'_Matrix::r()']]],
+  ['reaction_20wheels',['Reaction Wheels',['../reaction_wheels.html',1,'']]],
   ['readsensors',['readSensors',['../_sensors_8h.html#ad0150d4dfa3bc3847664a94cc6987229',1,'Sensors.c']]],
   ['readsensorsfromserial',['readSensorsFromSerial',['../_s_t_m32_serial_communication_8h.html#ad072f619e7cd898708cb18f8046dddf4',1,'STM32SerialCommunication.c']]],
   ['referenceframes_2eh',['ReferenceFrames.h',['../_reference_frames_8h.html',1,'']]],
