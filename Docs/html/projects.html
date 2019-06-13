@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SlugSat ACS: Keil uVision Projects</title>
+<title>SlugSat ACS: Nucleo Projects</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">SlugSat ACS
-   &#160;<span id="projectnumber">0.1.0</span>
+   &#160;<span id="projectnumber">0.2.0</span>
    </div>
    <div id="projectbrief">This repository contains source code for the Attitude Control System (ACS) onboard SlugSat.</div>
   </td>
@@ -88,31 +88,42 @@ $(document).ready(function(){initNavTree('projects.html','');});
 
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Keil uVision Projects </div>  </div>
+<div class="title">Nucleo Projects </div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>This page contains a list of projects and describes their function. SOPs should be linked here.</p>
 <h2>Flat-Sat ACS Flight Software</h2>
 <table border="0">
 <tr>
-<td><b>Project Name</b> </td><td>FlatSatACS  </td></tr>
+<td><b>Project Name</b> </td><td>ACS_FlatSat  </td></tr>
 <tr>
-<td><b>Description</b> </td><td>The ACS program used on the flat-sat. Includes the full ACS state machine, attitude determination, feedback control logic, 42 integration, SPI FRAM integration, and actuator code.  </td></tr>
+<td><b>Description</b> </td><td>The ACS program used on the flat-sat. Includes the full ACS state machine, attitude determination, feedback control logic, 42 integration, SPI FRAM integration, and actuator code to drive the reaction wheel and torque rod prototypes.  </td></tr>
 <tr>
-<td><b>Microcontroller</b> </td><td>STM32 Nucleo F103RB  </td></tr>
+<td><b>Microcontroller</b> </td><td>STM32 Nucleo L152RE  </td></tr>
 <tr>
-<td><b>Usage</b> </td><td>See the flat-sat SOP (needs link).  </td></tr>
+<td><b>Usage</b> </td><td>Load onto the flat-sat ACS microcontroller. Runs alongside 42. See <a href="/simulation42.hmtl"><b>42 Simulation</b></a>.  </td></tr>
 </table>
 <h2>ACS Test Project with 42 Integration</h2>
 <table border="0">
 <tr>
-<td><b>Project Name</b> </td><td>State_Machine  </td></tr>
+<td><b>Project Name</b> </td><td>ACS_42Only  </td></tr>
 <tr>
 <td><b>Description</b> </td><td>The full ACS program with 42 integration, but without FRAM integration or actuators enabled.  </td></tr>
 <tr>
 <td><b>Microcontroller</b> </td><td>STM32 Nucleo F103RB  </td></tr>
 <tr>
-<td><b>Usage</b> </td><td>Runs alongside 42. See the ACS SOP (needs link).  </td></tr>
+<td><b>Usage</b> </td><td>Runs alongside 42. See <a href="/simulation42.hmtl"><b>42 Simulation</b></a>.  </td></tr>
+</table>
+<h2>42 Communication Test Project</h2>
+<table border="0">
+<tr>
+<td><b>Project Name</b> </td><td>42_Test  </td></tr>
+<tr>
+<td><b>Description</b> </td><td>Tests sending and receiving data from 42.  </td></tr>
+<tr>
+<td><b>Microcontroller</b> </td><td>STM32 Nucleo F103RB  </td></tr>
+<tr>
+<td><b>Usage</b> </td><td>Runs alongside 42. See <a href="/simulation42.hmtl"><b>42 Simulation</b></a>.  </td></tr>
 </table>
 <h2>Attitude Determination Test Project</h2>
 <table border="0">
@@ -123,7 +134,18 @@ $(document).ready(function(){initNavTree('projects.html','');});
 <tr>
 <td><b>Microcontroller</b> </td><td>STM32 Nucleo F103RB  </td></tr>
 <tr>
-<td><b>Usage</b> </td><td>Can be operated on its own or integrated with Matlab. See the Attitude Estimation SOP (needs link).  </td></tr>
+<td><b>Usage</b> </td><td>Can be operated on its own or integrated with Matlab. See <a href="attitude_determination.html"><b>Attitude Determination Testing</b></a>.  </td></tr>
+</table>
+<h2>Attitude Estimation Unit Tests</h2>
+<table border="0">
+<tr>
+<td><b>Project Name</b> </td><td>Attitude_Estimation_Test  </td></tr>
+<tr>
+<td><b>Description</b> </td><td>Runs the attitude estimation algorithm with set inputs. Prints outputs over UART. Values should be compared to outputs of the Matlab version of the algorithm (<a href="https://drive.google.com/drive/u/0/folders/1cS4aXuDVg1A6fAaxrRrWnSXZEt2Q4G4o"><b>link</b></a>).  </td></tr>
+<tr>
+<td><b>Microcontroller</b> </td><td>STM32 Nucleo F103RB  </td></tr>
+<tr>
+<td><b>Usage</b> </td><td>Run and read output from a terminal.  </td></tr>
 </table>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->

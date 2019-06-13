@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['igrf_20sop',['IGRF SOP',['../igrf_sop.html',1,'']]]
+  ['igrf',['IGRF',['../igrf_sop.html',1,'']]]
 ];

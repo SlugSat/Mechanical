@@ -1,5 +1,5 @@
 /*!
-\page projects Keil uVision Projects
+\page projects Nucleo Projects
 \tableofcontents
 
 
@@ -9,19 +9,19 @@ This page contains a list of projects and describes their function. SOPs should 
 <table border="0">
 <tr>
 	<td><b>Project Name</b></td>
-	<td>FlatSatACS</td>
+	<td>ACS_FlatSat</td>
 </tr>
 <tr>
 	<td><b>Description</b></td>
-	<td>The ACS program used on the flat-sat. Includes the full ACS state machine, attitude determination, feedback control logic, 42 integration, SPI FRAM integration, and actuator code.</td>
+	<td>The ACS program used on the flat-sat. Includes the full ACS state machine, attitude determination, feedback control logic, 42 integration, SPI FRAM integration, and actuator code to drive the reaction wheel and torque rod prototypes.</td>
 </tr>
 <tr>
 	<td><b>Microcontroller</b></td>
-	<td>STM32 Nucleo F103RB</td>
+	<td>STM32 Nucleo L152RE</td>
 </tr>
 <tr>
 	<td><b>Usage</b></td>
-	<td>See the flat-sat SOP (needs link).</td>
+	<td>Load onto the flat-sat ACS microcontroller. Runs alongside 42. See [**42 Simulation**](/simulation42.hmtl).</td>
 </tr>
 </table>
 
@@ -29,7 +29,7 @@ This page contains a list of projects and describes their function. SOPs should 
 <table border="0">
 <tr>
 	<td><b>Project Name</b></td>
-	<td>State_Machine</td>
+	<td>ACS_42Only</td>
 </tr>
 <tr>
 	<td><b>Description</b></td>
@@ -41,7 +41,27 @@ This page contains a list of projects and describes their function. SOPs should 
 </tr>
 <tr>
 	<td><b>Usage</b></td>
-	<td>Runs alongside 42. See the ACS SOP (needs link).</td>
+	<td>Runs alongside 42. See [**42 Simulation**](/simulation42.hmtl).</td>
+</tr>
+</table>
+
+## 42 Communication Test Project
+<table border="0">
+<tr>
+	<td><b>Project Name</b></td>
+	<td>42_Test</td>
+</tr>
+<tr>
+	<td><b>Description</b></td>
+	<td>Tests sending and receiving data from 42.</td>
+</tr>
+<tr>
+	<td><b>Microcontroller</b></td>
+	<td>STM32 Nucleo F103RB</td>
+</tr>
+<tr>
+	<td><b>Usage</b></td>
+	<td>Runs alongside 42. See [**42 Simulation**](/simulation42.hmtl).</td>
 </tr>
 </table>
 
@@ -61,7 +81,27 @@ This page contains a list of projects and describes their function. SOPs should 
 </tr>
 <tr>
 	<td><b>Usage</b></td>
-	<td>Can be operated on its own or integrated with Matlab. See the Attitude Estimation SOP (needs link).</td>
+	<td>Can be operated on its own or integrated with Matlab. See [**Attitude Determination Testing**](attitude_determination.html).</td>
+</tr>
+</table>
+
+## Attitude Estimation Unit Tests
+<table border="0">
+<tr>
+	<td><b>Project Name</b></td>
+	<td>Attitude_Estimation_Test</td>
+</tr>
+<tr>
+	<td><b>Description</b></td>
+	<td>Runs the attitude estimation algorithm with set inputs. Prints outputs over UART. Values should be compared to outputs of the Matlab version of the algorithm ([**link**](https://drive.google.com/drive/u/0/folders/1cS4aXuDVg1A6fAaxrRrWnSXZEt2Q4G4o)).</td>
+</tr>
+<tr>
+	<td><b>Microcontroller</b></td>
+	<td>STM32 Nucleo F103RB</td>
+</tr>
+<tr>
+	<td><b>Usage</b></td>
+	<td>Run and read output from a terminal.</td>
 </tr>
 </table>
 
