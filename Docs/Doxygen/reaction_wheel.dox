@@ -1,0 +1,33 @@
+/*! 
+\page reaction_wheels Reaction Wheels
+
+This page serves as the Standard Operation Procedure (SOP) for the Reaction Wheels. 
+
+## Components
+1. Reaction Wheel
+2. Motor Driver
+3. Breakout Board
+4. Power Supply
+5. Microcontroller (F103RB)
+
+## Hardware Setup
+The setup can be found in the [**Reaction Wheel Overview**]( https://docs.google.com/document/d/17F1x7KTJv_9skB2GcmG_zZX7MhH3WDxNv6eCbmAPR0A/edit) document. Follow the setup for the F103RB microcontroller. 
+
+## Test Files
+The test files can be found in the Mechanical Github under uVisionProjects/RW_Demo.
+1. Open the project in uVision.
+2. Program the F103RB microcontroller. 
+3. Open the desired Matlab file. (i.e. find friction or plot speed)
+4. Reset the microcontroller. 
+5. Run the Matlab script. 
+
+
+## Running Reaction Wheel Speed
+1. 
+
+## Running Reaction Wheel Friction
+1. 
+
+
+
+*/
