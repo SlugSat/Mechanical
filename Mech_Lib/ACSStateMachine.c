@@ -93,8 +93,6 @@ void runACS(void) {
 	uint8_t acs_enable = 1;			// Temporary bool
 	float gyro_norm = 0, w_norm = 0;		// Rad/s
 	float attitude_est_stable_counter = 0;
-
-	//Matrix zero_vector = make3x1Vector(0, 0, 0);
 	
 	#ifdef ENABLE_42
 	initializeACSSerial(huart);
@@ -150,11 +148,6 @@ void runACS(void) {
 			updateAttitudeEstimate(&acs);
 		}
 		
-		if(state == WAIT_FOR_ATTITUDE) {
-			// Use reaction wheels to stabilize
-			//wdot2rw_pwm(&acs, zero_vector);
-		}
-		
 		if(state == REORIENT) {
 			// Run feedback controller
 			findErrorVectors(&acs);
@@ -165,9 +158,11 @@ void runACS(void) {
 		if(state == STABILIZE_NO_SUN) {
 			// Run momentum dumping
 			findErrorVectors(&acs);
-			runStabilizationController(&acs, acs.z_err, first_step, reset_integrator);
-			first_step = 0;
-			reset_integrator = 0;
+			if(acs.gyro_bias_dot_norm <= STABLE_ATTITUDE_LOW_THRESHOLD) { // Handles corner case going from eclise to sun
+				runStabilizationController(&acs, acs.z_err, first_step, reset_integrator);
+				first_step = 0;
+				reset_integrator = 0;
+			}
 		}
 		
 		if(state == STABILIZE) {
@@ -319,6 +314,7 @@ void runACS(void) {
 				break;
 			
 			case DETUMBLE:
+				// Brake reaction wheels
 				vectorSetXYZ(acs.rw_PWM, 100, 100, 100);
 				acs.rw_brake[0] = 1;
 				acs.rw_brake[1] = 1;
@@ -327,10 +323,11 @@ void runACS(void) {
 				
 			case WAIT_FOR_ATTITUDE:
 				attitude_est_stable_counter = 0;
-				vectorSetXYZ(acs.rw_PWM, 0, 0, 0);
-				acs.rw_brake[0] = 0;
-				acs.rw_brake[1] = 0;
-				acs.rw_brake[2] = 0;
+
+				// Right now reaction wheels are left spinning when this state is reached. This
+				// needs better handling since it doesn't work well if brake is currently enabled.
+
+				// Turn off torque rods
 				vectorSetXYZ(acs.tr_PWM, 0, 0, 0);
 				break;
 				
