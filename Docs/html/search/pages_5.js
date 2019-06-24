@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['nucleo_20projects',['Nucleo Projects',['../projects.html',1,'']]]
+  ['updating_20igrf_20coefficients',['Updating IGRF Coefficients',['../igrf.html',1,'']]]
 ];

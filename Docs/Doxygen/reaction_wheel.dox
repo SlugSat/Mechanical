@@ -1,33 +1,38 @@
 /*! 
-\page reaction_wheels Reaction Wheels
+\page reaction_wheels Reaction Wheel Testing
 
-This page serves as the Standard Operation Procedure (SOP) for the Reaction Wheels. 
+This page details the operating procedures for the software used to test the reaction wheel prototype on the flat-sat.
 
 ## Components
 1. Reaction Wheel
-2. Motor Driver
+2. Motor Driver Board
 3. Breakout Board
 4. Power Supply
 5. Microcontroller (F103RB)
 
 ## Hardware Setup
-The setup can be found in the [**Reaction Wheel Overview**]( https://docs.google.com/document/d/17F1x7KTJv_9skB2GcmG_zZX7MhH3WDxNv6eCbmAPR0A/edit) document. Follow the setup for the F103RB microcontroller. 
+The setup can be found in the [**Reaction Wheel Overview**]( https://docs.google.com/document/d/17F1x7KTJv_9skB2GcmG_zZX7MhH3WDxNv6eCbmAPR0A/edit) document. Follow the setup for the F103RB microcontroller.
 
 ## Test Files
-The test files can be found in the Mechanical Github under uVisionProjects/RW_Demo.
-1. Open the project in uVision.
-2. Program the F103RB microcontroller. 
-3. Open the desired Matlab file. (i.e. find friction or plot speed)
-4. Reset the microcontroller. 
-5. Run the Matlab script. 
+The test files can be found in the Mechanical Github under **uVisionProjects/RW_Demo.**
+1. Open **RW_Demo** in uVision.
+2. Change the #defines in main.c to set the desired input source to either a terminal or Matlab.
+2. Program the Nucleo F103RB connected to the reaction wheel prototype.
+3. Do one of the following:
+	1. Open a terminal at 9600 baud and connect to the microcontroller.
+	1. Open either **rw_find_friction.m** or **rw_plot_speed.m.**
+4. Reset the microcontroller.
+5. Run the Matlab script (if applicable).
 
+### Reaction Wheel Speed Test
+This Matlab script uses logged reaction wheel PWM and speed to compare the behavior of the reaction wheel with that of the reaction wheel dynamic model in 42.
+1. Get a reaction wheel speed log file from a 42 run. These are named **rwSpeeds.csv.**
+2. Open **rw_plot_speed.m** and change lines 13-15 as necessary.
+3. Follow the steps above to set up the reaction wheel and run the script.
 
-## Running Reaction Wheel Speed
-1. 
-
-## Running Reaction Wheel Friction
-1. 
-
+### Motor Friction Test
+1. Open **rw_find_friction.m** and change lines 10-15 as necessary.
+2. Follow the steps above to set up the reaction wheel and run the script.
 
 
 */

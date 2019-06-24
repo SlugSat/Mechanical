@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SlugSat ACS: Get Started</title>
+<title>SlugSat ACS: Updating IGRF Coefficients</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -68,7 +68,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('get_started.html','');});
+$(document).ready(function(){initNavTree('igrf.html','');});
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -88,17 +88,19 @@ $(document).ready(function(){initNavTree('get_started.html','');});
 
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Get Started </div>  </div>
+<div class="title">Updating <a class="el" href="struct_i_g_r_f.html">IGRF</a> Coefficients </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h2>Installing Keil Tools</h2>
-<p>Put a link to the appropriate document here.</p>
-<h2>Operating Procedures</h2>
-<ul>
-<li><a class="el" href="matlab_sim.html">ACS Matlab Simulation</a></li>
-<li><a class="el" href="attitude_determination.html">Sensor Test Fixture &amp; Attitude Determination Test</a></li>
-<li><a class="el" href="simulation42.html">42 Simulation &amp; ACS Flat-Sat</a> </li>
-</ul>
+<div class="textblock"><p>The International Geomagnetic Reference Field (<a class="el" href="struct_i_g_r_f.html">IGRF</a>) model is updated every 5 years and is used to estimate the inertial magnetic field for attitude estimation. IGRF12 is the current model as of 2019. In 2020, a new model will be released and the current <a class="el" href="struct_i_g_r_f.html">IGRF</a> coefficients will need to be updated. The steps to update these coefficients are provided below.</p>
+<ol type="1">
+<li>Download the Geomag zip file found <a href="https://www.ngdc.noaa.gov/IAGA/vmod/igrf.html"><b>here</b></a>. NOTE: DO NOT USE text file found on top of site.</li>
+<li>Extract just the coefficient file from the zip. This file is named IGRFxx.COF (IGRF12.COF as of June 2019).</li>
+<li>Place the file into <b>Mech_Lib/IGRF</b> in the Mechanical repository. Replace the existing coefficient file if necessary.</li>
+<li><p class="startli">Open the <b>make_headers.py</b> python script and follow the instructions in the window. An example is shown below</p>
+<img src="../assets/IGRF_script.PNG" style="max-width:50%" align="middle" alt="" class="inline"/>
+</li>
+<li>Verify that the header file was generated properly by opening the <a class="el" href="_i_g_r_f_c_o_f_8h_source.html">IGRFCOF.h</a> file and checking the timestamp in the top comment. </li>
+</ol>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->

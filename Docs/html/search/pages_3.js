@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['igrf',['IGRF',['../igrf_sop.html',1,'']]]
+  ['nucleo_20projects',['Nucleo Projects',['../projects.html',1,'']]]
 ];

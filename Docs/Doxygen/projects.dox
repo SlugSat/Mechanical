@@ -3,7 +3,7 @@
 \tableofcontents
 
 
-This page contains a list of projects and describes their function. SOPs should be linked here.
+This page contains a list of projects and describes their function.
 	
 ## Flat-Sat ACS Flight Software
 <table border="0">
@@ -21,7 +21,7 @@ This page contains a list of projects and describes their function. SOPs should 
 </tr>
 <tr>
 	<td><b>Usage</b></td>
-	<td>Load onto the flat-sat ACS microcontroller. Runs alongside 42. See [**42 Simulation**](/simulation42.hmtl).</td>
+	<td>Load onto the flat-sat ACS microcontroller. Runs alongside 42. See [**42 Simulation**](simulation42.html).</td>
 </tr>
 </table>
 
@@ -41,7 +41,7 @@ This page contains a list of projects and describes their function. SOPs should 
 </tr>
 <tr>
 	<td><b>Usage</b></td>
-	<td>Runs alongside 42. See [**42 Simulation**](/simulation42.hmtl).</td>
+	<td>Runs alongside 42. See [**42 Simulation**](simulation42.html).</td>
 </tr>
 </table>
 
@@ -61,7 +61,7 @@ This page contains a list of projects and describes their function. SOPs should 
 </tr>
 <tr>
 	<td><b>Usage</b></td>
-	<td>Runs alongside 42. See [**42 Simulation**](/simulation42.hmtl).</td>
+	<td>Runs alongside 42. See [**42 Simulation**](simulation42.html).</td>
 </tr>
 </table>
 
@@ -102,6 +102,130 @@ This page contains a list of projects and describes their function. SOPs should 
 <tr>
 	<td><b>Usage</b></td>
 	<td>Run and read output from a terminal.</td>
+</tr>
+</table>
+
+## Reaction Wheel Prototype Demo
+<table border="0">
+<tr>
+	<td><b>Project Name</b></td>
+	<td>RW_Demo</td>
+</tr>
+<tr>
+	<td><b>Description</b></td>
+	<td>Reads PWM values from either a command line or Matlab. Also measures and transmits motor speed.</td>
+</tr>
+<tr>
+	<td><b>Microcontroller</b></td>
+	<td>STM32 Nucleo F103RB</td>
+</tr>
+<tr>
+	<td><b>Usage</b></td>
+	<td>See [**Reaction Wheel Testing**](reaction_wheels.html) for instructions on using the associated Matlab scripts.</td>
+</tr>
+</table>
+
+## Reaction Wheel Prototype Test
+<table border="0">
+<tr>
+	<td><b>Project Name</b></td>
+	<td>RW_Test</td>
+</tr>
+<tr>
+	<td><b>Description</b></td>
+	<td>Reads input from the command line and sets the PWM of the reaction wheel. This project is deprecated. Use **RW_Demo** instead.</td>
+</tr>
+<tr>
+	<td><b>Microcontroller</b></td>
+	<td>STM32 Nucleo L152RE</td>
+</tr>
+<tr>
+	<td><b>Usage</b></td>
+	<td>Connect to the microcontroller using a terminal (115200 baud).</td>
+</tr>
+</table>
+
+
+## Solar Vector Test
+<table border="0">
+<tr>
+	<td><b>Project Name</b></td>
+	<td>SolarVector_Test</td>
+</tr>
+<tr>
+	<td><b>Description</b></td>
+	<td>Reads solar vectors from the sensor test fixture and prints results over serial.</td>
+</tr>
+<tr>
+	<td><b>Microcontroller</b></td>
+	<td>STM32 Nucleo F103RB</td>
+</tr>
+<tr>
+	<td><b>Usage</b></td>
+	<td>See [**Attitude Determination Testing**](attitude_determination.html) for hardware setup instructions. Change lines 40-43 in main.c as desired. Results can be read from a terminal (115200 baud).</td>
+</tr>
+</table>
+
+
+## Unit Tests
+<table border="0">
+<tr>
+	<td><b>Project Name</b></td>
+	<td>Unit_Tests</td>
+</tr>
+<tr>
+	<td><b>Description</b></td>
+	<td>This project contains a series of unit tests for various functions used in the ACS. Results are printed to a terminal.</td>
+</tr>
+<tr>
+	<td><b>Microcontroller</b></td>
+	<td>STM32 Nucleo F103RB</td>
+</tr>
+<tr>
+	<td><b>Usage</b></td>
+	<td>Connect to the microcontroller using a terminal (115200 baud). Reference results of feedback control unit tests against **ACSMatlabSim/UnitTests.m.**</td>
+</tr>
+</table>
+
+
+## BNO055 Testing & Data Collection
+<table border="0">
+<tr>
+	<td><b>Project Name</b></td>
+	<td>IMU_Test</td>
+</tr>
+<tr>
+	<td><b>Description</b></td>
+	<td>Can be used to run the built-in calibration routines in the BNO055 and to collect data from the IMU's individual sensors. Used primarily for manual sensor calibration.</td>
+</tr>
+<tr>
+	<td><b>Microcontroller</b></td>
+	<td>STM32 Nucleo F103RB</td>
+</tr>
+<tr>
+	<td><b>Usage</b></td>
+	<td>Change lines 61-62 in main.c as required. Program the microcontroller in the [**sensor test fixture**](attitude_determination.html) and connect to it using a terminal (115200 baud). For manual IMU calibration use the Matlab scripts found [**here**](https://drive.google.com/drive/u/0/folders/1sT_IBypwn3VAgB7iWK8SuhoOCGHZ3cda).</td>
+</tr>
+</table>
+
+
+## Automated BNO055 IMU Calibration
+<table border="0">
+<tr>
+	<td><b>Project Name</b></td>
+	<td>IMU_Calibration</td>
+</tr>
+<tr>
+	<td><b>Description</b></td>
+	<td>This project was a largely unsuccessful attempt to automate the IMU calibration process. Use **IMU_Test** to manually calibrate the IMU instead.</td>
+</tr>
+<tr>
+	<td><b>Microcontroller</b></td>
+	<td>STM32 Nucleo F103RB</td>
+</tr>
+<tr>
+	<td><b>Usage</b></td>
+	<td>Program the microcontroller in the [**sensor test fixture**](attitude_determination.html). Connect to the microcontroller using a terminal (115200 baud).</td>
 </tr>
 </table>
 

@@ -1,18 +1,18 @@
 /*!
-\page igrf_sop IGRF
+\page igrf Updating IGRF Coefficients
 
-## Updating IGRF Coefficients
+
 The International Geomagnetic Reference Field (IGRF) model is updated every 5 years and is used to estimate the inertial magnetic field for attitude estimation. IGRF12 is the current model as of 2019. In 2020, a new model will be released and the current IGRF coefficients will need to be updated. The steps to update these coefficients are provided below.
-
 
 <p float="centered">
 1. Download the Geomag zip file found [**here**](https://www.ngdc.noaa.gov/IAGA/vmod/igrf.html). NOTE: DO NOT USE text file found on top of site.
 2. Extract just the coefficient file from the zip. This file is named IGRFxx.COF (IGRF12.COF as of June 2019).
-3. Place the file into **/Mech_Lib/IGRF/** in the Mechanical repository. Replace the existing coefficient file if necessary.
+3. Place the file into **Mech_Lib/IGRF** in the Mechanical repository. Replace the existing coefficient file if necessary.
 4. Open the **make_headers.py** python script and follow the instructions in the window. An example is shown below
 
 	<img src="../assets/IGRF_script.PNG" style="max-width:50%" align="middle">
 
 5. Verify that the header file was generated properly by opening the IGRFCOF.h file and checking the timestamp in the top comment.
 </p>
+
 */

@@ -5,10 +5,5 @@ This website includes documentation for the flight software and testing modules 
 
 ## Terminology
 <strong>Column vector Matrix:</strong> a <a href="struct___matrix.html">Matrix</a> object which has been allocated and initalized and has the dimensions r = 3, c = 1.
-## Links
-<ul>
-	<li><a href="get_started.html">Get Started</a></li>
-	<li><a href="projects.html">Project list</a></li>
-</ul>
 
 */

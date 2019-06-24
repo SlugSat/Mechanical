@@ -25,11 +25,10 @@ var NAVTREE =
 [
   [ "SlugSat ACS", "index.html", [
     [ "Attiude Determination Testing", "attitude_determination.html", null ],
-    [ "Get Started", "get_started.html", null ],
-    [ "IGRF", "igrf_sop.html", null ],
+    [ "Updating IGRF Coefficients", "igrf.html", null ],
     [ "Matlab ACS Simulation", "matlab_sim.html", null ],
     [ "Nucleo Projects", "projects.html", null ],
-    [ "Reaction Wheels", "reaction_wheels.html", null ],
+    [ "Reaction Wheel Testing", "reaction_wheels.html", null ],
     [ "42 Simulation", "simulation42.html", null ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],

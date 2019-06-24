@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SlugSat ACS: Reaction Wheels</title>
+<title>SlugSat ACS: Reaction Wheel Testing</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -88,35 +88,47 @@ $(document).ready(function(){initNavTree('reaction_wheels.html','');});
 
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Reaction Wheels </div>  </div>
+<div class="title">Reaction Wheel Testing </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>This library includes the steps to run the Reaction Wheels tests.</p>
+<div class="textblock"><p>This page details the operating procedures for the software used to test the reaction wheel prototype on the flat-sat.</p>
 <h2>Components</h2>
 <ol type="1">
 <li>Reaction Wheel</li>
-<li>Motor Driver</li>
+<li>Motor Driver Board</li>
 <li>Breakout Board</li>
 <li>Power Supply</li>
 <li>Microcontroller (F103RB)</li>
 </ol>
 <h2>Hardware Setup</h2>
-<p>The setup can be found <a href="https://docs.google.com/document/d/17F1x7KTJv_9skB2GcmG_zZX7MhH3WDxNv6eCbmAPR0A/edit"><b>Reaction Wheel Overview</b></a>.</p>
+<p>The setup can be found in the <a href="https://docs.google.com/document/d/17F1x7KTJv_9skB2GcmG_zZX7MhH3WDxNv6eCbmAPR0A/edit"><b>Reaction Wheel Overview</b></a> document. Follow the setup for the F103RB microcontroller.</p>
 <h2>Test Files</h2>
-<p>The test files can be found in our Mechanical Github under uVisionProjects/RW_Demo.</p><ol type="1">
-<li>Open the project in uVision.</li>
-<li>Program the microcontroller.</li>
-<li>Open the desired Matlab file.</li>
-<li>Reset the Microcontroller.</li>
-<li>Run the Matlab script.</li>
+<p>The test files can be found in the Mechanical Github under <b>uVisionProjects/RW_Demo.</b></p><ol type="1">
+<li>Open <b>RW_Demo</b> in uVision.</li>
+<li>Change the #defines in main.c to set the desired input source to either a terminal or Matlab.</li>
 </ol>
-<h2>Running Reaction Wheel Speed</h2>
 <ol type="1">
-<li></li>
+<li>Program the Nucleo F103RB connected to the reaction wheel prototype.</li>
+<li>Do one of the following:<ol type="a">
+<li>Open a terminal at 9600 baud and connect to the microcontroller.</li>
 </ol>
-<h2>Running Reaction Wheel Friction</h2>
+<ol type="a">
+<li>Open either <b>rw_find_friction.m</b> or <b>rw_plot_speed.m.</b></li>
+</ol>
+</li>
+<li>Reset the microcontroller.</li>
+<li>Run the Matlab script (if applicable).</li>
+</ol>
+<h3>Reaction Wheel Speed Test</h3>
+<p>This Matlab script uses logged reaction wheel PWM and speed to compare the behavior of the reaction wheel with that of the reaction wheel dynamic model in 42.</p><ol type="1">
+<li>Get a reaction wheel speed log file from a 42 run. These are named <b>rwSpeeds.csv.</b></li>
+<li>Open <b>rw_plot_speed.m</b> and change lines 13-15 as necessary.</li>
+<li>Follow the steps above to set up the reaction wheel and run the script.</li>
+</ol>
+<h3>Motor Friction Test</h3>
 <ol type="1">
-<li></li>
+<li>Open <b>rw_find_friction.m</b> and change lines 10-15 as necessary.</li>
+<li>Follow the steps above to set up the reaction wheel and run the script. </li>
 </ol>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->

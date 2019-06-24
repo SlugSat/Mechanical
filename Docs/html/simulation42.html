@@ -96,10 +96,10 @@ $(document).ready(function(){initNavTree('simulation42.html','');});
  <h2>42 Setup</h2>
 <p>SlugSat’s customized version of 42 runs natively on an Ubuntu virtual machine. SlugSat's Team Drive contains a VM with both Mechanical team git repositories initialized and 42 and its dependencies preinstalled. To run the simulation, the user must download and run the VM, pull the latest version of the simulation code to the 42 source folder, and compile and run the simulation from the command line. The steps to do this are as follows:</p>
 <ol type="1">
-<li>Download the virtual machine <b><a href="https://drive.google.com/file/d/1Uc_Aiz-8tsvCL0Jx_9ZfMtskhNvRVah5/view">here</a></b>, extract the zip, and start the VM using VirtualBox by opening "42 Simulation.vbox." Login info for the user account in the VM is in "login.txt."</li>
+<li>Download the virtual machine <a href="https://drive.google.com/file/d/1Uc_Aiz-8tsvCL0Jx_9ZfMtskhNvRVah5/view"><b>here</b></a>, extract the zip, and start the VM using VirtualBox by opening "42 Simulation.vbox." Login info for the user account in the VM is in "login.txt."</li>
 <li><p class="startli">In the VM, navigate to Desktop/42-source in a terminal and run the commands: </p><pre class="fragment"> $ git fetch --all
  $ git reset --hard origin/master
-</pre><p class="startli">This will pull any changed files from SlugSat's <a href="https://github.com/SlugSat/Simulation42">42 source code repository</a>.</p>
+</pre><p class="startli">This will pull any changed files from SlugSat's <a href="https://github.com/SlugSat/Simulation42"><b>42 source code repository</b></a>.</p>
 </li>
 <li>To compile 42, use the commands: <pre class="fragment"> $ sudo make clean
  $ make
@@ -113,7 +113,7 @@ $(document).ready(function(){initNavTree('simulation42.html','');});
 <p>SlugSat's customized 42 includes the ability to connect to and sync with an STM32 board running SlugSat’s ACS flight software. To run 42 in conjunction with the ACS:</p>
 <ol type="1">
 <li>Set up the 42 simulation using steps 1-3 in the section above.</li>
-<li>Clone the <a href="https://github.com/SlugSat/Mechanical">Mechanical GitHub repository</a> onto a Windows PC. Follow the instructions here &lt;needs link&gt;=""&gt; to set up the software required to program STM32 Nucleo boards.</li>
+<li>Clone the <a href="https://github.com/SlugSat/Mechanical"><b>Mechanical GitHub repository</b></a> onto a Windows PC. Follow the instructions here &lt;needs link&gt;=""&gt; to set up the software required to program STM32 Nucleo boards.</li>
 <li>Open a project in the Mechanical repository. The projects <b>42_Test</b>, <b>ACS_42Only</b>, and <b>ACS_FlatSat</b> all interface with 42. Build the project and load it onto the microcontroller.</li>
 <li>Connect the microcontroller to the VM using the Devices menu in VirtualBox and reset the microcontroller.</li>
 <li>Run 42 (step 4 in the section above).</li>
@@ -135,7 +135,7 @@ $(document).ready(function(){initNavTree('simulation42.html','');});
 <h2>Output Files</h2>
 <p>On each new run 42 creates a folder beginning with <b>42run_</b>. This folder is populated with files that log pointing accuracy, used and generated power, reaction wheel speed, and state transitions during current run of 42.</p>
 <h2>Source Files</h2>
-<p>All customized files in SlugSat's version of 42 are stored in the <a href="https://github.com/SlugSat/Simulation42">Simulation42 GitHub repository</a>. Other 42 source files are unchanged from the base 42 source (which can be downloaded <a href="https://drive.google.com/file/d/1HdiX4nZJacuZJcseDHefzC3z_tQcJrkr/view">here</a>).</p><ul>
+<p>All customized files in SlugSat's version of 42 are stored in the <a href="https://github.com/SlugSat/Simulation42"><b>Simulation42 GitHub repository</b></a>. Other 42 source files are unchanged from the base 42 source (which can be downloaded <a href="https://drive.google.com/file/d/1HdiX4nZJacuZJcseDHefzC3z_tQcJrkr/view"><b>here</b></a>).</p><ul>
 <li><b>42fsw.c</b> contains the function <b>SlugSatFSW</b>, which has the majority of SlugSat's custom code. This is where data is synced with the flat-sat. The function also includes custom actuator models and handles data processing, terimal display, and file output.</li>
 <li><b>SerialCommunication.c/h</b> &amp; <b>PacketProtocol.c/h</b> are custom C libraries used to communicate with the flat-sat. </li>
 </ul>

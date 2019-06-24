@@ -14,8 +14,8 @@ The test fixture is used to prototype and test the accuracy of SlugSat's solar v
 2. Optionally, connect the Helmholtz coil to the power supply and turn configure the power supply to output about 3.3V. The current flowing should be about 1A.
 3. Rotate the gimbal so that the 2U's Z+ face is up and its X+ face is pointing towards the lamp.
 4. Connect the microcontroller in the middle of the 2U chassis in the sensor test fixture to a PC over USB.
-5. Open the Attitude_Estimation project and make sure PRINT_DCM is the only thing defined on lines 35-38 of main.c. Compile the project and program the microcontroller.
-6. Open display_attitude.m in Matlab and run it.
+5. Open the **Attitude_Estimation** project and make sure PRINT_DCM is the only thing defined on lines 35-38 of main.c. Compile the project and program the microcontroller.
+6. Open **display_attitude.m** in Matlab and run it.
 7. Verify that the gimbal is rotated correctly (see step 3), and then reset the microcontroller. Matlab should render the estimated attitude.
 
 ## Measuring Euler Angles
