@@ -20,7 +20,7 @@ The test files can be found in the Mechanical Github under **uVisionProjects/RW_
 2. Program the Nucleo F103RB connected to the reaction wheel prototype.
 3. Do one of the following:
 	1. Open a terminal at 9600 baud and connect to the microcontroller.
-	1. Open either **rw_find_friction.m** or **rw_plot_speed.m.**
+	2. Open either **rw_find_friction.m** or **rw_plot_speed.m.**
 4. Reset the microcontroller.
 5. Run the Matlab script (if applicable).
 
